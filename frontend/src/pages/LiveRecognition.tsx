@@ -24,9 +24,22 @@ interface ServerState {
   latency_ms: number | null;
 }
 
+interface SentenceResult {
+  glosses: string[];
+  gloss_confidence: number;
+  method: string;
+  sentence: string;
+  kannada: string;
+  reference_gloss: string[];
+  gloss_distance: number;
+  baseline_sentence: string;
+  translation_status: string;
+}
+
 type Hero =
   | { kind: "sign"; token: TranscriptToken; top: Candidate[]; simulated: boolean; boundary?: string; at: number }
-  | { kind: "uncertain"; best: Candidate | null; at: number };
+  | { kind: "uncertain"; best: Candidate | null; at: number }
+  | { kind: "sentence"; result: SentenceResult; at: number };
 
 const EMPTY_STATE: ServerState = { activity: "idle", hands: 0, motion: 0, buffer: 0, tentative: null, proc_ms: 0, latency_ms: null };
 
@@ -38,7 +51,8 @@ export function LiveRecognition() {
   const [paused, setPaused] = useState(false);
   const [demo, setDemo] = useState(false);
   const [threshold, setThreshold] = useState(0.6);
-  const [mode, setMode] = useState<"segment" | "sliding">("segment");
+  const [mode, setMode] = useState<"segment" | "sliding" | "sentence">("segment");
+  const [continuous, setContinuous] = useState<{ loaded: boolean; version: string | null; error: string | null; sentences: number | null } | null>(null);
   const [dipSplit, setDipSplit] = useState(false);
   const [stillMs, setStillMs] = useState(800);
   const [serverState, setServerState] = useState<ServerState>(EMPTY_STATE);
@@ -68,7 +82,15 @@ export function LiveRecognition() {
     switch (msg.type) {
       case "hello":
         setModel(msg.model);
+        setContinuous(msg.continuous ?? null);
         break;
+      case "sentence": {
+        const r = msg as unknown as SentenceResult;
+        setHero({ kind: "sentence", result: r, at: Date.now() });
+        setItems((t) => [...t, fromServerToken({ label: "sentence", kannada: r.kannada, english: r.sentence, confidence: r.gloss_confidence, source: "model", t: Date.now() })]);
+        setEventMsg(`Decoded ${r.glosses.length} gloss(es) with the ${r.method === "ctc" ? "CTC sequence model" : "sentence classifier"}.`);
+        break;
+      }
       case "state":
         stateRef.current = msg as unknown as ServerState;
         break;
@@ -86,7 +108,8 @@ export function LiveRecognition() {
         sessionStats.uncertainSegments++;
         break;
       case "segment":
-        if (msg.result === "no_model") setEventMsg(`Movement detected (${msg.frames} frames) but no trained model is loaded.`);
+        if (msg.result === "no_continuous_model") setEventMsg("Sentence detected but no continuous sentence model is trained yet (Dataset & Model).");
+        else if (msg.result === "no_model") setEventMsg(`Movement detected (${msg.frames} frames) but no trained model is loaded.`);
         else if (msg.result === "background") setEventMsg("Movement recognised as background / not a sign.");
         else if (msg.result === "too_short") setEventMsg("Movement too short to classify.");
         else if (msg.result === "suppressed_duplicate") setEventMsg("Same sign detected twice in a row; the duplicate was suppressed.");
@@ -262,10 +285,12 @@ export function LiveRecognition() {
                   </label>
                   <label className="field">
                     <span>Segmentation</span>
-                    <select value={mode} onChange={(e) => setMode(e.target.value as "segment" | "sliding")}>
-                      <option value="segment">Motion-based segments (recommended)</option>
+                    <select value={mode} onChange={(e) => setMode(e.target.value as "segment" | "sliding" | "sentence")}>
+                      <option value="segment">Isolated signs: motion-based segments (recommended)</option>
+                      <option value="sentence">Sentence mode: continuous ISL-CSLTR model{continuous?.loaded ? "" : " (not trained)"}</option>
                       <option value="sliding">Sliding window + smoothing (experimental)</option>
                     </select>
+                    {mode === "sentence" && <span className="hint">Sign a whole sentence, then pause 1.5 s or lower your hands. Recognises only the {continuous?.sentences ?? "~100"} sentences of the ISL-CSLTR corpus.</span>}
                   </label>
                   <div className="field">
                     <span>Options</span>
@@ -313,6 +338,15 @@ export function LiveRecognition() {
                     <div className="alts">Next best: {hero.top.slice(1).map((c) => `${c.kannada || c.label} ${Math.round(c.confidence * 100)}%`).join(" · ")}</div>
                   )}
                 </>
+              ) : hero?.kind === "sentence" ? (
+                <>
+                  <div className="result-source"><Chip tone="info">Sentence · {hero.result.method === "ctc" ? "CTC model" : "classifier"}</Chip></div>
+                  <div className="result-kn" lang="kn" style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.3rem)" }}>{hero.result.kannada}</div>
+                  <div className="result-meta">{hero.result.sentence}</div>
+                  <div className="small">Decoded gloss: <strong>{hero.result.glosses.join(" ") || "—"}</strong> <span className="muted">(corpus gloss: {hero.result.reference_gloss.join(" ")}, edit distance {hero.result.gloss_distance})</span></div>
+                  <ConfidenceBar value={hero.result.gloss_confidence} label="Mean gloss probability (not a calibrated accuracy)" />
+                  <div className="muted xs">Closest of the corpus' known sentences. Kannada: {hero.result.translation_status}.</div>
+                </>
               ) : hero?.kind === "uncertain" ? (
                 <>
                   <div className="result-source"><Chip tone="warn" icon="alert">Uncertain · not added</Chip></div>
@@ -333,6 +367,7 @@ export function LiveRecognition() {
                 <span className="muted">{eventMsg || (paused ? "Recognition paused." : "Waiting for a sign.")}</span>
               )}
             </div>
+            {mode === "sentence" && <div className="muted xs">Sentence model: {continuous?.loaded ? continuous.version : continuous?.error ?? "not loaded"}</div>}
             {model?.loaded && <div className="muted xs">Model {model.model_version ?? ""} · {model.model_type} · classes: {model.classes.filter((c) => c !== "_none").join(", ")}</div>}
           </Card>
 
@@ -349,10 +384,10 @@ export function LiveRecognition() {
           >
             <div className="transcript-box" aria-label="Recognised words">
               {items.length === 0 && <span className="muted small">Recognised signs appear here. Click a word to correct or remove it.</span>}
-              {items.map((t, i) => t.kind === "punct" ? (
-                <span key={t.id} className="token token-punct" title="Punctuation">
+              {items.map((t, i) => t.kind === "punct" || t.label === "sentence" ? (
+                <span key={t.id} className={`token ${t.kind === "punct" ? "token-punct" : ""}`} title={t.kind === "punct" ? "Punctuation" : t.english}>
                   {t.kannada}
-                  <button className="btn btn-ghost btn-sm" style={{ minHeight: 0, padding: 0 }} onClick={() => setItems((ts) => removeAt(ts, i))} aria-label="Remove punctuation"><Icon name="x" size={12} /></button>
+                  <button className="btn btn-ghost btn-sm" style={{ minHeight: 0, padding: 0 }} onClick={() => setItems((ts) => removeAt(ts, i))} aria-label={t.kind === "punct" ? "Remove punctuation" : "Remove sentence"}><Icon name="x" size={12} /></button>
                 </span>
               ) : (
                 <label key={t.id} className={`token token-${t.source}`} title={`${t.english} · ${t.source}${t.confidence !== null ? ` · ${Math.round(t.confidence * 100)}%` : ""} (click to correct)`}>

@@ -207,11 +207,11 @@ class JobQueue:
         kind, params = job["type"], job["params"]
         progress = self._progress(job)
         if kind == "import_dataset":
-            from .video.importer import ADAPTERS, run_import
+            from .video.importer import ADAPTERS, output_root, run_import
             items, _ = ADAPTERS[params["dataset"]]()
             return run_import(params["dataset"], items, int(params.get("workers", 2)),
                               progress=lambda d, t, m: progress(m, d / max(1, t)),
-                              cancel=lambda: self._cancel_running)
+                              cancel=lambda: self._cancel_running, out_root=output_root(params["dataset"]))
         if kind == "import_upload":
             from .uploads import import_batch
             return import_batch(params["batch_id"], progress=lambda d, t, m: progress(m, d / max(1, t)),
@@ -227,6 +227,12 @@ class JobQueue:
             return {"version": outcome["version"], "promoted": outcome["promoted"], "decision": outcome["decision"],
                     "accuracy": m["accuracy"], "macro_f1": m["macro_f1"], "headline_source": m["headline_source"],
                     "model_type": m["model_type"], "num_samples": m["num_samples"], "num_classes": m["num_classes"]}
+        if kind == "train_continuous":
+            from .continuous.train import train as train_continuous
+            m = train_continuous(progress=progress)
+            self.on_model_change()
+            return {"version": m["version"], "selected_method": m["selected_method"], "ctc": m["ctc"],
+                    "baseline": m["baseline"], "test_videos": m["test_videos"]}
         raise ValueError(f"unknown job type {kind!r}")
 
     def _maybe_queue_training(self, import_job: dict) -> None:

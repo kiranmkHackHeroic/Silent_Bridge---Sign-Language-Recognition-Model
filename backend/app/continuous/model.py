@@ -40,7 +40,7 @@ class CTCGlossRecognizer:
                 super().__init__()
                 s.inp = nn.Sequential(nn.Linear(self.input_dim, self.hidden), nn.ReLU(), nn.Dropout(self.dropout))
                 s.gru = nn.GRU(self.hidden, self.hidden, num_layers=self.layers, batch_first=True,
-                               bidirectional=True, dropout=self.dropout)
+                               bidirectional=True, dropout=self.dropout if self.layers > 1 else 0.0)
                 s.out = nn.Linear(2 * self.hidden, len(self.vocab) + 1)
 
             def forward(s, x):
@@ -101,7 +101,7 @@ class CTCGlossRecognizer:
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.net.parameters(), 1.0)
                 opt.step()
-                total += float(loss) * len(chunk)
+                total += float(loss.detach()) * len(chunk)
             rec = {"epoch": epoch + 1, "train_ctc_loss": round(total / len(pool), 4)}
             if val:
                 rec["val_gloss_error_rate"] = round(self.gloss_error_rate(val), 4)

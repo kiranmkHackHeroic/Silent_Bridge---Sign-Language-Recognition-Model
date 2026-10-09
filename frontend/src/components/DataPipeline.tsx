@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, uploadFiles } from "../services/api";
-import type { Eligibility, ExternalDataset, Job, ModelVersion, UploadBatch, VocabEntry } from "../services/types";
+import type { ContinuousStatus, Eligibility, ExternalDataset, Job, ModelVersion, UploadBatch, VocabEntry } from "../services/types";
 import { Icon } from "./Icon";
 import { Btn, Card, Chip, Empty, Notice, Spinner } from "./ui";
 
@@ -321,6 +321,56 @@ export function RegistryCard({ versions, eligibility, onChange }: { versions: Mo
       <div className="toolbar">
         <Btn icon="replay" size="sm" disabled={busy || versions.length < 2} onClick={() => window.confirm("Restore the previously active model?") && act(() => api.rollback())}>Restore previous model</Btn>
       </div>
+    </Card>
+  );
+}
+
+export function ContinuousCard({ status, onTrain, showTrain = true }: { status: ContinuousStatus | null; onTrain?: () => void; showTrain?: boolean }) {
+  const m = status?.metrics;
+  return (
+    <Card title="Continuous sentence model (ISL-CSLTR)" icon="layers"
+      subtitle="Video -> landmark sequence -> BiGRU + CTC -> gloss sequence -> closest corpus sentence -> Kannada"
+      actions={status?.loaded ? <Chip tone="ok">{status.version}</Chip> : <Chip tone="warn">not trained</Chip>}>
+      {!m ? (
+        <Empty icon="flask"><strong>Not evaluated.</strong> {status?.error ?? "Import the ISL-CSLTR videos, then train the sentence model."}</Empty>
+      ) : (
+        <>
+          <div className="table-wrap">
+            <table>
+              <thead><tr><th>Method (same held-out recordings)</th><th>Gloss error rate (lower is better)</th><th>Sentence accuracy</th><th></th></tr></thead>
+              <tbody>
+                {(["baseline", "ctc"] as const).map((k) => (
+                  <tr key={k} className={m.selected_method === k ? "selected" : ""}>
+                    <td><strong>{k === "ctc" ? "BiGRU + CTC" : "Sentence classifier (baseline)"}</strong><div className="muted xs">{m[k].method}</div></td>
+                    <td>{pct(m[k].gloss_error_rate)}</td>
+                    <td>{pct(m[k].sentence_accuracy)} <span className="muted xs">({m[k].sentences_correct}/{m[k].test_videos})</span></td>
+                    <td>{m.selected_method === k && <Chip tone="ok">used live</Chip>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Notice tone="info" title={`${m.videos} sentence videos: train ${m.train_videos} / validation ${m.val_videos} / test ${m.test_videos}`}>
+            Split: {m.split}. Test recording groups: {m.test_groups.join(", ")}. {m.limitations}
+          </Notice>
+          <details className="disclosure">
+            <summary><Icon name="eye" size={15} /> Example decodes on test videos</summary>
+            <div className="disclosure-body">
+              <div className="table-wrap">
+                <table>
+                  <thead><tr><th>Sentence</th><th>Reference gloss</th><th>Decoded gloss</th><th>Matched sentence</th></tr></thead>
+                  <tbody>
+                    {m.examples.map((e, i) => (
+                      <tr key={i}><td className="xs">{e.sentence}</td><td className="xs"><code>{e.reference}</code></td><td className="xs"><code>{e.decoded || "-"}</code></td><td className="xs">{e.correct ? <Chip tone="ok">correct</Chip> : <Chip tone="bad">wrong</Chip>} {e.nearest_sentence}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+        </>
+      )}
+      {showTrain && onTrain && <div className="toolbar"><Btn icon="play" onClick={onTrain}>Train sentence model</Btn><span className="muted xs">Runs as a background job.</span></div>}
     </Card>
   );
 }

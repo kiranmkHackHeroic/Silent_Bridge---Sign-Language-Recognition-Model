@@ -20,6 +20,7 @@ from pydantic import BaseModel, Field
 from .animation.library import AnimationLibrary
 from .animation.retarget import sample_to_animation
 from .config import DATA_DIR, PROCESSED_LANDMARKS_DIR, RecognitionSettings
+from .continuous.recognizer import ContinuousRecognizer
 from .jobs import JobQueue, training_eligibility
 from .dataset.store import DatasetError, DatasetStore
 from .dataset.validate import validate_dataset
@@ -43,9 +44,16 @@ class AppState:
         self.dataset = DatasetStore()
         self.predictor = SignPredictor()          # follows the registry's active-model pointer
         self.predictor.load()
-        self.jobs = JobQueue(on_model_change=self.predictor.load)
+        self.continuous = ContinuousRecognizer()
+        self.continuous.load()
+        self.jobs = JobQueue(on_model_change=self._reload_models)
         if start_jobs:
             self.jobs.start()
+
+
+    def _reload_models(self) -> None:
+        self.predictor.load()
+        self.continuous.load()
 
 
 state: AppState | None = None
@@ -209,6 +217,22 @@ def model_activate(version: str):
 def model_reload():
     S().predictor.load()
     return S().predictor.status()
+
+
+@app.get("/api/continuous/status")
+def continuous_status():
+    s = S()
+    st = s.continuous.status()
+    st["metrics"] = s.continuous.metrics or None
+    return st
+
+
+@app.post("/api/continuous/train", status_code=202)
+def continuous_train():
+    s = S()
+    if any(j["type"] == "train_continuous" and j["state"] in ("queued", "running") for j in s.jobs.list()):
+        raise HTTPException(409, "continuous training already queued or running")
+    return s.jobs.submit("train_continuous", {}, "Train continuous sentence model (ISL-CSLTR)")
 
 
 @app.get("/api/training/eligibility")
@@ -485,9 +509,10 @@ async def _demo_loop(ws: WebSocket, session: RecognitionSession):
 async def ws_recognition(ws: WebSocket):
     await ws.accept()
     s = S()
-    session = RecognitionSession(s.predictor, s.vocab)
+    session = RecognitionSession(s.predictor, s.vocab, continuous=s.continuous)
     demo_task: asyncio.Task | None = None
-    await ws.send_json({"type": "hello", "model": s.predictor.status(), "settings": session.settings.to_dict()})
+    await ws.send_json({"type": "hello", "model": s.predictor.status(), "continuous": s.continuous.status(),
+                        "settings": session.settings.to_dict()})
     try:
         while True:
             try:

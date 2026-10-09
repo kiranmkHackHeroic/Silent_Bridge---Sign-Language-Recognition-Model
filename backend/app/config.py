@@ -50,7 +50,7 @@ class FeatureConfig:
 class RecognitionSettings:
     """Continuous-recognition behaviour. Adjustable from the UI."""
 
-    mode: str = "segment"              # "segment" (pause/hand-drop boundaries) or "sliding"
+    mode: str = "segment"              # "segment" (isolated signs), "sliding" (experimental) or "sentence" (continuous model)
     confidence_threshold: float = 0.60
     # segment mode
     motion_start: float = 0.008        # motion (per 30 fps frame) needed to start a sign
@@ -93,7 +93,7 @@ class RecognitionSettings:
                     value = str(value)
             except (TypeError, ValueError):
                 continue
-            if key == "mode" and value not in ("segment", "sliding"):
+            if key == "mode" and value not in ("segment", "sliding", "sentence"):
                 continue
             if key == "confidence_threshold":
                 value = min(max(value, 0.05), 0.99)

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Icon, type IconName } from "../components/Icon";
+import { ContinuousCard } from "../components/DataPipeline";
 import { MetricsReport } from "../components/MetricsReport";
 import { Card, Chip, Notice, Stat } from "../components/ui";
 import { api } from "../services/api";
 import { sessionStats } from "../services/sessionStats";
-import type { Metrics, ModelStatus, ReviewState, ValidationSummary, VocabEntry } from "../services/types";
+import type { ContinuousStatus, ExternalDataset, Metrics, ModelStatus, ReviewState, ValidationSummary, VocabEntry } from "../services/types";
 
 const ARCH: { icon: IconName; title: string; text: string }[] = [
   { icon: "camera", title: "1 · Capture (browser)", text: "Webcam via getUserMedia. MediaPipe Hand and Face Landmarkers run locally (WASM/WebGL); video never leaves the browser." },
@@ -35,6 +36,8 @@ export function AboutTesting() {
   const [vocab, setVocab] = useState<VocabEntry[]>([]);
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [continuous, setContinuous] = useState<ContinuousStatus | null>(null);
+  const [datasets, setDatasets] = useState<ExternalDataset[]>([]);
 
   useEffect(() => {
     Promise.all([api.metrics(), api.modelStatus(), api.vocabulary(), api.validation()])
@@ -45,6 +48,8 @@ export function AboutTesting() {
         setValidation(val);
       })
       .catch((err) => setError(String(err.message || err)));
+    api.continuousStatus().then(setContinuous).catch(() => undefined);
+    api.datasets().then((d) => setDatasets(d.datasets)).catch(() => undefined);
   }, []);
 
   const signs = vocab.filter((v) => v.label !== "_none");
@@ -74,7 +79,7 @@ export function AboutTesting() {
         <div className="two-col">
           <Card title="Training methodology" icon="database">
             <ul className="list">
-              <li><strong>Data:</strong> landmark sequences recorded with this app ({validation?.valid ?? 0} valid samples in {Object.keys(validation?.per_class ?? {}).length} classes). No external dataset is bundled; synthetic data is used only inside automated tests, never for the application's model.</li>
+              <li><strong>Data:</strong> public ISL video datasets (see the citations below) converted to landmarks with the same MediaPipe models as the live webcam, plus your own recordings. Synthetic data is used only inside automated tests, never for the application's models.</li>
               <li><strong>Validation:</strong> every sample is checked (label, frame order, parseable landmarks, enough hand frames, session id). Rejected samples are excluded and listed.</li>
               <li><strong>Augmentation</strong> (training folds only): temporal crop, speed change, landmark jitter, small position/scale shifts.</li>
               <li><strong>Candidates:</strong> logistic regression (baseline), RBF-SVM, 1-hidden-layer MLP with early stopping. Class-balanced, fixed random seed.</li>
@@ -106,6 +111,21 @@ export function AboutTesting() {
           ) : (
             <p className="muted small">Not measured yet. Run the camera on Live Recognition first.</p>
           )}
+        </Card>
+
+        <ContinuousCard status={continuous} showTrain={false} />
+
+        <Card title="Datasets and citations" icon="database">
+          <ul className="list">
+            {datasets.map((d) => (
+              <li key={d.key}>
+                <strong>{d.name}</strong>: {d.license}, {d.task} recognition. Status: {d.download_state}
+                {d.import_summary ? `, ${d.import_summary.accepted} videos imported` : ""}.
+                <div className="xs muted">{d.citation}</div>
+              </li>
+            ))}
+            <li><strong>Your own webcam recordings</strong> made on the Dataset &amp; Model page ({validation?.valid ?? 0} valid samples).</li>
+          </ul>
         </Card>
 
         <Card title="Supported vocabulary" icon="text" subtitle="Sign → Kannada mappings (all unverified until reviewed by an ISL expert)">

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CameraPanel } from "../components/CameraPanel";
-import { ExternalDatasetsCard, JobsCard, RegistryCard, UploadCard, useJobs } from "../components/DataPipeline";
+import { ContinuousCard, ExternalDatasetsCard, JobsCard, RegistryCard, UploadCard, useJobs } from "../components/DataPipeline";
 import { Icon } from "../components/Icon";
 import { LandmarkReplay, quickCheck } from "../components/LandmarkReplay";
 import { MetricsReport } from "../components/MetricsReport";
 import { Btn, Card, Chip, Empty, Notice, Spinner, Stat } from "../components/ui";
 import { api } from "../services/api";
 import type {
-  DatasetSummary, Eligibility, ExternalDataset, LandmarkFrame, Metrics, ModelStatus, ModelVersion, RecordedSample,
+  ContinuousStatus, DatasetSummary, Eligibility, ExternalDataset, LandmarkFrame, Metrics, ModelStatus, ModelVersion, RecordedSample,
   TrainJob, ValidationSummary, VocabEntry,
 } from "../services/types";
 import { useVision, type VisionResult } from "../services/useVision";
@@ -33,6 +33,7 @@ export function DatasetModel() {
   const [externals, setExternals] = useState<ExternalDataset[]>([]);
   const [versions, setVersions] = useState<ModelVersion[]>([]);
   const [eligibility, setEligibility] = useState<Eligibility | null>(null);
+  const [continuous, setContinuous] = useState<ContinuousStatus | null>(null);
 
   const [label, setLabel] = useState("namaskara");
   const [signer, setSigner] = useState("signer1");
@@ -73,6 +74,7 @@ export function DatasetModel() {
       api.datasets().then((d) => setExternals(d.datasets)).catch(() => undefined);
       api.registry().then((r) => setVersions(r.versions)).catch(() => undefined);
       api.eligibility().then(setEligibility).catch(() => undefined);
+      api.continuousStatus().then(setContinuous).catch(() => undefined);
     } catch (err) {
       setBackendError(String((err as Error).message || err));
     }
@@ -285,6 +287,8 @@ export function DatasetModel() {
 
         <UploadCard vocab={vocab} onQueued={refreshJobs} />
         <JobsCard jobs={jobs} refresh={refreshJobs} />
+
+        <div className="span-all"><ContinuousCard status={continuous} onTrain={() => api.trainContinuous().then(refreshJobs).catch((e) => setBackendError(String(e.message || e)))} /></div>
 
         <div className="span-all"><RegistryCard versions={versions} eligibility={eligibility} onChange={() => { refresh(); refreshJobs(); }} /></div>
 

@@ -1,5 +1,5 @@
 import type {
-  AnimationClip, DatasetSummary, Eligibility, ExternalDataset, Job, LandmarkFrame, Metrics, ModelStatus, ModelVersion,
+  AnimationClip, ContinuousStatus, DatasetSummary, Eligibility, ExternalDataset, Job, LandmarkFrame, Metrics, ModelStatus, ModelVersion,
   RecordedSample, TrainJob, TranslationResult, UploadBatch, ValidationSummary, VocabEntry,
 } from "./types";
 
@@ -69,6 +69,8 @@ export const api = {
   rollback: () => request<{ active_version: string }>("/api/model/rollback", { method: "POST" }),
   activate: (v: string) => request<{ active_version: string }>(`/api/model/activate/${encodeURIComponent(v)}`, { method: "POST" }),
   eligibility: () => request<Eligibility>("/api/training/eligibility"),
+  continuousStatus: () => request<ContinuousStatus>("/api/continuous/status"),
+  trainContinuous: () => request<Job>("/api/continuous/train", { method: "POST" }),
   phrases: () => request<{ phrases: { kannada: string; english: string; category: string; sign_ids: string[]; verified: boolean; missing_animations: string[]; unrecognisable_signs: string[] }[] }>("/api/phrases"),
   upload: (batchId: string) => request<UploadBatch>(`/api/uploads/${encodeURIComponent(batchId)}`),
   importUpload: (batchId: string) => request<Job>(`/api/uploads/${encodeURIComponent(batchId)}/import`, { method: "POST" }),

@@ -92,7 +92,18 @@ def amrita_items() -> tuple[list[ImportItem], dict]:
     return items, mapping
 
 
-ADAPTERS: dict[str, Callable[[], tuple[list[ImportItem], dict]]] = {"amrita_slr": amrita_items}
+def csltr_items():
+    from ..continuous.dataset import csltr_items as _items
+    return _items()
+
+
+ADAPTERS: dict[str, Callable[[], tuple[list[ImportItem], dict]]] = {"amrita_slr": amrita_items, "isl_csltr": csltr_items}
+# continuous (sentence) datasets are stored apart from isolated-sign samples
+CONTINUOUS_DATASETS = {"isl_csltr"}
+
+
+def output_root(dataset: str) -> Path:
+    return PROCESSED / "continuous" / dataset if dataset in CONTINUOUS_DATASETS else LANDMARKS / dataset
 
 
 # ---------------------------------------------------------------- worker
@@ -172,8 +183,9 @@ def write_manifest(dataset: str, rows: list[dict]) -> Path:
 
 
 def run_import(dataset: str, items: list[ImportItem], workers: int = 2,
-               progress: ProgressFn | None = None, cancel: Callable[[], bool] | None = None) -> dict:
-    out_root = LANDMARKS / dataset
+               progress: ProgressFn | None = None, cancel: Callable[[], bool] | None = None,
+               out_root: Path | None = None) -> dict:
+    out_root = Path(out_root) if out_root else LANDMARKS / dataset
     out_root.mkdir(parents=True, exist_ok=True)
     progress = progress or (lambda done, total, msg: None)
     rows: list[dict] = []
@@ -221,7 +233,7 @@ def main() -> None:
         items = items[: a.limit]
     print(f"{a.dataset}: {len(items)} videos, {len({i.label for i in items})} classes, "
           f"{len({i.group for i in items})} groups", flush=True)
-    summary = run_import(a.dataset, items, a.workers,
+    summary = run_import(a.dataset, items, a.workers, out_root=output_root(a.dataset),
                          progress=lambda d, t, m: print(f"[{datetime.now():%H:%M:%S}] {m}", flush=True))
     print(json.dumps(summary, indent=2, ensure_ascii=False))
 

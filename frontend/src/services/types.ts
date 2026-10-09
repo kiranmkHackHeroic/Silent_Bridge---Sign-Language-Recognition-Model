@@ -310,3 +310,39 @@ export interface Eligibility {
   new_classes: string[];
   samples_needed_per_class: Record<string, number>;
 }
+
+export interface ContinuousEval {
+  gloss_error_rate: number;
+  sentence_accuracy: number;
+  sentences_correct: number;
+  test_videos: number;
+  reference_glosses: number;
+  method: string;
+  epochs_trained?: number;
+  decode_latency_ms?: number | null;
+}
+
+export interface ContinuousStatus {
+  loaded: boolean;
+  error: string | null;
+  version: string | null;
+  selected_method: string | null;
+  sentences: number | null;
+  gloss_vocabulary: number | null;
+  metrics: {
+    version: string;
+    trained_at: string;
+    dataset: string;
+    videos: number;
+    train_videos: number;
+    val_videos: number;
+    test_videos: number;
+    test_groups: string[];
+    split: string;
+    baseline: ContinuousEval;
+    ctc: ContinuousEval;
+    selected_method: string;
+    examples: { reference: string; decoded: string; sentence: string; nearest_sentence: string; correct: boolean }[];
+    limitations: string;
+  } | null;
+}

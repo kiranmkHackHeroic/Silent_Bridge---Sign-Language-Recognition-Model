@@ -25,8 +25,10 @@ TENTATIVE_EVERY = 4
 
 
 class RecognitionSession:
-    def __init__(self, predictor: SignPredictor, vocab: Vocabulary, settings: RecognitionSettings | None = None):
+    def __init__(self, predictor: SignPredictor, vocab: Vocabulary, settings: RecognitionSettings | None = None,
+                 continuous=None):
         self.predictor = predictor
+        self.continuous = continuous          # ContinuousRecognizer for "sentence" mode (optional)
         self.vocab = vocab
         self.settings = settings or RecognitionSettings()
         self.builder = SentenceBuilder(vocab)
@@ -41,7 +43,13 @@ class RecognitionSession:
     # ---- lifecycle -------------------------------------------------------
     def _build_components(self) -> None:
         s = self.settings
-        self.segmenter = ActivitySegmenter(s)
+        if s.mode == "sentence":
+            # a whole signed sentence is one segment: longer pause, no splitting at slow-downs
+            from dataclasses import replace
+            seg = replace(s, still_ms=max(s.still_ms, 1500), absent_ms=700, max_segment_ms=15000, dip_split=False)
+            self.segmenter = ActivitySegmenter(seg)
+        else:
+            self.segmenter = ActivitySegmenter(s)
         self.buffer = SequenceBuffer(s.window_frames)
         self.smoother = ProbabilitySmoother(s.smoothing_alpha)
         self.gate = StablePredictionGate(s.confidence_threshold, s.stable_evals, s.release_margin,
@@ -109,6 +117,8 @@ class RecognitionSession:
 
         if self.settings.mode == "sliding":
             events = self._process_sliding(frame)
+        elif self.settings.mode == "sentence":
+            events = self._process_sentence(frame)
         else:
             events = self._process_segment(frame)
 
@@ -118,14 +128,14 @@ class RecognitionSession:
         return events
 
     def _state(self, frame: FrameFeatures) -> dict:
-        signing = self.segmenter.active if self.settings.mode == "segment" else frame.has_hands
+        signing = self.segmenter.active if self.settings.mode in ("segment", "sentence") else frame.has_hands
         return {
             "type": "state",
             "mode": self.settings.mode,
             "activity": "signing" if signing else "idle",
             "hands": int(frame.present[0]) + int(frame.present[1]),
-            "motion": round(self.segmenter.motion_ema if self.settings.mode == "segment" else frame.motion, 4),
-            "buffer": len(self.segmenter.frames) if self.settings.mode == "segment" else len(self.buffer),
+            "motion": round(self.segmenter.motion_ema if self.settings.mode != "sliding" else frame.motion, 4),
+            "buffer": len(self.segmenter.frames) if self.settings.mode != "sliding" else len(self.buffer),
             "tentative": self.tentative,
             "proc_ms": round(self.proc_ms, 3),
             "latency_ms": None if self.last_latency_ms is None else round(self.last_latency_ms, 3),
@@ -191,6 +201,21 @@ class RecognitionSession:
         if not events:
             return [{"type": "segment", **base, "result": "suppressed_duplicate", "top": self._top(pred.probabilities)}]
         return events
+
+    # ---- sentence mode (continuous model) ---------------------------------
+    def _process_sentence(self, frame: FrameFeatures) -> list[dict]:
+        seg = self.segmenter.update(frame)
+        if seg is None:
+            return []
+        base = {"frames": len(seg.frames), "reason": seg.reason, "duration_ms": round(seg.end_t - seg.start_t, 1)}
+        if self.continuous is None or not self.continuous.loaded:
+            return [{"type": "segment", **base, "result": "no_continuous_model"}]
+        start = time.perf_counter()
+        result = self.continuous.recognize(seg.frames)
+        self.last_latency_ms = (time.perf_counter() - start) * 1000.0
+        if result is None:
+            return [{"type": "segment", **base, "result": "too_short"}]
+        return [{"type": "sentence", **base, **result}]
 
     # ---- sliding mode ----------------------------------------------------
     def _process_sliding(self, frame: FrameFeatures) -> list[dict]:
