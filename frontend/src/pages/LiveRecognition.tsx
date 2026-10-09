@@ -39,8 +39,8 @@ export function LiveRecognition() {
   const [demo, setDemo] = useState(false);
   const [threshold, setThreshold] = useState(0.6);
   const [mode, setMode] = useState<"segment" | "sliding">("segment");
-  const [dipSplit, setDipSplit] = useState(true);
-  const [stillMs, setStillMs] = useState(600);
+  const [dipSplit, setDipSplit] = useState(false);
+  const [stillMs, setStillMs] = useState(800);
   const [serverState, setServerState] = useState<ServerState>(EMPTY_STATE);
   const [hero, setHero] = useState<Hero | null>(null);
   const [eventMsg, setEventMsg] = useState("");
@@ -271,7 +271,7 @@ export function LiveRecognition() {
                     <span>Options</span>
                     <label className="switch">
                       <input type="checkbox" checked={dipSplit} onChange={(e) => setDipSplit(e.target.checked)} disabled={mode !== "segment"} />
-                      Split signs at pauses in hand movement
+                      Experimental: split signs at brief slow-downs (off: real ISL signs contain internal holds)
                     </label>
                     <label className="switch">
                       <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />

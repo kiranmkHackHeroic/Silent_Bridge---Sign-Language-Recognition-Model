@@ -1,6 +1,6 @@
 import type {
-  AnimationClip, DatasetSummary, LandmarkFrame, Metrics, ModelStatus, RecordedSample, TrainJob, TranslationResult,
-  ValidationSummary, VocabEntry,
+  AnimationClip, DatasetSummary, Eligibility, ExternalDataset, Job, LandmarkFrame, Metrics, ModelStatus, ModelVersion,
+  RecordedSample, TrainJob, TranslationResult, UploadBatch, ValidationSummary, VocabEntry,
 } from "./types";
 
 export class ApiError extends Error {
@@ -36,7 +36,8 @@ export const api = {
   health: () => request<{ status: string; model_loaded: boolean }>("/api/health"),
   modelStatus: () => request<ModelStatus>("/api/model/status"),
   metrics: () => request<Metrics>("/api/model/metrics"),
-  startTraining: () => request<TrainJob>("/api/model/train", { method: "POST" }),
+  startTraining: (body: { models?: string[]; sources?: string[] } = {}) =>
+    request<TrainJob>("/api/model/train", { method: "POST", body: JSON.stringify(body) }),
   trainStatus: () => request<TrainJob>("/api/model/train/status"),
   vocabulary: () => request<{ labels: VocabEntry[] }>("/api/vocabulary"),
   upsertVocabulary: (label: string, english: string, kannada: string, isl_gloss = "") =>
@@ -59,4 +60,39 @@ export const api = {
     request<{ ok: boolean }>(`/api/dataset/samples/${encodeURIComponent(label)}/${encodeURIComponent(sampleId)}`, {
       method: "DELETE",
     }),
+  datasets: () => request<{ datasets: ExternalDataset[]; uploads: { batch_id: string; dataset: string; created_at: string; videos: number; ready: number; state: string }[] }>("/api/datasets"),
+  importDataset: (key: string) => request<Job>(`/api/datasets/${encodeURIComponent(key)}/import`, { method: "POST" }),
+  jobs: () => request<{ jobs: Job[] }>("/api/jobs"),
+  cancelJob: (id: string) => request<Job>(`/api/jobs/${encodeURIComponent(id)}/cancel`, { method: "POST" }),
+  retryJob: (id: string) => request<Job>(`/api/jobs/${encodeURIComponent(id)}/retry`, { method: "POST" }),
+  registry: () => request<{ active: string | null; versions: ModelVersion[]; history: string[] }>("/api/model/registry"),
+  rollback: () => request<{ active_version: string }>("/api/model/rollback", { method: "POST" }),
+  activate: (v: string) => request<{ active_version: string }>(`/api/model/activate/${encodeURIComponent(v)}`, { method: "POST" }),
+  eligibility: () => request<Eligibility>("/api/training/eligibility"),
+  phrases: () => request<{ phrases: { kannada: string; english: string; category: string; sign_ids: string[]; verified: boolean; missing_animations: string[]; unrecognisable_signs: string[] }[] }>("/api/phrases"),
+  upload: (batchId: string) => request<UploadBatch>(`/api/uploads/${encodeURIComponent(batchId)}`),
+  importUpload: (batchId: string) => request<Job>(`/api/uploads/${encodeURIComponent(batchId)}/import`, { method: "POST" }),
+  deleteUpload: (batchId: string, deleteLandmarks = false) =>
+    request<{ deleted_batch: string }>(`/api/uploads/${encodeURIComponent(batchId)}?delete_landmarks=${deleteLandmarks}`, { method: "DELETE" }),
 };
+
+/** Multipart upload with real byte-level progress (fetch has no upload progress). */
+export function uploadFiles(form: FormData, onProgress: (fraction: number) => void): Promise<UploadBatch> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/uploads");
+    xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);
+    xhr.onload = () => {
+      let body: unknown = null;
+      try {
+        body = JSON.parse(xhr.responseText);
+      } catch {
+        /* ignore */
+      }
+      if (xhr.status >= 200 && xhr.status < 300) resolve(body as UploadBatch);
+      else reject(new ApiError(String((body as { detail?: string })?.detail ?? xhr.statusText), xhr.status));
+    };
+    xhr.onerror = () => reject(new ApiError("Upload failed: backend not reachable", 0));
+    xhr.send(form);
+  });
+}

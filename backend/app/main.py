@@ -354,10 +354,22 @@ def translate_kannada(req: TranslateRequest):
         "sign_count": sum(len(i["signs"]) for i in items),
         "unsupported": unsupported,
         "unsupported_message": (f"ಈ ಪದಗಳಿಗೆ ಸಂಜ್ಞೆ ಲಭ್ಯವಿಲ್ಲ: {', '.join(unsupported)} / "
-                                f"No sign available for: {', '.join(unsupported)}") if unsupported else None,
+                                f"No sign available for: {', '.join(unsupported)}. Names and other proper nouns "
+                                "need fingerspelling, which is not available.") if unsupported else None,
         "note": "Supported-vocabulary lookup (word and phrase level) producing an ISL gloss sequence; "
                 "this is not full grammatical Kannada-to-ISL translation.",
     }
+
+
+@app.get("/api/phrases")
+def phrases():
+    s = S()
+    out = []
+    for ph in s.mapper.phrases():
+        missing = [sid for sid in ph["sign_ids"] if not s.animations.info(sid)["available"]]
+        untrained = [sid for sid in ph["sign_ids"] if sid not in s.predictor.classes]
+        out.append({**ph, "missing_animations": missing, "unrecognisable_signs": untrained})
+    return {"phrases": out}
 
 
 @app.get("/api/animations")

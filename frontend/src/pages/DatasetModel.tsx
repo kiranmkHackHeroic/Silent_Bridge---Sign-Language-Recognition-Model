@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CameraPanel } from "../components/CameraPanel";
+import { ExternalDatasetsCard, JobsCard, RegistryCard, UploadCard, useJobs } from "../components/DataPipeline";
 import { Icon } from "../components/Icon";
 import { LandmarkReplay, quickCheck } from "../components/LandmarkReplay";
 import { MetricsReport } from "../components/MetricsReport";
 import { Btn, Card, Chip, Empty, Notice, Spinner, Stat } from "../components/ui";
 import { api } from "../services/api";
 import type {
-  DatasetSummary, LandmarkFrame, Metrics, ModelStatus, RecordedSample, TrainJob, ValidationSummary, VocabEntry,
+  DatasetSummary, Eligibility, ExternalDataset, LandmarkFrame, Metrics, ModelStatus, ModelVersion, RecordedSample,
+  TrainJob, ValidationSummary, VocabEntry,
 } from "../services/types";
 import { useVision, type VisionResult } from "../services/useVision";
 
@@ -28,6 +30,9 @@ export function DatasetModel() {
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [backendError, setBackendError] = useState<string | null>(null);
+  const [externals, setExternals] = useState<ExternalDataset[]>([]);
+  const [versions, setVersions] = useState<ModelVersion[]>([]);
+  const [eligibility, setEligibility] = useState<Eligibility | null>(null);
 
   const [label, setLabel] = useState("namaskara");
   const [signer, setSigner] = useState("signer1");
@@ -64,10 +69,15 @@ export function DatasetModel() {
       setValidation(val);
       setMetrics(m);
       setBackendError(null);
+      // slower, optional panels: never block the main status
+      api.datasets().then((d) => setExternals(d.datasets)).catch(() => undefined);
+      api.registry().then((r) => setVersions(r.versions)).catch(() => undefined);
+      api.eligibility().then(setEligibility).catch(() => undefined);
     } catch (err) {
       setBackendError(String((err as Error).message || err));
     }
   }, []);
+  const { jobs, refresh: refreshJobs } = useJobs(refresh);
 
   useEffect(() => {
     refresh();
@@ -155,9 +165,19 @@ export function DatasetModel() {
     refresh();
   };
 
+  const importExternal = async (key: string) => {
+    try {
+      await api.importDataset(key);
+      refreshJobs();
+    } catch (err) {
+      setBackendError(String((err as Error).message || err));
+    }
+  };
+
   const trainModel = async () => {
     try {
       setJob(await api.startTraining());
+      refreshJobs();
     } catch (err) {
       setJob({ state: "error", stage: "", progress: 0, error: String((err as Error).message || err), metrics: null });
     }
@@ -241,7 +261,7 @@ export function DatasetModel() {
             <Btn icon="play" variant="primary" onClick={trainModel} disabled={training || busy}>
               {training ? "Training…" : status?.loaded ? "Retrain model" : "Train model"}
             </Btn>
-            <span className="muted small">Uses valid samples only. Compares a logistic-regression baseline, an SVM and a small neural network; the previous model is archived.</span>
+            <span className="muted small">Uses valid samples from your recordings and every imported dataset. Compares a logistic-regression baseline, an SVM, an MLP and a GRU temporal model; the new version is activated only if it passes the acceptance checks.</span>
           </div>
           {job && job.state !== "idle" && (
             <div className="stack" aria-live="polite">
@@ -251,15 +271,22 @@ export function DatasetModel() {
                   <div className="progress lg"><div style={{ width: `${job.progress * 100}%` }} /></div>
                 </>
               )}
-              {job.state === "error" && <Notice tone="bad" title="Training did not complete">{job.error}</Notice>}
+              {job.state === "error" && <Notice tone="bad" title="No new model was activated">{job.error}</Notice>}
               {job.state === "done" && job.metrics && (
-                <Notice tone="ok" title="Training completed and the new model is loaded">
+                <Notice tone="ok" title="Training completed: the new model passed the checks and is now active">
                   {job.metrics.model_type}: accuracy {(job.metrics.accuracy! * 100).toFixed(1)}%, macro-F1 {job.metrics.macro_f1!.toFixed(3)} on {job.metrics.headline_source}.
                 </Notice>
               )}
             </div>
           )}
         </Card>
+
+        <ExternalDatasetsCard datasets={externals} onImport={importExternal} />
+
+        <UploadCard vocab={vocab} onQueued={refreshJobs} />
+        <JobsCard jobs={jobs} refresh={refreshJobs} />
+
+        <div className="span-all"><RegistryCard versions={versions} eligibility={eligibility} onChange={() => { refresh(); refreshJobs(); }} /></div>
 
         <Card title="Record samples" icon="camera"
           actions={phase === "recording" ? <Chip tone="bad">● Recording {progress.done + 1}/{progress.total}</Chip> : null}>

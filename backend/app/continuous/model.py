@@ -1,0 +1,162 @@
+"""Continuous gloss recognition: BiGRU encoder + CTC (PyTorch, CPU).
+
+CTC is appropriate here because ISL-CSLTR gives an ordered gloss sequence per
+sentence video but no frame-level boundaries; CTC learns the alignment.
+Greedy CTC decoding produces the gloss sequence; the closest annotated corpus
+sentence (gloss edit distance) is reported alongside, clearly marked as a
+retrieval over the corpus' closed sentence set.
+"""
+from __future__ import annotations
+
+import io
+
+import numpy as np
+
+
+def edit_distance(a: list[str], b: list[str]) -> int:
+    d = list(range(len(b) + 1))
+    for i in range(1, len(a) + 1):
+        prev, d[0] = d[0], i
+        for j in range(1, len(b) + 1):
+            cur = min(d[j] + 1, d[j - 1] + 1, prev + (a[i - 1] != b[j - 1]))
+            prev, d[j] = d[j], cur
+    return d[len(b)]
+
+
+class CTCGlossRecognizer:
+    def __init__(self, vocab: list[str], input_dim: int, hidden: int = 128, layers: int = 2, dropout: float = 0.3,
+                 lr: float = 1e-3, epochs: int = 120, patience: int = 20, batch_size: int = 16, seed: int = 42):
+        self.vocab = list(vocab)                      # index 0 is the CTC blank
+        self.input_dim, self.hidden, self.layers, self.dropout = input_dim, hidden, layers, dropout
+        self.lr, self.epochs, self.patience, self.batch_size, self.seed = lr, epochs, patience, batch_size, seed
+        self.net = None
+        self.history_: list[dict] = []
+
+    def _build(self):
+        import torch.nn as nn
+
+        class Net(nn.Module):
+            def __init__(s):
+                super().__init__()
+                s.inp = nn.Sequential(nn.Linear(self.input_dim, self.hidden), nn.ReLU(), nn.Dropout(self.dropout))
+                s.gru = nn.GRU(self.hidden, self.hidden, num_layers=self.layers, batch_first=True,
+                               bidirectional=True, dropout=self.dropout)
+                s.out = nn.Linear(2 * self.hidden, len(self.vocab) + 1)
+
+            def forward(s, x):
+                h, _ = s.gru(s.inp(x))
+                return s.out(h).log_softmax(-1)
+
+        return Net()
+
+    # ------------------------------------------------------------------ data
+    def _norm(self, seq: np.ndarray) -> np.ndarray:
+        return (seq - self.mu_) / self.sd_
+
+    def _augment(self, seq: np.ndarray, rng) -> np.ndarray:
+        n = len(seq)
+        new_n = max(4, int(round(n * rng.uniform(0.8, 1.2))))
+        idx = np.linspace(0, n - 1, new_n)
+        lo = np.floor(idx).astype(int)
+        hi = np.minimum(lo + 1, n - 1)
+        w = (idx - lo)[:, None]
+        out = (1 - w) * seq[lo] + w * seq[hi]
+        return (out + rng.normal(0, 0.02, out.shape)).astype(np.float32)
+
+    def _batch(self, seqs, targets):
+        import torch
+        lens = [len(s) for s in seqs]
+        x = np.zeros((len(seqs), max(lens), self.input_dim), np.float32)
+        for i, s in enumerate(seqs):
+            x[i, : len(s)] = s
+        tgt = [self.tok_[g] for t in targets for g in t]
+        return (torch.tensor(x), torch.tensor(lens, dtype=torch.long), torch.tensor(tgt, dtype=torch.long),
+                torch.tensor([len(t) for t in targets], dtype=torch.long))
+
+    # ------------------------------------------------------------------ train / decode
+    def fit(self, train: list[dict], val: list[dict] | None = None, progress=None):
+        import torch
+
+        torch.manual_seed(self.seed)
+        rng = np.random.default_rng(self.seed)
+        self.tok_ = {g: i + 1 for i, g in enumerate(self.vocab)}
+        allseq = np.concatenate([s["seq"] for s in train])
+        self.mu_, self.sd_ = allseq.mean(0), allseq.std(0) + 1e-6
+        self.net = self._build()
+        opt = torch.optim.AdamW(self.net.parameters(), lr=self.lr, weight_decay=1e-4)
+        ctc = torch.nn.CTCLoss(blank=0, zero_infinity=True)
+        pool = [(s["seq"], s["gloss"]) for s in train] + [(s["mirror"], s["gloss"]) for s in train if s.get("mirror") is not None]
+        best, best_state, bad = float("inf"), None, 0
+        for epoch in range(self.epochs):
+            self.net.train()
+            order = rng.permutation(len(pool))
+            total = 0.0
+            for b in range(0, len(order), self.batch_size):
+                chunk = [pool[i] for i in order[b:b + self.batch_size]]
+                seqs = [self._norm(self._augment(s, rng)) for s, _ in chunk]
+                x, lens, tgt, tlens = self._batch(seqs, [g for _, g in chunk])
+                logp = self.net(x).transpose(0, 1)          # (T, N, C)
+                loss = ctc(logp, tgt, lens, tlens)
+                opt.zero_grad()
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.net.parameters(), 1.0)
+                opt.step()
+                total += float(loss) * len(chunk)
+            rec = {"epoch": epoch + 1, "train_ctc_loss": round(total / len(pool), 4)}
+            if val:
+                rec["val_gloss_error_rate"] = round(self.gloss_error_rate(val), 4)
+                score = rec["val_gloss_error_rate"]
+                if score < best - 1e-4:
+                    best, bad = score, 0
+                    best_state = {k: v.detach().clone() for k, v in self.net.state_dict().items()}
+                else:
+                    bad += 1
+            self.history_.append(rec)
+            if progress:
+                progress(f"CTC epoch {epoch + 1}: loss {rec['train_ctc_loss']}"
+                         + (f", val GER {rec['val_gloss_error_rate']}" if val else ""), (epoch + 1) / self.epochs)
+            if val and bad >= self.patience:
+                break
+        if best_state is not None:
+            self.net.load_state_dict(best_state)       # best validated epoch
+        self.net.eval()
+        return self
+
+    def decode(self, seq: np.ndarray) -> tuple[list[str], float]:
+        """Greedy CTC decoding -> (glosses, mean max-probability of emitted tokens)."""
+        import torch
+        with torch.no_grad():
+            logp = self.net(torch.tensor(self._norm(seq)[None]))[0]
+        probs = logp.exp().numpy()
+        best = probs.argmax(1)
+        out, confs, prev = [], [], 0
+        for t, k in enumerate(best):
+            if k != prev and k != 0:
+                out.append(self.vocab[k - 1])
+                confs.append(float(probs[t, k]))
+            prev = k
+        return out, float(np.mean(confs)) if confs else 0.0
+
+    def gloss_error_rate(self, samples: list[dict]) -> float:
+        errs = sum(edit_distance(self.decode(s["seq"])[0], s["gloss"]) for s in samples)
+        return errs / max(1, sum(len(s["gloss"]) for s in samples))
+
+    # ------------------------------------------------------------------ pickling
+    def __getstate__(self):
+        import torch
+        st = {k: v for k, v in self.__dict__.items() if k != "net"}
+        if self.net is not None:
+            buf = io.BytesIO()
+            torch.save(self.net.state_dict(), buf)
+            st["_weights"] = buf.getvalue()
+        return st
+
+    def __setstate__(self, st):
+        import torch
+        w = st.pop("_weights", None)
+        self.__dict__.update(st)
+        self.net = None
+        if w is not None:
+            self.net = self._build()
+            self.net.load_state_dict(torch.load(io.BytesIO(w), weights_only=True))
+            self.net.eval()

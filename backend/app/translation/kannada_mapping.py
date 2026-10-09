@@ -158,6 +158,9 @@ class KannadaSignMapper:
                     "verified": bool(value.get("verified", False)),
                     "source": value.get("source", "unspecified"),
                     "notes": value.get("notes", ""),
+                    "english": value.get("english", ""),
+                    "category": value.get("category", ""),
+                    "display": clean_display_text(value.get("display") or key),
                 }
         self.max_words = max((len(k.split()) for k in self.entries), default=1)
 
@@ -171,6 +174,12 @@ class KannadaSignMapper:
         self.mapping_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         self.load()
         return True
+
+    def phrases(self) -> list[dict]:
+        """Phrase-dictionary entries (with a category) for suggestions in the UI."""
+        return [{"kannada": e["display"], "english": e["english"], "category": e["category"],
+                 "sign_ids": e["sign_ids"], "verified": e["verified"]}
+                for e in self.entries.values() if e["category"]]
 
     def translate(self, text: str) -> list[dict]:
         """Ordered items: {"text", "supported", "phrase", "sign_ids", "verified", "source", "notes"}."""
@@ -191,6 +200,7 @@ class KannadaSignMapper:
                 i += n
             else:
                 items.append({"text": tokens[i], "supported": False, "phrase": False, "sign_ids": [],
-                              "verified": False, "source": None, "notes": ""})
+                              "verified": False, "source": None, "notes": "", "english": "", "category": "",
+                              "display": tokens[i]})
                 i += 1
         return items

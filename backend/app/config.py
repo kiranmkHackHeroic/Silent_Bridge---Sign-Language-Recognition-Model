@@ -55,12 +55,14 @@ class RecognitionSettings:
     # segment mode
     motion_start: float = 0.008        # motion (per 30 fps frame) needed to start a sign
     motion_still: float = 0.003        # motion below this counts as "still"
-    still_ms: int = 600                # stillness that ends a sign (inactivity boundary)
+    still_ms: int = 800                # stillness that ends a sign (inactivity boundary)
     absent_ms: int = 200               # hands missing this long ends a sign
     max_segment_ms: int = 4000         # forced boundary for very long segments
     preroll_frames: int = 3
-    # motion-minimum splitting inside a continuous segment (no pause / hand drop needed)
-    dip_split: bool = True
+    # motion-minimum splitting inside a continuous segment (no pause / hand drop needed).
+    # OFF by default: on real ISL videos (Amrita SLR dev signers) it split single signs at their
+    # internal holds and roughly halved the share of videos yielding exactly the right word.
+    dip_split: bool = False
     dip_ratio: float = 0.35            # speed below this fraction of the segment's peak = a dip
     dip_ms: int = 100                  # dip must last this long
     min_sign_ms: int = 350             # a split never produces a sign shorter than this

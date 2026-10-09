@@ -224,3 +224,89 @@ export interface TranslationResult {
   unsupported_message: string | null;
   note: string;
 }
+
+export interface ExternalDataset {
+  key: string;
+  name: string;
+  task: "isolated" | "continuous";
+  source_url: string;
+  license: string;
+  citation: string;
+  doi: string | null;
+  description: string;
+  version: string | null;
+  download_state: string;
+  download_files: Record<string, { state: string; error?: string; files_extracted?: number }>;
+  import_summary: { videos: number; accepted: number; rejected: number; classes: number; groups: number; finished_at: string; rejection_reasons: string[]; extractor_version: string } | null;
+  importable: boolean;
+  processed_samples: number;
+}
+
+export interface UploadItem {
+  file: string;
+  label: string;
+  signer: string;
+  session: string;
+  duration_s: number;
+  fps: number;
+  frames: number;
+  width: number;
+  height: number;
+  ok: boolean;
+  problems: string[];
+}
+
+export interface UploadBatch {
+  batch_id: string;
+  dataset: string;
+  signer_id: string;
+  session_id: string;
+  label_mode: string;
+  created_at: string;
+  items: UploadItem[];
+  problems: string[];
+  videos: number;
+  ready: number;
+  annotations: number;
+  state: string;
+}
+
+export interface Job {
+  id: string;
+  type: "import_dataset" | "import_upload" | "train";
+  title: string;
+  reason: string;
+  state: "queued" | "running" | "done" | "failed" | "cancelled";
+  stage: string;
+  progress: number;
+  error: string | null;
+  result: Record<string, unknown> | null;
+  created_at: string;
+  started_at: string | null;
+  finished_at: string | null;
+}
+
+export interface ModelVersion {
+  version: string;
+  active: boolean;
+  status: string;
+  trained_at: string | null;
+  model_type: string | null;
+  num_samples: number | null;
+  num_classes: number;
+  sources: Record<string, number> | null;
+  accuracy: number | null;
+  macro_f1: number | null;
+  headline_source: string | null;
+  decision: string | null;
+}
+
+export interface Eligibility {
+  eligible: boolean;
+  reasons: string[];
+  valid_samples: number;
+  usable_classes: number;
+  new_samples: number;
+  new_classes: string[];
+  samples_needed_per_class: Record<string, number>;
+}

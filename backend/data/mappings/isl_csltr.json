@@ -1,0 +1,1302 @@
+{
+ "_comment": "ISL-CSLTR sentence table. 'gloss' is the normalized training target (see tools/make_csltr_mapping.py GLOSS_FIXES); 'gloss_original' is the corpus annotation. Kannada sentences are draft translations, not reviewed.",
+ "dataset": "isl_csltr",
+ "gloss_fixes": {
+  "DONOT": [
+   "DO",
+   "NOT"
+  ],
+  "DONT": [
+   "DO",
+   "NOT"
+  ],
+  "CONGRATULATIIONS": [
+   "CONGRATULATIONS"
+  ],
+  "(AGE)": [
+   "AGE"
+  ],
+  "XXXXXXXX": [
+   "NAME-FINGERSPELLED"
+  ]
+ },
+ "sentences": {
+  "s000": {
+   "sentence": "are you free today",
+   "key": "areyoufreetoday",
+   "gloss_original": "YOU FREE TODAY",
+   "gloss": [
+    "YOU",
+    "FREE",
+    "TODAY"
+   ],
+   "kannada": "ನೀವು ಇಂದು ಬಿಡುವಾಗಿದ್ದೀರಾ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s001": {
+   "sentence": "are you hiding something",
+   "key": "areyouhidingsomething",
+   "gloss_original": "YOU HIDE SOMETHING",
+   "gloss": [
+    "YOU",
+    "HIDE",
+    "SOMETHING"
+   ],
+   "kannada": "ನೀವು ಏನನ್ನಾದರೂ ಮುಚ್ಚಿಡುತ್ತಿದ್ದೀರಾ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s002": {
+   "sentence": "bring water for me",
+   "key": "bringwaterforme",
+   "gloss_original": "BRING WATER ME",
+   "gloss": [
+    "BRING",
+    "WATER",
+    "ME"
+   ],
+   "kannada": "ನನಗೆ ನೀರು ತನ್ನಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s003": {
+   "sentence": "can i help you",
+   "key": "canihelpyou",
+   "gloss_original": "I HELP YOU",
+   "gloss": [
+    "I",
+    "HELP",
+    "YOU"
+   ],
+   "kannada": "ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಬಹುದೇ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s004": {
+   "sentence": "can you repeat that please",
+   "key": "canyourepeatthatplease",
+   "gloss_original": "YOU REPEAT PLEASE",
+   "gloss": [
+    "YOU",
+    "REPEAT",
+    "PLEASE"
+   ],
+   "kannada": "ದಯವಿಟ್ಟು ಅದನ್ನು ಮತ್ತೊಮ್ಮೆ ಹೇಳುತ್ತೀರಾ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s005": {
+   "sentence": "comb your hair",
+   "key": "combyourhair",
+   "gloss_original": "COMB YOU HAIR",
+   "gloss": [
+    "COMB",
+    "YOU",
+    "HAIR"
+   ],
+   "kannada": "ನಿಮ್ಮ ಕೂದಲು ಬಾಚಿಕೊಳ್ಳಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s006": {
+   "sentence": "congratulations",
+   "key": "congratulations",
+   "gloss_original": "CONGRATULATIIONS",
+   "gloss": [
+    "CONGRATULATIONS"
+   ],
+   "kannada": "ಅಭಿನಂದನೆಗಳು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s007": {
+   "sentence": "could you please talk slower",
+   "key": "couldyoupleasetalkslower",
+   "gloss_original": "YOU PLEASE TALK SLOWER",
+   "gloss": [
+    "YOU",
+    "PLEASE",
+    "TALK",
+    "SLOWER"
+   ],
+   "kannada": "ದಯವಿಟ್ಟು ನಿಧಾನವಾಗಿ ಮಾತನಾಡುತ್ತೀರಾ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s008": {
+   "sentence": "do me a favour",
+   "key": "domeafavour",
+   "gloss_original": "DO ME FAVOUR",
+   "gloss": [
+    "DO",
+    "ME",
+    "FAVOUR"
+   ],
+   "kannada": "ನನಗೊಂದು ಉಪಕಾರ ಮಾಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s009": {
+   "sentence": "do not abuse him",
+   "key": "donotabusehim",
+   "gloss_original": "DONOT ABUSE HIM",
+   "gloss": [
+    "DO",
+    "NOT",
+    "ABUSE",
+    "HIM"
+   ],
+   "kannada": "ಅವನನ್ನು ನಿಂದಿಸಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s010": {
+   "sentence": "do not be stubborn",
+   "key": "donotbestubborn",
+   "gloss_original": "DONOT BE STUBBORN",
+   "gloss": [
+    "DO",
+    "NOT",
+    "BE",
+    "STUBBORN"
+   ],
+   "kannada": "ಹಠ ಮಾಡಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s011": {
+   "sentence": "do not hurt me",
+   "key": "donothurtme",
+   "gloss_original": "DONOT HURT ME",
+   "gloss": [
+    "DO",
+    "NOT",
+    "HURT",
+    "ME"
+   ],
+   "kannada": "ನನಗೆ ನೋವು ಮಾಡಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s012": {
+   "sentence": "do not make me angry",
+   "key": "donotmakemeangry",
+   "gloss_original": "DO NOT MAKE ME ANGRY",
+   "gloss": [
+    "DO",
+    "NOT",
+    "MAKE",
+    "ME",
+    "ANGRY"
+   ],
+   "kannada": "ನನಗೆ ಕೋಪ ಬರಿಸಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s013": {
+   "sentence": "do not take it to the heart",
+   "key": "donottakeittotheheart",
+   "gloss_original": "DO NOT TAKE IT HEART",
+   "gloss": [
+    "DO",
+    "NOT",
+    "TAKE",
+    "IT",
+    "HEART"
+   ],
+   "kannada": "ಅದನ್ನು ಮನಸ್ಸಿಗೆ ಹಚ್ಚಿಕೊಳ್ಳಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s014": {
+   "sentence": "do not worry",
+   "key": "donotworry",
+   "gloss_original": "DO NOT WORRY",
+   "gloss": [
+    "DO",
+    "NOT",
+    "WORRY"
+   ],
+   "kannada": "ಚಿಂತಿಸಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s015": {
+   "sentence": "do you need something",
+   "key": "doyouneedsomething",
+   "gloss_original": "DO YOU NEED SOMETHING",
+   "gloss": [
+    "DO",
+    "YOU",
+    "NEED",
+    "SOMETHING"
+   ],
+   "kannada": "ನಿಮಗೆ ಏನಾದರೂ ಬೇಕೇ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s016": {
+   "sentence": "go and sleep",
+   "key": "goandsleep",
+   "gloss_original": "GO SLEEP",
+   "gloss": [
+    "GO",
+    "SLEEP"
+   ],
+   "kannada": "ಹೋಗಿ ಮಲಗಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s017": {
+   "sentence": "had your food",
+   "key": "hadyourfood",
+   "gloss_original": "YOUR FOOD",
+   "gloss": [
+    "YOUR",
+    "FOOD"
+   ],
+   "kannada": "ಊಟ ಆಯಿತೇ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s018": {
+   "sentence": "he came by train",
+   "key": "hecamebytrain",
+   "gloss_original": "HE CAME TRAIN",
+   "gloss": [
+    "HE",
+    "CAME",
+    "TRAIN"
+   ],
+   "kannada": "ಅವನು ರೈಲಿನಲ್ಲಿ ಬಂದನು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s019": {
+   "sentence": "He is going into the room",
+   "key": "heisgoingintotheroom",
+   "gloss_original": "HE GO  INTO  ROOM",
+   "gloss": [
+    "HE",
+    "GO",
+    "INTO",
+    "ROOM"
+   ],
+   "kannada": "ಅವನು ಕೋಣೆಯೊಳಗೆ ಹೋಗುತ್ತಿದ್ದಾನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s020": {
+   "sentence": "he is on the way",
+   "key": "heisontheway",
+   "gloss_original": "HE ON WAY",
+   "gloss": [
+    "HE",
+    "ON",
+    "WAY"
+   ],
+   "kannada": "ಅವನು ದಾರಿಯಲ್ಲಿದ್ದಾನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s021": {
+   "sentence": "he she is my friend",
+   "key": "hesheismyfriend",
+   "gloss_original": "HE SHE MY FRIEND",
+   "gloss": [
+    "HE",
+    "SHE",
+    "MY",
+    "FRIEND"
+   ],
+   "kannada": "ಅವನು/ಅವಳು ನನ್ನ ಸ್ನೇಹಿತ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s022": {
+   "sentence": "he would be coming today",
+   "key": "hewouldbecomingtoday",
+   "gloss_original": "HE COMING TODAY",
+   "gloss": [
+    "HE",
+    "COMING",
+    "TODAY"
+   ],
+   "kannada": "ಅವನು ಇಂದು ಬರುತ್ತಾನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s023": {
+   "sentence": "help me",
+   "key": "helpme",
+   "gloss_original": "HELP ME",
+   "gloss": [
+    "HELP",
+    "ME"
+   ],
+   "kannada": "ನನಗೆ ಸಹಾಯ ಮಾಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s024": {
+   "sentence": "hi how are you",
+   "key": "hihowareyou",
+   "gloss_original": "HI HOW YOU",
+   "gloss": [
+    "HI",
+    "HOW",
+    "YOU"
+   ],
+   "kannada": "ಹಾಯ್, ಹೇಗಿದ್ದೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s025": {
+   "sentence": "how are things",
+   "key": "howarethings",
+   "gloss_original": "HOW THINGS",
+   "gloss": [
+    "HOW",
+    "THINGS"
+   ],
+   "kannada": "ಎಲ್ಲಾ ಹೇಗಿದೆ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s026": {
+   "sentence": "how can i help you",
+   "key": "howcanihelpyou",
+   "gloss_original": "HOW I HELP YOU",
+   "gloss": [
+    "HOW",
+    "I",
+    "HELP",
+    "YOU"
+   ],
+   "kannada": "ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s027": {
+   "sentence": "how can i trust you",
+   "key": "howcanitrustyou",
+   "gloss_original": "HOW I TRUST YOU",
+   "gloss": [
+    "HOW",
+    "I",
+    "TRUST",
+    "YOU"
+   ],
+   "kannada": "ನಾನು ನಿಮ್ಮನ್ನು ಹೇಗೆ ನಂಬಲಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s028": {
+   "sentence": "how dare you",
+   "key": "howdareyou",
+   "gloss_original": "HOW DARE YOU",
+   "gloss": [
+    "HOW",
+    "DARE",
+    "YOU"
+   ],
+   "kannada": "ನಿಮಗೆ ಎಷ್ಟು ಧೈರ್ಯ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s029": {
+   "sentence": "how old are you",
+   "key": "howoldareyou",
+   "gloss_original": "HOW OLD YOU",
+   "gloss": [
+    "HOW",
+    "OLD",
+    "YOU"
+   ],
+   "kannada": "ನಿಮ್ಮ ವಯಸ್ಸು ಎಷ್ಟು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s030": {
+   "sentence": "i am (age)",
+   "key": "iamage",
+   "gloss_original": "I (AGE)",
+   "gloss": [
+    "I",
+    "AGE"
+   ],
+   "kannada": "ನನಗೆ (ವಯಸ್ಸು) ವರ್ಷ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s031": {
+   "sentence": "i am afraid of that",
+   "key": "iamafraidofthat",
+   "gloss_original": "I AFRAID THAT",
+   "gloss": [
+    "I",
+    "AFRAID",
+    "THAT"
+   ],
+   "kannada": "ನನಗೆ ಅದರ ಬಗ್ಗೆ ಭಯವಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s032": {
+   "sentence": "i am crying",
+   "key": "iamcrying",
+   "gloss_original": "I CRY",
+   "gloss": [
+    "I",
+    "CRY"
+   ],
+   "kannada": "ನಾನು ಅಳುತ್ತಿದ್ದೇನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s033": {
+   "sentence": "i am feeling bored",
+   "key": "iamfeelingbored",
+   "gloss_original": "I FEELING BORED",
+   "gloss": [
+    "I",
+    "FEELING",
+    "BORED"
+   ],
+   "kannada": "ನನಗೆ ಬೇಸರವಾಗುತ್ತಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s034": {
+   "sentence": "i am feeling cold",
+   "key": "iamfeelingcold",
+   "gloss_original": "I FEELING COLD",
+   "gloss": [
+    "I",
+    "FEELING",
+    "COLD"
+   ],
+   "kannada": "ನನಗೆ ಚಳಿಯಾಗುತ್ತಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s035": {
+   "sentence": "i am fine. thank you sir",
+   "key": "iamfinethankyousir",
+   "gloss_original": "I FINE. THANK YOU SIR",
+   "gloss": [
+    "I",
+    "FINE",
+    "THANK",
+    "YOU",
+    "SIR"
+   ],
+   "kannada": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ. ಧನ್ಯವಾದಗಳು ಸರ್.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s036": {
+   "sentence": "i am hungry",
+   "key": "iamhungry",
+   "gloss_original": "I HUNGRY",
+   "gloss": [
+    "I",
+    "HUNGRY"
+   ],
+   "kannada": "ನನಗೆ ಹಸಿವಾಗಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s037": {
+   "sentence": "i am in dilemma what to do",
+   "key": "iamindilemmawhattodo",
+   "gloss_original": "I IN DILEMMA WHAT TO DO",
+   "gloss": [
+    "I",
+    "IN",
+    "DILEMMA",
+    "WHAT",
+    "TO",
+    "DO"
+   ],
+   "kannada": "ಏನು ಮಾಡಬೇಕೆಂದು ನನಗೆ ಗೊಂದಲವಾಗಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s038": {
+   "sentence": "i am not really sure",
+   "key": "iamnotreallysure",
+   "gloss_original": "I NOT REALLY SURE",
+   "gloss": [
+    "I",
+    "NOT",
+    "REALLY",
+    "SURE"
+   ],
+   "kannada": "ನನಗೆ ಖಚಿತವಾಗಿ ಗೊತ್ತಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s039": {
+   "sentence": "i am really grateful",
+   "key": "iamreallygrateful",
+   "gloss_original": "I REALLY GRATEFUL",
+   "gloss": [
+    "I",
+    "REALLY",
+    "GRATEFUL"
+   ],
+   "kannada": "ನಾನು ನಿಜವಾಗಿಯೂ ಕೃತಜ್ಞನಾಗಿದ್ದೇನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s040": {
+   "sentence": "i am sitting in the class",
+   "key": "iamsittingintheclass",
+   "gloss_original": "I SITTING IN THE CLASS",
+   "gloss": [
+    "I",
+    "SITTING",
+    "IN",
+    "THE",
+    "CLASS"
+   ],
+   "kannada": "ನಾನು ತರಗತಿಯಲ್ಲಿ ಕುಳಿತಿದ್ದೇನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s041": {
+   "sentence": "i am so sorry to hear that",
+   "key": "iamsosorrytohearthat",
+   "gloss_original": "I AM SO SORRY TO HEAR THAT",
+   "gloss": [
+    "I",
+    "AM",
+    "SO",
+    "SORRY",
+    "TO",
+    "HEAR",
+    "THAT"
+   ],
+   "kannada": "ಅದನ್ನು ಕೇಳಿ ತುಂಬಾ ಬೇಸರವಾಯಿತು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s042": {
+   "sentence": "i am suffering from fever",
+   "key": "iamsufferingfromfever",
+   "gloss_original": "I SUFFERING FROM FEVER",
+   "gloss": [
+    "I",
+    "SUFFERING",
+    "FROM",
+    "FEVER"
+   ],
+   "kannada": "ನನಗೆ ಜ್ವರ ಬಂದಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s043": {
+   "sentence": "i am tired",
+   "key": "iamtired",
+   "gloss_original": "I TIRED",
+   "gloss": [
+    "I",
+    "TIRED"
+   ],
+   "kannada": "ನನಗೆ ಸುಸ್ತಾಗಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s044": {
+   "sentence": "i am very happy",
+   "key": "iamveryhappy",
+   "gloss_original": "I VERY HAPPY",
+   "gloss": [
+    "I",
+    "VERY",
+    "HAPPY"
+   ],
+   "kannada": "ನನಗೆ ತುಂಬಾ ಸಂತೋಷವಾಗಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s045": {
+   "sentence": "i can not help you there",
+   "key": "icannothelpyouthere",
+   "gloss_original": "I NOT HELP YOU THERE",
+   "gloss": [
+    "I",
+    "NOT",
+    "HELP",
+    "YOU",
+    "THERE"
+   ],
+   "kannada": "ಆ ವಿಷಯದಲ್ಲಿ ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲಾರೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s046": {
+   "sentence": "i do not agree",
+   "key": "idonotagree",
+   "gloss_original": "I DONOT AGREE",
+   "gloss": [
+    "I",
+    "DO",
+    "NOT",
+    "AGREE"
+   ],
+   "kannada": "ನಾನು ಒಪ್ಪುವುದಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s047": {
+   "sentence": "i do not like it",
+   "key": "idonotlikeit",
+   "gloss_original": "I DO NOT LIKE IT",
+   "gloss": [
+    "I",
+    "DO",
+    "NOT",
+    "LIKE",
+    "IT"
+   ],
+   "kannada": "ನನಗೆ ಅದು ಇಷ್ಟವಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s048": {
+   "sentence": "i do not mean it",
+   "key": "idonotmeanit",
+   "gloss_original": "I DO NOT MEAN IT",
+   "gloss": [
+    "I",
+    "DO",
+    "NOT",
+    "MEAN",
+    "IT"
+   ],
+   "kannada": "ನಾನು ಹಾಗೆ ಉದ್ದೇಶಿಸಿರಲಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s049": {
+   "sentence": "i dont agree",
+   "key": "idontagree",
+   "gloss_original": "I DONT AGREE",
+   "gloss": [
+    "I",
+    "DO",
+    "NOT",
+    "AGREE"
+   ],
+   "kannada": "ನಾನು ಒಪ್ಪುವುದಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s050": {
+   "sentence": "i enjoyed a lot",
+   "key": "ienjoyedalot",
+   "gloss_original": "I ENJOYED A LOT",
+   "gloss": [
+    "I",
+    "ENJOYED",
+    "A",
+    "LOT"
+   ],
+   "kannada": "ನನಗೆ ತುಂಬಾ ಖುಷಿಯಾಯಿತು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s051": {
+   "sentence": "i got hurt",
+   "key": "igothurt",
+   "gloss_original": "I GOT HURT",
+   "gloss": [
+    "I",
+    "GOT",
+    "HURT"
+   ],
+   "kannada": "ನನಗೆ ಪೆಟ್ಟಾಯಿತು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s052": {
+   "sentence": "i like you i love you",
+   "key": "ilikeyouiloveyou",
+   "gloss_original": "I LIKE YOU I LOVE YOU",
+   "gloss": [
+    "I",
+    "LIKE",
+    "YOU",
+    "I",
+    "LOVE",
+    "YOU"
+   ],
+   "kannada": "ನನಗೆ ನೀವು ಇಷ್ಟ, ನಾನು ನಿಮ್ಮನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s053": {
+   "sentence": "i need water",
+   "key": "ineedwater",
+   "gloss_original": "I NEED WATER",
+   "gloss": [
+    "I",
+    "NEED",
+    "WATER"
+   ],
+   "kannada": "ನನಗೆ ನೀರು ಬೇಕು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s054": {
+   "sentence": "i promise",
+   "key": "ipromise",
+   "gloss_original": "I PROMISE",
+   "gloss": [
+    "I",
+    "PROMISE"
+   ],
+   "kannada": "ನಾನು ಮಾತು ಕೊಡುತ್ತೇನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s055": {
+   "sentence": "i really appreciate it",
+   "key": "ireallyappreciateit",
+   "gloss_original": "I REALLY APPRECIATE IT",
+   "gloss": [
+    "I",
+    "REALLY",
+    "APPRECIATE",
+    "IT"
+   ],
+   "kannada": "ನಾನು ಅದನ್ನು ನಿಜವಾಗಿಯೂ ಮೆಚ್ಚುತ್ತೇನೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s056": {
+   "sentence": "i somehow got to know about it",
+   "key": "isomehowgottoknowaboutit",
+   "gloss_original": "I SOMEHOW GOT KNOW ABOUT IT",
+   "gloss": [
+    "I",
+    "SOMEHOW",
+    "GOT",
+    "KNOW",
+    "ABOUT",
+    "IT"
+   ],
+   "kannada": "ಅದರ ಬಗ್ಗೆ ನನಗೆ ಹೇಗೋ ತಿಳಿಯಿತು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s057": {
+   "sentence": "i was stopped by some one",
+   "key": "iwasstoppedbysomeone",
+   "gloss_original": "I STOPPED BY SOMEONE",
+   "gloss": [
+    "I",
+    "STOPPED",
+    "BY",
+    "SOMEONE"
+   ],
+   "kannada": "ನನ್ನನ್ನು ಯಾರೋ ತಡೆದರು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s058": {
+   "sentence": "it does not make any difference to me",
+   "key": "itdoesnotmakeanydifferencetome",
+   "gloss_original": "IT DO NOT MAKE ANY DIFFERENCE TO ME",
+   "gloss": [
+    "IT",
+    "DO",
+    "NOT",
+    "MAKE",
+    "ANY",
+    "DIFFERENCE",
+    "TO",
+    "ME"
+   ],
+   "kannada": "ಅದರಿಂದ ನನಗೆ ಯಾವುದೇ ವ್ಯತ್ಯಾಸವಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s059": {
+   "sentence": "it was nice chatting with you",
+   "key": "itwasnicechattingwithyou",
+   "gloss_original": "IT NICE CHAT WITH YOU",
+   "gloss": [
+    "IT",
+    "NICE",
+    "CHAT",
+    "WITH",
+    "YOU"
+   ],
+   "kannada": "ನಿಮ್ಮೊಂದಿಗೆ ಮಾತನಾಡಿ ಸಂತೋಷವಾಯಿತು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s060": {
+   "sentence": "let him take time",
+   "key": "lethimtaketime",
+   "gloss_original": "LET HIM TAKE TIME",
+   "gloss": [
+    "LET",
+    "HIM",
+    "TAKE",
+    "TIME"
+   ],
+   "kannada": "ಅವನು ಸಮಯ ತೆಗೆದುಕೊಳ್ಳಲಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s061": {
+   "sentence": "my name is xxxxxxxx",
+   "key": "mynameisxxxxxxxx",
+   "gloss_original": "MY NAME XXXXXXXX",
+   "gloss": [
+    "MY",
+    "NAME",
+    "NAME-FINGERSPELLED"
+   ],
+   "kannada": "ನನ್ನ ಹೆಸರು ______.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s062": {
+   "sentence": "nice to meet you",
+   "key": "nicetomeetyou",
+   "gloss_original": "NICE MEET YOU",
+   "gloss": [
+    "NICE",
+    "MEET",
+    "YOU"
+   ],
+   "kannada": "ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿ ಸಂತೋಷವಾಯಿತು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s063": {
+   "sentence": "No need to worry dont worry",
+   "key": "noneedtoworrydontworry",
+   "gloss_original": "NO NEED WORRY DONT WORRY",
+   "gloss": [
+    "NO",
+    "NEED",
+    "WORRY",
+    "DO",
+    "NOT",
+    "WORRY"
+   ],
+   "kannada": "ಚಿಂತೆ ಬೇಕಿಲ್ಲ, ಚಿಂತಿಸಬೇಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s064": {
+   "sentence": "now onwards he will never hurt you",
+   "key": "nowonwardshewillneverhurtyou",
+   "gloss_original": "NOW ONWARDS HE NEVER HURT YOU",
+   "gloss": [
+    "NOW",
+    "ONWARDS",
+    "HE",
+    "NEVER",
+    "HURT",
+    "YOU"
+   ],
+   "kannada": "ಇನ್ನು ಮುಂದೆ ಅವನು ನಿಮಗೆ ಎಂದಿಗೂ ನೋವು ಮಾಡುವುದಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s065": {
+   "sentence": "pour some more water into the glass",
+   "key": "poursomemorewaterintotheglass",
+   "gloss_original": "POUR SOME MORE WATER INTO THE GLASS",
+   "gloss": [
+    "POUR",
+    "SOME",
+    "MORE",
+    "WATER",
+    "INTO",
+    "THE",
+    "GLASS"
+   ],
+   "kannada": "ಲೋಟಕ್ಕೆ ಇನ್ನೂ ಸ್ವಲ್ಪ ನೀರು ಹಾಕಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s066": {
+   "sentence": "prepare the bed",
+   "key": "preparethebed",
+   "gloss_original": "PREPARE BED",
+   "gloss": [
+    "PREPARE",
+    "BED"
+   ],
+   "kannada": "ಹಾಸಿಗೆ ಸಿದ್ಧಪಡಿಸಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s067": {
+   "sentence": "serve the food",
+   "key": "servethefood",
+   "gloss_original": "SERVE FOOD",
+   "gloss": [
+    "SERVE",
+    "FOOD"
+   ],
+   "kannada": "ಊಟ ಬಡಿಸಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s068": {
+   "sentence": "shall we go outside",
+   "key": "shallwegooutside",
+   "gloss_original": "WE GO OUTSIDE",
+   "gloss": [
+    "WE",
+    "GO",
+    "OUTSIDE"
+   ],
+   "kannada": "ನಾವು ಹೊರಗೆ ಹೋಗೋಣವೇ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s069": {
+   "sentence": "speak softly",
+   "key": "speaksoftly",
+   "gloss_original": "SPEAK SOFTLY",
+   "gloss": [
+    "SPEAK",
+    "SOFTLY"
+   ],
+   "kannada": "ಮೆಲ್ಲಗೆ ಮಾತನಾಡಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s070": {
+   "sentence": "take care of yourself",
+   "key": "takecareofyourself",
+   "gloss_original": "TAKE CARE OF YOURSELF",
+   "gloss": [
+    "TAKE",
+    "CARE",
+    "OF",
+    "YOURSELF"
+   ],
+   "kannada": "ನಿಮ್ಮ ಬಗ್ಗೆ ಕಾಳಜಿ ವಹಿಸಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s071": {
+   "sentence": "tell me truth",
+   "key": "tellmetruth",
+   "gloss_original": "TELL ME TRUTH",
+   "gloss": [
+    "TELL",
+    "ME",
+    "TRUTH"
+   ],
+   "kannada": "ನನಗೆ ಸತ್ಯ ಹೇಳಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s072": {
+   "sentence": "thank you so much",
+   "key": "thankyousomuch",
+   "gloss_original": "THANK YOU SO MUCH",
+   "gloss": [
+    "THANK",
+    "YOU",
+    "SO",
+    "MUCH"
+   ],
+   "kannada": "ತುಂಬಾ ಧನ್ಯವಾದಗಳು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s073": {
+   "sentence": "that is so kind of you",
+   "key": "thatissokindofyou",
+   "gloss_original": "THAT KIND YOU",
+   "gloss": [
+    "THAT",
+    "KIND",
+    "YOU"
+   ],
+   "kannada": "ಅದು ನಿಮ್ಮ ದೊಡ್ಡತನ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s074": {
+   "sentence": "This place is beautiful",
+   "key": "thisplaceisbeautiful",
+   "gloss_original": "THIS PLACE BEAUTIFUL",
+   "gloss": [
+    "THIS",
+    "PLACE",
+    "BEAUTIFUL"
+   ],
+   "kannada": "ಈ ಸ್ಥಳ ಸುಂದರವಾಗಿದೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s075": {
+   "sentence": "try to understand",
+   "key": "trytounderstand",
+   "gloss_original": "TRY TO UNDERSTAND",
+   "gloss": [
+    "TRY",
+    "TO",
+    "UNDERSTAND"
+   ],
+   "kannada": "ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಪ್ರಯತ್ನಿಸಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s076": {
+   "sentence": "turn on light turn off light",
+   "key": "turnonlightturnofflight",
+   "gloss_original": "TURN ON LIGHT TURN OFF LIGHT",
+   "gloss": [
+    "TURN",
+    "ON",
+    "LIGHT",
+    "TURN",
+    "OFF",
+    "LIGHT"
+   ],
+   "kannada": "ದೀಪ ಹಾಕಿ, ದೀಪ ಆರಿಸಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s077": {
+   "sentence": "we are all with you",
+   "key": "weareallwithyou",
+   "gloss_original": "WE ALL WITH YOU",
+   "gloss": [
+    "WE",
+    "ALL",
+    "WITH",
+    "YOU"
+   ],
+   "kannada": "ನಾವೆಲ್ಲರೂ ನಿಮ್ಮೊಂದಿಗಿದ್ದೇವೆ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s078": {
+   "sentence": "wear the shirt",
+   "key": "weartheshirt",
+   "gloss_original": "WEAR SHIRT",
+   "gloss": [
+    "WEAR",
+    "SHIRT"
+   ],
+   "kannada": "ಅಂಗಿ ಹಾಕಿಕೊಳ್ಳಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s079": {
+   "sentence": "what are you doing",
+   "key": "whatareyoudoing",
+   "gloss_original": "WHAT YOU DO",
+   "gloss": [
+    "WHAT",
+    "YOU",
+    "DO"
+   ],
+   "kannada": "ನೀವು ಏನು ಮಾಡುತ್ತಿದ್ದೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s080": {
+   "sentence": "what did you tell him",
+   "key": "whatdidyoutellhim",
+   "gloss_original": "WHAT YOU TELL HIM",
+   "gloss": [
+    "WHAT",
+    "YOU",
+    "TELL",
+    "HIM"
+   ],
+   "kannada": "ನೀವು ಅವನಿಗೆ ಏನು ಹೇಳಿದಿರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s081": {
+   "sentence": "what do you do",
+   "key": "whatdoyoudo",
+   "gloss_original": "WHAT YOU DO",
+   "gloss": [
+    "WHAT",
+    "YOU",
+    "DO"
+   ],
+   "kannada": "ನೀವು ಏನು ಮಾಡುತ್ತೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s082": {
+   "sentence": "what do you think",
+   "key": "whatdoyouthink",
+   "gloss_original": "WHAT DO YOU THINK",
+   "gloss": [
+    "WHAT",
+    "DO",
+    "YOU",
+    "THINK"
+   ],
+   "kannada": "ನೀವು ಏನು ಯೋಚಿಸುತ್ತೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s083": {
+   "sentence": "what do you want to become",
+   "key": "whatdoyouwanttobecome",
+   "gloss_original": "WHAT DO YOU WANT BECOME",
+   "gloss": [
+    "WHAT",
+    "DO",
+    "YOU",
+    "WANT",
+    "BECOME"
+   ],
+   "kannada": "ನೀವು ಏನಾಗಲು ಬಯಸುತ್ತೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s084": {
+   "sentence": "what happened",
+   "key": "whathappened",
+   "gloss_original": "WHAT HAPPENED",
+   "gloss": [
+    "WHAT",
+    "HAPPENED"
+   ],
+   "kannada": "ಏನಾಯಿತು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s085": {
+   "sentence": "what have you planned for your career",
+   "key": "whathaveyouplannedforyourcareer",
+   "gloss_original": "WHAT HAVE YOU PLAN YOUR CAREER",
+   "gloss": [
+    "WHAT",
+    "HAVE",
+    "YOU",
+    "PLAN",
+    "YOUR",
+    "CAREER"
+   ],
+   "kannada": "ನಿಮ್ಮ ವೃತ್ತಿಜೀವನಕ್ಕಾಗಿ ಏನು ಯೋಜನೆ ಮಾಡಿದ್ದೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s086": {
+   "sentence": "what is your phone number",
+   "key": "whatisyourphonenumber",
+   "gloss_original": "WHAT YOUR PHONE NUMBER",
+   "gloss": [
+    "WHAT",
+    "YOUR",
+    "PHONE",
+    "NUMBER"
+   ],
+   "kannada": "ನಿಮ್ಮ ಫೋನ್ ಸಂಖ್ಯೆ ಏನು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s087": {
+   "sentence": "what you want",
+   "key": "whatyouwant",
+   "gloss_original": "WHAT YOU WANT",
+   "gloss": [
+    "WHAT",
+    "YOU",
+    "WANT"
+   ],
+   "kannada": "ನಿಮಗೆ ಏನು ಬೇಕು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s088": {
+   "sentence": "when will the train leave",
+   "key": "whenwillthetrainleave",
+   "gloss_original": "WHEN TRAIN LEAVE",
+   "gloss": [
+    "WHEN",
+    "TRAIN",
+    "LEAVE"
+   ],
+   "kannada": "ರೈಲು ಯಾವಾಗ ಹೊರಡುತ್ತದೆ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s089": {
+   "sentence": "where are you from",
+   "key": "whereareyoufrom",
+   "gloss_original": "WHERE YOU FROM",
+   "gloss": [
+    "WHERE",
+    "YOU",
+    "FROM"
+   ],
+   "kannada": "ನೀವು ಎಲ್ಲಿಯವರು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s090": {
+   "sentence": "which college school are you from",
+   "key": "whichcollegeschoolareyoufrom",
+   "gloss_original": "WHICH COLLEGE SCHOOL YOU FROM",
+   "gloss": [
+    "WHICH",
+    "COLLEGE",
+    "SCHOOL",
+    "YOU",
+    "FROM"
+   ],
+   "kannada": "ನೀವು ಯಾವ ಕಾಲೇಜು/ಶಾಲೆಯವರು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s091": {
+   "sentence": "who are you",
+   "key": "whoareyou",
+   "gloss_original": "WHO YOU",
+   "gloss": [
+    "WHO",
+    "YOU"
+   ],
+   "kannada": "ನೀವು ಯಾರು?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s092": {
+   "sentence": "why are you angry",
+   "key": "whyareyouangry",
+   "gloss_original": "WHY YOU ANGRY",
+   "gloss": [
+    "WHY",
+    "YOU",
+    "ANGRY"
+   ],
+   "kannada": "ನೀವು ಯಾಕೆ ಕೋಪಗೊಂಡಿದ್ದೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s093": {
+   "sentence": "why are you crying",
+   "key": "whyareyoucrying",
+   "gloss_original": "WHY YOU CRY",
+   "gloss": [
+    "WHY",
+    "YOU",
+    "CRY"
+   ],
+   "kannada": "ನೀವು ಯಾಕೆ ಅಳುತ್ತಿದ್ದೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s094": {
+   "sentence": "why are you disappointed",
+   "key": "whyareyoudisappointed",
+   "gloss_original": "WHY YOU DISAPPOINTED",
+   "gloss": [
+    "WHY",
+    "YOU",
+    "DISAPPOINTED"
+   ],
+   "kannada": "ನೀವು ಯಾಕೆ ನಿರಾಶರಾಗಿದ್ದೀರಿ?",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s095": {
+   "sentence": "you are bad",
+   "key": "youarebad",
+   "gloss_original": "YOU BAD",
+   "gloss": [
+    "YOU",
+    "BAD"
+   ],
+   "kannada": "ನೀವು ಕೆಟ್ಟವರು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s096": {
+   "sentence": "you are good",
+   "key": "youaregood",
+   "gloss_original": "YOU GOOD",
+   "gloss": [
+    "YOU",
+    "GOOD"
+   ],
+   "kannada": "ನೀವು ಒಳ್ಳೆಯವರು.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s097": {
+   "sentence": "you are welcome",
+   "key": "youarewelcome",
+   "gloss_original": "YOU WELCOME",
+   "gloss": [
+    "YOU",
+    "WELCOME"
+   ],
+   "kannada": "ಪರವಾಗಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s098": {
+   "sentence": "you can do it",
+   "key": "youcandoit",
+   "gloss_original": "YOU DO IT",
+   "gloss": [
+    "YOU",
+    "DO",
+    "IT"
+   ],
+   "kannada": "ನಿಮ್ಮಿಂದ ಸಾಧ್ಯ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s099": {
+   "sentence": "you do anything, i do not care",
+   "key": "youdoanythingidonotcare",
+   "gloss_original": "YOU DO ANYTHING, I DO NOT CARE",
+   "gloss": [
+    "YOU",
+    "DO",
+    "ANYTHING",
+    "I",
+    "DO",
+    "NOT",
+    "CARE"
+   ],
+   "kannada": "ನೀವು ಏನಾದರೂ ಮಾಡಿ, ನನಗೆ ಚಿಂತೆಯಿಲ್ಲ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  },
+  "s100": {
+   "sentence": "you need a medicine, take this one",
+   "key": "youneedamedicinetakethisone",
+   "gloss_original": "YOU NEED A MEDICINE, TAKE THIS ONE",
+   "gloss": [
+    "YOU",
+    "NEED",
+    "A",
+    "MEDICINE",
+    "TAKE",
+    "THIS",
+    "ONE"
+   ],
+   "kannada": "ನಿಮಗೆ ಔಷಧಿ ಬೇಕು, ಇದನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ.",
+   "translation_status": "draft (AI-assisted), not reviewed by a native Kannada speaker"
+  }
+ }
+}

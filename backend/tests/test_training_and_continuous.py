@@ -152,7 +152,7 @@ def test_motion_minimum_splits_signs_without_pause_or_hand_drop(trained):
     _, root, _ = trained
     p = SignPredictor(root / "models" / "sign_model.joblib", root / "models" / "model_meta.json")
     p.load()
-    session = RecognitionSession(p, Vocabulary(), RecognitionSettings(confidence_threshold=0.5))
+    session = RecognitionSession(p, Vocabulary(), RecognitionSettings(confidence_threshold=0.5, dip_split=True))
     a = sign_frames("circle", t0=0, n=30)
     last = a[-1]["hands"][0]["landmarks"]
     hold = [frame(a[-1]["t"] + (i + 1) * 33.3, [("Left", np.array(last))]) for i in range(6)]   # 200 ms dip

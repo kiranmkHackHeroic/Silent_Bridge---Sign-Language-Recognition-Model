@@ -36,7 +36,12 @@ export function KannadaToSign() {
   const avatarRef = useRef<AvatarHandle | null>(null);
   const stopListenRef = useRef<() => void>(() => undefined);
 
-  useEffect(() => () => stopListenRef.current(), []);
+  const [phrases, setPhrases] = useState<{ kannada: string; english: string; category: string; missing_animations: string[] }[]>([]);
+  useEffect(() => {
+    api.phrases().then((r) => setPhrases(r.phrases)).catch(() => undefined);
+    return () => stopListenRef.current();
+  }, []);
+  const categories = Array.from(new Set(phrases.map((p) => p.category)));
 
   const playable = sequence.filter((s) => s.clip);
   const missing = sequence.filter((s) => !s.clip);
@@ -140,6 +145,27 @@ export function KannadaToSign() {
                 <button key={ex} className="example" lang="kn" onClick={() => setText(ex)}>{ex}</button>
               ))}
             </div>
+            {phrases.length > 0 && (
+              <details className="disclosure">
+                <summary><Icon name="text" size={15} /> Phrase dictionary ({phrases.length} phrases, all unverified ISL glosses)</summary>
+                <div className="disclosure-body">
+                  {categories.map((cat) => (
+                    <div key={cat} className="stack" style={{ gap: 6 }}>
+                      <span className="xs muted" style={{ fontWeight: 700 }}>{cat}</span>
+                      <div className="examples">
+                        {phrases.filter((p) => p.category === cat).map((p) => (
+                          <button key={p.kannada} className="example" lang="kn" onClick={() => setText(p.kannada)}
+                            title={`${p.english}${p.missing_animations.length ? ` · no animation yet for: ${p.missing_animations.join(", ")}` : ""}`}>
+                            {p.kannada}{p.missing_animations.length ? " ◌" : ""}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  <span className="xs muted">◌ = at least one sign in this phrase has no avatar clip yet (it is skipped with a warning).</span>
+                </div>
+              </details>
+            )}
             {speechRecognitionSupported() && <p className="muted xs">Speech input sends audio to the browser vendor's speech service. Typing works fully offline.</p>}
             {speechMsg && <Notice tone="warn">{speechMsg}</Notice>}
             {error && <Notice tone="bad">{error}</Notice>}

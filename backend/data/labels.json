@@ -474,6 +474,86 @@
       "notes": "Class '50.power' of the Amrita SLR dataset (CC BY 4.0). English class name is ambiguous (electricity vs strength)."
     },
     {
+      "label": "how",
+      "isl_gloss": "HOW",
+      "english": "How",
+      "kannada": "ಹೇಗೆ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "understand",
+      "isl_gloss": "UNDERSTAND",
+      "english": "Understand",
+      "kannada": "ಅರ್ಥ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "again",
+      "isl_gloss": "AGAIN",
+      "english": "Again",
+      "kannada": "ಮತ್ತೆ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "say",
+      "isl_gloss": "SAY",
+      "english": "Say / tell",
+      "kannada": "ಹೇಳು",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "where",
+      "isl_gloss": "WHERE",
+      "english": "Where",
+      "kannada": "ಎಲ್ಲಿ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "go",
+      "isl_gloss": "GO",
+      "english": "Go",
+      "kannada": "ಹೋಗು",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "home",
+      "isl_gloss": "HOME",
+      "english": "Home / house",
+      "kannada": "ಮನೆ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "wait",
+      "isl_gloss": "WAIT",
+      "english": "Wait",
+      "kannada": "ಕಾಯಿರಿ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "emergency",
+      "isl_gloss": "EMERGENCY",
+      "english": "Emergency",
+      "kannada": "ತುರ್ತು",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
+      "label": "sick",
+      "isl_gloss": "SICK",
+      "english": "Sick / unwell",
+      "kannada": "ಅನಾರೋಗ್ಯ",
+      "verified": false,
+      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+    },
+    {
       "label": "_none",
       "isl_gloss": "",
       "english": "(no sign / transition / resting)",

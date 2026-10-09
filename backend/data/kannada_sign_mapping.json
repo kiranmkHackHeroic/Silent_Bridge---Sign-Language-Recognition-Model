@@ -7,7 +7,10 @@
       ],
       "verified": false,
       "source": "project vocabulary",
-      "notes": ""
+      "notes": "",
+      "english": "Hello",
+      "category": "Greetings",
+      "display": "ನಮಸ್ಕಾರ"
     },
     "ನಮಸ್ತೆ": {
       "sign_ids": [
@@ -23,7 +26,10 @@
       ],
       "verified": false,
       "source": "project vocabulary",
-      "notes": ""
+      "notes": "",
+      "english": "Thank you.",
+      "category": "Everyday responses",
+      "display": "ಧನ್ಯವಾದಗಳು"
     },
     "ಧನ್ಯವಾದ": {
       "sign_ids": [
@@ -39,7 +45,10 @@
       ],
       "verified": false,
       "source": "project vocabulary",
-      "notes": ""
+      "notes": "",
+      "english": "Yes.",
+      "category": "Everyday responses",
+      "display": "ಹೌದು"
     },
     "ಇಲ್ಲ": {
       "sign_ids": [
@@ -47,7 +56,10 @@
       ],
       "verified": false,
       "source": "project vocabulary",
-      "notes": ""
+      "notes": "",
+      "english": "No.",
+      "category": "Everyday responses",
+      "display": "ಇಲ್ಲ"
     },
     "ನೀರು": {
       "sign_ids": [
@@ -87,7 +99,10 @@
       ],
       "verified": false,
       "source": "project vocabulary",
-      "notes": ""
+      "notes": "",
+      "english": "Sorry.",
+      "category": "Everyday responses",
+      "display": "ಕ್ಷಮಿಸಿ"
     },
     "ಒಳ್ಳೆಯದು": {
       "sign_ids": [
@@ -185,8 +200,11 @@
         "need"
       ],
       "verified": false,
-      "source": "phrase entry",
-      "notes": "Gloss ME HELP NEED. Unverified phrase order."
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "Gloss ME HELP NEED. Unverified phrase order.",
+      "english": "I need help.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ಸಹಾಯ ಬೇಕು"
     },
     "ನಿಮ್ಮ ಹೆಸರು ಏನು": {
       "sign_ids": [
@@ -195,8 +213,11 @@
         "what"
       ],
       "verified": false,
-      "source": "phrase entry",
-      "notes": "Gloss YOUR NAME WHAT: ISL commonly places the question sign at the end of the sentence. Unverified."
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "Question sign at the end.",
+      "english": "What is your name?",
+      "category": "Introductions",
+      "display": "ನಿಮ್ಮ ಹೆಸರು ಏನು"
     },
     "ನನಗೆ ನೀರು ಬೇಕು": {
       "sign_ids": [
@@ -205,8 +226,11 @@
         "need"
       ],
       "verified": false,
-      "source": "phrase entry",
-      "notes": "Gloss ME WATER NEED. Unverified phrase order."
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "Gloss ME WATER NEED. Unverified phrase order.",
+      "english": "I need water.",
+      "category": "Food and water",
+      "display": "ನನಗೆ ನೀರು ಬೇಕು"
     },
     "ಹಕ್ಕಿ": {
       "sign_ids": [
@@ -262,7 +286,10 @@
       ],
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
-      "notes": ""
+      "notes": "",
+      "english": "Good morning",
+      "category": "Greetings",
+      "display": "ಶುಭೋದಯ"
     },
     "ಬೂದು ಬಣ್ಣ": {
       "sign_ids": [
@@ -470,7 +497,10 @@
       ],
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
-      "notes": ""
+      "notes": "",
+      "english": "Today",
+      "category": "Numbers and time",
+      "display": "ಇಂದು"
     },
     "ನಾಳೆ": {
       "sign_ids": [
@@ -478,7 +508,10 @@
       ],
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
-      "notes": ""
+      "notes": "",
+      "english": "Tomorrow",
+      "category": "Numbers and time",
+      "display": "ನಾಳೆ"
     },
     "ಸುಸ್ವಾಗತ": {
       "sign_ids": [
@@ -486,7 +519,10 @@
       ],
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
-      "notes": ""
+      "notes": "",
+      "english": "Welcome",
+      "category": "Greetings",
+      "display": "ಸುಸ್ವಾಗತ"
     },
     "ಕೆಲಸ": {
       "sign_ids": [
@@ -502,7 +538,10 @@
       ],
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
-      "notes": ""
+      "notes": "",
+      "english": "Yesterday",
+      "category": "Numbers and time",
+      "display": "ನಿನ್ನೆ"
     },
     "ಹಲ್ಲು": {
       "sign_ids": [
@@ -551,6 +590,205 @@
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
       "notes": ""
+    },
+    "ಶುಭ ರಾತ್ರಿ": {
+      "sign_ids": [
+        "good",
+        "night"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "Good night",
+      "category": "Greetings",
+      "display": "ಶುಭ ರಾತ್ರಿ"
+    },
+    "ನನ್ನ ಹೆಸರು": {
+      "sign_ids": [
+        "i_me",
+        "name"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "A following proper name must be fingerspelled; fingerspelling is not available, so the name is reported as unsupported.",
+      "english": "My name (is ...)",
+      "category": "Introductions",
+      "display": "ನನ್ನ ಹೆಸರು"
+    },
+    "ನೀವು ಹೇಗಿದ್ದೀರಿ": {
+      "sign_ids": [
+        "you",
+        "how"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "Question sign at the end; no copula.",
+      "english": "How are you?",
+      "category": "Introductions",
+      "display": "ನೀವು ಹೇಗಿದ್ದೀರಿ"
+    },
+    "ನನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲ": {
+      "sign_ids": [
+        "i_me",
+        "understand",
+        "no"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "Negation after the verb.",
+      "english": "I did not understand.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲ"
+    },
+    "ದಯವಿಟ್ಟು ಮತ್ತೆ ಹೇಳಿ": {
+      "sign_ids": [
+        "please",
+        "again",
+        "say"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "Please say it again.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಮತ್ತೆ ಹೇಳಿ"
+    },
+    "ದಯವಿಟ್ಟು ಕಾಯಿರಿ": {
+      "sign_ids": [
+        "please",
+        "wait"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "Please wait.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಕಾಯಿರಿ"
+    },
+    "ನನಗೆ ಊಟ ಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "food",
+        "need"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "I need food.",
+      "category": "Food and water",
+      "display": "ನನಗೆ ಊಟ ಬೇಕು"
+    },
+    "ನೀವು ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀರಿ": {
+      "sign_ids": [
+        "you",
+        "go",
+        "where"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "Question sign at the end.",
+      "english": "Where are you going?",
+      "category": "Travel and directions",
+      "display": "ನೀವು ಎಲ್ಲಿಗೆ ಹೋಗುತ್ತಿದ್ದೀರಿ"
+    },
+    "ನನಗೆ ಮನೆಗೆ ಹೋಗಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "home",
+        "go",
+        "need"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "I have to go home.",
+      "category": "Travel and directions",
+      "display": "ನನಗೆ ಮನೆಗೆ ಹೋಗಬೇಕು"
+    },
+    "ತುರ್ತು ಸಹಾಯ ಬೇಕು": {
+      "sign_ids": [
+        "emergency",
+        "help",
+        "need"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "I need emergency help.",
+      "category": "Health and emergencies",
+      "display": "ತುರ್ತು ಸಹಾಯ ಬೇಕು"
+    },
+    "ನನಗೆ ಅನಾರೋಗ್ಯ": {
+      "sign_ids": [
+        "i_me",
+        "sick"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "I am unwell.",
+      "category": "Health and emergencies",
+      "display": "ನನಗೆ ಅನಾರೋಗ್ಯ"
+    },
+    "ನನ್ನ ತಾಯಿ": {
+      "sign_ids": [
+        "i_me",
+        "mother"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "My mother",
+      "category": "Family",
+      "display": "ನನ್ನ ತಾಯಿ"
+    },
+    "ನನ್ನ ತಂದೆ": {
+      "sign_ids": [
+        "i_me",
+        "father"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "My father",
+      "category": "Family",
+      "display": "ನನ್ನ ತಂದೆ"
+    },
+    "ನನ್ನ ಸಹೋದರ": {
+      "sign_ids": [
+        "i_me",
+        "brother"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "My brother",
+      "category": "Family",
+      "display": "ನನ್ನ ಸಹೋದರ"
+    },
+    "ನಾನು ವಿದ್ಯಾರ್ಥಿ": {
+      "sign_ids": [
+        "i_me",
+        "student"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "No copula.",
+      "english": "I am a student.",
+      "category": "Education and college",
+      "display": "ನಾನು ವಿದ್ಯಾರ್ಥಿ"
+    },
+    "ನಾನು ಓದುತ್ತೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "study"
+      ],
+      "verified": false,
+      "source": "phrase dictionary (proposed ISL gloss order)",
+      "notes": "",
+      "english": "I study.",
+      "category": "Education and college",
+      "display": "ನಾನು ಓದುತ್ತೇನೆ"
     }
   }
 }
