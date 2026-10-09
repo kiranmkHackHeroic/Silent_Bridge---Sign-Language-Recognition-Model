@@ -40,20 +40,14 @@ def _now() -> str:
 def training_eligibility(models_root: Path = MODELS_DIR, stores=None, known: set[str] | None = None) -> dict:
     """Can (and should) a new model be trained? Never touches the current model."""
     from .config import DEFAULT_FEATURE_CONFIG
-    from .dataset.validate import validate_dataset
     from .training.registry import active_paths
     from .training.train_model import default_stores, known_labels_from
 
     known = known or known_labels_from()
-    per_class: Counter = Counter()
-    hashes = []
-    for source, store in (stores if stores is not None else default_stores()):
-        s = validate_dataset(store, known, DEFAULT_FEATURE_CONFIG)["summary"]
-        hashes.append(f"{source}:{s['dataset_hash']}")
-        for label, c in s["per_class"].items():
-            per_class[label] += c["valid"]
-    import hashlib
-    dataset_hash = hashlib.sha1("|".join(hashes).encode()).hexdigest()[:12]
+    from .dataset.validate import cached_validation
+    summary = cached_validation(stores if stores is not None else default_stores(), known, DEFAULT_FEATURE_CONFIG)
+    per_class = Counter({label: c["valid"] for label, c in summary["per_class"].items()})
+    dataset_hash = summary["dataset_hash"]
     usable = {c: n for c, n in per_class.items() if n >= AUTO_MIN_PER_CLASS}
     total = sum(per_class.values())
     _, meta_file, _ = active_paths(models_root)

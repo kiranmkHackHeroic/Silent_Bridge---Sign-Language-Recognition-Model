@@ -93,7 +93,7 @@ class TorchGRUClassifier:
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.net.parameters(), 1.0)
                 opt.step()
-                total += float(loss) * len(bi)
+                total += float(loss.detach()) * len(bi)
             if len(va):
                 self.net.eval()
                 with torch.no_grad():

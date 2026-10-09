@@ -92,12 +92,35 @@ def amrita_items() -> tuple[list[ImportItem], dict]:
     return items, mapping
 
 
+def include_items() -> tuple[list[ImportItem], dict]:
+    """INCLUDE: classes and official train/val/test splits from the dataset's HuggingFace metadata.
+    Only categories that have been downloaded are returned (the rest are reported as missing)."""
+    import pandas as pd
+    mapping = json.loads((MAPPINGS / "include.json").read_text(encoding="utf-8"))["classes"]
+    meta = pd.concat([pd.read_parquet(RAW / "include" / f"{s}.parquet").assign(split=s) for s in ("train", "val", "test")])
+    root = RAW / "include" / "extracted"
+    items, missing = [], 0
+    for _, r in meta.iterrows():
+        cls = mapping.get(r["label"])
+        if cls is None:
+            continue
+        path = root / Path(*str(r["video_path"]).replace("\\", "/").split("/"))
+        if not path.exists():
+            missing += 1
+            continue
+        split = "test" if r["split"] == "test" else "train"       # val is merged into development data
+        items.append(ImportItem(path=str(path), label=cls["label"], group=f"include_{split}", source="include",
+                                split=split, meta={"include_class": r["label"], "include_split": r["split"]}))
+    return items, {"missing_videos": missing}
+
+
 def csltr_items():
     from ..continuous.dataset import csltr_items as _items
     return _items()
 
 
-ADAPTERS: dict[str, Callable[[], tuple[list[ImportItem], dict]]] = {"amrita_slr": amrita_items, "isl_csltr": csltr_items}
+ADAPTERS: dict[str, Callable[[], tuple[list[ImportItem], dict]]] = {
+    "amrita_slr": amrita_items, "include": include_items, "isl_csltr": csltr_items}
 # continuous (sentence) datasets are stored apart from isolated-sign samples
 CONTINUOUS_DATASETS = {"isl_csltr"}
 

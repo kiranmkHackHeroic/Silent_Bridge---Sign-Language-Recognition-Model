@@ -165,3 +165,43 @@ def validate_dataset(store: DatasetStore, known_labels: set[str], fcfg: FeatureC
                                  r.face_frames, r.duration_ms, "valid" if r.valid else "rejected",
                                  "; ".join(r.reasons), r.file])
     return {"summary": summary, "reports": reports}
+
+
+_CACHE: dict = {}
+
+
+def _signature(store: DatasetStore) -> tuple:
+    files = list(store.root.glob("*/*.json"))
+    return (str(store.root), len(files), max((f.stat().st_mtime for f in files), default=0.0))
+
+
+def cached_validation(stores: list, known_labels: set[str], fcfg: FeatureConfig = DEFAULT_FEATURE_CONFIG) -> dict:
+    """Validation summary across several (source, store) pairs, cached until files change.
+
+    The combined dataset hash is computed exactly like training does, so it can be
+    compared with the active model's dataset hash."""
+    per_source, per_class, hashes, warnings, rejected = {}, {}, [], [], []
+    total = valid = 0
+    for source, store in stores:
+        key = (_signature(store), tuple(sorted(known_labels)), fcfg.schema)
+        if _CACHE.get(source, (None,))[0] != key:
+            _CACHE[source] = (key, validate_dataset(store, known_labels, fcfg)["summary"])
+        s = _CACHE[source][1]
+        hashes.append(f"{source}:{s['dataset_hash']}")
+        total += s["total"]
+        valid += s["valid"]
+        if s["total"]:
+            per_source[source] = {"valid": s["valid"], "rejected": s["rejected"]}
+            warnings += [f"[{source}] {w}" for w in s["warnings"] if not (source != "app" and "'_none'" in w)]
+        rejected += [{**r, "source": source} for r in s["rejected_samples"]]
+        for label, c in s["per_class"].items():
+            agg = per_class.setdefault(label, {"valid": 0, "rejected": 0, "sessions": [], "signers": []})
+            agg["valid"] += c["valid"]
+            agg["rejected"] += c["rejected"]
+            agg["sessions"] += [f"{source}:{x}" for x in c["sessions"]]
+            agg["signers"] += [f"{source}:{x}" for x in c["signers"]]
+    counts = [c["valid"] for c in per_class.values() if c["valid"]]
+    return {"total": total, "valid": valid, "rejected": total - valid, "per_class": per_class,
+            "per_source": per_source, "warnings": warnings, "rejected_samples": rejected[:200],
+            "imbalance_ratio": round(max(counts) / min(counts), 2) if counts else None,
+            "dataset_hash": hashlib.sha1("|".join(hashes).encode()).hexdigest()[:12]}

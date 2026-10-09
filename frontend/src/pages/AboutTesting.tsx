@@ -40,12 +40,12 @@ export function AboutTesting() {
   const [datasets, setDatasets] = useState<ExternalDataset[]>([]);
 
   useEffect(() => {
-    Promise.all([api.metrics(), api.modelStatus(), api.vocabulary(), api.validation()])
-      .then(([m, s, v, val]) => {
+    api.validation().then(setValidation).catch(() => undefined);
+    Promise.all([api.metrics(), api.modelStatus(), api.vocabulary()])
+      .then(([m, s, v]) => {
         setMetrics(m);
         setStatus(s);
         setVocab(v.labels);
-        setValidation(val);
       })
       .catch((err) => setError(String(err.message || err)));
     api.continuousStatus().then(setContinuous).catch(() => undefined);

@@ -8,6 +8,7 @@ import asyncio
 import io
 import json
 import logging
+import threading
 import time
 from contextlib import asynccontextmanager
 
@@ -19,16 +20,16 @@ from pydantic import BaseModel, Field
 
 from .animation.library import AnimationLibrary
 from .animation.retarget import sample_to_animation
-from .config import DATA_DIR, PROCESSED_LANDMARKS_DIR, RecognitionSettings
+from .config import DATA_DIR, RecognitionSettings
 from .continuous.recognizer import ContinuousRecognizer
 from .jobs import JobQueue, training_eligibility
 from .dataset.store import DatasetError, DatasetStore
-from .dataset.validate import validate_dataset
+from .dataset.validate import cached_validation
 from .recognition.pipeline import RecognitionSession
 from .recognition.predictor import SignPredictor
 from .training.registry import activate, active_paths, active_version, rollback, sanity_check_versions
 from .uploads import UploadError, create_batch, delete_batch, get_batch, list_batches
-from .video.importer import ADAPTERS
+from .video.importer import ADAPTERS, output_root
 from .translation.kannada_mapping import KannadaSignMapper, Vocabulary, is_kannada, normalize_kannada
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -49,6 +50,15 @@ class AppState:
         self.jobs = JobQueue(on_model_change=self._reload_models)
         if start_jobs:
             self.jobs.start()
+            # warm the dataset-validation cache (about a minute for ~1000 videos) without blocking start-up
+            threading.Thread(target=self._warm_validation, name="validation-warmup", daemon=True).start()
+
+    def _warm_validation(self) -> None:
+        from .training.train_model import default_stores
+        try:
+            cached_validation(default_stores(), set(self.vocab.entries))
+        except Exception as exc:  # never fatal
+            log.warning("validation warm-up failed: %s", exc)
 
 
     def _reload_models(self) -> None:
@@ -274,9 +284,12 @@ def datasets():
     for key, spec in reg.items():
         status_file = DATA_DIR / "raw" / key / "download_status.json"
         dl = json.loads(status_file.read_text(encoding="utf-8")) if status_file.exists() else {"state": "not downloaded"}
+        if "state" not in dl:       # download still running: derive from the files finished so far
+            states = {f.get("state") for f in dl.get("files", {}).values()}
+            dl["state"] = "partial" if "extracted" in states else "downloading"
         summary_file = DATA_DIR / "processed" / f"{key}_import_summary.json"
         imp = json.loads(summary_file.read_text(encoding="utf-8")) if summary_file.exists() else None
-        processed_dir = PROCESSED_LANDMARKS_DIR / key
+        processed_dir = output_root(key)
         out.append({"key": key, "name": spec["name"], "task": spec["task"], "source_url": spec["source_url"],
                     "license": spec["license"], "citation": spec["citation"], "doi": spec.get("doi"),
                     "description": spec["description"], "version": spec.get("version"),
@@ -444,10 +457,10 @@ def dataset_summary():
 
 @app.get("/api/dataset/validation")
 def dataset_validation():
-    """Validates every recorded sample (and rewrites data/dataset_manifest.csv)."""
+    """Validates every sample of every data source (cached until files change)."""
+    from .training.train_model import default_stores
     s = S()
-    result = validate_dataset(s.dataset, set(s.vocab.entries))
-    summary = result["summary"]
+    summary = cached_validation(default_stores(), set(s.vocab.entries))
     summary["model_dataset_hash"] = s.predictor.meta.get("dataset_hash")
     summary["model_is_current"] = bool(s.predictor.loaded and summary["model_dataset_hash"] == summary["dataset_hash"])
     return summary

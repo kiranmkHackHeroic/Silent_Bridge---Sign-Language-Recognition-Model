@@ -7,6 +7,7 @@ Write-Host "== Backend: creating Python virtual environment ==" -ForegroundColor
 Set-Location "$root\backend"
 if (-not (Test-Path ".venv")) { python -m venv .venv }
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install torch --index-url https://download.pytorch.org/whl/cpu
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe tools\make_placeholder_animations.py
 

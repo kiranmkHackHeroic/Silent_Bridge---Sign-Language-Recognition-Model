@@ -593,11 +593,10 @@
     },
     "ಶುಭ ರಾತ್ರಿ": {
       "sign_ids": [
-        "good",
-        "night"
+        "good_night"
       ],
       "verified": false,
-      "source": "phrase dictionary (proposed ISL gloss order)",
+      "source": "INCLUDE class vocabulary (dedicated sign)",
       "notes": "",
       "english": "Good night",
       "category": "Greetings",
@@ -617,11 +616,10 @@
     },
     "ನೀವು ಹೇಗಿದ್ದೀರಿ": {
       "sign_ids": [
-        "you",
-        "how"
+        "how_are_you"
       ],
       "verified": false,
-      "source": "phrase dictionary (proposed ISL gloss order)",
+      "source": "INCLUDE class vocabulary (dedicated sign)",
       "notes": "Question sign at the end; no copula.",
       "english": "How are you?",
       "category": "Introductions",
@@ -789,6 +787,86 @@
       "english": "I study.",
       "category": "Education and college",
       "display": "ನಾನು ಓದುತ್ತೇನೆ"
+    },
+    "ಸರಿ": {
+      "sign_ids": [
+        "alright"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಶುಭ ಮಧ್ಯಾಹ್ನ": {
+      "sign_ids": [
+        "good_afternoon"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಶುಭ ಸಂಜೆ": {
+      "sign_ids": [
+        "good_evening"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಸಂತೋಷ": {
+      "sign_ids": [
+        "pleased"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಅವನು": {
+      "sign_ids": [
+        "he"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಅವಳು": {
+      "sign_ids": [
+        "she"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಅದು": {
+      "sign_ids": [
+        "it"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ನಾವು": {
+      "sign_ids": [
+        "we"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ನೀವೆಲ್ಲರೂ": {
+      "sign_ids": [
+        "you_plural"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
+    },
+    "ಅವರು": {
+      "sign_ids": [
+        "they"
+      ],
+      "verified": false,
+      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "notes": ""
     }
   }
 }

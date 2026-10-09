@@ -63,12 +63,12 @@ export function DatasetModel() {
 
   const refresh = useCallback(async () => {
     try {
-      const [v, s, d, val, m] = await Promise.all([api.vocabulary(), api.modelStatus(), api.datasetSummary(), api.validation(), api.metrics()]);
+      const [v, s, d, m] = await Promise.all([api.vocabulary(), api.modelStatus(), api.datasetSummary(), api.metrics()]);
       setVocab(v.labels);
       setStatus(s);
       setSummary(d);
-      setValidation(val);
       setMetrics(m);
+      api.validation().then(setValidation).catch(() => undefined);   // can take a minute on first run
       setBackendError(null);
       // slower, optional panels: never block the main status
       api.datasets().then((d) => setExternals(d.datasets)).catch(() => undefined);

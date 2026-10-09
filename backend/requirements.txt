@@ -1,10 +1,24 @@
-# Kannada SignBridge backend (tested with Python 3.12.1 on Windows 11)
+# Kannada SignBridge backend (tested with Python 3.12.1 on Windows 11, CPU only)
 fastapi==0.143.0
 uvicorn[standard]==0.54.0
-numpy==2.5.3
+numpy>=1.26,<2            # mediapipe 0.10.21 requires NumPy 1.x
 scikit-learn==1.9.1
 joblib==1.6.0
 pydantic==2.14.0
+python-multipart>=0.0.9   # video uploads
+
+# video / landmark extraction (same MediaPipe version as the browser: 0.10.21)
+mediapipe==0.10.21
+opencv-python-headless>=4.10,<5
+
+# dataset metadata
+pandas>=2.2
+pyarrow==17.0.0           # last pyarrow that works with NumPy 1.x (INCLUDE parquet metadata)
+openpyxl>=3.1             # ISL-CSLTR spreadsheets
+
+# temporal models (GRU, BiGRU+CTC). Install the CPU build:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.3
 
 # tests
 pytest==9.1.1

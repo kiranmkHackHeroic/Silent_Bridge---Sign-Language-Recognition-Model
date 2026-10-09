@@ -233,12 +233,21 @@ def metric_block(y_true, y_pred, classes) -> dict:
 
 # ---------------------------------------------------------------- splits
 def choose_test_groups(samples: list[Sample], fraction: float, seed: int) -> set[str]:
+    # datasets with an official test split use it; the others get held-out signer/session groups
+    official = {s.group for s in samples if s.split == "test"}
+    official_sources = {s.source for s in samples if s.split == "test"}
+    rest = [s for s in samples if s.source not in official_sources]
+    chosen = _hold_out_groups(rest, fraction, seed, all_samples=samples) if rest else set()
+    combined = official | chosen
+    if len({s.label for s in samples if s.group in combined}) < 2:
+        return set()
+    return combined
+
+
+def _hold_out_groups(samples: list[Sample], fraction: float, seed: int, all_samples: list[Sample]) -> set[str]:
     groups = sorted({s.group for s in samples})
     if len(groups) < 3:
         return set()
-    official = {s.group for s in samples if s.split == "test"}
-    if official:
-        return official
     rng = np.random.default_rng(seed)
     order = [groups[i] for i in rng.permutation(len(groups))]
     target = fraction * len(samples)
@@ -248,9 +257,10 @@ def choose_test_groups(samples: list[Sample], fraction: float, seed: int) -> set
         if n >= target:
             break
         trial = chosen | {g}
-        dev_classes = {s.label for s in samples if s.group not in trial}
+        # every test class must still be learnable from development data of ANY dataset
+        dev_classes = {s.label for s in all_samples if s.group not in trial and s.split != "test"}
         test_classes = {s.label for s in samples if s.group in trial}
-        if not test_classes <= dev_classes:      # every test class must still be learnable
+        if not test_classes <= dev_classes:
             continue
         if len(trial) >= len(groups) - 1:        # keep at least 2 groups for development
             break

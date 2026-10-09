@@ -1,0 +1,23 @@
+{
+  "_comment": "INCLUDE class -> app sign label (class from the dataset's official metadata, never from file names). INCLUDE was recorded in Chennai; merged labels may combine regional variants of a sign with other datasets. Kannada text is standard vocabulary, unverified as an ISL correspondence.",
+  "dataset": "include",
+  "classes": {
+    "48. Hello": {"label": "namaskara", "english": "Hello / Namaste", "kannada": "ನಮಸ್ಕಾರ", "isl_gloss": "HELLO", "existing": true},
+    "49. How are you": {"label": "how_are_you", "english": "How are you?", "kannada": "ನೀವು ಹೇಗಿದ್ದೀರಿ", "isl_gloss": "HOW-ARE-YOU"},
+    "50. Alright": {"label": "alright", "english": "Alright / OK", "kannada": "ಸರಿ", "isl_gloss": "ALRIGHT"},
+    "51. Good Morning": {"label": "good_morning", "english": "Good morning", "kannada": "ಶುಭೋದಯ", "isl_gloss": "GOOD-MORNING", "existing": true},
+    "52. Good afternoon": {"label": "good_afternoon", "english": "Good afternoon", "kannada": "ಶುಭ ಮಧ್ಯಾಹ್ನ", "isl_gloss": "GOOD-AFTERNOON"},
+    "53. Good evening": {"label": "good_evening", "english": "Good evening", "kannada": "ಶುಭ ಸಂಜೆ", "isl_gloss": "GOOD-EVENING"},
+    "54. Good night": {"label": "good_night", "english": "Good night", "kannada": "ಶುಭ ರಾತ್ರಿ", "isl_gloss": "GOOD-NIGHT"},
+    "55. Thank you": {"label": "thank_you", "english": "Thank you", "kannada": "ಧನ್ಯವಾದಗಳು", "isl_gloss": "THANK-YOU", "existing": true},
+    "56. Pleased": {"label": "pleased", "english": "Pleased", "kannada": "ಸಂತೋಷ", "isl_gloss": "PLEASED"},
+    "40. I": {"label": "i_me", "english": "I / Me", "kannada": "ನಾನು", "isl_gloss": "I/ME", "existing": true},
+    "41. you": {"label": "you", "english": "You", "kannada": "ನೀವು", "isl_gloss": "YOU", "existing": true},
+    "42. he": {"label": "he", "english": "He", "kannada": "ಅವನು", "isl_gloss": "HE"},
+    "43. she": {"label": "she", "english": "She", "kannada": "ಅವಳು", "isl_gloss": "SHE"},
+    "44. it": {"label": "it", "english": "It", "kannada": "ಅದು", "isl_gloss": "IT"},
+    "45. we": {"label": "we", "english": "We", "kannada": "ನಾವು", "isl_gloss": "WE"},
+    "46. you (plural)": {"label": "you_plural", "english": "You (plural)", "kannada": "ನೀವೆಲ್ಲರೂ", "isl_gloss": "YOU-PLURAL"},
+    "47. they": {"label": "they", "english": "They", "kannada": "ಅವರು", "isl_gloss": "THEY"}
+  }
+}

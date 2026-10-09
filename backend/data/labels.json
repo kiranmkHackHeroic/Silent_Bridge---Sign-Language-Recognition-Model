@@ -554,6 +554,102 @@
       "notes": "Needed by the phrase dictionary; no training data or animation yet."
     },
     {
+      "label": "how_are_you",
+      "isl_gloss": "HOW-ARE-YOU",
+      "english": "How are you?",
+      "kannada": "ನೀವು ಹೇಗಿದ್ದೀರಿ",
+      "verified": false,
+      "notes": "Class '49. How are you' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "alright",
+      "isl_gloss": "ALRIGHT",
+      "english": "Alright / OK",
+      "kannada": "ಸರಿ",
+      "verified": false,
+      "notes": "Class '50. Alright' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "good_afternoon",
+      "isl_gloss": "GOOD-AFTERNOON",
+      "english": "Good afternoon",
+      "kannada": "ಶುಭ ಮಧ್ಯಾಹ್ನ",
+      "verified": false,
+      "notes": "Class '52. Good afternoon' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "good_evening",
+      "isl_gloss": "GOOD-EVENING",
+      "english": "Good evening",
+      "kannada": "ಶುಭ ಸಂಜೆ",
+      "verified": false,
+      "notes": "Class '53. Good evening' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "good_night",
+      "isl_gloss": "GOOD-NIGHT",
+      "english": "Good night",
+      "kannada": "ಶುಭ ರಾತ್ರಿ",
+      "verified": false,
+      "notes": "Class '54. Good night' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "pleased",
+      "isl_gloss": "PLEASED",
+      "english": "Pleased",
+      "kannada": "ಸಂತೋಷ",
+      "verified": false,
+      "notes": "Class '56. Pleased' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "he",
+      "isl_gloss": "HE",
+      "english": "He",
+      "kannada": "ಅವನು",
+      "verified": false,
+      "notes": "Class '42. he' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "she",
+      "isl_gloss": "SHE",
+      "english": "She",
+      "kannada": "ಅವಳು",
+      "verified": false,
+      "notes": "Class '43. she' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "it",
+      "isl_gloss": "IT",
+      "english": "It",
+      "kannada": "ಅದು",
+      "verified": false,
+      "notes": "Class '44. it' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "we",
+      "isl_gloss": "WE",
+      "english": "We",
+      "kannada": "ನಾವು",
+      "verified": false,
+      "notes": "Class '45. we' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "you_plural",
+      "isl_gloss": "YOU-PLURAL",
+      "english": "You (plural)",
+      "kannada": "ನೀವೆಲ್ಲರೂ",
+      "verified": false,
+      "notes": "Class '46. you (plural)' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
+      "label": "they",
+      "isl_gloss": "THEY",
+      "english": "They",
+      "kannada": "ಅವರು",
+      "verified": false,
+      "notes": "Class '47. they' of the INCLUDE dataset (CC BY 4.0)."
+    },
+    {
       "label": "_none",
       "isl_gloss": "",
       "english": "(no sign / transition / resting)",
