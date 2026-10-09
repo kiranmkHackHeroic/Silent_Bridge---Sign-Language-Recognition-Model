@@ -65,3 +65,17 @@ def test_retarget_recorded_sample(tmp_path):
 
 def test_mapping_file_is_the_real_one():
     assert ANIMATION_MAPPING_FILE.exists()
+
+
+def test_retarget_assigns_arms_by_position_for_mirrored_videos():
+    from app.animation.retarget import reference_face, side_for_labels
+    from tests.synthetic import frame, hand_points
+    face = {"cx": 0.5, "cy": 0.3, "w": 0.2, "h": 0.25}
+    # mirrored front-camera style: the hand on the image LEFT carries MediaPipe label "Right"
+    frames = [frame(i * 33.3, [("Right", hand_points((0.3, 0.5 - 0.01 * i))), ("Left", hand_points((0.75, 0.6)))],
+                    face=face if i % 2 else None) for i in range(20)]
+    assert side_for_labels(frames) == {"Right": "right", "Left": "left"}
+    assert reference_face(frames)["cx"] == 0.5
+    clip = sample_to_animation({"sample_id": "m", "frames": frames, "video": {"w": 640, "h": 480}}, "x")
+    first = clip["keyframes"][0]
+    assert first["right"]["pos"][0] < 0 < first["left"]["pos"][0]      # no crossed arms

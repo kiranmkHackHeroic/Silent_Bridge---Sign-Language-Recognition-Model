@@ -87,6 +87,15 @@ def download(url: str, dest: Path, expected_size: int | None, retries: int = 8) 
                             last_report = now
             if not expected_size or have >= expected_size:
                 break
+        except urllib.error.HTTPError as exc:
+            if exc.code == 416 and have > 0:
+                # nothing left to send: the partial file already holds the whole file
+                # (the checksum verification below decides whether it is really correct)
+                log(f"  {dest.name}: server reports the file is complete ({have / 1e9:.2f} GB)")
+                break
+            wait = min(60, 5 * attempt)
+            log(f"  attempt {attempt}/{retries} failed: {exc}; retrying in {wait}s (download resumes)")
+            time.sleep(wait)
         except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as exc:
             wait = min(60, 5 * attempt)
             log(f"  attempt {attempt}/{retries} failed: {exc}; retrying in {wait}s (download resumes)")

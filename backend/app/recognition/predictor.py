@@ -114,6 +114,7 @@ class SignPredictor:
             "model_version": self.meta.get("model_version") or meta.get("model_version"),
             "architecture": self.meta.get("architecture") or meta.get("architecture"),
             "dataset_hash": self.meta.get("dataset_hash") or meta.get("dataset_hash"),
+            "sources": self.meta.get("sources") or meta.get("sources"),
             "feature_config": self.feature_config.to_dict(),
         }
 

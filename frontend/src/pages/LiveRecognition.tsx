@@ -368,7 +368,12 @@ export function LiveRecognition() {
               )}
             </div>
             {mode === "sentence" && <div className="muted xs">Sentence model: {continuous?.loaded ? continuous.version : continuous?.error ?? "not loaded"}</div>}
-            {model?.loaded && <div className="muted xs">Model {model.model_version ?? ""} · {model.model_type} · classes: {model.classes.filter((c) => c !== "_none").join(", ")}</div>}
+            {model?.loaded && (
+              <div className="muted xs">
+                Model {model.model_version ?? ""} · {model.model_type} · {model.num_classes} signs · trained on{" "}
+                {model.sources ? Object.entries(model.sources).map(([k, n]) => `${k === "amrita_slr" ? "Amrita SLR" : k === "include" ? "INCLUDE" : k === "app" ? "your recordings" : k} (${n})`).join(", ") : "recorded data"}
+              </div>
+            )}
           </Card>
 
           <Card

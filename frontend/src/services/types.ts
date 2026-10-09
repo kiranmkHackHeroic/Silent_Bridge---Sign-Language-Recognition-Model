@@ -64,6 +64,8 @@ export interface ModelStatus {
   model_version?: string | null;
   architecture?: string | null;
   dataset_hash?: string | null;
+  sources?: Record<string, number> | null;
+  active_version?: string | null;
   training_in_progress?: boolean;
   defaults?: RecognitionSettings;
 }
