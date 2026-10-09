@@ -1,30 +1,556 @@
 {
   "_comment": "Kannada word/phrase -> ordered ISL sign IDs (Kannada-to-Sign). Keys are normalized Kannada (NFC, no punctuation). 'sign_ids' is the sign sequence in ISL gloss order (which can differ from Kannada word order); animation clips are looked up per sign ID in animation_mapping.json. Phrase keys are matched before single words (longest match first). 'verified' is false for every entry: these are prototype lexical/phrase lookups NOT yet reviewed by an ISL expert. Set verified=true and fill 'reviewer' only after review.",
   "entries": {
-    "ನಮಸ್ಕಾರ": { "sign_ids": ["namaskara"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ನಮಸ್ತೆ": { "sign_ids": ["namaskara"], "verified": false, "source": "alias of ನಮಸ್ಕಾರ", "notes": "" },
-    "ಧನ್ಯವಾದಗಳು": { "sign_ids": ["thank_you"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಧನ್ಯವಾದ": { "sign_ids": ["thank_you"], "verified": false, "source": "alias", "notes": "" },
-    "ಹೌದು": { "sign_ids": ["yes"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಇಲ್ಲ": { "sign_ids": ["no"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ನೀರು": { "sign_ids": ["water"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಊಟ": { "sign_ids": ["food"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಸಹಾಯ": { "sign_ids": ["help"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ದಯವಿಟ್ಟು": { "sign_ids": ["please"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಕ್ಷಮಿಸಿ": { "sign_ids": ["sorry"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಒಳ್ಳೆಯದು": { "sign_ids": ["good"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ನಾನು": { "sign_ids": ["i_me"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ನನಗೆ": { "sign_ids": ["i_me"], "verified": false, "source": "inflected form mapped to base sign", "notes": "dative 'to me'" },
-    "ನನ್ನ": { "sign_ids": ["i_me"], "verified": false, "source": "inflected form mapped to base sign", "notes": "genitive 'my'" },
-    "ನೀವು": { "sign_ids": ["you"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ನೀನು": { "sign_ids": ["you"], "verified": false, "source": "informal form mapped to base sign", "notes": "" },
-    "ನಿಮ್ಮ": { "sign_ids": ["your"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಹೆಸರು": { "sign_ids": ["name"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಏನು": { "sign_ids": ["what"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಬೇಕು": { "sign_ids": ["need"], "verified": false, "source": "project vocabulary", "notes": "" },
-    "ಸಹಾಯ ಬೇಕು": { "sign_ids": ["help", "need"], "verified": false, "source": "phrase entry", "notes": "Gloss HELP NEED. Unverified phrase order." },
-    "ನನಗೆ ಸಹಾಯ ಬೇಕು": { "sign_ids": ["i_me", "help", "need"], "verified": false, "source": "phrase entry", "notes": "Gloss ME HELP NEED. Unverified phrase order." },
-    "ನಿಮ್ಮ ಹೆಸರು ಏನು": { "sign_ids": ["your", "name", "what"], "verified": false, "source": "phrase entry", "notes": "Gloss YOUR NAME WHAT: ISL commonly places the question sign at the end of the sentence. Unverified." },
-    "ನನಗೆ ನೀರು ಬೇಕು": { "sign_ids": ["i_me", "water", "need"], "verified": false, "source": "phrase entry", "notes": "Gloss ME WATER NEED. Unverified phrase order." }
+    "ನಮಸ್ಕಾರ": {
+      "sign_ids": [
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ನಮಸ್ತೆ": {
+      "sign_ids": [
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "alias of ನಮಸ್ಕಾರ",
+      "notes": ""
+    },
+    "ಧನ್ಯವಾದಗಳು": {
+      "sign_ids": [
+        "thank_you"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಧನ್ಯವಾದ": {
+      "sign_ids": [
+        "thank_you"
+      ],
+      "verified": false,
+      "source": "alias",
+      "notes": ""
+    },
+    "ಹೌದು": {
+      "sign_ids": [
+        "yes"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಇಲ್ಲ": {
+      "sign_ids": [
+        "no"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ನೀರು": {
+      "sign_ids": [
+        "water"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಊಟ": {
+      "sign_ids": [
+        "food"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಸಹಾಯ": {
+      "sign_ids": [
+        "help"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ದಯವಿಟ್ಟು": {
+      "sign_ids": [
+        "please"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಕ್ಷಮಿಸಿ": {
+      "sign_ids": [
+        "sorry"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಒಳ್ಳೆಯದು": {
+      "sign_ids": [
+        "good"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ನಾನು": {
+      "sign_ids": [
+        "i_me"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ನನಗೆ": {
+      "sign_ids": [
+        "i_me"
+      ],
+      "verified": false,
+      "source": "inflected form mapped to base sign",
+      "notes": "dative 'to me'"
+    },
+    "ನನ್ನ": {
+      "sign_ids": [
+        "i_me"
+      ],
+      "verified": false,
+      "source": "inflected form mapped to base sign",
+      "notes": "genitive 'my'"
+    },
+    "ನೀವು": {
+      "sign_ids": [
+        "you"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ನೀನು": {
+      "sign_ids": [
+        "you"
+      ],
+      "verified": false,
+      "source": "informal form mapped to base sign",
+      "notes": ""
+    },
+    "ನಿಮ್ಮ": {
+      "sign_ids": [
+        "your"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಹೆಸರು": {
+      "sign_ids": [
+        "name"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಏನು": {
+      "sign_ids": [
+        "what"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಬೇಕು": {
+      "sign_ids": [
+        "need"
+      ],
+      "verified": false,
+      "source": "project vocabulary",
+      "notes": ""
+    },
+    "ಸಹಾಯ ಬೇಕು": {
+      "sign_ids": [
+        "help",
+        "need"
+      ],
+      "verified": false,
+      "source": "phrase entry",
+      "notes": "Gloss HELP NEED. Unverified phrase order."
+    },
+    "ನನಗೆ ಸಹಾಯ ಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "help",
+        "need"
+      ],
+      "verified": false,
+      "source": "phrase entry",
+      "notes": "Gloss ME HELP NEED. Unverified phrase order."
+    },
+    "ನಿಮ್ಮ ಹೆಸರು ಏನು": {
+      "sign_ids": [
+        "your",
+        "name",
+        "what"
+      ],
+      "verified": false,
+      "source": "phrase entry",
+      "notes": "Gloss YOUR NAME WHAT: ISL commonly places the question sign at the end of the sentence. Unverified."
+    },
+    "ನನಗೆ ನೀರು ಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "water",
+        "need"
+      ],
+      "verified": false,
+      "source": "phrase entry",
+      "notes": "Gloss ME WATER NEED. Unverified phrase order."
+    },
+    "ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "bird"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕಪ್ಪು": {
+      "sign_ids": [
+        "black"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಬೆಕ್ಕು": {
+      "sign_ids": [
+        "cat"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಹಸು": {
+      "sign_ids": [
+        "cow"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನಾಯಿ": {
+      "sign_ids": [
+        "dog"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಮೀನು": {
+      "sign_ids": [
+        "fish"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಶುಭೋದಯ": {
+      "sign_ids": [
+        "good_morning"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಬೂದು ಬಣ್ಣ": {
+      "sign_ids": [
+        "grey"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನೀವು ಪರಿಪೂರ್ಣರು": {
+      "sign_ids": [
+        "you_are_perfect"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಮಳೆಗಾಲ": {
+      "sign_ids": [
+        "monsoon"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಮಧ್ಯಾಹ್ನ": {
+      "sign_ids": [
+        "afternoon"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕೋಪ": {
+      "sign_ids": [
+        "angry"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕೆಟ್ಟದು": {
+      "sign_ids": [
+        "bad"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಹುಡುಗ": {
+      "sign_ids": [
+        "boy"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ತಿನ್ನು": {
+      "sign_ids": [
+        "eat"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಸ್ನೇಹಿತ": {
+      "sign_ids": [
+        "friend"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕುಡಿ": {
+      "sign_ids": [
+        "drink"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಹುಡುಗಿ": {
+      "sign_ids": [
+        "girl"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಸಹೋದರ": {
+      "sign_ids": [
+        "brother"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ತಂದೆ": {
+      "sign_ids": [
+        "father"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಸಂಜೆ": {
+      "sign_ids": [
+        "evening"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ತಾಯಿ": {
+      "sign_ids": [
+        "mother"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ರಾತ್ರಿ": {
+      "sign_ids": [
+        "night"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಸಂಗೀತ": {
+      "sign_ids": [
+        "music"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಮೂಗು": {
+      "sign_ids": [
+        "nose"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನಿದ್ರೆ": {
+      "sign_ids": [
+        "sleep"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕುಳಿತುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "sit"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನಿಂತುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "stand"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನಿಲ್ಲಿಸಿ": {
+      "sign_ids": [
+        "stop"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ವಿದ್ಯಾರ್ಥಿ": {
+      "sign_ids": [
+        "student"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಓದು": {
+      "sign_ids": [
+        "study"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಶಿಕ್ಷಕ": {
+      "sign_ids": [
+        "teacher"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಇಂದು": {
+      "sign_ids": [
+        "today"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನಾಳೆ": {
+      "sign_ids": [
+        "tomorrow"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಸುಸ್ವಾಗತ": {
+      "sign_ids": [
+        "welcome"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕೆಲಸ": {
+      "sign_ids": [
+        "work"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ನಿನ್ನೆ": {
+      "sign_ids": [
+        "yesterday"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಹಲ್ಲು": {
+      "sign_ids": [
+        "teeth"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕೈ": {
+      "sign_ids": [
+        "hand"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಬರೆ": {
+      "sign_ids": [
+        "write"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಕೊಡೆ": {
+      "sign_ids": [
+        "umbrella"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ಉಂಗುರ": {
+      "sign_ids": [
+        "ring"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    },
+    "ವಿದ್ಯುತ್": {
+      "sign_ids": [
+        "power"
+      ],
+      "verified": false,
+      "source": "Amrita SLR class vocabulary (lexical lookup)",
+      "notes": ""
+    }
   }
 }

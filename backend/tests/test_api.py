@@ -114,8 +114,17 @@ def test_dataset_validation_and_sample_endpoints(client):
 def test_training_failure_is_reported_and_server_recovers(client, monkeypatch, tmp_path):
     import time as _t
     from app import main
-    from app.dataset.store import DatasetStore
-    monkeypatch.setattr(main.state, "dataset", DatasetStore(tmp_path / "empty"))
+    from app.jobs import JobQueue
+    from app.training import registry
+    from app.training.train_model import TrainingError
+
+    def boom(**_kw):
+        raise TrainingError("need at least 2 classes with 3+ valid samples each")
+
+    queue = JobQueue(tmp_path / "jobs.json", auto_train=False)
+    queue.start()
+    monkeypatch.setattr(main.state, "jobs", queue)
+    monkeypatch.setattr(registry, "train_and_promote", boom)
     r = client.post("/api/model/train")
     assert r.status_code == 202
     for _ in range(100):
@@ -125,4 +134,21 @@ def test_training_failure_is_reported_and_server_recovers(client, monkeypatch, t
         _t.sleep(0.05)
     assert status["state"] == "error" and "at least 2 classes" in status["error"]
     assert client.get("/api/health").json()["status"] == "ok"
-    assert client.post("/api/model/train").status_code == 202     # can retry after a failure
+    failed = client.get("/api/jobs").json()["jobs"][0]
+    assert failed["state"] == "failed"
+    retry = client.post(f"/api/jobs/{failed['id']}/retry")
+    assert retry.status_code == 200 and retry.json()["reason"].startswith("retry of")
+    queue.stop()
+
+
+def test_registry_and_dataset_endpoints(client):
+    reg = client.get("/api/model/registry").json()
+    assert {"active", "versions", "history"} <= set(reg)
+    ds = client.get("/api/datasets").json()
+    keys = {d["key"] for d in ds["datasets"]}
+    assert {"amrita_slr", "isl_csltr", "include"} <= keys
+    for d in ds["datasets"]:
+        assert d["license"] and d["citation"] and d["source_url"].startswith("https://")
+    assert client.post("/api/datasets/not_a_dataset/import").status_code == 404
+    assert client.post("/api/jobs/nope/cancel").status_code == 404
+    assert client.get("/api/uploads/zzzz").status_code == 404

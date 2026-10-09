@@ -4,3 +4,7 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 frontend/public/mediapipe-wasm/
+data/raw/*/extracted/
+data/raw/*/*.zip
+data/raw/*/*.part
+data/processed/

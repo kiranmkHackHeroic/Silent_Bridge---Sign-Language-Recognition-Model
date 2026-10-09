@@ -75,7 +75,7 @@ def trained(tmp_path_factory):
 def test_training_uses_held_out_session_and_compares_baseline(trained):
     metrics, _, stages = trained
     assert metrics["test"] is not None
-    assert metrics["headline_source"].startswith("held-out test session")
+    assert metrics["headline_source"].startswith("independent test set (held-out signer/session group")
     assert metrics["num_test"] == 20 and metrics["num_train_dev"] == 40
     assert "logreg" in metrics["test"]["models"]                   # baseline always reported on the same test set
     assert metrics["test"]["continuous_stream"]["reference_signs"] == 15   # _none excluded from reference
@@ -97,11 +97,14 @@ def test_saved_model_loads_with_consistent_label_encoder(trained):
 
 
 def test_retraining_archives_previous_model(trained, tmp_path):
+    import shutil
     _, root, _ = trained
+    models = tmp_path / "models"                     # own copy: never mutate the shared fixture model
+    shutil.copytree(root / "models", models)
     store = DatasetStore(root / "dataset")
     train(store, FeatureConfig(), TrainingConfig(augment_copies=0, candidate_models=["logreg"]),
-          out_dir=root / "models", known_labels=KNOWN)
-    archived = list((root / "models" / "archive").glob("*/sign_model.joblib"))
+          out_dir=models, known_labels=KNOWN)
+    archived = list((models / "archive").glob("*/sign_model.joblib"))
     assert archived, "previous model should be archived, not silently overwritten"
 
 
@@ -205,6 +208,6 @@ def test_validating_a_temporary_dataset_never_touches_the_project_manifest(tmp_p
     store = DatasetStore(tmp_path / "ds")
     store.save("yes", sign_frames("push"), "s1")
     validate_dataset(store, KNOWN)
-    assert (tmp_path / "dataset_manifest.csv").exists()
+    assert (tmp_path / "ds_manifest.csv").exists()
     after = MANIFEST_FILE.read_bytes() if MANIFEST_FILE.exists() else None
     assert before == after

@@ -8,11 +8,10 @@ import asyncio
 import io
 import json
 import logging
-import threading
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -20,29 +19,33 @@ from pydantic import BaseModel, Field
 
 from .animation.library import AnimationLibrary
 from .animation.retarget import sample_to_animation
-from .config import METRICS_FILE, RecognitionSettings
+from .config import DATA_DIR, PROCESSED_LANDMARKS_DIR, RecognitionSettings
+from .jobs import JobQueue, training_eligibility
 from .dataset.store import DatasetError, DatasetStore
 from .dataset.validate import validate_dataset
 from .recognition.pipeline import RecognitionSession
 from .recognition.predictor import SignPredictor
-from .training.train_model import TrainingError, train
+from .training.registry import activate, active_paths, active_version, rollback, sanity_check_versions
+from .uploads import UploadError, create_batch, delete_batch, get_batch, list_batches
+from .video.importer import ADAPTERS
 from .translation.kannada_mapping import KannadaSignMapper, Vocabulary, is_kannada, normalize_kannada
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("signbridge")
+DATASETS_REGISTRY = DATA_DIR / "datasets_registry.json"
 
 
 class AppState:
-    def __init__(self):
+    def __init__(self, start_jobs: bool = True):
         self.vocab = Vocabulary()
         self.mapper = KannadaSignMapper()
         self.animations = AnimationLibrary()
         self.dataset = DatasetStore()
-        self.predictor = SignPredictor()
+        self.predictor = SignPredictor()          # follows the registry's active-model pointer
         self.predictor.load()
-        self.training = False
-        self.train_job: dict = {"state": "idle", "stage": "", "progress": 0.0, "error": None, "metrics": None,
-                                "started_at": None, "finished_at": None}
+        self.jobs = JobQueue(on_model_change=self.predictor.load)
+        if start_jobs:
+            self.jobs.start()
 
 
 state: AppState | None = None
@@ -54,9 +57,10 @@ async def lifespan(_app: FastAPI):
     state = AppState()
     log.info("model loaded=%s (%s)", state.predictor.loaded, state.predictor.error or "ok")
     yield
+    state.jobs.stop()
 
 
-app = FastAPI(title="Kannada SignBridge API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="Kannada SignBridge API", version="2.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -99,6 +103,11 @@ class TTSRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=500)
 
 
+class TrainRequest(BaseModel):
+    models: list[str] | None = None
+    sources: list[str] | None = None
+
+
 # ---------------------------------------------------------------- routes
 @app.get("/api/health")
 def health():
@@ -107,63 +116,197 @@ def health():
 
 @app.get("/api/model/status")
 def model_status():
-    st = S().predictor.status()
-    st["training_in_progress"] = S().training
+    s = S()
+    st = s.predictor.status()
+    st["training_in_progress"] = s.jobs.active_training() is not None
+    st["active_version"] = active_version()
     st["defaults"] = RecognitionSettings().to_dict()
     return st
 
 
 @app.get("/api/model/metrics")
 def model_metrics():
-    if not METRICS_FILE.exists():
+    _, _, metrics_file = active_paths()
+    if not metrics_file.exists():
         return {"available": False}
-    return {"available": True, **json.loads(METRICS_FILE.read_text(encoding="utf-8"))}
-
-
-def _run_training_job(s: AppState) -> None:
-    job = s.train_job
-
-    def progress(stage: str, frac: float) -> None:
-        job["stage"], job["progress"] = stage, round(frac, 3)
-
-    try:
-        metrics = train(s.dataset, progress=progress, known_labels=set(s.vocab.entries))
-        s.predictor.load()
-        if not s.predictor.loaded:
-            raise TrainingError(f"model trained but failed to load: {s.predictor.error}")
-        job.update(state="done", stage="Done - model loaded", progress=1.0, metrics=metrics)
-    except TrainingError as exc:
-        job.update(state="error", error=str(exc))
-    except Exception as exc:  # unexpected: report instead of crashing the server
-        log.exception("training failed")
-        job.update(state="error", error=f"unexpected training error: {exc}")
-    finally:
-        job["finished_at"] = time.time()
-        s.training = False
+    return {"available": True, **json.loads(metrics_file.read_text(encoding="utf-8"))}
 
 
 @app.post("/api/model/train", status_code=202)
-def model_train():
-    """Starts training in a background thread; poll /api/model/train/status for progress."""
+def model_train(req: TrainRequest | None = None):
+    """Queues a training job (one at a time); progress via /api/jobs or /api/model/train/status."""
     s = S()
-    if s.training:
-        raise HTTPException(409, "training already in progress")
-    s.training = True
-    s.train_job.update(state="running", stage="Starting", progress=0.0, error=None, metrics=None,
-                       started_at=time.time(), finished_at=None)
-    threading.Thread(target=_run_training_job, args=(s,), daemon=True).start()
-    return s.train_job
+    running = s.jobs.active_training()
+    if running:
+        raise HTTPException(409, f"a training job is already {running['state']} ({running['id']})")
+    config = {}
+    if req and req.models:
+        config["candidate_models"] = req.models
+    if req and req.sources:
+        config["sources"] = req.sources
+    job = s.jobs.submit("train", {"config": config}, "Manual training", "started from the Dataset & Model page")
+    return _train_status_view(job)
+
+
+def _train_status_view(job: dict | None) -> dict:
+    if job is None:
+        return {"state": "idle", "stage": "", "progress": 0.0, "error": None, "metrics": None, "job_id": None}
+    result = job.get("result") or {}
+    error = job.get("error")
+    if job["state"] == "done" and not result.get("promoted"):
+        error = result.get("decision") or "candidate model was not promoted"
+    if job["state"] in ("queued", "running"):
+        state_ = "running"
+    elif job["state"] == "done" and result.get("promoted"):
+        state_ = "done"
+    else:
+        state_ = "error"
+    metrics = None
+    if state_ == "done":
+        _, _, mf = active_paths()
+        if mf.exists():
+            metrics = json.loads(mf.read_text(encoding="utf-8"))
+    return {"state": state_, "stage": "queued - waiting for the job worker" if job["state"] == "queued" else job["stage"],
+            "progress": job["progress"], "error": error, "metrics": metrics, "job_id": job["id"], "result": result}
 
 
 @app.get("/api/model/train/status")
 def model_train_status():
-    return S().train_job
+    trains = [j for j in S().jobs.list() if j["type"] == "train"]
+    return _train_status_view(trains[0] if trains else None)
+
+
+@app.get("/api/model/registry")
+def model_registry():
+    return sanity_check_versions()
+
+
+@app.post("/api/model/rollback")
+def model_rollback():
+    try:
+        version = rollback()
+    except RuntimeError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    S().predictor.load()
+    return {"active_version": version, "status": S().predictor.status()}
+
+
+@app.post("/api/model/activate/{version}")
+def model_activate(version: str):
+    try:
+        activate(version)
+    except RuntimeError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    S().predictor.load()
+    if not S().predictor.loaded:
+        rollback()
+        S().predictor.load()
+        raise HTTPException(400, "that version failed to load; the previous model was restored")
+    return {"active_version": version, "status": S().predictor.status()}
 
 
 @app.post("/api/model/reload")
 def model_reload():
     S().predictor.load()
     return S().predictor.status()
+
+
+@app.get("/api/training/eligibility")
+def training_eligibility_endpoint():
+    return training_eligibility()
+
+
+# ---------------------------------------------------------------- jobs
+@app.get("/api/jobs")
+def jobs_list():
+    return {"jobs": [{k: v for k, v in j.items() if k != "traceback"} for j in S().jobs.list()[:50]]}
+
+
+@app.post("/api/jobs/{job_id}/cancel")
+def jobs_cancel(job_id: str):
+    try:
+        return S().jobs.cancel(job_id)
+    except KeyError as exc:
+        raise HTTPException(404, "job not found") from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+@app.post("/api/jobs/{job_id}/retry")
+def jobs_retry(job_id: str):
+    try:
+        return S().jobs.retry(job_id)
+    except KeyError as exc:
+        raise HTTPException(404, "job not found") from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+# ---------------------------------------------------------------- external datasets & uploads
+@app.get("/api/datasets")
+def datasets():
+    reg = json.loads(DATASETS_REGISTRY.read_text(encoding="utf-8"))["datasets"]
+    out = []
+    for key, spec in reg.items():
+        status_file = DATA_DIR / "raw" / key / "download_status.json"
+        dl = json.loads(status_file.read_text(encoding="utf-8")) if status_file.exists() else {"state": "not downloaded"}
+        summary_file = DATA_DIR / "processed" / f"{key}_import_summary.json"
+        imp = json.loads(summary_file.read_text(encoding="utf-8")) if summary_file.exists() else None
+        processed_dir = PROCESSED_LANDMARKS_DIR / key
+        out.append({"key": key, "name": spec["name"], "task": spec["task"], "source_url": spec["source_url"],
+                    "license": spec["license"], "citation": spec["citation"], "doi": spec.get("doi"),
+                    "description": spec["description"], "version": spec.get("version"),
+                    "download_state": dl.get("state"), "download_files": dl.get("files", {}),
+                    "import_summary": imp, "importable": key in ADAPTERS,
+                    "processed_samples": sum(1 for _ in processed_dir.glob("*/*.json")) if processed_dir.exists() else 0})
+    return {"datasets": out, "uploads": list_batches()}
+
+
+@app.post("/api/datasets/{key}/import", status_code=202)
+def dataset_import(key: str):
+    if key not in ADAPTERS:
+        raise HTTPException(404, f"no importer for dataset '{key}'")
+    return S().jobs.submit("import_dataset", {"dataset": key, "workers": 2}, f"Import {key}")
+
+
+@app.post("/api/uploads")
+async def upload_files(files: list[UploadFile] = File(...), dataset_name: str = Form("user_uploads"),
+                       signer_id: str = Form("signer1"), session_id: str = Form(""),
+                       label_mode: str = Form("single"), label: str = Form(""), language: str = Form("ISL"),
+                       annotation_type: str = Form("isolated")):
+    payload = [(f.filename or "upload", await f.read()) for f in files]
+    try:
+        return await run_in_threadpool(create_batch, payload, dataset_name, signer_id, session_id, label_mode,
+                                       label, set(S().vocab.entries), language, annotation_type)
+    except UploadError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.get("/api/uploads/{batch_id}")
+def upload_get(batch_id: str):
+    try:
+        return get_batch(batch_id)
+    except UploadError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@app.post("/api/uploads/{batch_id}/import", status_code=202)
+def upload_import(batch_id: str):
+    try:
+        batch = get_batch(batch_id)
+    except UploadError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    if not batch["ready"]:
+        raise HTTPException(400, "no importable videos in this batch")
+    return S().jobs.submit("import_upload", {"batch_id": batch_id}, f"Import upload {batch_id} ({batch['ready']} videos)")
+
+
+@app.delete("/api/uploads/{batch_id}")
+def upload_delete(batch_id: str, delete_landmarks: bool = False):
+    try:
+        return delete_batch(batch_id, delete_landmarks)
+    except UploadError as exc:
+        raise HTTPException(404, str(exc)) from exc
 
 
 @app.get("/api/vocabulary")

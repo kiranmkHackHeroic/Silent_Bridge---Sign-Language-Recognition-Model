@@ -18,7 +18,8 @@ LABELS_FILE = DATA_DIR / "labels.json"
 KANNADA_MAPPING_FILE = DATA_DIR / "kannada_sign_mapping.json"
 ANIMATION_MAPPING_FILE = DATA_DIR / "animation_mapping.json"
 ANIMATIONS_DIR = DATA_DIR / "animations"
-DATASET_DIR = DATA_DIR / "dataset"
+DATASET_DIR = DATA_DIR / "dataset"                 # webcam recordings made in the app
+PROCESSED_LANDMARKS_DIR = DATA_DIR / "processed" / "landmarks"   # imported datasets / uploads
 
 MODEL_FILE = MODELS_DIR / "sign_model.joblib"
 MODEL_META_FILE = MODELS_DIR / "model_meta.json"
@@ -107,9 +108,16 @@ DEFAULT_FEATURE_CONFIG = FeatureConfig()
 
 @dataclass
 class TrainingConfig:
-    augment_copies: int = 6
+    augment_copies: int = 3
     crop_fraction: float = 0.15        # random trim of up to 15% at each end
     noise_std: float = 0.015           # landmark jitter in normalized hand units
     position_jitter: float = 0.04
+    mirror_augment: bool = True        # add left/right mirrored copies (left-handed signers, mirrored videos)
     random_seed: int = 42
-    candidate_models: list[str] = field(default_factory=lambda: ["logreg", "svm_rbf", "mlp"])
+    cv_folds: int = 3
+    test_fraction: float = 0.2         # share of signer groups held out when no official test split exists
+    candidate_models: list[str] = field(default_factory=lambda: ["logreg", "svm_rbf", "mlp", "gru"])
+    sources: list[str] | None = None   # None = all sources (app recordings + every imported dataset)
+    # promotion / acceptance criteria for a newly trained candidate
+    min_test_macro_f1: float = 0.40
+    max_regression: float = 0.02       # candidate may not be worse than the active model by more than this

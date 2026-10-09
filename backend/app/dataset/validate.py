@@ -154,7 +154,7 @@ def validate_dataset(store: DatasetStore, known_labels: set[str], fcfg: FeatureC
     if write_manifest:
         # the manifest lives next to the dataset it describes (data/dataset -> data/dataset_manifest.csv),
         # so validating a temporary dataset can never overwrite the project's manifest
-        manifest_file = Path(manifest_file) if manifest_file else store.root.parent / MANIFEST_FILE.name
+        manifest_file = Path(manifest_file) if manifest_file else store.root.parent / f"{store.root.name}_manifest.csv"
         manifest_file.parent.mkdir(parents=True, exist_ok=True)
         with manifest_file.open("w", newline="", encoding="utf-8") as fh:
             writer = csv.writer(fh)

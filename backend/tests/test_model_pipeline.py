@@ -94,7 +94,7 @@ def trained(tmp_path_factory):
                 off = tuple(rng.normal(0, 0.02, size=2))
                 n = int(rng.integers(24, 36))
                 store.save(label, sign_frames(kind, n=n, rng=rng, noise=0.003, offset=off), session)
-    metrics = train(store, FeatureConfig(), TrainingConfig(augment_copies=2), save=True, out_dir=root / "models")
+    metrics = train(store, FeatureConfig(), TrainingConfig(augment_copies=2, candidate_models=["logreg", "mlp"]), save=True, out_dir=root / "models")
     predictor = SignPredictor(root / "models" / "sign_model.joblib", root / "models" / "model_meta.json")
     assert predictor.load(), predictor.error
     return metrics, predictor, root
@@ -103,7 +103,7 @@ def trained(tmp_path_factory):
 def test_training_metrics_are_session_grouped(trained):
     metrics, predictor, root = trained
     assert metrics["session_independent"] is True
-    assert "recording session" in metrics["evaluation_strategy"]
+    assert "signer/session groups" in metrics["evaluation_strategy"]
     assert set(metrics["per_class"]) == set(CLASSES.values())
     assert metrics["num_samples"] == 48
     assert metrics["correct"] + metrics["incorrect"] == 48

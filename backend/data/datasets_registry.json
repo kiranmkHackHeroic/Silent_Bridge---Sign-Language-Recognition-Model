@@ -1,0 +1,55 @@
+{
+  "_comment": "Registry of external Indian Sign Language datasets. 'files' lists exactly what the downloader fetches (URL, size, checksum as published by the host). Status fields are updated by tools/download_datasets.py and the import pipeline; never edit them by hand to claim a dataset was processed.",
+  "datasets": {
+    "amrita_slr": {
+      "name": "Amrita SLR - Real Time ISL Dataset",
+      "task": "isolated",
+      "source_url": "https://data.mendeley.com/datasets/dtg9s785v8/1",
+      "doi": "10.17632/dtg9s785v8.1",
+      "license": "CC BY 4.0",
+      "usage_conditions": "Attribution required. Use for this educational/research project with citation.",
+      "citation": "Sasidharan, R., Rashmi, M., Nair, K. S., Heera Krishna N S, Muraleedharan, K., Bellamkonda, N. G., Rao, S. M., Avvari, S., Prakash, P. B., Rao, D. T. (2025). Amrita SLR - Real Time ISL Dataset (Version 1). Mendeley Data. https://doi.org/10.17632/dtg9s785v8.1",
+      "description": "50 commonly used ISL signs, ~16 videos per class, 7 signers, 1920x1080 @ 28 fps, indoor/outdoor, standing/sitting.",
+      "version": "1",
+      "files": [
+        {"name": "Amrita SLR Dataset.zip",
+         "url": "https://data.mendeley.com/public-files/datasets/dtg9s785v8/files/{file_id}/file_downloaded",
+         "resolve": "mendeley", "dataset_id": "dtg9s785v8", "size": 1465000000, "checksum": "sha256:"}
+      ]
+    },
+    "isl_csltr": {
+      "name": "ISL-CSLTR: Indian Sign Language Dataset for Continuous Sign Language Translation and Recognition",
+      "task": "continuous",
+      "source_url": "https://data.mendeley.com/datasets/kcmpdxky7p/1",
+      "doi": "10.17632/kcmpdxky7p.1",
+      "license": "CC BY 4.0",
+      "usage_conditions": "Attribution required.",
+      "citation": "Elakkiya, R., Natarajan, B. (2021). ISL-CSLTR: Indian Sign Language Dataset for Continuous Sign Language Translation and Recognition (Version 1). Mendeley Data. https://doi.org/10.17632/kcmpdxky7p.1",
+      "description": "700 sentence-level videos of 100 English sentences by several signers, sentence-level frames and word-level images, CSV mapping videos to sentences.",
+      "version": "1",
+      "files": [
+        {"name": "ISL_CSLRT_Corpus.zip",
+         "url": "https://data.mendeley.com/public-files/datasets/kcmpdxky7p/files/c14c8953-be53-4c7a-85d5-5bcd7e79d86e/file_downloaded",
+         "size": 8905822924, "checksum": "sha256:1a849c89c1d53b7e9ce43dc24f6d4f0afd95e707bf256febc26716782b736686"}
+      ]
+    },
+    "include": {
+      "name": "INCLUDE: A Large Scale Dataset for Indian Sign Language Recognition",
+      "task": "isolated",
+      "source_url": "https://zenodo.org/records/4010759",
+      "metadata_url": "https://huggingface.co/datasets/ai4bharat/INCLUDE",
+      "doi": "10.1145/3394171.3413528",
+      "license": "CC BY 4.0",
+      "usage_conditions": "Attribution required. The dataset card asks users to respect the privacy and dignity of the signers.",
+      "citation": "Sridhar, A., Ganesan, R. G., Kumar, P., Khapra, M. (2020). INCLUDE: A Large Scale Dataset for Indian Sign Language Recognition. Proceedings of the 28th ACM International Conference on Multimedia (MM '20), 1366-1375. https://doi.org/10.1145/3394171.3413528",
+      "description": "4,287 videos of 263 isolated ISL words (56.75 GB). Only the categories listed in 'files' are downloaded (subset chosen for overlap with the app vocabulary). Official train/val/test splits from the HuggingFace metadata are used.",
+      "version": "Zenodo 4010759",
+      "files": [
+        {"name": "Greetings_1of2.zip", "url": "https://zenodo.org/records/4010759/files/Greetings_1of2.zip?download=1", "size": 1573733886, "checksum": "md5:457624ce89b2d32520d6b61bd1f113a2"},
+        {"name": "Greetings_2of2.zip", "url": "https://zenodo.org/records/4010759/files/Greetings_2of2.zip?download=1", "size": 1210000000, "checksum": "md5:2dd843662545b0ca57e79cff84562698"},
+        {"name": "Pronouns_1of2.zip", "url": "https://zenodo.org/records/4010759/files/Pronouns_1of2.zip?download=1", "size": 1420000000, "checksum": "md5:854b5510d0fd07b8c85cb4dda37492b6"},
+        {"name": "Pronouns_2of2.zip", "url": "https://zenodo.org/records/4010759/files/Pronouns_2of2.zip?download=1", "size": 950000000, "checksum": "md5:5fdb1cc5266be67136aca15509c978ba"}
+      ]
+    }
+  }
+}

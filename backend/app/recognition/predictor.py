@@ -36,10 +36,12 @@ class Prediction:
 
 
 class SignPredictor:
-    def __init__(self, model_file: Path = MODEL_FILE, meta_file: Path = MODEL_META_FILE,
+    def __init__(self, model_file: Path | None = None, meta_file: Path | None = None,
                  feature_config: FeatureConfig = DEFAULT_FEATURE_CONFIG):
-        self.model_file = Path(model_file)
-        self.meta_file = Path(meta_file)
+        # None = follow the registry's active-model pointer (resolved on every load/reload)
+        self._explicit = model_file is not None
+        self.model_file = Path(model_file) if model_file else MODEL_FILE
+        self.meta_file = Path(meta_file) if meta_file else MODEL_META_FILE
         self.feature_config = feature_config
         self.model = None
         self.classes: list[str] = []
@@ -55,6 +57,9 @@ class SignPredictor:
         """Load the model bundle. Returns False (and records `error`) on failure."""
         with self._lock:
             self.model, self.classes, self.meta, self.error = None, [], {}, None
+            if not self._explicit:
+                from ..training.registry import active_paths
+                self.model_file, self.meta_file, _ = active_paths()
             try:
                 bundle = self._read_bundle()
                 self.model = bundle["pipeline"]
