@@ -1,32 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { AvatarView, type AvatarHandle, type PlaybackState } from "../avatar/AvatarView";
-import { Card, Chip, Notice, Spinner } from "../components/ui";
+import { Icon } from "../components/Icon";
+import { Btn, Card, Chip, Empty, Notice, Spinner } from "../components/ui";
 import { api } from "../services/api";
 import { listenKannada, speechRecognitionSupported } from "../services/speech";
-import type { AnimationClip, TranslationItem, TranslationResult } from "../services/types";
+import type { AnimationClip, TranslationItem, TranslationResult, TranslationSign } from "../services/types";
 
-const EXAMPLES = ["ನಮಸ್ಕಾರ ನಾನು ನೀರು ದಯವಿಟ್ಟು", "ಧನ್ಯವಾದಗಳು", "ಕ್ಷಮಿಸಿ ಸಹಾಯ", "ನೀವು ಒಳ್ಳೆಯದು ಹೌದು"];
+const EXAMPLES = ["ನಮಸ್ಕಾರ", "ನಿಮ್ಮ ಹೆಸರು ಏನು?", "ನನಗೆ ಸಹಾಯ ಬೇಕು", "ನನಗೆ ನೀರು ಬೇಕು", "ಧನ್ಯವಾದಗಳು"];
 
-interface SeqItem {
+interface SeqSign {
+  group: number;
   item: TranslationItem;
+  sign: TranslationSign;
   clip: AnimationClip | null;
+  error?: string;
 }
 
-function animBadge(clip: AnimationClip | null, item: TranslationItem) {
-  if (!item.supported) return <Chip tone="bad">unsupported · skipped</Chip>;
-  if (!clip) return <Chip tone="warn">no animation</Chip>;
-  if (clip.type === "captured") return <Chip tone="ok" title={clip.description}>captured clip{clip.verified ? " · verified" : " · unverified"}</Chip>;
-  return <Chip tone="sim" title={clip.description}>placeholder · not verified ISL</Chip>;
+function clipBadge(s: SeqSign) {
+  if (!s.clip) return <Chip tone="warn" icon="alert">{s.error ? "clip failed to load" : "no animation yet"}</Chip>;
+  if (s.clip.type === "captured") return <Chip tone={s.clip.verified ? "ok" : "info"} title={s.clip.description}>captured{s.clip.verified ? " · verified" : " · unverified"}</Chip>;
+  return <Chip tone="sim" title={s.clip.description}>placeholder · not verified ISL</Chip>;
 }
 
 export function KannadaToSign() {
-  const [text, setText] = useState(EXAMPLES[0]);
+  const [text, setText] = useState(EXAMPLES[1]);
   const [result, setResult] = useState<TranslationResult | null>(null);
-  const [sequence, setSequence] = useState<SeqItem[]>([]);
+  const [sequence, setSequence] = useState<SeqSign[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [playback, setPlayback] = useState<PlaybackState>({ playing: false, paused: false, index: -1, progress: 0 });
-  const [playingClips, setPlayingClips] = useState<SeqItem[]>([]);
+  const [playing, setPlaying] = useState<SeqSign[]>([]);
   const [speed, setSpeed] = useState(1);
   const [listening, setListening] = useState(false);
   const [speechMsg, setSpeechMsg] = useState("");
@@ -36,27 +39,35 @@ export function KannadaToSign() {
   useEffect(() => () => stopListenRef.current(), []);
 
   const playable = sequence.filter((s) => s.clip);
+  const missing = sequence.filter((s) => !s.clip);
+
+  const play = (list: SeqSign[]) => {
+    setPlaying(list);
+    avatarRef.current?.play(list.map((s) => s.clip!));
+  };
 
   const translate = async () => {
     setError(null);
     setBusy(true);
+    avatarRef.current?.stop();
     try {
       const res = await api.translate(text);
       setResult(res);
-      const items: SeqItem[] = await Promise.all(
-        res.items.map(async (item) => {
-          if (!item.supported || !item.sign_id || !item.animation.available) return { item, clip: null };
+      const flat: SeqSign[] = [];
+      res.items.forEach((item, group) => item.signs.forEach((sign) => flat.push({ group, item, sign, clip: null })));
+      const loaded = await Promise.all(
+        flat.map(async (s) => {
+          if (!s.sign.animation.available) return s;
           try {
-            return { item, clip: await api.animation(item.sign_id) };
-          } catch {
-            return { item, clip: null };
+            return { ...s, clip: await api.animation(s.sign.sign_id) };
+          } catch (err) {
+            return { ...s, error: String((err as Error).message || err) };
           }
         }),
       );
-      setSequence(items);
-      const clips = items.filter((s) => s.clip);
-      setPlayingClips(clips);
-      if (clips.length) avatarRef.current?.play(clips.map((s) => s.clip!));
+      setSequence(loaded);
+      const clips = loaded.filter((s) => s.clip);
+      if (clips.length) play(clips);
     } catch (err) {
       setError(String((err as Error).message || err));
       setResult(null);
@@ -66,27 +77,17 @@ export function KannadaToSign() {
     }
   };
 
-  const replayAll = () => {
-    setPlayingClips(playable);
-    avatarRef.current?.play(playable.map((s) => s.clip!));
-  };
-  const replayOne = (s: SeqItem) => {
-    if (!s.clip) return;
-    setPlayingClips([s]);
-    avatarRef.current?.play([s.clip]);
-  };
   const clear = () => {
     setText("");
     setResult(null);
     setSequence([]);
-    setPlayingClips([]);
+    setPlaying([]);
+    setError(null);
     avatarRef.current?.stop();
   };
+
   const toggleListen = () => {
-    if (listening) {
-      stopListenRef.current();
-      return;
-    }
+    if (listening) return stopListenRef.current();
     setSpeechMsg("");
     setListening(true);
     stopListenRef.current = listenKannada(
@@ -96,104 +97,153 @@ export function KannadaToSign() {
     );
   };
 
-  const current = playback.playing && playback.index >= 0 ? playingClips[playback.index] : null;
+  const current = playback.playing && playback.index >= 0 ? playing[playback.index] : null;
+  const groups = result?.items ?? [];
 
   return (
-    <div className="page-grid k2s-grid">
-      <Card title="Kannada text input" className="span-input">
-        <textarea
-          lang="kn"
-          className="kn-text big"
-          rows={4}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="ಕನ್ನಡ ಪಠ್ಯವನ್ನು ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ (e.g. ನಮಸ್ಕಾರ ನಾನು)"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) translate();
-          }}
-        />
-        <div className="toolbar">
-          <button className="btn btn-primary" onClick={translate} disabled={busy || !text.trim()}>
-            {busy ? <Spinner /> : null} Translate to signs
-          </button>
-          <button className="btn" onClick={clear}>Clear</button>
-          {speechRecognitionSupported() && (
-            <button className="btn" onClick={toggleListen} title="Uses the browser's online speech service">
-              {listening ? "■ Stop listening" : "🎤 Speak Kannada"}
-            </button>
-          )}
+    <>
+      <div className="page-head">
+        <div>
+          <h2>Kannada to Sign</h2>
+          <p>Type Kannada text. Supported words and phrases are converted to an ordered ISL sign sequence and played on the avatar. Unsupported words are skipped and listed.</p>
         </div>
-        {speechRecognitionSupported() && (
-          <p className="muted small-text">Speech input uses your browser's speech service (audio is sent to the browser vendor's servers). Typing works fully offline.</p>
-        )}
-        {speechMsg && <Notice tone="warn">{speechMsg}</Notice>}
-        <div className="examples">
-          Examples:
-          {EXAMPLES.map((ex) => (
-            <button key={ex} className="btn btn-small btn-ghost" lang="kn" onClick={() => setText(ex)}>{ex}</button>
-          ))}
-        </div>
-        {error && <Notice tone="bad">{error}</Notice>}
-        {result && result.unsupported.length > 0 && (
-          <Notice tone="warn">
-            Not in the supported sign dictionary (skipped): <strong lang="kn">{result.unsupported.join(", ")}</strong>
-            {!result.contains_kannada && " — the input does not appear to contain Kannada script."}
-          </Notice>
-        )}
-        {result && <p className="muted small-text">{result.note}</p>}
-      </Card>
-
-      <Card
-        title="Sign avatar"
-        className="span-avatar"
-        actions={<Chip tone="sim" title="Built from primitives; see About page">Procedural prototype avatar</Chip>}
-      >
-        <div className="avatar-box">
-          <AvatarView ref={avatarRef} onState={setPlayback} speed={speed} />
-          <div className="avatar-caption">
-            {current ? (
-              <>
-                <span lang="kn" className="cap-kn">{current.item.text}</span>
-                <span className="cap-en">{current.item.english} · {current.clip?.type === "captured" ? "captured clip" : "placeholder motion"}</span>
-              </>
-            ) : (
-              <span className="muted">{playable.length ? "Ready" : "Translate text to play signs"}</span>
+      </div>
+      <div className="k2s-layout">
+        <div className="stack">
+          <Card title="Kannada text" icon="text">
+            <textarea
+              lang="kn"
+              className="kn-input lg"
+              rows={3}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="ಕನ್ನಡ ಪಠ್ಯವನ್ನು ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಿ…"
+              aria-label="Kannada text to translate"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) translate();
+              }}
+            />
+            <div className="toolbar">
+              <Btn icon="play" variant="primary" size="lg" onClick={translate} disabled={busy || !text.trim()}>
+                {busy ? "Translating…" : "Translate to signs"}
+              </Btn>
+              <Btn icon="x" onClick={clear}>Clear</Btn>
+              {speechRecognitionSupported() && (
+                <Btn icon="mic" variant="ghost" onClick={toggleListen} title="Uses the browser's online speech service">
+                  {listening ? "Stop listening" : "Speak Kannada"}
+                </Btn>
+              )}
+            </div>
+            <div className="examples">
+              <span className="muted xs">Try:</span>
+              {EXAMPLES.map((ex) => (
+                <button key={ex} className="example" lang="kn" onClick={() => setText(ex)}>{ex}</button>
+              ))}
+            </div>
+            {speechRecognitionSupported() && <p className="muted xs">Speech input sends audio to the browser vendor's speech service. Typing works fully offline.</p>}
+            {speechMsg && <Notice tone="warn">{speechMsg}</Notice>}
+            {error && <Notice tone="bad">{error}</Notice>}
+            {result?.unsupported_message && (
+              <Notice tone="warn" title={<span lang="kn">ಸಂಜ್ಞೆ ಲಭ್ಯವಿಲ್ಲ · No sign available</span>}>
+                <span lang="kn">{result.unsupported.join(", ")}</span>: these words are not in the supported dictionary and were skipped.
+                {!result.contains_kannada && " The input does not appear to contain Kannada script."}
+              </Notice>
             )}
-          </div>
-        </div>
-        <div className="progress" aria-label="Sequence progress"><div style={{ width: `${Math.round(playback.progress * 100)}%` }} /></div>
-        <div className="toolbar">
-          {playback.playing && !playback.paused && <button className="btn" onClick={() => avatarRef.current?.pause()}>❚❚ Pause</button>}
-          {playback.playing && playback.paused && <button className="btn btn-primary" onClick={() => avatarRef.current?.resume()}>▶ Resume</button>}
-          <button className="btn" onClick={replayAll} disabled={!playable.length}>↻ Replay all</button>
-          <button className="btn" onClick={() => avatarRef.current?.stop()} disabled={!playback.playing}>■ Stop</button>
-          <label className="inline-range">
-            Speed {speed.toFixed(2)}×
-            <input type="range" min={0.5} max={1.5} step={0.25} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
-          </label>
-        </div>
-        <p className="muted small-text">Drag to rotate the view. Placeholder motions are illustrative only and are <strong>not verified Indian Sign Language</strong>; record and capture verified demonstrations to replace them.</p>
-      </Card>
+            {missing.some((m) => m.item.supported) && (
+              <Notice tone="warn" title={<span lang="kn">ಅನಿಮೇಷನ್ ಲಭ್ಯವಿಲ್ಲ · Animation unavailable</span>}>
+                No avatar clip for: {missing.filter((m) => m.item.supported).map((m) => m.sign.isl_gloss || m.sign.sign_id).join(", ")}. These signs were skipped.
+              </Notice>
+            )}
+          </Card>
 
-      <Card title="Sign sequence timeline" className="span-timeline">
-        {sequence.length === 0 ? (
-          <span className="muted">The ordered list of signs will appear here after translation.</span>
-        ) : (
-          <ol className="timeline">
-            {sequence.map((s, i) => {
-              const active = current && current === s;
-              return (
-                <li key={i} className={`tl-item ${s.item.supported ? "" : "tl-unsupported"} ${active ? "tl-active" : ""}`}>
-                  <div className="tl-kn" lang="kn">{s.item.text}</div>
-                  <div className="tl-meta">{s.item.sign_id ?? "—"}{s.item.english ? ` · ${s.item.english}` : ""}</div>
-                  <div>{animBadge(s.clip, s.item)}</div>
-                  {s.clip && <button className="btn btn-small btn-ghost" onClick={() => replayOne(s)}>▶ Play this sign</button>}
-                </li>
-              );
-            })}
-          </ol>
-        )}
-      </Card>
-    </div>
+          <Card title="Sign sequence" icon="layers" subtitle={result ? `${result.sign_count} sign(s) from ${result.supported_count} supported word/phrase(s)` : undefined}>
+            {!result ? (
+              <Empty icon="layers">The ISL sign sequence (gloss order) appears here after translation.</Empty>
+            ) : (
+              <ol className="timeline">
+                {groups.map((item, g) => (
+                  <li key={g} className={`tl-group ${item.supported ? "" : "unsupported"}`}>
+                    <div className="tl-head">
+                      <span className="tl-word" lang="kn">{item.text}</span>
+                      {item.supported ? (
+                        <span className="toolbar">
+                          {item.phrase && <Chip tone="info" title={item.notes}>phrase</Chip>}
+                          <Chip tone="muted" title={item.source ?? ""}>mapping unverified</Chip>
+                        </span>
+                      ) : (
+                        <Chip tone="bad" icon="x">unsupported · skipped</Chip>
+                      )}
+                    </div>
+                    {item.supported && (
+                      <div className="tl-signs">
+                        {sequence.filter((s) => s.group === g).map((s) => {
+                          const idx = playing.indexOf(s);
+                          const active = current === s;
+                          return (
+                            <span key={s.sign.sign_id + idx} className={`tl-sign ${active ? "active" : ""}`}>
+                              <span className="num">{playable.indexOf(s) + 1 || "–"}</span>
+                              <span>
+                                <span className="tl-gloss">{s.sign.isl_gloss || s.sign.sign_id}</span>
+                                <span className="muted"> · {s.sign.english}</span>
+                              </span>
+                              {clipBadge(s)}
+                              {s.clip && (
+                                <button className="btn btn-ghost btn-sm" onClick={() => play([s])} aria-label={`Play sign ${s.sign.isl_gloss}`}>
+                                  <Icon name="play" size={13} />
+                                </button>
+                              )}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {item.phrase && item.notes && <span className="muted xs">{item.notes}</span>}
+                  </li>
+                ))}
+              </ol>
+            )}
+            {result && <p className="muted xs">{result.note}</p>}
+          </Card>
+        </div>
+
+        <div className="avatar-col">
+          <Card title="Sign avatar" icon="hand" actions={<Chip tone="sim" title="Procedural Three.js avatar built for this prototype">Prototype avatar</Chip>}>
+            <div className="avatar-stage">
+              <AvatarView ref={avatarRef} onState={setPlayback} speed={speed} />
+              {busy && <div className="avatar-loading"><Spinner label="Loading sign animations…" /></div>}
+              <div className="avatar-hud">
+                <div className="avatar-now" aria-live="polite">
+                  {current ? (
+                    <>
+                      <span className="kn" lang="kn">{current.sign.kannada || current.item.text}</span>
+                      <span className="gloss">{current.sign.isl_gloss} · {current.clip?.type === "captured" ? "captured clip" : "placeholder motion"}</span>
+                    </>
+                  ) : (
+                    <span className="muted small">{playable.length ? "Ready, press Replay" : "Neutral pose"}</span>
+                  )}
+                </div>
+                {playback.playing && <span className="chip chip-muted">{playback.index + 1} / {playing.length}</span>}
+              </div>
+            </div>
+            <div className="progress" aria-label="Sequence progress"><div style={{ width: `${Math.round(playback.progress * 100)}%` }} /></div>
+            <div className="toolbar">
+              {playback.playing && !playback.paused && <Btn icon="pause" onClick={() => avatarRef.current?.pause()}>Pause</Btn>}
+              {playback.playing && playback.paused && <Btn icon="play" variant="primary" onClick={() => avatarRef.current?.resume()}>Resume</Btn>}
+              <Btn icon="replay" onClick={() => play(playable)} disabled={!playable.length}>Replay all</Btn>
+              <Btn icon="stop" onClick={() => avatarRef.current?.stop()} disabled={!playback.playing}>Stop</Btn>
+              <span className="grow" />
+              <div className="seg" role="group" aria-label="Playback speed">
+                {[0.5, 0.75, 1, 1.25].map((v) => (
+                  <button key={v} className={speed === v ? "on" : ""} onClick={() => setSpeed(v)}>{v}×</button>
+                ))}
+              </div>
+            </div>
+            <p className="muted xs">
+              Drag to rotate. Placeholder motions are illustrative only and are <strong>not verified Indian Sign Language</strong>. Capture clips from verified demonstrations on Dataset &amp; Model to replace them.
+            </p>
+          </Card>
+        </div>
+      </div>
+    </>
   );
 }

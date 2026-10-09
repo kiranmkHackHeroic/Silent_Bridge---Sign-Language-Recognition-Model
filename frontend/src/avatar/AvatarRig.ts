@@ -12,6 +12,7 @@ import type { HandPose } from "../services/types";
 import type { PosePair, Side } from "./animation";
 
 const UPPER = 0.28;
+const HAND_SCALE = 1.12;
 const FORE = 0.26;
 const SHOULDER_Y = 1.42;
 const SHOULDER_X = 0.19;
@@ -20,11 +21,12 @@ function mat(color: string, roughness = 0.6) {
   return new THREE.MeshStandardMaterial({ color, roughness, metalness: 0.05 });
 }
 
-const SKIN = mat("#c68a64", 0.55);
-const SHIRT = mat("#0f766e", 0.7);
-const SHIRT_DARK = mat("#115e59", 0.7);
-const HAIR = mat("#1f1a17", 0.8);
-const DARK = mat("#111827", 0.4);
+const SKIN = mat("#c98d68", 0.62);
+const SHIRT = mat("#1f6f78", 0.85);
+const SHIRT_DARK = mat("#185a62", 0.85);
+const HAIR = mat("#1c1714", 0.9);
+const DARK = mat("#1f2937", 0.4);
+const LIP = mat("#9a4f3d", 0.6);
 
 class Limb {
   mesh: THREE.Mesh;
@@ -50,9 +52,19 @@ class Hand {
   constructor(public side: Side, parent: THREE.Object3D) {
     const s = side === "right" ? 1 : -1; // thumb side along local X
     parent.add(this.root);
-    const palm = new THREE.Mesh(new THREE.BoxGeometry(0.078, 0.085, 0.026), SKIN);
+    this.root.scale.setScalar(HAND_SCALE); // slightly enlarged so handshapes read clearly on screen
+    const palm = new THREE.Mesh(new THREE.BoxGeometry(0.078, 0.085, 0.028), SKIN);
     palm.position.set(0, 0.045, 0);
     this.root.add(palm);
+    const heel = new THREE.Mesh(new THREE.CapsuleGeometry(0.014, 0.05, 4, 10), SKIN);
+    heel.rotation.z = Math.PI / 2;
+    heel.position.set(0, 0.006, 0);
+    this.root.add(heel);
+    for (const x of [0.027, 0.009, -0.009, -0.027]) {
+      const knuckle = new THREE.Mesh(new THREE.SphereGeometry(0.0105, 10, 8), SKIN);
+      knuckle.position.set(x * s, 0.087, 0);
+      this.root.add(knuckle);
+    }
     const fingerX = [0.027, 0.009, -0.009, -0.027];
     const fingerScale = [0.95, 1.0, 0.95, 0.78];
     // thumb
@@ -100,6 +112,7 @@ export class AvatarRig {
   private upper: Record<Side, Limb>;
   private fore: Record<Side, Limb>;
   private elbows: Record<Side, THREE.Mesh>;
+  private wrists: Record<Side, THREE.Mesh>;
   private hands: Record<Side, Hand>;
   private shoulders: Record<Side, THREE.Vector3> = {
     right: new THREE.Vector3(-SHOULDER_X, SHOULDER_Y, 0),
@@ -148,10 +161,20 @@ export class AvatarRig {
       eye.position.set(x, 0.012, 0.086);
       this.head.add(eye);
     }
-    const mouth = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.003, 6, 16, Math.PI), DARK);
-    mouth.position.set(0, -0.042, 0.088);
-    mouth.rotation.z = Math.PI;
+    const mouth = new THREE.Mesh(new THREE.CapsuleGeometry(0.0045, 0.024, 4, 8), LIP);
+    mouth.rotation.z = Math.PI / 2;
+    mouth.position.set(0, -0.045, 0.088);
     this.head.add(mouth);
+    for (const x of [-0.033, 0.033]) {
+      const brow = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.005, 0.006), HAIR);
+      brow.position.set(x, 0.034, 0.088);
+      brow.rotation.z = x < 0 ? 0.08 : -0.08;
+      this.head.add(brow);
+      const ear = new THREE.Mesh(new THREE.SphereGeometry(0.018, 12, 10), SKIN);
+      ear.scale.set(0.5, 1, 0.8);
+      ear.position.set(x * 2.7, 0.0, -0.005);
+      this.head.add(ear);
+    }
     const nose = new THREE.Mesh(new THREE.SphereGeometry(0.012, 10, 8), SKIN);
     nose.position.set(0, -0.008, 0.095);
     this.head.add(nose);
@@ -163,6 +186,11 @@ export class AvatarRig {
       left: new THREE.Mesh(new THREE.SphereGeometry(0.041, 16, 12), SHIRT),
     };
     g.add(this.elbows.right, this.elbows.left);
+    this.wrists = {
+      right: new THREE.Mesh(new THREE.SphereGeometry(0.031, 14, 10), SKIN),
+      left: new THREE.Mesh(new THREE.SphereGeometry(0.031, 14, 10), SKIN),
+    };
+    g.add(this.wrists.right, this.wrists.left);
     this.hands = { right: new Hand("right", g), left: new Hand("left", g) };
   }
 
@@ -195,6 +223,7 @@ export class AvatarRig {
     this.upper[side].between(sh, elbow);
     this.fore[side].between(elbow, wristReal);
     this.elbows[side].position.copy(elbow);
+    this.wrists[side].position.copy(wristReal);
 
     const hand = this.hands[side];
     hand.root.position.copy(wristReal);

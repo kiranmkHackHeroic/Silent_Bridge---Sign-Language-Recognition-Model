@@ -73,12 +73,20 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     mount.appendChild(renderer.domElement);
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      setWebglError("The 3D view lost its graphics context. Reload the page to restore the avatar.");
+    };
+    renderer.domElement.addEventListener("webglcontextlost", onLost);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 20);
-    camera.position.set(0, 1.36, 2.05);
+    // upper-body framing: hands, face and signing space all visible
+    const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 20);
+    camera.position.set(0, 1.34, 1.78);
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1.28, 0);
+    controls.target.set(0, 1.27, 0);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
     controls.enablePan = false;
     controls.minDistance = 1.1;
     controls.maxDistance = 3.5;
@@ -88,17 +96,17 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
     controls.maxAzimuthAngle = Math.PI * 0.45;
     controls.update();
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x3b4252, 1.6));
-    const key = new THREE.DirectionalLight(0xffffff, 2.2);
-    key.position.set(1.2, 2.4, 2.2);
+    // soft three-point lighting
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x4b5563, 1.5));
+    const key = new THREE.DirectionalLight(0xfff4e8, 2.1);
+    key.position.set(1.0, 2.2, 2.4);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0x99f6e4, 0.8);
-    rim.position.set(-1.5, 2, -1.5);
+    const fill = new THREE.DirectionalLight(0xe8f1ff, 0.7);
+    fill.position.set(-1.6, 1.4, 1.6);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xb2f5ea, 0.9);
+    rim.position.set(-1.2, 2.2, -1.8);
     scene.add(rim);
-    const floor = new THREE.Mesh(new THREE.CircleGeometry(0.6, 48), new THREE.MeshStandardMaterial({ color: 0x64748b, transparent: true, opacity: 0.18 }));
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0.72;
-    scene.add(floor);
 
     const rig = new AvatarRig();
     scene.add(rig.group);
@@ -138,6 +146,7 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
         }
       }
       rig.setPose(poseRef.current, clock.getElapsedTime());
+      controls.update();
       renderer.render(scene, camera);
       const sig = `${state.playing}|${state.paused}|${state.index}`;
       if (onStateRef.current && (sig !== lastReported || now - lastReport > 150)) {
@@ -150,6 +159,7 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
 
     return () => {
       cancelAnimationFrame(raf);
+      renderer.domElement.removeEventListener("webglcontextlost", onLost);
       ro.disconnect();
       controls.dispose();
       renderer.dispose();
@@ -159,7 +169,7 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
 
   return (
     <div className="avatar-mount" ref={mountRef}>
-      {webglError && <div className="overlay-msg error">{webglError}</div>}
+      {webglError && <div className="overlay-error">{webglError}</div>}
     </div>
   );
 });

@@ -12,6 +12,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/inter": "5.2.8",
+    "@fontsource/noto-sans-kannada": "5.2.9",
     "@mediapipe/tasks-vision": "0.10.21",
     "react": "18.3.1",
     "react-dom": "18.3.1",

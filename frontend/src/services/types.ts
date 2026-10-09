@@ -27,8 +27,22 @@ export interface VocabEntry {
   english: string;
   kannada: string;
   emit: boolean;
+  isl_gloss: string;
+  verified: boolean;
+  notes: string;
   trained?: boolean;
   animation?: AnimationInfo;
+}
+
+export type ReviewState = "unchecked" | "ok" | "wrong";
+export interface AnimationReview {
+  handshape: ReviewState;
+  orientation: ReviewState;
+  movement: ReviewState;
+  location: ReviewState;
+  non_manual: ReviewState;
+  reviewer?: string | null;
+  reference?: string | null;
 }
 
 export interface AnimationInfo {
@@ -36,6 +50,7 @@ export interface AnimationInfo {
   type: "captured" | "placeholder" | null;
   verified: boolean;
   file?: string;
+  review?: AnimationReview | null;
 }
 
 export interface ModelStatus {
@@ -46,8 +61,39 @@ export interface ModelStatus {
   trained_at: string | null;
   model_type: string | null;
   num_samples: number | null;
+  model_version?: string | null;
+  architecture?: string | null;
+  dataset_hash?: string | null;
   training_in_progress?: boolean;
   defaults?: RecognitionSettings;
+}
+
+export interface TrainJob {
+  state: "idle" | "running" | "done" | "error";
+  stage: string;
+  progress: number;
+  error: string | null;
+  metrics: Metrics | null;
+}
+
+export interface ValidationSummary {
+  total: number;
+  valid: number;
+  rejected: number;
+  per_class: Record<string, { valid: number; rejected: number; sessions: string[]; signers: string[] }>;
+  imbalance_ratio: number | null;
+  warnings: string[];
+  dataset_hash: string;
+  rejected_samples: { sample_id: string; label: string; file: string; reasons: string[] }[];
+  model_dataset_hash: string | null;
+  model_is_current: boolean;
+}
+
+export interface RecordedSample {
+  sample_id: string;
+  label: string;
+  session_id: string;
+  frames: LandmarkFrame[];
 }
 
 export interface RecognitionSettings {
@@ -75,23 +121,47 @@ export interface TranscriptToken {
   t: number;
 }
 
-export interface Metrics {
+export interface MetricBlock {
+  accuracy: number;
+  macro_f1: number;
+  num_examples: number;
+  correct: number;
+  incorrect: number;
+  per_class: Record<string, { precision: number; recall: number; "f1-score": number; support: number }>;
+  confusion_matrix: { labels: string[]; matrix: number[][] };
+  confused_pairs: { true: string; predicted: string; count: number }[];
+}
+
+export interface StreamResult {
+  reference_signs: number;
+  emitted_signs: number;
+  substitutions: number;
+  deletions: number;
+  insertions: number;
+  sign_error_rate: number | null;
+  mean_frame_processing_ms: number | null;
+  threshold: number;
+}
+
+export interface Metrics extends Partial<MetricBlock> {
   available: boolean;
   trained_at?: string;
+  model_version?: string;
   model_type?: string;
+  architecture?: string;
   evaluation_strategy?: string;
   session_independent?: boolean;
+  headline_source?: string;
+  test?: { session: string; num_examples: number; models: Record<string, MetricBlock>; continuous_stream?: StreamResult } | null;
   num_samples?: number;
+  num_train_dev?: number;
+  num_test?: number;
   num_sessions?: number;
-  accuracy?: number;
-  macro_f1?: number;
-  correct?: number;
-  incorrect?: number;
-  per_class?: Record<string, { precision: number; recall: number; "f1-score": number; support: number }>;
-  confusion_matrix?: { labels: string[]; matrix: number[][] };
   inference_latency_ms?: number;
-  candidates?: Record<string, { accuracy: number; macro_f1: number }>;
+  training_seconds?: number;
+  candidates?: Record<string, { accuracy: number; macro_f1: number; architecture: string }>;
   class_counts?: Record<string, number>;
+  imbalance_ratio?: number | null;
   warnings?: string[];
   note?: string;
 }
@@ -124,14 +194,23 @@ export interface AnimationClip {
   keyframes: Keyframe[];
 }
 
+export interface TranslationSign {
+  sign_id: string;
+  english: string;
+  kannada: string;
+  isl_gloss: string;
+  animation: AnimationInfo;
+}
+
 export interface TranslationItem {
   text: string;
   supported: boolean;
-  sign_id: string | null;
+  phrase: boolean;
+  sign_ids: string[];
+  signs: TranslationSign[];
   verified: boolean;
   source: string | null;
-  english: string | null;
-  animation: AnimationInfo;
+  notes: string;
 }
 
 export interface TranslationResult {
@@ -140,6 +219,8 @@ export interface TranslationResult {
   contains_kannada: boolean;
   items: TranslationItem[];
   supported_count: number;
+  sign_count: number;
   unsupported: string[];
+  unsupported_message: string | null;
   note: string;
 }

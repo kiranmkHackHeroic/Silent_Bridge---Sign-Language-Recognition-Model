@@ -30,6 +30,7 @@ export class RecognitionSocket {
       }
     };
     ws.onclose = () => {
+      if (this.ws !== ws) return;
       this.ws = null;
       this.setStatus("closed");
       if (!this.closedByUser) this.retryTimer = window.setTimeout(() => this.connect(), 2000);
@@ -54,7 +55,13 @@ export class RecognitionSocket {
   close(): void {
     this.closedByUser = true;
     if (this.retryTimer) window.clearTimeout(this.retryTimer);
-    this.ws?.close();
+    const ws = this.ws;
     this.ws = null;
+    if (ws) {
+      // Detach first: a late "close" event from this socket must not overwrite the
+      // status reported by a newer socket (e.g. React StrictMode remount, page switch).
+      ws.onopen = ws.onmessage = ws.onclose = ws.onerror = null;
+      ws.close();
+    }
   }
 }

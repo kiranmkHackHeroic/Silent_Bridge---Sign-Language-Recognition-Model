@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { useVision } from "../services/useVision";
-import { Chip, Spinner } from "./ui";
+import { Icon } from "./Icon";
+import { Btn, Notice, Spinner, StatusDot } from "./ui";
 
 type Vision = ReturnType<typeof useVision>;
 
@@ -8,58 +9,73 @@ interface Props {
   vision: Vision;
   overlay: boolean;
   setOverlay: (v: boolean) => void;
-  extraControls?: ReactNode;
-  badge?: ReactNode;
+  /** Extra buttons placed after Start/Stop camera */
+  controls?: ReactNode;
+  /** Extra switches placed after the overlay switch */
+  switches?: ReactNode;
+  topLeft?: ReactNode;
+  topRight?: ReactNode;
 }
 
-export function CameraPanel({ vision, overlay, setOverlay, extraControls, badge }: Props) {
+export function CameraPanel({ vision, overlay, setOverlay, controls, switches, topLeft, topRight }: Props) {
   const { videoRef, canvasRef, camera, modelState, error, devices, deviceId, stats, start, stop, switchCamera } = vision;
+  const camTone = camera === "on" ? "ok" : camera === "error" ? "bad" : camera === "starting" ? "warn" : "muted";
+  const lmTone = modelState === "ready" ? "ok" : modelState === "error" ? "bad" : modelState === "loading" ? "warn" : "muted";
   return (
-    <div className="camera-panel">
+    <div className="stack">
       <div className="video-wrap">
-        <video ref={videoRef} playsInline muted className="mirror" />
-        <canvas ref={canvasRef} className="mirror overlay-canvas" />
+        <video ref={videoRef} playsInline muted className="mirror" aria-label="Live camera preview (mirrored)" />
+        <canvas ref={canvasRef} className="mirror" aria-hidden />
         {camera !== "on" && (
-          <div className="overlay-msg">
+          <div className="video-placeholder">
             {camera === "starting" || modelState === "loading" ? (
-              <>
-                <Spinner /> {modelState === "loading" ? "Loading hand & face models…" : "Starting camera…"}
-              </>
+              <Spinner label={modelState === "loading" ? "Loading hand & face landmark models…" : "Starting camera…"} />
             ) : (
-              <div>Camera is off. Press <strong>Start camera</strong>.<br />Video stays on this computer; only landmark coordinates are processed.</div>
+              <>
+                <Icon name="cameraOff" size={36} />
+                <div>
+                  <strong>Camera is off</strong>
+                  <div className="small">Video stays on this computer. Only landmark coordinates are processed.</div>
+                </div>
+              </>
             )}
           </div>
         )}
-        {badge && <div className="video-badge">{badge}</div>}
+        {camera === "on" && (topLeft || topRight) && (
+          <div className="video-overlay">
+            <span>{topLeft}</span>
+            <span>{topRight}</span>
+          </div>
+        )}
       </div>
-      {error && <div className="notice notice-bad" role="alert">{error}</div>}
+      {error && <Notice tone="bad">{error}</Notice>}
       <div className="toolbar">
         {camera === "on" ? (
-          <button className="btn" onClick={stop}>Stop camera</button>
+          <Btn icon="cameraOff" onClick={stop}>Stop camera</Btn>
         ) : (
-          <button className="btn btn-primary" onClick={() => start()} disabled={camera === "starting"}>
-            Start camera
-          </button>
+          <Btn icon="camera" variant="primary" onClick={() => start()} disabled={camera === "starting"}>Start camera</Btn>
         )}
+        {controls}
+        <span className="grow" />
         {devices.length > 1 && (
-          <select value={deviceId} onChange={(e) => switchCamera(e.target.value)} aria-label="Camera">
+          <select value={deviceId} onChange={(e) => switchCamera(e.target.value)} aria-label="Select camera">
             {devices.map((d, i) => (
               <option key={d.deviceId || i} value={d.deviceId}>{d.label || `Camera ${i + 1}`}</option>
             ))}
           </select>
         )}
-        <label className="toggle">
+      </div>
+      <div className="toolbar">
+        <label className="switch">
           <input type="checkbox" checked={overlay} onChange={(e) => setOverlay(e.target.checked)} /> Landmark overlay
         </label>
-        {extraControls}
+        {switches}
       </div>
-      <div className="stat-row">
-        <Chip tone={camera === "on" ? "ok" : camera === "error" ? "bad" : "muted"}>Camera: {camera}</Chip>
-        <Chip tone={modelState === "ready" ? "ok" : modelState === "error" ? "bad" : "muted"}>
-          Landmarks: {modelState}{stats.delegate ? ` (${stats.delegate})` : ""}
-        </Chip>
-        <Chip tone="info">{stats.fps} FPS</Chip>
-        <Chip tone="info" title="MediaPipe hand (+face) landmark inference time per frame">{stats.inferenceMs} ms / frame</Chip>
+      <div className="status-row">
+        <span className="status-item"><StatusDot tone={camTone} /> Camera: {camera}</span>
+        <span className="status-item"><StatusDot tone={lmTone} /> Landmarks: {modelState}{stats.delegate ? ` (${stats.delegate})` : ""}</span>
+        {camera === "on" && <span className="status-item">{stats.fps} FPS</span>}
+        {camera === "on" && <span className="status-item" title="MediaPipe landmark inference per frame">{stats.inferenceMs} ms / frame</span>}
       </div>
     </div>
   );

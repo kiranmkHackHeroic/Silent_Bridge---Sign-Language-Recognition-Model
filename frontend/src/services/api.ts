@@ -1,5 +1,6 @@
 import type {
-  AnimationClip, DatasetSummary, LandmarkFrame, Metrics, ModelStatus, TranslationResult, VocabEntry,
+  AnimationClip, DatasetSummary, LandmarkFrame, Metrics, ModelStatus, RecordedSample, TrainJob, TranslationResult,
+  ValidationSummary, VocabEntry,
 } from "./types";
 
 export class ApiError extends Error {
@@ -13,10 +14,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     res = await fetch(path, {
       ...init,
-      headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
+      headers: { "Content-Type": "application/json; charset=utf-8", ...(init?.headers || {}) },
     });
   } catch {
-    throw new ApiError("Backend not reachable. Is the FastAPI server running on port 8000?", 0);
+    throw new ApiError("Backend not reachable. Is the FastAPI server running on port 8000? (start-backend.ps1)", 0);
   }
   if (!res.ok) {
     let detail = res.statusText;
@@ -35,10 +36,11 @@ export const api = {
   health: () => request<{ status: string; model_loaded: boolean }>("/api/health"),
   modelStatus: () => request<ModelStatus>("/api/model/status"),
   metrics: () => request<Metrics>("/api/model/metrics"),
-  train: () => request<{ ok: boolean; metrics: Metrics; status: ModelStatus }>("/api/model/train", { method: "POST" }),
+  startTraining: () => request<TrainJob>("/api/model/train", { method: "POST" }),
+  trainStatus: () => request<TrainJob>("/api/model/train/status"),
   vocabulary: () => request<{ labels: VocabEntry[] }>("/api/vocabulary"),
-  upsertVocabulary: (label: string, english: string, kannada: string) =>
-    request<VocabEntry>("/api/vocabulary", { method: "POST", body: JSON.stringify({ label, english, kannada }) }),
+  upsertVocabulary: (label: string, english: string, kannada: string, isl_gloss = "") =>
+    request<VocabEntry>("/api/vocabulary", { method: "POST", body: JSON.stringify({ label, english, kannada, isl_gloss }) }),
   translate: (text: string) =>
     request<TranslationResult>("/api/translate/kannada", { method: "POST", body: JSON.stringify({ text }) }),
   animation: (signId: string) => request<AnimationClip>(`/api/animations/${encodeURIComponent(signId)}`),
@@ -50,6 +52,9 @@ export const api = {
       body: JSON.stringify(body),
     }),
   datasetSummary: () => request<DatasetSummary>("/api/dataset/summary"),
+  validation: () => request<ValidationSummary>("/api/dataset/validation"),
+  sample: (label: string, sampleId: string) =>
+    request<RecordedSample>(`/api/dataset/samples/${encodeURIComponent(label)}/${encodeURIComponent(sampleId)}`),
   deleteSample: (label: string, sampleId: string) =>
     request<{ ok: boolean }>(`/api/dataset/samples/${encodeURIComponent(label)}/${encodeURIComponent(sampleId)}`, {
       method: "DELETE",
