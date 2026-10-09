@@ -1034,6 +1034,114 @@
         "signer_group": "signer_underscore",
         "file": "You Are Perfect_3.mp4"
       }
+    },
+    "alright": {
+      "file": "captured/alright.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_c65f213285a3df",
+        "signer_group": "include_train",
+        "file": "MVI_0040.MOV"
+      }
+    },
+    "good_afternoon": {
+      "file": "captured/good_afternoon.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_00a3014a683b97",
+        "signer_group": "include_test",
+        "file": "MVI_0050_ (1).MOV"
+      }
+    },
+    "good_evening": {
+      "file": "captured/good_evening.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_01f30c279dd4f3",
+        "signer_group": "include_test",
+        "file": "MVI_9976.MOV"
+      }
+    },
+    "good_night": {
+      "file": "captured/good_night.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_05939655fc2339",
+        "signer_group": "include_test",
+        "file": "MVI_9947.MOV"
+      }
+    },
+    "how_are_you": {
+      "file": "captured/how_are_you.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_69a7e9824d923b",
+        "signer_group": "include_train",
+        "file": "MVI_9960.MOV"
+      }
+    },
+    "pleased": {
+      "file": "captured/pleased.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_00e01379440d78",
+        "signer_group": "include_train",
+        "file": "MVI_0068.MOV"
+      }
     }
   }
 }

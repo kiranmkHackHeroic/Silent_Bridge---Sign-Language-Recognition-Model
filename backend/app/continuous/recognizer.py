@@ -64,7 +64,7 @@ class ContinuousRecognizer:
         b = self.bundle
         table = b["table"]
         glosses, conf = b["ctc"].decode(seq)
-        sid, dist = nearest_sentence(glosses, table)
+        sid, dist = nearest_sentence(glosses, table, b.get("normalized_matcher", False))
         base_sid = str(b["baseline"].predict(resample(seq, b["resample"]).reshape(1, -1))[0])
         base_p = float(np.max(b["baseline"].predict_proba(resample(seq, b["resample"]).reshape(1, -1))))
         chosen = sid if b["selected"] == "ctc" else base_sid

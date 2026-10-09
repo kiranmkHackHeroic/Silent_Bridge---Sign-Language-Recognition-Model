@@ -97,6 +97,7 @@ class TrainResult:
     classes: list[str]
     meta: dict
     test_samples: list[Sample] = field(default_factory=list)
+    test_predictions: list[str] = field(default_factory=list)   # dev-only model on test_samples
 
 
 # ---------------------------------------------------------------- data
@@ -373,9 +374,15 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
     y_dev = np.array([s.label for s in dev])
     g_dev = np.array([s.group for s in dev])
     groups_per_class = {c: len(set(g_dev[y_dev == c])) for c in sorted(set(y_dev))}
-    grouped = all(n >= 2 for n in groups_per_class.values())
+    grouped = len(set(g_dev.tolist())) >= 2
+    single_group = sorted(c for c, n in groups_per_class.items() if n < 2)
+    if grouped and single_group:
+        # e.g. INCLUDE has no signer ids: its classes live in one group, so in group-wise CV they are
+        # sometimes predicted without any training example -> pessimistic, never optimistic
+        warnings.append(f"{len(single_group)} class(es) occur in a single signer/session group of the development "
+                        "data; their cross-validation scores are pessimistic")
     if grouped:
-        n_splits = max(2, min(tcfg.cv_folds, len(set(g_dev.tolist())), min(groups_per_class.values())))
+        n_splits = max(2, min(tcfg.cv_folds, len(set(g_dev.tolist()))))
         folds = list(StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=tcfg.random_seed)
                      .split(np.zeros(len(y_dev)), y_dev, g_dev))
         strategy = f"StratifiedGroupKFold over signer/session groups ({n_splits} folds) on development data"
@@ -404,16 +411,27 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
     best_kind = max(candidates, key=lambda k: (candidates[k]["macro_f1"], k == "logreg"))
 
     test_results = None
+    test_preds: list[str] = []
     if test:
-        desc = ("official test split" if official else
-                f"held-out signer/session group(s): {', '.join(sorted(g.split(':', 1)[1] for g in test_groups))}")
+        official_sources = sorted({s.source for s in test if s.split == "test"})
+        held = sorted(g.split(":", 1)[1] for g in test_groups if not any(x.group == g and x.split == "test" for x in test))
+        parts = [f"official test split of {', '.join(official_sources)}"] if official else []
+        if held:
+            parts.append(f"held-out signer/session group(s): {', '.join(held)}")
+        desc = " + ".join(parts)
         progress(f"Testing on {desc}", 0.75)
         y_test = [s.label for s in test]
         test_results = {"description": desc, "groups": sorted(test_groups), "num_examples": len(test), "models": {}}
         for kind in sorted({"logreg", best_kind}):
             model = fit_model(kind, dev, fcfg, tcfg, rng)
-            test_results["models"][kind] = metric_block(y_test, predict_labels(model, test, fcfg), classes)
+            preds = predict_labels(model, test, fcfg)
+            test_results["models"][kind] = metric_block(y_test, preds, classes)
             if kind == best_kind:
+                test_preds = [str(p) for p in preds]
+                test_results["per_source"] = {
+                    src: {"examples": int(sum(1 for t in test if t.source == src)),
+                          "accuracy": round(float(np.mean([p == t.label for p, t in zip(preds, test) if t.source == src])), 4)}
+                    for src in sorted({t.source for t in test})}
                 progress("Replaying test recordings through the live pipeline", 0.85)
                 test_results["continuous_stream"] = streaming_eval(
                     model, [str(c) for c in model.classes_], test, fcfg, RecognitionSettings().confidence_threshold)
@@ -442,6 +460,7 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
                             else "out-of-fold cross-validation predictions"),
         "test": test_results,
         "sources": dict(sources), "per_source": validation["per_source"],
+        "test_per_source": (test_results or {}).get("per_source"),
         "num_samples": len(samples), "num_train_dev": len(dev), "num_test": len(test),
         "num_sessions": len({s.group for s in samples}), "num_classes": len(classes),
         "class_counts": {c: int(counts[c]) for c in classes},
@@ -461,9 +480,10 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
     meta = {"trained_at": trained_at, "model_version": model_version, "model_type": best_kind,
             "architecture": MODEL_DESCRIPTIONS[best_kind], "num_samples": len(samples), "classes": final_classes,
             "feature_config": fcfg.to_dict(), "dataset_hash": validation["dataset_hash"], "sources": dict(sources),
+            "trained_sample_ids": sorted(s.sample_id for s in samples),
             "sklearn_version": sklearn.__version__, "training_config": asdict(tcfg)}
     progress("Done", 1.0)
-    return TrainResult(metrics, final, final_classes, meta, test)
+    return TrainResult(metrics, final, final_classes, meta, test, test_preds)
 
 
 def save_bundle(result: TrainResult, out: Path) -> None:

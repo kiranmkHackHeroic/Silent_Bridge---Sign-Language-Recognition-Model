@@ -157,18 +157,35 @@ def train_and_promote(tcfg: TrainingConfig | None = None, progress: ProgressFn |
         from ..recognition.predictor import SignPredictor
         pf = root / "registry" / prev
         old = SignPredictor(pf / MODEL_FILE.name, pf / MODEL_META_FILE.name)
-        if old.load():
-            y_true = [s.label for s in result.test_samples]
-            classes = sorted(set(y_true) | set(old.classes))
-            old_block = metric_block(y_true, predict_labels(old.model, result.test_samples, old.feature_config), classes)
-            comparison = {"previous_version": prev, "previous_macro_f1_on_same_test": old_block["macro_f1"],
-                          "previous_accuracy_on_same_test": old_block["accuracy"], "candidate_macro_f1": cand_score,
-                          "note": "previous model may have been trained on these test samples (conservative)"}
-            if cand_score < old_block["macro_f1"] - tcfg.max_regression:
-                reasons.append(f"worse than active {prev} on the same test set "
-                               f"({cand_score:.3f} < {old_block['macro_f1']:.3f} - {tcfg.max_regression})")
-        else:
+        old_meta = _read(pf / MODEL_META_FILE.name, {}) or {}
+        seen = set(old_meta.get("trained_sample_ids") or [])
+        if not old.load():
             comparison = {"previous_version": prev, "note": f"active model could not be loaded ({old.error})"}
+        elif not seen:
+            comparison = {"previous_version": prev, "note": "the active model does not record which samples it was "
+                          "trained on, so no fair comparison on unseen data is possible; acceptance uses the "
+                          "absolute threshold and smoke test only"}
+        else:
+            # fair comparison: test samples NEITHER model trained on, restricted to signs the old model knows
+            fair = [s for s in result.test_samples if s.sample_id not in seen and s.label in old.classes]
+            if len(fair) < 20:
+                comparison = {"previous_version": prev, "fair_test_samples": len(fair),
+                              "note": "too few test samples unseen by the active model for a fair comparison"}
+            else:
+                y_true = [s.label for s in fair]
+                classes = sorted(set(y_true))
+                # the candidate's FINAL model is refit on all data incl. the test set, so use the predictions of
+                # its development-only model on the held-out test samples
+                cand_pred = {s.sample_id: p for s, p in zip(result.test_samples, result.test_predictions)}
+                c_block = metric_block(y_true, [cand_pred[s.sample_id] for s in fair], classes)
+                o_block = metric_block(y_true, predict_labels(old.model, fair, old.feature_config), classes)
+                comparison = {"previous_version": prev, "fair_test_samples": len(fair),
+                              "candidate_accuracy": c_block["accuracy"], "candidate_macro_f1": c_block["macro_f1"],
+                              "previous_accuracy": o_block["accuracy"], "previous_macro_f1": o_block["macro_f1"],
+                              "note": "same test samples, unseen by both models, signs known to both"}
+                if c_block["macro_f1"] < o_block["macro_f1"] - tcfg.max_regression:
+                    reasons.append(f"worse than active {prev} on {len(fair)} test samples unseen by both "
+                                   f"({c_block['macro_f1']:.3f} < {o_block['macro_f1']:.3f} - {tcfg.max_regression})")
     if cand_score < tcfg.min_test_macro_f1:
         reasons.append(f"macro-F1 {cand_score:.3f} below the acceptance threshold {tcfg.min_test_macro_f1}")
     ok, smoke = _smoke_test(result, folder)

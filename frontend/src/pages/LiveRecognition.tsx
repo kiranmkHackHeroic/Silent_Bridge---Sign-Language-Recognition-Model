@@ -343,7 +343,11 @@ export function LiveRecognition() {
                   <div className="result-source"><Chip tone="info">Sentence · {hero.result.method === "ctc" ? "CTC model" : "classifier"}</Chip></div>
                   <div className="result-kn" lang="kn" style={{ fontSize: "clamp(1.6rem, 2.6vw, 2.3rem)" }}>{hero.result.kannada}</div>
                   <div className="result-meta">{hero.result.sentence}</div>
-                  <div className="small">Decoded gloss: <strong>{hero.result.glosses.join(" ") || "—"}</strong> <span className="muted">(corpus gloss: {hero.result.reference_gloss.join(" ")}, edit distance {hero.result.gloss_distance})</span></div>
+                  <div className="small">
+                    Sentence chosen by the {hero.result.method === "ctc" ? "CTC gloss decoder" : "sentence classifier (more accurate on held-out tests)"}.
+                    {" "}CTC gloss decode: <strong>{hero.result.glosses.join(" ") || "—"}</strong>
+                    <span className="muted"> · corpus gloss of the chosen sentence: {hero.result.reference_gloss.join(" ")}</span>
+                  </div>
                   <ConfidenceBar value={hero.result.gloss_confidence} label="Mean gloss probability (not a calibrated accuracy)" />
                   <div className="muted xs">Closest of the corpus' known sentences. Kannada: {hero.result.translation_status}.</div>
                 </>

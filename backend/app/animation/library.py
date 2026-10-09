@@ -17,7 +17,14 @@ class AnimationLibrary:
         self.mapping: dict[str, dict] = {}
         self.load()
 
+    def _maybe_reload(self) -> None:
+        """Pick up clips captured by other processes (e.g. tools/capture_dataset_clips.py)."""
+        mtime = self.mapping_file.stat().st_mtime if self.mapping_file.exists() else 0.0
+        if mtime != getattr(self, "_mtime", None):
+            self.load()
+
     def load(self) -> None:
+        self._mtime = self.mapping_file.stat().st_mtime if self.mapping_file.exists() else 0.0
         if self.mapping_file.exists():
             data = json.loads(self.mapping_file.read_text(encoding="utf-8"))
             self.mapping = {k: v for k, v in data.get("animations", {}).items() if isinstance(v, dict)}
@@ -30,6 +37,7 @@ class AnimationLibrary:
         self.mapping_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     def info(self, sign_id: str) -> dict:
+        self._maybe_reload()
         entry = self.mapping.get(sign_id)
         if not entry:
             return {"available": False, "type": None, "verified": False}
@@ -38,6 +46,7 @@ class AnimationLibrary:
                 "file": entry["file"], "review": entry.get("review")}
 
     def get(self, sign_id: str) -> dict | None:
+        self._maybe_reload()
         entry = self.mapping.get(sign_id)
         if not entry:
             return None
@@ -64,7 +73,9 @@ class AnimationLibrary:
                 k: "unchecked" for k in ("handshape", "orientation", "movement", "location", "non_manual")}
             self.mapping[sign_id] = {"file": rel, "type": "captured", "verified": False, "review": review}
             self._save()
+            self._mtime = self.mapping_file.stat().st_mtime
         return self.info(sign_id)
 
     def index(self) -> dict:
+        self._maybe_reload()
         return {sid: self.info(sid) for sid in self.mapping}

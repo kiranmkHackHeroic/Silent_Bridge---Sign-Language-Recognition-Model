@@ -44,9 +44,33 @@ def resample(seq: np.ndarray, n: int = RESAMPLE) -> np.ndarray:
     return ((1 - w) * seq[lo] + w * seq[hi]).reshape(-1)
 
 
-def nearest_sentence(glosses: list[str], table: dict) -> tuple[str, int]:
-    best = min(table.items(), key=lambda kv: (edit_distance(glosses, kv[1]["gloss"]), len(kv[1]["gloss"])))
+def nearest_sentence(glosses: list[str], table: dict, normalized: bool = False) -> tuple[str, int]:
+    """Closest corpus sentence by gloss edit distance. normalized=True divides by the longer
+    sequence length, which removes the bias towards very short sentences."""
+    def cost(kv):
+        d = edit_distance(glosses, kv[1]["gloss"])
+        return (d / max(len(glosses), len(kv[1]["gloss"]), 1), d) if normalized else (d, len(kv[1]["gloss"]))
+    best = min(table.items(), key=cost)
     return best[0], edit_distance(glosses, best[1]["gloss"])
+
+
+def split_samples(samples: list[dict]):
+    """Deterministic split by recording index: ~20% test groups, one validation group."""
+    groups = Counter(s["group"] for s in samples)
+    rng = np.random.default_rng(42)
+    order = [g for g in rng.permutation(sorted(groups))]
+    test_groups, n = [], 0
+    for g in order:
+        if n >= 0.2 * len(samples):
+            break
+        test_groups.append(g)
+        n += groups[g]
+    rest = [g for g in order if g not in test_groups]
+    val_group = max(rest, key=lambda g: groups[g])
+    test = [s for s in samples if s["group"] in test_groups]
+    val = [s for s in samples if s["group"] == val_group]
+    train_s = [s for s in samples if s["group"] not in test_groups and s["group"] != val_group]
+    return train_s, val, test, test_groups, val_group
 
 
 def evaluate(pred_glosses: list[list[str]], pred_sids: list[str], samples: list[dict]) -> dict:
@@ -66,21 +90,7 @@ def train(progress=None) -> dict:
     samples = load_samples()
     if len(samples) < 20:
         raise RuntimeError(f"only {len(samples)} usable sentence videos - import ISL-CSLTR first")
-    groups = Counter(s["group"] for s in samples)
-    # held-out TEST group(s): ~20% of videos; a separate VALIDATION group for early stopping
-    rng = np.random.default_rng(42)
-    order = [g for g in rng.permutation(sorted(groups))]
-    test_groups, n = [], 0
-    for g in order:
-        if n >= 0.2 * len(samples):
-            break
-        test_groups.append(g)
-        n += groups[g]
-    rest = [g for g in order if g not in test_groups]
-    val_group = max(rest, key=lambda g: groups[g])
-    test = [s for s in samples if s["group"] in test_groups]
-    val = [s for s in samples if s["group"] == val_group]
-    train_s = [s for s in samples if s["group"] not in test_groups and s["group"] != val_group]
+    train_s, val, test, test_groups, val_group = split_samples(samples)
     train_sentences = {s["sentence_id"] for s in train_s}
     unseen_test = sum(1 for s in test if s["sentence_id"] not in train_sentences)
 
@@ -96,8 +106,13 @@ def train(progress=None) -> dict:
     vocab = sorted({g for s in samples for g in s["gloss"]})
     ctc = CTCGlossRecognizer(vocab, SEQ_DIM)
     ctc.fit(train_s, val, progress=lambda m, f: progress(m, 0.1 + 0.8 * f))
+    # choose the sentence matcher on the VALIDATION recordings (never on test)
+    val_decoded = [ctc.decode(s["seq"])[0] for s in val]
+    matcher_acc = {norm: float(np.mean([nearest_sentence(g, table, norm)[0] == s["sentence_id"]
+                                        for g, s in zip(val_decoded, val)])) for norm in (False, True)}
+    normalized = matcher_acc[True] > matcher_acc[False]
     decoded = [ctc.decode(s["seq"])[0] for s in test]
-    c_sids = [nearest_sentence(g, table)[0] for g in decoded]
+    c_sids = [nearest_sentence(g, table, normalized)[0] for g in decoded]
     ctc_metrics = evaluate(decoded, c_sids, test)
     lat = []
     for s in test[:20]:
@@ -119,7 +134,10 @@ def train(progress=None) -> dict:
         "test_groups": test_groups, "val_group": val_group, "test_videos_with_unseen_sentence": unseen_test,
         "split": "by recording index (whole recording rounds held out); signer identity is not annotated",
         "baseline": {**baseline, "method": "closed-set sentence classifier: 32-step resampled landmarks + logistic regression"},
-        "ctc": {**ctc_metrics, "method": "BiGRU (2x128, bidirectional) + CTC, greedy decoding; nearest corpus sentence",
+        "matcher": {"normalized_edit_distance": normalized,
+                    "validation_sentence_accuracy": {"raw": round(matcher_acc[False], 4), "normalized": round(matcher_acc[True], 4)}},
+        "ctc": {**ctc_metrics, "method": "BiGRU (2x128, bidirectional) + CTC, greedy decoding; nearest corpus sentence "
+                                         f"({'length-normalized' if normalized else 'raw'} gloss edit distance, chosen on validation)",
                 "epochs_trained": len(ctc.history_), "decode_latency_ms": round(float(np.mean(lat)), 2) if lat else None},
         "selected_method": selected,
         "examples": examples, "training_seconds": round(time.time() - t0, 1),
@@ -130,6 +148,7 @@ def train(progress=None) -> dict:
     folder = CONT_DIR / version
     folder.mkdir(parents=True, exist_ok=True)
     joblib.dump({"ctc": ctc, "baseline": base, "table": table, "vocab": vocab, "selected": selected,
+                 "normalized_matcher": normalized,
                  "resample": RESAMPLE, "seq_dim": SEQ_DIM}, folder / "continuous_model.joblib")
     (folder / "metrics.json").write_text(json.dumps(metrics, ensure_ascii=False, indent=1), encoding="utf-8")
     (folder / "history.json").write_text(json.dumps(ctc.history_), encoding="utf-8")
@@ -148,3 +167,35 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def reevaluate(version: str | None = None) -> dict:
+    """Re-score a saved model on its deterministic test split (no retraining); the sentence matcher
+    is (re)chosen on the validation recordings only."""
+    folder = CONT_DIR / (version or json.loads((CONT_DIR / "active.json").read_text(encoding="utf-8"))["version"])
+    bundle = joblib.load(folder / "continuous_model.joblib")
+    metrics = json.loads((folder / "metrics.json").read_text(encoding="utf-8"))
+    table, ctc = bundle["table"], bundle["ctc"]
+    samples = load_samples()
+    _, val, test, _, _ = split_samples(samples)
+    val_decoded = [ctc.decode(s["seq"])[0] for s in val]
+    matcher_acc = {norm: float(np.mean([nearest_sentence(g, table, norm)[0] == s["sentence_id"]
+                                        for g, s in zip(val_decoded, val)])) for norm in (False, True)}
+    normalized = matcher_acc[True] > matcher_acc[False]
+    decoded = [ctc.decode(s["seq"])[0] for s in test]
+    c_sids = [nearest_sentence(g, table, normalized)[0] for g in decoded]
+    ctc_metrics = evaluate(decoded, c_sids, test)
+    metrics["matcher"] = {"normalized_edit_distance": normalized, "validation_sentence_accuracy":
+                          {"raw": round(matcher_acc[False], 4), "normalized": round(matcher_acc[True], 4)}}
+    metrics["ctc"].update(ctc_metrics)
+    metrics["ctc"]["method"] = ("BiGRU (2x128, bidirectional) + CTC, greedy decoding; nearest corpus sentence "
+                                f"({'length-normalized' if normalized else 'raw'} gloss edit distance, chosen on validation)")
+    metrics["selected_method"] = "ctc" if ctc_metrics["sentence_accuracy"] >= metrics["baseline"]["sentence_accuracy"] else "baseline"
+    metrics["examples"] = [{"reference": " ".join(s["gloss"]), "decoded": " ".join(d), "sentence": s["transcript"],
+                            "nearest_sentence": table[sid]["sentence"], "correct": sid == s["sentence_id"]}
+                           for s, d, sid in list(zip(test, decoded, c_sids))[:12]]
+    bundle["normalized_matcher"] = normalized
+    bundle["selected"] = metrics["selected_method"]
+    joblib.dump(bundle, folder / "continuous_model.joblib")
+    (folder / "metrics.json").write_text(json.dumps(metrics, ensure_ascii=False, indent=1), encoding="utf-8")
+    return metrics
