@@ -17,7 +17,7 @@
 |---|---|---|
 | **Amrita SLR – Real Time ISL Dataset** (Sasidharan et al., Mendeley Data, doi:10.17632/dtg9s785v8.1): 49 signs, 7 signers | Isolated signs | Downloaded; **956 / 978 videos accepted** (22 rejected: no usable hands) |
 | **ISL-CSLTR** (Elakkiya & Natarajan 2021, Mendeley Data, doi:10.17632/kcmpdxky7p.1): 101 sentences, 492 sentence videos, gloss sequence per sentence | Continuous sentences | Downloaded; **492/492 videos imported** |
-| **INCLUDE** (Sridhar et al., ACM MM 2020, doi:10.1145/3394171.3413528): Greetings + Pronouns categories only (5 GB of 57 GB) | Isolated signs, official train/test split | **Greetings: 253/253 videos imported.** Pronouns still downloading (Zenodo serves ~0.1–0.5 MB/s): when done, run `.\import-datasets.ps1 include` (or click Import), and retraining is queued automatically |
+| **INCLUDE** (Sridhar et al., ACM MM 2020, doi:10.1145/3394171.3413528): Greetings + Pronouns categories only (5 GB of 57 GB) | Isolated signs, official train/test split | **Greetings: 253/253 videos imported.** Pronouns still downloading (Zenodo serves ~0.1–0.5 MB/s): when done, click **Import** on Dataset & Model (retraining is then queued automatically), or run `.\import-datasets.ps1 include` followed by `.	rain-model.ps1` |
 | Your own webcam recordings (Dataset & Model page) | Isolated signs | Optional |
 
 Registry with sources, licenses and citations: `backend/data/datasets_registry.json`. Class → app label → Kannada mappings: `backend/data/mappings/*.json`.
