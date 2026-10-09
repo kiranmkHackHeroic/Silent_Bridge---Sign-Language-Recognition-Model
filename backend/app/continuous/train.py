@@ -66,7 +66,10 @@ def split_samples(samples: list[dict]):
         test_groups.append(g)
         n += groups[g]
     rest = [g for g in order if g not in test_groups]
-    val_group = max(rest, key=lambda g: groups[g])
+    # validation (early stopping + matcher choice) = the SMALLEST remaining round with >= 20 videos,
+    # so most non-test recordings are available for training
+    candidates = [g for g in rest if groups[g] >= 20] or rest
+    val_group = min(candidates, key=lambda g: groups[g])
     test = [s for s in samples if s["group"] in test_groups]
     val = [s for s in samples if s["group"] == val_group]
     train_s = [s for s in samples if s["group"] not in test_groups and s["group"] != val_group]

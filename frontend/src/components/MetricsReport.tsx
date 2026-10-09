@@ -71,6 +71,14 @@ export function MetricsReport({ metrics, compact = false }: { metrics: Metrics |
         <Stat label="Train · test" value={`${metrics.num_train_dev} · ${metrics.num_test || "CV"}`} hint="samples used for development / independent test" />
         <Stat label="Classifier latency" value={`${metrics.inference_latency_ms} ms`} />
       </div>
+      {metrics.test_per_source && (
+        <div className="stats">
+          {Object.entries(metrics.test_per_source).map(([src, v]) => (
+            <Stat key={src} label={`Test accuracy · ${src === "amrita_slr" ? "Amrita SLR" : src === "include" ? "INCLUDE" : src}`}
+              value={`${pct(v.accuracy)} (${v.examples})`} hint="held-out signers / official test split of that dataset" />
+          ))}
+        </div>
+      )}
       <Notice tone={metrics.session_independent ? "info" : "warn"} title={`Measured on: ${metrics.headline_source}`}>
         {metrics.evaluation_strategy}. Model <code>{metrics.model_version}</code>: {metrics.architecture}.
       </Notice>
@@ -99,7 +107,7 @@ export function MetricsReport({ metrics, compact = false }: { metrics: Metrics |
 
       {test ? (
         <>
-          <h3 className="small">Independent held-out session <code>{test.session}</code> ({test.num_examples} recordings)</h3>
+          <h3 className="small">Independent test set ({test.num_examples} recordings)</h3>
           <div className="table-wrap">
             <table>
               <thead><tr><th>Model</th><th>Accuracy</th><th>Macro F1</th></tr></thead>

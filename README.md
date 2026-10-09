@@ -16,8 +16,8 @@
 | Dataset | Use | Status on this laptop |
 |---|---|---|
 | **Amrita SLR – Real Time ISL Dataset** (Sasidharan et al., Mendeley Data, doi:10.17632/dtg9s785v8.1): 49 signs, 7 signers | Isolated signs | Downloaded; **956 / 978 videos accepted** (22 rejected: no usable hands) |
-| **ISL-CSLTR** (Elakkiya & Natarajan 2021, Mendeley Data, doi:10.17632/kcmpdxky7p.1): 101 sentences, 492 sentence videos, gloss sequence per sentence | Continuous sentences | Downloaded; import see *Results* |
-| **INCLUDE** (Sridhar et al., ACM MM 2020, doi:10.1145/3394171.3413528): Greetings + Pronouns categories only (5 GB of 57 GB) | Isolated signs, official train/test split | Partially downloaded (Zenodo serves ~0.1–0.4 MB/s); imported once available |
+| **ISL-CSLTR** (Elakkiya & Natarajan 2021, Mendeley Data, doi:10.17632/kcmpdxky7p.1): 101 sentences, 492 sentence videos, gloss sequence per sentence | Continuous sentences | Downloaded; **492/492 videos imported** |
+| **INCLUDE** (Sridhar et al., ACM MM 2020, doi:10.1145/3394171.3413528): Greetings + Pronouns categories only (5 GB of 57 GB) | Isolated signs, official train/test split | **Greetings: 253/253 videos imported.** Pronouns still downloading (Zenodo serves ~0.1–0.5 MB/s): when done, run `.\import-datasets.ps1 include` (or click Import), and retraining is queued automatically |
 | Your own webcam recordings (Dataset & Model page) | Isolated signs | Optional |
 
 Registry with sources, licenses and citations: `backend/data/datasets_registry.json`. Class → app label → Kannada mappings: `backend/data/mappings/*.json`.
@@ -27,18 +27,44 @@ Annotation facts we found and handle (not hidden):
 - **ISL-CSLTR** gloss annotations contain typos and variants (`CONGRATULATIIONS`, `DONOT`/`DONT`/`DO NOT`, punctuation inside glosses). A documented normalisation map is applied for training; the original annotation is kept with every sample. There are no signer IDs (recording index from the file name), and 116 of 168 gloss types occur in only one sentence.
 - **INCLUDE** was recorded in Chennai, and ISL varies regionally. Merged labels (e.g. HELLO from Amrita and INCLUDE) may combine regional variants.
 
-## Results (measured on this laptop, 2026-10-09)
+## Results (measured on this laptop, 2026-10-10)
 
-### Isolated-sign recognition: active model `v20261009-172730`
-- **Data:** 933 valid Amrita SLR videos, 49 signs.
-- **Independent test:** 213 videos of **two signers never seen in training** (`nachiketh`, `signer_0403` groups).
-- **Accuracy 56.3%, macro-F1 0.532** (chance ≈ 2%).
-- **Model comparison** (same signer-grouped cross-validation folds on development data, macro-F1): logistic regression 0.400, RBF-SVM 0.396, GRU 0.376, MLP 0.361. Logistic regression was selected. The GRU temporal model underfits at ~19 videos per sign.
-- **Continuous replay** of the 213 test videos through the live pipeline (pause / hand-drop boundaries): **sign error rate 0.48**, made up of 64 substitutions, 39 missed signs and 0 extra words.
-- **Earlier finding:** splitting signs at brief slow-downs ("motion minima") **hurt** on real signing (sign error rate 0.93), because real ISL signs contain internal holds. It is therefore off by default and available as an experimental option.
+### Isolated-sign recognition: active model `v20261009-192223`
+- **Data:** 1,123 valid videos, 55 signs (Amrita SLR 933 + INCLUDE Greetings 190 training/dev videos).
+- **Independent test set:** 245 videos = INCLUDE's official test split + **two Amrita signers never seen in training**.
 
-### Continuous sentence recognition (ISL-CSLTR)
-See *Continuous results* below. They are filled in from `backend/models/continuous/<version>/metrics.json` and also shown in the app.
+| Measure | Result |
+|---|---|
+| Overall accuracy / macro-F1 | **58.8% / 0.577** (chance ≈ 1.8%) |
+| Amrita SLR, 2 unseen signers (213 videos) | **55.4%** |
+| INCLUDE official test split (32 videos) | **81.3%** |
+| Continuous replay of the test videos through the live pipeline | sign error rate 0.51 (50 substitutions, 74 missed, **0 extra words**) |
+| Classifier latency | ≈ 1.8 ms per sign; backend ≈ 0.7–2.4 ms per frame |
+
+- **Model comparison** (same signer-grouped CV folds on development data, macro-F1): logistic regression **0.450** (selected), GRU 0.427, RBF-SVM 0.381, MLP 0.370. With ~19 videos per sign the GRU temporal model does not beat the linear baseline.
+- **Regularisation:** C=0.1 was chosen by a development-only sweep (`tools/tune_isolated.py`); the test set was never used for tuning.
+- **Most confused pairs:** boy↔girl, eat↔nose, good morning↔hello: similar handshapes and locations.
+- **Previous model** `v20261009-172730` (Amrita only, 49 signs) scored 56.3% on the same two unseen Amrita signers, so adding INCLUDE did not hurt Amrita (55.4%) and added 6 signs. It predates sample-ID tracking, so the registry reported that no fair head-to-head comparison was possible; new models record their training sample IDs for future comparisons.
+- **Finding:** splitting signs at brief slow-downs ("motion minima") hurt on real signing (sign error rate 0.93 vs 0.48), because real ISL signs contain internal holds. It is off by default.
+
+### Continuous sentence recognition: active model `c20261009-194444` (ISL-CSLTR)
+- **Data:** 492 sentence videos (101 sentences, 168 normalised glosses).
+- **Split:** by recording round: train 263 / validation 75 (early stopping and matcher choice) / **test 154** (unseen rounds rec4, rec5).
+
+| Method (same 154 test videos) | Gloss error rate (↓) | Sentence accuracy |
+|---|---|---|
+| Sentence classifier baseline (32-step landmarks + logistic regression) | 0.883 | **20.1%** (31/154): **used live** |
+| BiGRU + CTC gloss decoder, length-normalised nearest-sentence matching | **0.733** | 18.2% (28/154) |
+
+Chance for sentence accuracy ≈ 1%. These are weak results: ~4 recordings per sentence, and 116 glosses appear in only one sentence. **This is closed-domain recognition of the corpus' sentences, not sign-language translation.**
+
+### Avatar
+All 55 recognisable signs have clips **retargeted from real dataset recordings** (Amrita SLR / INCLUDE). The source file and signer group are stored in `animation_mapping.json`. Arms are assigned by image position, so mirrored phone videos don't cross the arms. Retargeting is approximate (no elbow tracking, depth from hand size), and **no clip is verified ISL**. Signs without data keep the hand-written placeholders.
+
+### Live path checks (no camera available)
+`tools/replay_websocket.py` and `tools/replay_sentences.py` stream dataset landmark recordings frame by frame through the running server's WebSocket, exactly as the browser does.
+- **Isolated mode:** 12/12 correct, but those videos were part of the deployed model's final training data, so this only proves the mechanics, not accuracy.
+- **Sentence mode:** 2/8 on an unseen recording round, consistent with the measured ~20%.
 
 ## What is real / what is not
 
@@ -97,12 +123,12 @@ Open **http://127.0.0.1:5173** (Chrome/Edge). API docs: http://127.0.0.1:8000/do
 - **Sentence mode:** one segment = one sentence (1.5 s pause or hands down) → CTC decoding → nearest corpus sentence → Kannada.
 
 ## Tests (2026-10-09)
-- **Backend pytest: 111 passed.** Covers Kannada Unicode and phrases, mapping consistency, validation, training/saving/loading, encoder and schema checks, the registry (promote, reject, rollback), the job queue (restart recovery, cancel/retry, failure), training eligibility, video probing/extraction (no invented landmarks), annotation parsing, ZIP path-traversal refusal, upload preview label rules, GRU and CTC learning and reload, sentence mode, live-vs-dataset feature equality, API and WebSocket.
+- **Backend pytest: 112 passed.** Covers Kannada Unicode and phrases, mapping consistency, validation, training/saving/loading, encoder and schema checks, the registry (promote, reject, rollback), the job queue (restart recovery, cancel/retry, failure), training eligibility, video probing/extraction (no invented landmarks), annotation parsing, ZIP path-traversal refusal, upload preview label rules, GRU and CTC learning and reload, sentence mode, live-vs-dataset feature equality, API and WebSocket.
 - **Frontend vitest: 20 passed. TypeScript clean. Production build OK.**
 - **Webcam:** the browser pipeline (MediaPipe loading and inference) was verified, but **live recognition with a real person signing was not tested** during development. Use the checklist on the About & Testing page.
 
 ## Known limitations
-- About 56% top-1 accuracy on unseen signers for 49 signs: usable for a demo of clearly signed vocabulary, not reliable communication.
+- About 55–59% top-1 accuracy on unseen signers for 55 signs: usable for demonstrating clearly signed vocabulary, not reliable communication. Sentence mode is ~20% on unseen recordings.
 - Amrita has ~19 videos per sign. Adding your own recordings (same camera and lighting as the demo) is the fastest way to improve live accuracy.
 - There is no `_none` (non-sign) class in the public data. Record `_none` samples so random movements are rejected.
 - Sentence mode only knows the ISL-CSLTR sentences; recording groups there are inferred.

@@ -163,6 +163,9 @@ export interface Metrics extends Partial<MetricBlock> {
   training_seconds?: number;
   candidates?: Record<string, { accuracy: number; macro_f1: number; architecture: string }>;
   class_counts?: Record<string, number>;
+  test_per_source?: Record<string, { examples: number; accuracy: number }> | null;
+  sources?: Record<string, number>;
+  num_classes?: number;
   imbalance_ratio?: number | null;
   warnings?: string[];
   note?: string;
