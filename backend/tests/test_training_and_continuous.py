@@ -197,3 +197,14 @@ def test_frame_dimension_matches_schema():
     f = parse_frame(frame(0, [("Left", hand_points())], face={"cx": 0.5, "cy": 0.3, "w": 0.2, "h": 0.25}))
     assert f.vector.shape == (FRAME_DIM,) and f.face
     assert parse_frame(frame(0, [("Left", hand_points())], face={"cx": "x"})).face is False
+
+
+def test_validating_a_temporary_dataset_never_touches_the_project_manifest(tmp_path):
+    from app.dataset.validate import MANIFEST_FILE
+    before = MANIFEST_FILE.read_bytes() if MANIFEST_FILE.exists() else None
+    store = DatasetStore(tmp_path / "ds")
+    store.save("yes", sign_frames("push"), "s1")
+    validate_dataset(store, KNOWN)
+    assert (tmp_path / "dataset_manifest.csv").exists()
+    after = MANIFEST_FILE.read_bytes() if MANIFEST_FILE.exists() else None
+    assert before == after
