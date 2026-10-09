@@ -8,3 +8,7 @@ data/raw/*/extracted/
 data/raw/*/*.zip
 data/raw/*/*.part
 data/processed/
+backend/data/jobs.json
+backend/data/raw/
+backend/data/processed/
+backend/models/
