@@ -1,0 +1,18 @@
+{
+  "_comment": "Sign classes (sign_id) and their Kannada text. The recognizer can only output labels that you have recorded and trained. '_none' is a background/transition class that is never added to the transcript. Kannada strings are standard Kannada words; HOW each sign is performed must be taken from a verified ISL reference (e.g. the ISLRTC Indian Sign Language dictionary) - this file does not define the signs themselves.",
+  "labels": [
+    { "label": "namaskara", "english": "Hello / Namaste", "kannada": "ನಮಸ್ಕಾರ" },
+    { "label": "thank_you", "english": "Thank you", "kannada": "ಧನ್ಯವಾದಗಳು" },
+    { "label": "yes", "english": "Yes", "kannada": "ಹೌದು" },
+    { "label": "no", "english": "No", "kannada": "ಇಲ್ಲ" },
+    { "label": "water", "english": "Water", "kannada": "ನೀರು" },
+    { "label": "food", "english": "Food / Meal", "kannada": "ಊಟ" },
+    { "label": "help", "english": "Help", "kannada": "ಸಹಾಯ" },
+    { "label": "please", "english": "Please", "kannada": "ದಯವಿಟ್ಟು" },
+    { "label": "sorry", "english": "Sorry", "kannada": "ಕ್ಷಮಿಸಿ" },
+    { "label": "good", "english": "Good", "kannada": "ಒಳ್ಳೆಯದು" },
+    { "label": "i_me", "english": "I / Me", "kannada": "ನಾನು" },
+    { "label": "you", "english": "You", "kannada": "ನೀವು" },
+    { "label": "_none", "english": "(no sign / transition / resting)", "kannada": "", "emit": false }
+  ]
+}

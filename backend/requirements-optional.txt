@@ -1,0 +1,2 @@
+# OPTIONAL: online Kannada text-to-speech fallback. Sends the text to Google's TTS service.
+gTTS==2.5.4

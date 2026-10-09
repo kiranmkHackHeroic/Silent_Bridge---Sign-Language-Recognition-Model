@@ -1,0 +1,65 @@
+{
+  "_comment": "sign_id -> animation clip. type: 'captured' (retargeted from a recorded webcam sample) or 'placeholder' (hand-written illustrative motion, NOT verified ISL). Set verified=true only after an ISL-proficient reviewer confirms the clip.",
+  "animations": {
+    "namaskara": {
+      "file": "placeholder/namaskara.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "thank_you": {
+      "file": "placeholder/thank_you.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "yes": {
+      "file": "placeholder/yes.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "no": {
+      "file": "placeholder/no.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "water": {
+      "file": "placeholder/water.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "food": {
+      "file": "placeholder/food.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "help": {
+      "file": "placeholder/help.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "please": {
+      "file": "placeholder/please.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "sorry": {
+      "file": "placeholder/sorry.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "good": {
+      "file": "placeholder/good.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "i_me": {
+      "file": "placeholder/i_me.json",
+      "type": "placeholder",
+      "verified": false
+    },
+    "you": {
+      "file": "placeholder/you.json",
+      "type": "placeholder",
+      "verified": false
+    }
+  }
+}

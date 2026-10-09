@@ -1,0 +1,21 @@
+{
+  "_comment": "Kannada word/phrase -> sign_id lookup used by Kannada-to-Sign. 'verified' is false for every entry: these are lexical (word-for-sign) lookups prepared for a prototype and have NOT been checked by an ISL expert. Multi-word keys are matched before single words (longest match first). Set verified=true only after checking against a verified ISL source.",
+  "entries": {
+    "ನಮಸ್ಕಾರ": { "sign_id": "namaskara", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ನಮಸ್ತೆ": { "sign_id": "namaskara", "verified": false, "source": "alias of ನಮಸ್ಕಾರ (unverified)" },
+    "ಧನ್ಯವಾದಗಳು": { "sign_id": "thank_you", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ಧನ್ಯವಾದ": { "sign_id": "thank_you", "verified": false, "source": "alias (unverified)" },
+    "ಹೌದು": { "sign_id": "yes", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ಇಲ್ಲ": { "sign_id": "no", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ನೀರು": { "sign_id": "water", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ಊಟ": { "sign_id": "food", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ಸಹಾಯ": { "sign_id": "help", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ದಯವಿಟ್ಟು": { "sign_id": "please", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ಕ್ಷಮಿಸಿ": { "sign_id": "sorry", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ಒಳ್ಳೆಯದು": { "sign_id": "good", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ನಾನು": { "sign_id": "i_me", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ನನಗೆ": { "sign_id": "i_me", "verified": false, "source": "inflected form mapped to base sign (unverified)" },
+    "ನೀವು": { "sign_id": "you", "verified": false, "source": "project vocabulary (lexical lookup, unverified)" },
+    "ನೀನು": { "sign_id": "you", "verified": false, "source": "informal form mapped to base sign (unverified)" }
+  }
+}
