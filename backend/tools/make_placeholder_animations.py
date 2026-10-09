@@ -104,7 +104,28 @@ def build():
         key(0.4, pose([-0.10, 1.31, 0.42], FWD, [1, 0, 0], POINT)),
         key(0.8, pose([-0.10, 1.31, 0.42], FWD, [1, 0, 0], POINT)),
     ])
+    clips["your"] = clip("your", "Flat palm pushed towards the viewer.", [
+        key(0.0, pose([-0.10, 1.30, 0.28], UP, FWD, FLAT)),
+        key(0.45, pose([-0.10, 1.31, 0.40], UP, FWD, FLAT)),
+        key(0.8, pose([-0.10, 1.31, 0.40], UP, FWD, FLAT)),
+    ])
+    clips["name"] = clip("name", "Two extended fingers tap the other two fingers twice.", [
+        key(t, pose([-0.04, y, 0.30], [1, 0.2, 0], [0, 0, 1], TWO), pose([0.05, 1.28, 0.30], [-1, 0.2, 0], [0, 0, 1], TWO))
+        for t, y in [(0.0, 1.34), (0.25, 1.30), (0.5, 1.34), (0.75, 1.30), (1.0, 1.33)]
+    ])
+    clips["what"] = clip("what", "Both palms turned up with a small side-to-side shake.", [
+        key(t, pose([-0.17 + dx, 1.20, 0.30], FWD, UP, FLAT), pose([0.17 + dx, 1.20, 0.30], FWD, UP, FLAT))
+        for t, dx in [(0.0, 0.0), (0.25, 0.03), (0.5, -0.03), (0.75, 0.03), (1.0, 0.0)]
+    ])
+    clips["need"] = clip("need", "Bent index finger moves downward twice.", [
+        key(t, pose([-0.10, y, 0.32], FWD, [0, -1, 0], POINT))
+        for t, y in [(0.0, 1.30), (0.3, 1.22), (0.55, 1.30), (0.85, 1.22), (1.0, 1.24)]
+    ])
     return clips
+
+
+REVIEW_TEMPLATE = {"handshape": "unchecked", "orientation": "unchecked", "movement": "unchecked",
+                   "location": "unchecked", "non_manual": "unchecked", "reviewer": None, "reference": None}
 
 
 def main():
@@ -120,9 +141,13 @@ def main():
         (out_dir / f"{sign_id}.json").write_text(json.dumps(c, ensure_ascii=False, indent=1), encoding="utf-8")
         if mapping.get(sign_id, {}).get("type") != "captured":   # never overwrite a captured clip
             mapping[sign_id] = {"file": f"placeholder/{sign_id}.json", "type": "placeholder", "verified": False}
+    for entry in mapping.values():
+        entry.setdefault("review", dict(REVIEW_TEMPLATE))
     data = {"_comment": "sign_id -> animation clip. type: 'captured' (retargeted from a recorded webcam sample) "
-                        "or 'placeholder' (hand-written illustrative motion, NOT verified ISL). Set verified=true "
-                        "only after an ISL-proficient reviewer confirms the clip.",
+                        "or 'placeholder' (hand-written illustrative motion, NOT verified ISL). 'review' is the sign "
+                        "validation checklist (handshape, orientation, movement, location, non_manual = facial/"
+                        "body components): each is 'unchecked' | 'ok' | 'wrong'. Set verified=true only after an "
+                        "ISL-proficient reviewer marks every item 'ok' against a named reference.",
             "animations": mapping}
     ANIMATION_MAPPING_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {len(mapping)} animation entries")

@@ -1,65 +1,229 @@
 {
-  "_comment": "sign_id -> animation clip. type: 'captured' (retargeted from a recorded webcam sample) or 'placeholder' (hand-written illustrative motion, NOT verified ISL). Set verified=true only after an ISL-proficient reviewer confirms the clip.",
+  "_comment": "sign_id -> animation clip. type: 'captured' (retargeted from a recorded webcam sample) or 'placeholder' (hand-written illustrative motion, NOT verified ISL). 'review' is the sign validation checklist (handshape, orientation, movement, location, non_manual = facial/body components): each is 'unchecked' | 'ok' | 'wrong'. Set verified=true only after an ISL-proficient reviewer marks every item 'ok' against a named reference.",
   "animations": {
     "namaskara": {
       "file": "placeholder/namaskara.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "thank_you": {
       "file": "placeholder/thank_you.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "yes": {
       "file": "placeholder/yes.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "no": {
       "file": "placeholder/no.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "water": {
       "file": "placeholder/water.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "food": {
       "file": "placeholder/food.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "help": {
       "file": "placeholder/help.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "please": {
       "file": "placeholder/please.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "sorry": {
       "file": "placeholder/sorry.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "good": {
       "file": "placeholder/good.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "i_me": {
       "file": "placeholder/i_me.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     },
     "you": {
       "file": "placeholder/you.json",
       "type": "placeholder",
-      "verified": false
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "your": {
+      "file": "placeholder/your.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "name": {
+      "file": "placeholder/name.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "what": {
+      "file": "placeholder/what.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "need": {
+      "file": "placeholder/need.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
     }
   }
 }

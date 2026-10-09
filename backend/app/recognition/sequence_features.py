@@ -13,7 +13,7 @@ from __future__ import annotations
 import numpy as np
 
 from ..config import FeatureConfig, TrainingConfig
-from .landmarks import FRAME_DIM, HAND_DIM, HAND_SHAPE_DIM, POS_OFFSET, PRESENCE_OFFSET, FrameFeatures
+from .landmarks import FACEREL_OFFSET, FRAME_DIM, HAND_DIM, HAND_SHAPE_DIM, POS_OFFSET, PRESENCE_OFFSET, FrameFeatures
 
 
 def feature_dim(cfg: FeatureConfig) -> int:
@@ -124,6 +124,7 @@ def augment_matrix(mat: np.ndarray, rng: np.random.Generator, tcfg: TrainingConf
     if new_len != len(out):
         out = resample(out, new_len)
     shift = rng.normal(0, tcfg.position_jitter, size=2)
+    face_shift = rng.normal(0, tcfg.position_jitter * 3, size=2)
     scale = rng.uniform(0.9, 1.1)
     for slot in range(2):
         lo = slot * HAND_DIM
@@ -135,4 +136,8 @@ def augment_matrix(mat: np.ndarray, rng: np.random.Generator, tcfg: TrainingConf
         out[pres, lo + POS_OFFSET] += shift[0]
         out[pres, lo + POS_OFFSET + 1] += shift[1]
         out[pres, lo + POS_OFFSET + 2] *= scale
+        # face-relative location: small jitter in face widths (keeps "near chin" vs "near chest" apart)
+        out[pres, lo + FACEREL_OFFSET] += face_shift[0]
+        out[pres, lo + FACEREL_OFFSET + 1] += face_shift[1]
+        out[pres, lo + FACEREL_OFFSET + 2] *= scale
     return out

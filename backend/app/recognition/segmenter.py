@@ -39,6 +39,10 @@ class ActivitySegmenter:
         self._last_t: float | None = None
         self._absent_streak = 3
         self.motion_ema = 0.0
+        self._peak = 0.0
+        self._dip_ms = 0.0
+        self._dip_armed = True
+        self.split_candidate = False
 
     def _end(self, reason: str, t: float) -> Segment:
         seg = Segment(frames=self.frames, reason=reason, start_t=self._start_t, end_t=t)
@@ -48,6 +52,29 @@ class ActivitySegmenter:
         self._still_ms = 0.0
         self._absent_ms = 0.0
         self._absent_streak = 0
+        self._reset_dip()
+        return seg
+
+    def _reset_dip(self) -> None:
+        self._peak = 0.0
+        self._dip_ms = 0.0
+        self._dip_armed = True
+        self.split_candidate = False
+
+    def split(self) -> Segment | None:
+        """Close the current sign at a motion minimum and immediately start the next one.
+
+        Called by the pipeline only after the classifier confirmed the frames so far
+        form a confident sign, so continuous signing does not need pauses."""
+        if not self.active or not self.frames:
+            return None
+        t = self.frames[-1].t
+        seg = Segment(frames=self.frames, reason="dip", start_t=self._start_t, end_t=t)
+        self.frames = [self.frames[-1]]
+        self._start_t = t
+        self._still_ms = 0.0
+        self._reset_dip()
+        self._dip_armed = False            # re-arm only after the hand speeds up again
         return seg
 
     def update(self, frame: FrameFeatures) -> Segment | None:
@@ -88,6 +115,7 @@ class ActivitySegmenter:
                 self._still_ms += dt
             else:
                 self._still_ms = 0.0
+            self._track_dip(frame, dt)
         else:
             self._absent_ms += dt
 
@@ -98,6 +126,25 @@ class ActivitySegmenter:
         if frame.t - self._start_t >= s.max_segment_ms:
             return self._end("max", frame.t)
         return None
+
+    def _track_dip(self, frame: FrameFeatures, dt: float) -> None:
+        s = self.settings
+        self.split_candidate = False
+        if not s.dip_split:
+            return
+        self._peak = max(self._peak, self.motion_ema)
+        if not self._dip_armed:
+            if self.motion_ema > 0.6 * self._peak and self.motion_ema >= s.motion_start:
+                self._dip_armed = True
+            return
+        long_enough = frame.t - self._start_t >= s.min_sign_ms
+        if self._peak >= 2 * s.motion_start and self.motion_ema < s.dip_ratio * self._peak:
+            self._dip_ms += dt
+            if long_enough and self._dip_ms >= s.dip_ms:
+                self.split_candidate = True
+                self._dip_armed = False
+        else:
+            self._dip_ms = 0.0
 
     def flush(self) -> Segment | None:
         """Force the current segment to end (explicit boundary / pause)."""

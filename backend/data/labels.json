@@ -1,18 +1,22 @@
 {
-  "_comment": "Sign classes (sign_id) and their Kannada text. The recognizer can only output labels that you have recorded and trained. '_none' is a background/transition class that is never added to the transcript. Kannada strings are standard Kannada words; HOW each sign is performed must be taken from a verified ISL reference (e.g. the ISLRTC Indian Sign Language dictionary) - this file does not define the signs themselves.",
+  "_comment": "Sign classes (sign_id) -> Kannada display text. Fields: label = sign class ID used by the model; isl_gloss = conventional upper-case gloss of the ISL sign; kannada = Kannada display text (NFC Unicode); english = English gloss; verified = whether an ISL-proficient reviewer has confirmed the sign and its Kannada rendering; notes = source / validation notes. The recognizer only outputs labels that have been recorded AND trained. '_none' is the background / non-sign class and is never added to the transcript. How each sign is performed must come from a verified ISL reference (e.g. the ISLRTC dictionary); this file does not define the signs.",
   "labels": [
-    { "label": "namaskara", "english": "Hello / Namaste", "kannada": "ನಮಸ್ಕಾರ" },
-    { "label": "thank_you", "english": "Thank you", "kannada": "ಧನ್ಯವಾದಗಳು" },
-    { "label": "yes", "english": "Yes", "kannada": "ಹೌದು" },
-    { "label": "no", "english": "No", "kannada": "ಇಲ್ಲ" },
-    { "label": "water", "english": "Water", "kannada": "ನೀರು" },
-    { "label": "food", "english": "Food / Meal", "kannada": "ಊಟ" },
-    { "label": "help", "english": "Help", "kannada": "ಸಹಾಯ" },
-    { "label": "please", "english": "Please", "kannada": "ದಯವಿಟ್ಟು" },
-    { "label": "sorry", "english": "Sorry", "kannada": "ಕ್ಷಮಿಸಿ" },
-    { "label": "good", "english": "Good", "kannada": "ಒಳ್ಳೆಯದು" },
-    { "label": "i_me", "english": "I / Me", "kannada": "ನಾನು" },
-    { "label": "you", "english": "You", "kannada": "ನೀವು" },
-    { "label": "_none", "english": "(no sign / transition / resting)", "kannada": "", "emit": false }
+    { "label": "namaskara", "isl_gloss": "HELLO", "english": "Hello / Namaste", "kannada": "ನಮಸ್ಕಾರ", "verified": false, "notes": "Standard Kannada greeting." },
+    { "label": "thank_you", "isl_gloss": "THANK-YOU", "english": "Thank you", "kannada": "ಧನ್ಯವಾದಗಳು", "verified": false, "notes": "Plural/polite form; ಧನ್ಯವಾದ is accepted as an alias." },
+    { "label": "yes", "isl_gloss": "YES", "english": "Yes", "kannada": "ಹೌದು", "verified": false, "notes": "" },
+    { "label": "no", "isl_gloss": "NO", "english": "No", "kannada": "ಇಲ್ಲ", "verified": false, "notes": "" },
+    { "label": "water", "isl_gloss": "WATER", "english": "Water", "kannada": "ನೀರು", "verified": false, "notes": "" },
+    { "label": "food", "isl_gloss": "FOOD", "english": "Food / Meal", "kannada": "ಊಟ", "verified": false, "notes": "ಊಟ = meal; ಆಹಾರ = food in general." },
+    { "label": "help", "isl_gloss": "HELP", "english": "Help", "kannada": "ಸಹಾಯ", "verified": false, "notes": "" },
+    { "label": "please", "isl_gloss": "PLEASE", "english": "Please", "kannada": "ದಯವಿಟ್ಟು", "verified": false, "notes": "" },
+    { "label": "sorry", "isl_gloss": "SORRY", "english": "Sorry", "kannada": "ಕ್ಷಮಿಸಿ", "verified": false, "notes": "Polite imperative 'please forgive'." },
+    { "label": "good", "isl_gloss": "GOOD", "english": "Good", "kannada": "ಒಳ್ಳೆಯದು", "verified": false, "notes": "" },
+    { "label": "i_me", "isl_gloss": "I/ME", "english": "I / Me", "kannada": "ನಾನು", "verified": false, "notes": "Pointing sign; inflected forms (ನನಗೆ, ನನ್ನ) map here in Kannada-to-Sign." },
+    { "label": "you", "isl_gloss": "YOU", "english": "You", "kannada": "ನೀವು", "verified": false, "notes": "Polite form; ನೀನು maps here in Kannada-to-Sign." },
+    { "label": "your", "isl_gloss": "YOUR", "english": "Your", "kannada": "ನಿಮ್ಮ", "verified": false, "notes": "Possessive of ನೀವು." },
+    { "label": "name", "isl_gloss": "NAME", "english": "Name", "kannada": "ಹೆಸರು", "verified": false, "notes": "" },
+    { "label": "what", "isl_gloss": "WHAT", "english": "What", "kannada": "ಏನು", "verified": false, "notes": "Question word." },
+    { "label": "need", "isl_gloss": "NEED", "english": "Need / Want", "kannada": "ಬೇಕು", "verified": false, "notes": "ಬೇಕು covers both 'need' and 'want'." },
+    { "label": "_none", "isl_gloss": "", "english": "(no sign / transition / resting)", "kannada": "", "emit": false, "verified": false, "notes": "Background class used to reject non-signs." }
   ]
 }

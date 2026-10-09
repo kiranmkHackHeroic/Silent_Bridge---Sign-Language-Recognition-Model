@@ -48,6 +48,9 @@ class RecognitionSession:
                                          s.release_evals, s.cooldown_ms, ignore={NONE_LABEL})
         self._since_eval = 0
         self.tentative: dict | None = None
+        # label emitted by the last motion-minimum split; a following split/segment end with the
+        # same label is the rest of the same sign (continuation), not a new occurrence
+        self._split_label: str | None = None
 
     def configure(self, values: dict) -> list[str]:
         applied = self.settings.update(values)
@@ -144,12 +147,33 @@ class RecognitionSession:
                     self.tentative = self._describe(self.predictor.classes[best], smoothed[best])
         if seg is not None:
             events.extend(self._finish_segment(seg))
+        elif self.segmenter.split_candidate and self.predictor.loaded:
+            events.extend(self._try_split())
+        return events
+
+    def _try_split(self) -> list[dict]:
+        """Motion minimum inside a continuous segment: split only on a confident sign."""
+        pred = self._predict(self.segmenter.frames)
+        if pred is None or pred.label == NONE_LABEL or pred.confidence < self.settings.confidence_threshold:
+            return []
+        seg = self.segmenter.split()
+        if seg is None:
+            return []
+        self.smoother.reset()
+        self.tentative = None
+        if pred.label == self._split_label:
+            return []                      # continuation of the same sign (e.g. a dip inside a wave)
+        self._split_label = pred.label
+        events = self._emit(pred.label, pred.confidence, seg.end_t, pred.probabilities)
+        for ev in events:
+            ev["boundary"] = "motion_minimum"
         return events
 
     def _finish_segment(self, seg: Segment) -> list[dict]:
         self.smoother.reset()
         self.tentative = None
         self._since_eval = 0
+        split_label, self._split_label = self._split_label, None     # a real boundary resets continuation
         base = {"frames": len(seg.frames), "reason": seg.reason,
                 "duration_ms": round(seg.end_t - seg.start_t, 1)}
         if not self.predictor.loaded:
@@ -161,6 +185,8 @@ class RecognitionSession:
             return [{"type": "segment", **base, "result": "background", "top": self._top(pred.probabilities)}]
         if pred.confidence < self.settings.confidence_threshold:
             return [{"type": "uncertain", **base, "top": self._top(pred.probabilities)}]
+        if pred.label == split_label:
+            return [{"type": "segment", **base, "result": "continuation", "top": self._top(pred.probabilities)}]
         events = self._emit(pred.label, pred.confidence, seg.end_t, pred.probabilities)
         if not events:
             return [{"type": "segment", **base, "result": "suppressed_duplicate", "top": self._top(pred.probabilities)}]

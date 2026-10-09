@@ -23,7 +23,7 @@ def test_every_mapped_clip_is_valid_and_labelled_unverified():
 def test_kannada_text_to_animation_lookup():
     lib, mapper = AnimationLibrary(), KannadaSignMapper()
     items = mapper.translate("ನಮಸ್ಕಾರ ಧನ್ಯವಾದಗಳು")
-    clips = [lib.get(i["sign_id"]) for i in items]
+    clips = [lib.get(sid) for i in items for sid in i["sign_ids"]]
     assert [c["sign_id"] for c in clips] == ["namaskara", "thank_you"]
 
 

@@ -35,7 +35,7 @@ class AnimationLibrary:
             return {"available": False, "type": None, "verified": False}
         file = self.animations_dir / entry["file"]
         return {"available": file.exists(), "type": entry.get("type"), "verified": bool(entry.get("verified")),
-                "file": entry["file"]}
+                "file": entry["file"], "review": entry.get("review")}
 
     def get(self, sign_id: str) -> dict | None:
         entry = self.mapping.get(sign_id)
@@ -60,7 +60,9 @@ class AnimationLibrary:
             path = self.animations_dir / rel
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(clip, ensure_ascii=False), encoding="utf-8")
-            self.mapping[sign_id] = {"file": rel, "type": "captured", "verified": False}
+            review = (self.mapping.get(sign_id) or {}).get("review") or {
+                k: "unchecked" for k in ("handshape", "orientation", "movement", "location", "non_manual")}
+            self.mapping[sign_id] = {"file": rel, "type": "captured", "verified": False, "review": review}
             self._save()
         return self.info(sign_id)
 

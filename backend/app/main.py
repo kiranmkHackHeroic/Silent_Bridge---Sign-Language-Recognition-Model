@@ -8,6 +8,7 @@ import asyncio
 import io
 import json
 import logging
+import threading
 import time
 from contextlib import asynccontextmanager
 
@@ -21,6 +22,7 @@ from .animation.library import AnimationLibrary
 from .animation.retarget import sample_to_animation
 from .config import METRICS_FILE, RecognitionSettings
 from .dataset.store import DatasetError, DatasetStore
+from .dataset.validate import validate_dataset
 from .recognition.pipeline import RecognitionSession
 from .recognition.predictor import SignPredictor
 from .training.train_model import TrainingError, train
@@ -39,6 +41,8 @@ class AppState:
         self.predictor = SignPredictor()
         self.predictor.load()
         self.training = False
+        self.train_job: dict = {"state": "idle", "stage": "", "progress": 0.0, "error": None, "metrics": None,
+                                "started_at": None, "finished_at": None}
 
 
 state: AppState | None = None
@@ -75,6 +79,7 @@ class VocabRequest(BaseModel):
     label: str = Field(..., min_length=1, max_length=40)
     english: str = Field("", max_length=80)
     kannada: str = Field(..., min_length=1, max_length=80)
+    isl_gloss: str = Field("", max_length=40)
 
 
 class RecordRequest(BaseModel):
@@ -115,22 +120,44 @@ def model_metrics():
     return {"available": True, **json.loads(METRICS_FILE.read_text(encoding="utf-8"))}
 
 
-@app.post("/api/model/train")
-async def model_train():
+def _run_training_job(s: AppState) -> None:
+    job = s.train_job
+
+    def progress(stage: str, frac: float) -> None:
+        job["stage"], job["progress"] = stage, round(frac, 3)
+
+    try:
+        metrics = train(s.dataset, progress=progress, known_labels=set(s.vocab.entries))
+        s.predictor.load()
+        if not s.predictor.loaded:
+            raise TrainingError(f"model trained but failed to load: {s.predictor.error}")
+        job.update(state="done", stage="Done - model loaded", progress=1.0, metrics=metrics)
+    except TrainingError as exc:
+        job.update(state="error", error=str(exc))
+    except Exception as exc:  # unexpected: report instead of crashing the server
+        log.exception("training failed")
+        job.update(state="error", error=f"unexpected training error: {exc}")
+    finally:
+        job["finished_at"] = time.time()
+        s.training = False
+
+
+@app.post("/api/model/train", status_code=202)
+def model_train():
+    """Starts training in a background thread; poll /api/model/train/status for progress."""
     s = S()
     if s.training:
         raise HTTPException(409, "training already in progress")
     s.training = True
-    try:
-        metrics = await run_in_threadpool(train, s.dataset)
-    except TrainingError as exc:
-        raise HTTPException(400, str(exc)) from exc
-    finally:
-        s.training = False
-    s.predictor.load()
-    if not s.predictor.loaded:
-        raise HTTPException(500, f"model trained but failed to load: {s.predictor.error}")
-    return {"ok": True, "metrics": metrics, "status": s.predictor.status()}
+    s.train_job.update(state="running", stage="Starting", progress=0.0, error=None, metrics=None,
+                       started_at=time.time(), finished_at=None)
+    threading.Thread(target=_run_training_job, args=(s,), daemon=True).start()
+    return s.train_job
+
+
+@app.get("/api/model/train/status")
+def model_train_status():
+    return S().train_job
 
 
 @app.post("/api/model/reload")
@@ -152,7 +179,7 @@ def vocabulary():
 @app.post("/api/vocabulary")
 def vocabulary_upsert(req: VocabRequest):
     try:
-        entry = S().vocab.upsert(req.label, req.english, req.kannada)
+        entry = S().vocab.upsert(req.label, req.english, req.kannada, req.isl_gloss)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     S().mapper.add(entry.kannada, entry.label, "added from the Dataset & Model page (unverified)")
@@ -164,21 +191,29 @@ def translate_kannada(req: TranslateRequest):
     s = S()
     normalized = normalize_kannada(req.text)
     if not normalized:
-        raise HTTPException(400, "please enter some Kannada text")
+        raise HTTPException(400, "ದಯವಿಟ್ಟು ಕನ್ನಡ ಪಠ್ಯವನ್ನು ನಮೂದಿಸಿ / Please enter some Kannada text")
     items = s.mapper.translate(normalized)
     for item in items:
-        sign_id = item.get("sign_id")
-        entry = s.vocab.get(sign_id) if sign_id else None
-        item["english"] = entry.english if entry else None
-        item["animation"] = s.animations.info(sign_id) if sign_id else {"available": False, "type": None}
+        signs = []
+        for sign_id in item["sign_ids"]:
+            entry = s.vocab.get(sign_id)
+            signs.append({"sign_id": sign_id, "english": entry.english if entry else sign_id,
+                          "kannada": entry.kannada if entry else "", "isl_gloss": entry.isl_gloss if entry else "",
+                          "animation": s.animations.info(sign_id)})
+        item["signs"] = signs
+    unsupported = [i["text"] for i in items if not i["supported"]]
     return {
         "input": req.text,
         "normalized": normalized,
         "contains_kannada": is_kannada(normalized),
         "items": items,
         "supported_count": sum(1 for i in items if i["supported"]),
-        "unsupported": [i["text"] for i in items if not i["supported"]],
-        "note": "Word/phrase lookup of supported signs only; this is not grammatical Kannada-to-ISL translation.",
+        "sign_count": sum(len(i["signs"]) for i in items),
+        "unsupported": unsupported,
+        "unsupported_message": (f"ಈ ಪದಗಳಿಗೆ ಸಂಜ್ಞೆ ಲಭ್ಯವಿಲ್ಲ: {', '.join(unsupported)} / "
+                                f"No sign available for: {', '.join(unsupported)}") if unsupported else None,
+        "note": "Supported-vocabulary lookup (word and phrase level) producing an ISL gloss sequence; "
+                "this is not full grammatical Kannada-to-ISL translation.",
     }
 
 
@@ -226,6 +261,25 @@ def dataset_record(req: RecordRequest):
 @app.get("/api/dataset/summary")
 def dataset_summary():
     return S().dataset.summary()
+
+
+@app.get("/api/dataset/validation")
+def dataset_validation():
+    """Validates every recorded sample (and rewrites data/dataset_manifest.csv)."""
+    s = S()
+    result = validate_dataset(s.dataset, set(s.vocab.entries))
+    summary = result["summary"]
+    summary["model_dataset_hash"] = s.predictor.meta.get("dataset_hash")
+    summary["model_is_current"] = bool(s.predictor.loaded and summary["model_dataset_hash"] == summary["dataset_hash"])
+    return summary
+
+
+@app.get("/api/dataset/samples/{label}/{sample_id}")
+def dataset_sample(label: str, sample_id: str):
+    try:
+        return S().dataset.load(label, sample_id)
+    except DatasetError as exc:
+        raise HTTPException(404 if "not found" in str(exc) else 400, str(exc)) from exc
 
 
 @app.delete("/api/dataset/samples/{label}/{sample_id}")

@@ -27,7 +27,8 @@ METRICS_FILE = MODELS_DIR / "metrics.json"
 NONE_LABEL = "_none"
 UNKNOWN_LABEL = "_unknown"
 
-FEATURE_VERSION = 1
+FEATURE_VERSION = 2
+FEATURE_SCHEMA = "hands-face-v2"   # must match app.recognition.landmarks.FEATURE_SCHEMA
 
 
 @dataclass(frozen=True)
@@ -35,6 +36,7 @@ class FeatureConfig:
     """Settings that define the model input. Must be identical at train and inference time."""
 
     version: int = FEATURE_VERSION
+    schema: str = FEATURE_SCHEMA
     resample_frames: int = 16          # every sequence is resampled to this many frames
     max_gap_fill: int = 4              # missing-hand gaps up to this many frames are filled
     min_hand_frames: int = 6           # sequences with fewer hand frames are not classified
@@ -56,6 +58,11 @@ class RecognitionSettings:
     absent_ms: int = 200               # hands missing this long ends a sign
     max_segment_ms: int = 4000         # forced boundary for very long segments
     preroll_frames: int = 3
+    # motion-minimum splitting inside a continuous segment (no pause / hand drop needed)
+    dip_split: bool = True
+    dip_ratio: float = 0.35            # speed below this fraction of the segment's peak = a dip
+    dip_ms: int = 100                  # dip must last this long
+    min_sign_ms: int = 350             # a split never produces a sign shorter than this
     # sliding mode
     window_frames: int = 30
     stride_frames: int = 3
@@ -105,4 +112,4 @@ class TrainingConfig:
     noise_std: float = 0.015           # landmark jitter in normalized hand units
     position_jitter: float = 0.04
     random_seed: int = 42
-    candidate_models: list[str] = field(default_factory=lambda: ["logreg", "svm_rbf"])
+    candidate_models: list[str] = field(default_factory=lambda: ["logreg", "svm_rbf", "mlp"])
