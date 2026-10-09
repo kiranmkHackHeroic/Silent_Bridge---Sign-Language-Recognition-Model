@@ -76,11 +76,43 @@ def hand_pose(points_img: np.ndarray, aspect: float, face: dict, side: str) -> d
             "curl": curls}
 
 
+def reference_face(frames: list[dict]) -> dict:
+    """One robust face reference per recording: median of all detected face boxes."""
+    boxes = [f["face"] for f in frames if isinstance(f.get("face"), dict) and f["face"].get("w")]
+    if not boxes:
+        return dict(DEFAULT_FACE)
+    return {k: float(np.median([b[k] for b in boxes])) for k in ("cx", "cy", "w")}
+
+
+def side_for_labels(frames: list[dict]) -> dict[str, str]:
+    """Map MediaPipe handedness labels to avatar arms BY IMAGE POSITION for this recording.
+
+    The label whose hand is on average further left in the image drives the avatar's
+    right arm (the avatar faces the viewer like the signer faces the camera). This stays
+    consistent for mirrored front-camera videos, where MediaPipe's labels are swapped."""
+    xs: dict[str, list[float]] = {}
+    for f in frames:
+        for h in f.get("hands") or []:
+            lms = h.get("landmarks")
+            if isinstance(lms, list) and len(lms) == 21:
+                xs.setdefault(h.get("handedness"), []).append(float(lms[0][0]))
+    means = {k: float(np.mean(v)) for k, v in xs.items() if k}
+    if len(means) == 2:
+        left_most = min(means, key=means.get)
+        return {left_most: "right", (set(means) - {left_most}).pop(): "left"}
+    if len(means) == 1:
+        (label,) = means
+        return {label: "right" if means[label] <= 0.5 else "left"}
+    return dict(SIGNER_SIDE_FOR_LABEL)
+
+
 def sample_to_animation(sample: dict, sign_id: str, max_fps: float = 15.0) -> dict:
     frames = sample.get("frames") or []
     video = sample.get("video") or {}
     if not frames:
         raise ValueError("sample has no frames")
+    face = reference_face(frames)
+    sides = side_for_labels(frames)
     t0 = float(frames[0].get("t", 0.0))
     keyframes = []
     last_t = -1.0
@@ -90,10 +122,9 @@ def sample_to_animation(sample: dict, sign_id: str, max_fps: float = 15.0) -> di
             continue
         w = float(frame.get("w") or video.get("w") or 640)
         h = float(frame.get("h") or video.get("h") or 480)
-        face = frame.get("face") or DEFAULT_FACE
         key = {"t": round(t, 3), "right": None, "left": None}
         for hand in frame.get("hands") or []:
-            side = SIGNER_SIDE_FOR_LABEL.get(hand.get("handedness"))
+            side = sides.get(hand.get("handedness"))
             lms = hand.get("landmarks")
             if side is None or not isinstance(lms, list) or len(lms) != 21 or key[side] is not None:
                 continue
@@ -116,8 +147,8 @@ def sample_to_animation(sample: dict, sign_id: str, max_fps: float = 15.0) -> di
         "sign_id": sign_id,
         "type": "captured",
         "verified": False,
-        "description": f"Motion captured from recorded sample {sample.get('sample_id')} (webcam landmarks, "
-                       "approximate retargeting). Mark verified only after checking against an ISL reference.",
+        "description": f"Motion captured from recorded sample {sample.get('sample_id')} (landmarks, approximate "
+                       "retargeting). Mark verified only after checking against an ISL reference.",
         "duration": keyframes[-1]["t"],
         "keyframes": keyframes,
     }

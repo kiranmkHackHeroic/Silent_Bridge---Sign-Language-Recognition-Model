@@ -2,8 +2,8 @@
   "_comment": "sign_id -> animation clip. type: 'captured' (retargeted from a recorded webcam sample) or 'placeholder' (hand-written illustrative motion, NOT verified ISL). 'review' is the sign validation checklist (handshape, orientation, movement, location, non_manual = facial/body components): each is 'unchecked' | 'ok' | 'wrong'. Set verified=true only after an ISL-proficient reviewer marks every item 'ok' against a named reference.",
   "animations": {
     "namaskara": {
-      "file": "placeholder/namaskara.json",
-      "type": "placeholder",
+      "file": "captured/namaskara.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -13,11 +13,17 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_07eaebe9855e52",
+        "signer_group": "nachiketh",
+        "file": "Nachikethhello3.mp4"
       }
     },
     "thank_you": {
-      "file": "placeholder/thank_you.json",
-      "type": "placeholder",
+      "file": "captured/thank_you.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -27,6 +33,12 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_8a7f68e4eb78fb",
+        "signer_group": "signer_0403",
+        "file": "0403(110).mp4"
       }
     },
     "yes": {
@@ -86,8 +98,8 @@
       }
     },
     "help": {
-      "file": "placeholder/help.json",
-      "type": "placeholder",
+      "file": "captured/help.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -97,6 +109,12 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_52e4ddaef6f33d",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajHelp2.mp4"
       }
     },
     "please": {
@@ -114,8 +132,8 @@
       }
     },
     "sorry": {
-      "file": "placeholder/sorry.json",
-      "type": "placeholder",
+      "file": "captured/sorry.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -125,11 +143,17 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_6b19314c832010",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajSorry1.mp4"
       }
     },
     "good": {
-      "file": "placeholder/good.json",
-      "type": "placeholder",
+      "file": "captured/good.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -139,6 +163,12 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_f74571ba2e935f",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajGood2.mp4"
       }
     },
     "i_me": {
@@ -184,8 +214,8 @@
       }
     },
     "name": {
-      "file": "placeholder/name.json",
-      "type": "placeholder",
+      "file": "captured/name.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -195,6 +225,12 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_869812a72f8d75",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajName2.mp4"
       }
     },
     "what": {
@@ -223,6 +259,780 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      }
+    },
+    "afternoon": {
+      "file": "captured/afternoon.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_47c943b885cc21",
+        "signer_group": "signer_0403",
+        "file": "0403(85).mp4"
+      }
+    },
+    "angry": {
+      "file": "captured/angry.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_a141808a931f66",
+        "signer_group": "signer_0403",
+        "file": "0403(27).mp4"
+      }
+    },
+    "bad": {
+      "file": "captured/bad.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_ffa7696584dc07",
+        "signer_group": "signer_0403",
+        "file": "0403(30).mp4"
+      }
+    },
+    "bird": {
+      "file": "captured/bird.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_d30973d1282720",
+        "signer_group": "signer_0403",
+        "file": "0403.mp4"
+      }
+    },
+    "black": {
+      "file": "captured/black.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_7452183c01413b",
+        "signer_group": "nachiketh",
+        "file": "NachikethBlack3.mp4"
+      }
+    },
+    "boy": {
+      "file": "captured/boy.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_b09e5df38af4ef",
+        "signer_group": "signer_0403",
+        "file": "0403(33).mp4"
+      }
+    },
+    "brother": {
+      "file": "captured/brother.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_0408e703792f8e",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajBrother2.mp4"
+      }
+    },
+    "cat": {
+      "file": "captured/cat.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_a1d9764b78ad59",
+        "signer_group": "nachiketh",
+        "file": "NachikethCat2.mp4"
+      }
+    },
+    "cow": {
+      "file": "captured/cow.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_7d9a6537c3b180",
+        "signer_group": "manideep",
+        "file": "manideepcow-1.mp4"
+      }
+    },
+    "dog": {
+      "file": "captured/dog.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_b62771c0f47497",
+        "signer_group": "manideep",
+        "file": "manideepdog-1.mp4"
+      }
+    },
+    "drink": {
+      "file": "captured/drink.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_0b8d88c1b4e8c4",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajdrink2.mp4"
+      }
+    },
+    "eat": {
+      "file": "captured/eat.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_5e2eeaa2956749",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajeat3.mp4"
+      }
+    },
+    "evening": {
+      "file": "captured/evening.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_2c1bd940ba8357",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajEvening2.mp4"
+      }
+    },
+    "father": {
+      "file": "captured/father.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_0f078c8af36613",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajFather1.mp4"
+      }
+    },
+    "fish": {
+      "file": "captured/fish.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_9f652eaf916f81",
+        "signer_group": "manideep",
+        "file": "manideepfish-2.mp4"
+      }
+    },
+    "friend": {
+      "file": "captured/friend.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_496bd04e9b8f4b",
+        "signer_group": "signer_0403",
+        "file": "0403(39).mp4"
+      }
+    },
+    "girl": {
+      "file": "captured/girl.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_94aae7764d2a9c",
+        "signer_group": "signer_underscore",
+        "file": "Girl_1.mp4"
+      }
+    },
+    "good_morning": {
+      "file": "captured/good_morning.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_3c5781be5f242d",
+        "signer_group": "manideep",
+        "file": "manideepgoodmorning-1.mp4"
+      }
+    },
+    "grey": {
+      "file": "captured/grey.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_801048717793bd",
+        "signer_group": "manideep",
+        "file": "manideepgrey-2.mp4"
+      }
+    },
+    "hand": {
+      "file": "captured/hand.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_d8da90502b1786",
+        "signer_group": "signer_plain",
+        "file": "Hand1.mov"
+      }
+    },
+    "monsoon": {
+      "file": "captured/monsoon.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_8ff4cd7ad1241d",
+        "signer_group": "signer_underscore",
+        "file": "Monsoon_2.mp4"
+      }
+    },
+    "mother": {
+      "file": "captured/mother.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_65864bbfe0fe64",
+        "signer_group": "signer_0403",
+        "file": "0403(47).mp4"
+      }
+    },
+    "music": {
+      "file": "captured/music.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_ed54a863abb7c3",
+        "signer_group": "signer_0403",
+        "file": "0403(63).mp4"
+      }
+    },
+    "night": {
+      "file": "captured/night.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_b0f0f669fb40e1",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajNight3.mp4"
+      }
+    },
+    "nose": {
+      "file": "captured/nose.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_15c128e4d9bc61",
+        "signer_group": "signer_underscore",
+        "file": "Nose_1.mp4"
+      }
+    },
+    "power": {
+      "file": "captured/power.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_acee00cf54b840",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajPower2.mp4"
+      }
+    },
+    "ring": {
+      "file": "captured/ring.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_bd26a4479d3a8a",
+        "signer_group": "signer_plain",
+        "file": "RING 1.mp4"
+      }
+    },
+    "sit": {
+      "file": "captured/sit.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_4390d04ab63cae",
+        "signer_group": "signer_plain",
+        "file": "Sit1.mov"
+      }
+    },
+    "sleep": {
+      "file": "captured/sleep.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_4aed91b562b610",
+        "signer_group": "signer_underscore",
+        "file": "Sleep_3.mp4"
+      }
+    },
+    "stand": {
+      "file": "captured/stand.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_776335c0c54fe6",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajStand2.mp4"
+      }
+    },
+    "stop": {
+      "file": "captured/stop.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_64fc2eec51ceb8",
+        "signer_group": "signer_0403",
+        "file": "0403(65).mp4"
+      }
+    },
+    "student": {
+      "file": "captured/student.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_6ac63202c410ff",
+        "signer_group": "signer_plain",
+        "file": "STUDENT 1.mp4"
+      }
+    },
+    "study": {
+      "file": "captured/study.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_850e1dea4fb22b",
+        "signer_group": "signer_plain",
+        "file": "STUDY 01.mp4"
+      }
+    },
+    "teacher": {
+      "file": "captured/teacher.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_47bec7074e39b1",
+        "signer_group": "signer_plain",
+        "file": "TEACHER 1.mp4"
+      }
+    },
+    "teeth": {
+      "file": "captured/teeth.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_e121ff56f1e0c5",
+        "signer_group": "krishnaraj",
+        "file": "KrishnarajTeeth3.mp4"
+      }
+    },
+    "today": {
+      "file": "captured/today.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_d4801b3dc9df5a",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajtoday_1.mp4"
+      }
+    },
+    "tomorrow": {
+      "file": "captured/tomorrow.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_0d5bb05e8c5dda",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajtommorow_2.mp4"
+      }
+    },
+    "umbrella": {
+      "file": "captured/umbrella.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_e90b139ee132ee",
+        "signer_group": "signer_plain",
+        "file": "UMBRELLA 1.mp4"
+      }
+    },
+    "welcome": {
+      "file": "captured/welcome.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_09a8349dc70517",
+        "signer_group": "signer_plain",
+        "file": "Welcome3.mov"
+      }
+    },
+    "work": {
+      "file": "captured/work.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_e4b68a465b3c1f",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajwork_3.mp4"
+      }
+    },
+    "write": {
+      "file": "captured/write.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_e5f25dbc39ed5f",
+        "signer_group": "signer_plain",
+        "file": "Write1.mov"
+      }
+    },
+    "yesterday": {
+      "file": "captured/yesterday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_b9e867aa7ed6ef",
+        "signer_group": "krishnaraj",
+        "file": "krishnarajyesterday_1.mp4"
+      }
+    },
+    "you_are_perfect": {
+      "file": "captured/you_are_perfect.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "amrita_slr",
+        "sample_id": "amrita_slr_2c9880c85f9eab",
+        "signer_group": "signer_underscore",
+        "file": "You Are Perfect_3.mp4"
       }
     }
   }

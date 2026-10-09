@@ -148,7 +148,8 @@ def load_valid_samples(stores: list[tuple[str, DatasetStore]], known_labels: set
 # ---------------------------------------------------------------- models
 def build_model(kind: str, seed: int, fcfg: FeatureConfig = DEFAULT_FEATURE_CONFIG):
     if kind == "logreg":
-        clf = LogisticRegression(C=0.5, max_iter=3000, class_weight="balanced", random_state=seed)
+        # C=0.1 chosen by a development-data sweep (tools/tune_isolated.py); test data untouched
+        clf = LogisticRegression(C=0.1, max_iter=3000, class_weight="balanced", random_state=seed)
     elif kind == "svm_rbf":
         clf = CalibratedClassifierCV(SVC(C=10.0, gamma="scale", class_weight="balanced", random_state=seed),
                                      method="sigmoid", cv=3, ensemble=False)
