@@ -2,6 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { api, WEBCAM_THRESHOLD_KEY, type LiveEvalReport } from "../services/api";
 import { Btn, Card, Chip, Empty, Notice, Spinner, Stat } from "./ui";
 
+const CAUSES: Record<string, string> = {
+  correct: "correct", E: "E boundary", C: "C suppressed", B: "B rejected by threshold", D: "D landmarks/face",
+  A2: "A2 near miss (2nd/3rd)", A: "A not in top 3",
+};
+const END: Record<string, string> = { lowered: "hands lowered", hold: "held still", moving: "cut while moving" };
+
 const pct = (v: number | null | undefined) => (v == null ? "—" : `${(v * 100).toFixed(1)}%`);
 
 /** Live-performance report of the ACTIVE model on evaluation-only webcam recordings (never trained on). */
@@ -36,8 +42,10 @@ export function LiveEvalCard({ refreshKey }: { refreshKey: number }) {
           <Stat label="Single-sign recordings" value={data.isolated} hint={`${data.per_label?._none ?? 0} non-sign (_none)`} />
           <Stat label="Sessions" value={data.sessions.length} />
           <Stat label="Sequences" value={data.sequences} hint={`${data.sequence_signs} signs in total`} />
+          <Stat label="Signers" value={data.signers?.length ?? 0} hint={(data.signers ?? []).join(", ")} />
         </div>
       )}
+      {data?.metadata_warnings?.map((w) => <Notice key={w} tone="warn">{w}</Notice>)}
       {data && data.isolated === 0 && data.sequences === 0 && (
         <Empty icon="camera">
           No evaluation recordings yet. Record a few signs with <strong>Purpose: evaluation only</strong> in a NEW session (different day, lighting
@@ -48,7 +56,8 @@ export function LiveEvalCard({ refreshKey }: { refreshKey: number }) {
       {err && <Notice tone="bad">{err}</Notice>}
       {rep && (
         <div className="stack">
-          <div className="muted xs">Model {rep.model_version} · acceptance threshold {Math.round(rep.threshold * 100)}% · {rep.note}</div>
+          <div className="muted xs">Model {rep.model_version} · acceptance threshold {Math.round(rep.threshold * 100)}% · {rep.note}
+            {rep.saved_to && <> · saved to <code>{rep.saved_to}</code></>}</div>
           {iso && iso.recordings > 0 && (
             <>
               <h3 className="small">Single signs</h3>
@@ -61,6 +70,22 @@ export function LiveEvalCard({ refreshKey }: { refreshKey: number }) {
                 <Stat label="False detections" value={iso.none_recordings ? `${iso.false_detections}/${iso.none_recordings}` : "no _none data"} hint="non-sign movements that produced a word" />
               </div>
               {iso.not_in_model_vocabulary > 0 && <Notice tone="warn">{iso.not_in_model_vocabulary} recording(s) are of signs the active model was not trained on (excluded from the metrics).</Notice>}
+              {iso.outcomes_at_threshold && (
+                <div className="small">
+                  At the threshold: <strong>{iso.outcomes_at_threshold.correct}</strong> correct · {iso.outcomes_at_threshold.wrong} wrong ·{" "}
+                  {iso.outcomes_at_threshold.rejected_or_missed} rejected/missed · {iso.outcomes_at_threshold.false_detections} false detections
+                  {iso.rejection_rate != null && <> · rejection rate {pct(iso.rejection_rate)}</>}
+                  {iso.classifier_latency_ms && <> · classifier {iso.classifier_latency_ms.mean} ms (p95 {iso.classifier_latency_ms.p95})</>}
+                  {iso.recording_timing && <> · {iso.recording_timing.mean_fps ?? "?"} FPS, {iso.recording_timing.dropped_frames} dropped of {iso.recording_timing.frames} frames</>}
+                </div>
+              )}
+              {iso.live_replay && (
+                <div className="small">
+                  <strong>Through the live pipeline</strong> ({iso.live_replay.completed_signs} completed signs):{" "}
+                  {Object.entries(iso.live_replay.causes).map(([k, n]) => `${CAUSES[k] ?? k} ${n}`).join(" · ")}
+                  <div>By how the sign ended: {Object.entries(iso.live_replay.correct_by_end_style).map(([k, v]) => `${END[k] ?? k} ${v.correct}/${v.n} correct`).join(" · ")}</div>
+                </div>
+              )}
               {iso.thresholds && <ThresholdTable th={iso.thresholds} modelThreshold={rep.threshold} />}
               {iso.top_confusions && iso.top_confusions.length > 0 && (
                 <div className="small">Most frequent confusions: {iso.top_confusions.slice(0, 6).map((c) => `${c.true} → ${c.predicted} (${c.count})`).join(" · ")}</div>

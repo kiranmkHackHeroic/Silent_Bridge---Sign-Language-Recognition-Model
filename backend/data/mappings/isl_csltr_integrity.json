@@ -1,0 +1,901 @@
+{
+ "videos_on_disk": 687,
+ "listed_in_spreadsheet": 492,
+ "distinct_contents": 682,
+ "folder_convention_check": {
+  "listed_files_in_matching_folder": 492,
+  "listed_files": 492
+ },
+ "duplicate_groups": [
+  {
+   "md5": "91203a8f56e380baaa123927fcf7d1a0",
+   "files": [
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/are you hiding something/MVI_6817.MP4",
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/do you need something/something (2).MP4"
+   ],
+   "labels": [
+    "areyouhidingsomething",
+    "doyouneedsomething"
+   ],
+   "conflict": true
+  },
+  {
+   "md5": "d96f0165f60f08e721d7f6caa17d3343",
+   "files": [
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not worry/worry.MP4",
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/No need to worry dont worry/MVI_6496.MP4"
+   ],
+   "labels": [
+    "donotworry",
+    "noneedtoworrydontworry"
+   ],
+   "conflict": true
+  },
+  {
+   "md5": "34d79e4e7c80f04238d8d918dde3415d",
+   "files": [
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not agree/agree.MP4",
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/i dont agree/MVI_6494.MP4"
+   ],
+   "labels": [
+    "idonotagree",
+    "idontagree"
+   ],
+   "conflict": true
+  },
+  {
+   "md5": "ffcf9be3cf9325a5933aabe68bc62f7a",
+   "files": [
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/i like you i love you/love.MP4",
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/i like you i love you/MVI_6814.MP4"
+   ],
+   "labels": [
+    "ilikeyouiloveyou"
+   ],
+   "conflict": false
+  },
+  {
+   "md5": "67170eaa62c663a95cf072902d6c831f",
+   "files": [
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/now onwards he will never hurt you/never hurt.MP4",
+    "ISL_CSLRT_Corpus/Videos_Sentence_Level/what have you planned for your career/MVI_6499.MP4"
+   ],
+   "labels": [
+    "nowonwardshewillneverhurtyou",
+    "whathaveyouplannedforyourcareer"
+   ],
+   "conflict": true
+  }
+ ],
+ "excluded": [
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/are you hiding something/MVI_6817.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "91203a8f56e380baaa123927fcf7d1a0"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do you need something/something (2).MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "91203a8f56e380baaa123927fcf7d1a0"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not worry/worry.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "d96f0165f60f08e721d7f6caa17d3343"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/No need to worry dont worry/MVI_6496.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "d96f0165f60f08e721d7f6caa17d3343"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not agree/agree.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "34d79e4e7c80f04238d8d918dde3415d"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i dont agree/MVI_6494.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "34d79e4e7c80f04238d8d918dde3415d"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i like you i love you/MVI_6814.MP4",
+   "reason": "exact duplicate of ISL_CSLRT_Corpus/Videos_Sentence_Level/i like you i love you/love.MP4",
+   "md5": "ffcf9be3cf9325a5933aabe68bc62f7a"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/now onwards he will never hurt you/never hurt.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "67170eaa62c663a95cf072902d6c831f"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what have you planned for your career/MVI_6499.MP4",
+   "reason": "duplicate video with conflicting sentence labels",
+   "md5": "67170eaa62c663a95cf072902d6c831f"
+  }
+ ],
+ "unlisted_with_annotated_sentence": [
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/are you free today/are you free today (2).mp4",
+   "sentence_id": "s000"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/are you free today/are you free today.mp4",
+   "sentence_id": "s000"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/are you hiding something/are you hiding something (2).mp4",
+   "sentence_id": "s001"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/are you hiding something/are you hiding something.mp4",
+   "sentence_id": "s001"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/bring water for me/bring water for me (6).mp4",
+   "sentence_id": "s002"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/bring water for me/bring water for me (7).mp4",
+   "sentence_id": "s002"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/can i help you/can i help you (2).mp4",
+   "sentence_id": "s003"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/can i help you/can i help you.mp4",
+   "sentence_id": "s003"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/can you repeat that please/can you repeat that please (7).mp4",
+   "sentence_id": "s004"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/can you repeat that please/can you repeat that please (8).mp4",
+   "sentence_id": "s004"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/comb your hair/comb your hair (2).mp4",
+   "sentence_id": "s005"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/comb your hair/comb your hair.mp4",
+   "sentence_id": "s005"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/congratulations/congratulations (2).mp4",
+   "sentence_id": "s006"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/congratulations/congratulations.mp4",
+   "sentence_id": "s006"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/could you please talk slower/could you please talk slower (1).mp4",
+   "sentence_id": "s007"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/could you please talk slower/could you please talk slower (2).mp4",
+   "sentence_id": "s007"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do me a favour/do me a favour (2).mp4",
+   "sentence_id": "s008"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do me a favour/do me a favour.mp4",
+   "sentence_id": "s008"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not abuse him/do not abuse him (2).mp4",
+   "sentence_id": "s009"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not abuse him/do not abuse him.mp4",
+   "sentence_id": "s009"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not be stubborn/do not be stubborn (2).mp4",
+   "sentence_id": "s010"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not be stubborn/do not be stubborn.mp4",
+   "sentence_id": "s010"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not hurt me/do not hurt me (2).mp4",
+   "sentence_id": "s011"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not hurt me/do not hurt me.mp4",
+   "sentence_id": "s011"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not make me angry/do not make me angry (2).mp4",
+   "sentence_id": "s012"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not make me angry/do not make me angry.mp4",
+   "sentence_id": "s012"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not take it to the heart/do not take it to the heart (2).mp4",
+   "sentence_id": "s013"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not take it to the heart/do not take it to the heart.mp4",
+   "sentence_id": "s013"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not worry/do not worry (2).mp4",
+   "sentence_id": "s014"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do not worry/do not worry.mp4",
+   "sentence_id": "s014"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do you need something/do you need something (2).mp4",
+   "sentence_id": "s015"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/do you need something/do you need something.mp4",
+   "sentence_id": "s015"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/go and sleep/go and sleep (2).mp4",
+   "sentence_id": "s016"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/go and sleep/go and sleep.mp4",
+   "sentence_id": "s016"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/had your food/had your food (2).mp4",
+   "sentence_id": "s017"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/had your food/had your food.mp4",
+   "sentence_id": "s017"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he came by train/he came by train (2).mp4",
+   "sentence_id": "s018"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he came by train/he came by train.mp4",
+   "sentence_id": "s018"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/He is going into the room/he is going into the room (2).mp4",
+   "sentence_id": "s019"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/He is going into the room/he is going into the room.mp4",
+   "sentence_id": "s019"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he is on the way/he is on the way (2).mp4",
+   "sentence_id": "s020"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he is on the way/he is on the way.mp4",
+   "sentence_id": "s020"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he she is my friend/heshe is my friend.mp4",
+   "sentence_id": "s021"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he she is my friend/she is my friend.mp4",
+   "sentence_id": "s021"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he would be coming today/he would be coming today (2).mp4",
+   "sentence_id": "s022"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/he would be coming today/he would be coming today.mp4",
+   "sentence_id": "s022"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/help me/help me (6).mp4",
+   "sentence_id": "s023"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/help me/help me (7).mp4",
+   "sentence_id": "s023"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/hi how are you/hi how are you (1).mp4",
+   "sentence_id": "s024"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/hi how are you/hi how are you (2).mp4",
+   "sentence_id": "s024"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how are things/how are things (2).mp4",
+   "sentence_id": "s025"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how are things/how are things.mp4",
+   "sentence_id": "s025"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how can i help you/how can i help you (1).mp4",
+   "sentence_id": "s026"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how can i help you/how can i help you (2).mp4",
+   "sentence_id": "s026"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how can i trust you/how can i trust you (2).mp4",
+   "sentence_id": "s027"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how can i trust you/how can i trust you.mp4",
+   "sentence_id": "s027"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how dare you/how dare you (2).mp4",
+   "sentence_id": "s028"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how dare you/how dare you.mp4",
+   "sentence_id": "s028"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how old are you/how old are you (1).mp4",
+   "sentence_id": "s029"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/how old are you/how old are you (2).mp4",
+   "sentence_id": "s029"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am (age)/i am (age) (6).mp4",
+   "sentence_id": "s030"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am afraid of that/i am afraid of that (2).mp4",
+   "sentence_id": "s031"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am afraid of that/i am afraid of that.mp4",
+   "sentence_id": "s031"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am crying/i am crying (2).mp4",
+   "sentence_id": "s032"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am crying/i am crying.mp4",
+   "sentence_id": "s032"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am feeling bored/i am feeling bored (2).mp4",
+   "sentence_id": "s033"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am feeling bored/i am feeling bored.mp4",
+   "sentence_id": "s033"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am feeling cold/i am feeling cold (2).mp4",
+   "sentence_id": "s034"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am feeling cold/i am feeling cold.mp4",
+   "sentence_id": "s034"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am fine. thank you sir/i am fine. thank you sir (2).mp4",
+   "sentence_id": "s035"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am fine. thank you sir/i am fine. thank you sir.mp4",
+   "sentence_id": "s035"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am hungry/i am hungry   (1).mp4",
+   "sentence_id": "s036"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am hungry/i am hungry   (2).mp4",
+   "sentence_id": "s036"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am in dilemma what to do/i am in dilemma what to do (2).mp4",
+   "sentence_id": "s037"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am in dilemma what to do/i am in dilemma what to do.mp4",
+   "sentence_id": "s037"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am not really sure/i am not really sure (2).mp4",
+   "sentence_id": "s038"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am not really sure/i am not really sure.mp4",
+   "sentence_id": "s038"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am really grateful/i am really grateful (2).mp4",
+   "sentence_id": "s039"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am really grateful/i am really grateful.mp4",
+   "sentence_id": "s039"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am sitting in the class/i am sitting in the class (2).mp4",
+   "sentence_id": "s040"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am sitting in the class/i am sitting in the class.mp4",
+   "sentence_id": "s040"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am so sorry to hear that/i am so sorry to hear that (2).mp4",
+   "sentence_id": "s041"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am so sorry to hear that/i am so sorry to hear that.mp4",
+   "sentence_id": "s041"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am suffering from fever/i am suffering from fever (2).mp4",
+   "sentence_id": "s042"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am suffering from fever/i am suffering from fever.mp4",
+   "sentence_id": "s042"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am tired/i am tired (2).mp4",
+   "sentence_id": "s043"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am tired/i am tired.mp4",
+   "sentence_id": "s043"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am very happy/i am very happy (2).mp4",
+   "sentence_id": "s044"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i am very happy/i am very happy.mp4",
+   "sentence_id": "s044"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i can not help you there/i can not help you there (2).mp4",
+   "sentence_id": "s045"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i can not help you there/i can not help you there.mp4",
+   "sentence_id": "s045"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not agree/i do not agree (2).mp4",
+   "sentence_id": "s046"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not agree/i do not agree.mp4",
+   "sentence_id": "s046"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not like it/i do not like it (2).mp4",
+   "sentence_id": "s047"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not like it/i do not like it.mp4",
+   "sentence_id": "s047"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not mean it/i do not mean it (3).mp4",
+   "sentence_id": "s048"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i do not mean it/i do not mean it.mp4",
+   "sentence_id": "s048"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i enjoyed a lot/i enjoyed a lot (2).mp4",
+   "sentence_id": "s050"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i enjoyed a lot/i enjoyed a lot.mp4",
+   "sentence_id": "s050"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i got hurt/i got hurt (2).mp4",
+   "sentence_id": "s051"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i got hurt/i got hurt.mp4",
+   "sentence_id": "s051"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i like you i love you/i love you (2).mp4",
+   "sentence_id": "s052"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i like you i love you/i love you.mp4",
+   "sentence_id": "s052"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i need water/i need water 1.mp4",
+   "sentence_id": "s053"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i need water/i need water 2.mp4",
+   "sentence_id": "s053"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i promise/i promise (2).mp4",
+   "sentence_id": "s054"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i promise/i promise.mp4",
+   "sentence_id": "s054"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i really appreciate it/i really appreciate it (1).mp4",
+   "sentence_id": "s055"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i really appreciate it/i really appreciate it (2).mp4",
+   "sentence_id": "s055"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i somehow got to know about it/i somehow got to know about it..mp4",
+   "sentence_id": "s056"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i somehow got to know about it/i somehow got to know about it.mp4",
+   "sentence_id": "s056"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i was stopped by some one/i was stopped by someone (2).mp4",
+   "sentence_id": "s057"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/i was stopped by some one/i was stopped by someone.mp4",
+   "sentence_id": "s057"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/it does not make any difference to me/it does not make any difference to me (2).mp4",
+   "sentence_id": "s058"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/it does not make any difference to me/it does not make any difference to me.mp4",
+   "sentence_id": "s058"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/it was nice chatting with you/it was nice chatting with you (2).mp4",
+   "sentence_id": "s059"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/it was nice chatting with you/it was nice chatting with you.mp4",
+   "sentence_id": "s059"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/let him take time/let him take time (2).mp4",
+   "sentence_id": "s060"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/let him take time/let him take time.mp4",
+   "sentence_id": "s060"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/my name is xxxxxxxx/my name is xxxxxxxx (6).mp4",
+   "sentence_id": "s061"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/my name is xxxxxxxx/my name is xxxxxxxx (7).mp4",
+   "sentence_id": "s061"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/nice to meet you/nice to meet you (7).mp4",
+   "sentence_id": "s062"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/nice to meet you/nice to meet you (8).mp4",
+   "sentence_id": "s062"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/now onwards he will never hurt you/now onwards he will never hurt you.mp4",
+   "sentence_id": "s064"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/pour some more water into the glass/pour some more water into the glass (2).mp4",
+   "sentence_id": "s065"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/pour some more water into the glass/pour some more water into the glass.mp4",
+   "sentence_id": "s065"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/prepare the bed/prepare the bed (2).mp4",
+   "sentence_id": "s066"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/prepare the bed/prepare the bed.mp4",
+   "sentence_id": "s066"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/serve the food/serve the food (2).mp4",
+   "sentence_id": "s067"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/serve the food/serve the food.mp4",
+   "sentence_id": "s067"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/shall we go outside/shall we go outside (2).mp4",
+   "sentence_id": "s068"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/shall we go outside/shall we go outside.mp4",
+   "sentence_id": "s068"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/speak softly/speak softly (2).mp4",
+   "sentence_id": "s069"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/speak softly/speak softly.mp4",
+   "sentence_id": "s069"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/take care of yourself/take care of yourself (2).mp4",
+   "sentence_id": "s070"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/take care of yourself/take care of yourself.mp4",
+   "sentence_id": "s070"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/tell me truth/tell me truth (2).mp4",
+   "sentence_id": "s071"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/tell me truth/tell me truth.mp4",
+   "sentence_id": "s071"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/thank you so much/thank you so much (7).mp4",
+   "sentence_id": "s072"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/thank you so much/thank you so much (8).mp4",
+   "sentence_id": "s072"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/that is so kind of you/that is so kind of you (2).mp4",
+   "sentence_id": "s073"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/that is so kind of you/that is so kind of you.mp4",
+   "sentence_id": "s073"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/This place is beautiful/this place is beautiful (2).mp4",
+   "sentence_id": "s074"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/This place is beautiful/this place is beautiful.mp4",
+   "sentence_id": "s074"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/try to understand/try to understand (2).mp4",
+   "sentence_id": "s075"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/try to understand/try to understand.mp4",
+   "sentence_id": "s075"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/turn on light turn off light/turn on light turn off light.mp4",
+   "sentence_id": "s076"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/turn on light turn off light/turn on lightturn off light.mp4",
+   "sentence_id": "s076"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/we are all with you/we are all with you (2).mp4",
+   "sentence_id": "s077"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/we are all with you/we are all with you.mp4",
+   "sentence_id": "s077"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/wear the shirt/wear the shirt (2).mp4",
+   "sentence_id": "s078"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/wear the shirt/wear the shirt.mp4",
+   "sentence_id": "s078"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what are you doing/what are you doing (7).mp4",
+   "sentence_id": "s079"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what are you doing/what are you doing (8).mp4",
+   "sentence_id": "s079"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what did you tell him/what did you tell him (2).mp4",
+   "sentence_id": "s080"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what did you tell him/what did you tell him.mp4",
+   "sentence_id": "s080"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what do you do/what do you do (6).mp4",
+   "sentence_id": "s081"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what do you do/what do you do (7).mp4",
+   "sentence_id": "s081"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what do you think/what do you think (7).mp4",
+   "sentence_id": "s082"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what do you think/what do you think (8).mp4",
+   "sentence_id": "s082"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what do you want to become/what do you want to become (2).mp4",
+   "sentence_id": "s083"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what do you want to become/what do you want to become.mp4",
+   "sentence_id": "s083"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what happened/what happened.mp4",
+   "sentence_id": "s084"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what have you planned for your career/what have you planned for your career (2).mp4",
+   "sentence_id": "s085"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what have you planned for your career/what have you planned for your career.mp4",
+   "sentence_id": "s085"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what is your phone number/what is your phone number (7).mp4",
+   "sentence_id": "s086"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what is your phone number/what is your phone number (8).mp4",
+   "sentence_id": "s086"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what you want/what you want (7).mp4",
+   "sentence_id": "s087"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/what you want/what you want (8).mp4",
+   "sentence_id": "s087"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/when will the train leave/when will the train leave (2).mp4",
+   "sentence_id": "s088"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/when will the train leave/when will the train leave.mp4",
+   "sentence_id": "s088"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/where are you from/where are you from (6).mp4",
+   "sentence_id": "s089"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/where are you from/where are you from (7).mp4",
+   "sentence_id": "s089"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/which collegeschool are you from/which collegeschool are you from (2).mp4",
+   "sentence_id": "s090"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/which collegeschool are you from/which collegeschool are you from.mp4",
+   "sentence_id": "s090"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/who are you/who are you (7).mp4",
+   "sentence_id": "s091"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/who are you/who are you (8).mp4",
+   "sentence_id": "s091"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/why are you angry/why are you angry (2).mp4",
+   "sentence_id": "s092"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/why are you angry/why are you angry.mp4",
+   "sentence_id": "s092"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/why are you crying/why are you crying (2).mp4",
+   "sentence_id": "s093"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/why are you crying/why are you crying.mp4",
+   "sentence_id": "s093"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/why are you disappointed/why are you disappointed (2).mp4",
+   "sentence_id": "s094"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/why are you disappointed/why are you disappointed.mp4",
+   "sentence_id": "s094"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you are bad/you are bad (2).mp4",
+   "sentence_id": "s095"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you are bad/you are bad.mp4",
+   "sentence_id": "s095"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you are good/you are good (2).mp4",
+   "sentence_id": "s096"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you are good/you are good.mp4",
+   "sentence_id": "s096"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you are welcome/you are welcome (2).mp4",
+   "sentence_id": "s097"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you are welcome/you are welcome.mp4",
+   "sentence_id": "s097"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you can do it/you can do it (2).mp4",
+   "sentence_id": "s098"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you can do it/you can do it.mp4",
+   "sentence_id": "s098"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you do anything, i do not care/you do anything, i do not care (2).mp4",
+   "sentence_id": "s099"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you do anything, i do not care/you do anything, i do not care.mp4",
+   "sentence_id": "s099"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you need a medicine, take this one/you need a medicine, take this one..mp4",
+   "sentence_id": "s100"
+  },
+  {
+   "file": "ISL_CSLRT_Corpus/Videos_Sentence_Level/you need a medicine, take this one/you need a medicine, take this one.mp4",
+   "sentence_id": "s100"
+  }
+ ],
+ "unlisted_without_annotation": [],
+ "note": "excluded files are skipped by app.continuous.dataset.load_samples; unlisted files are not imported"
+}

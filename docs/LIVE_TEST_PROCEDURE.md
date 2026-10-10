@@ -23,6 +23,18 @@ Go to **Live Recognition → Start camera**, then open **Pipeline diagnostics**.
 | 5 Classification | Threshold *calibrated on validation data*; each decision lists its stage; *out of training distribution* shows which feature block differs |
 | 6 Translation | Label → Kannada for each recognised word |
 
+After each sign, **Latest completed sign** shows:
+- the segment (frames, face share, how it ended, still frames trimmed);
+- the model-input check (2,444 values);
+- the logistic-regression, GRU and combined top 3 *before* the threshold;
+- the final decision.
+
+This tells you whether a wrong word is a near miss (the right sign is second) or a different error.
+
+Ending a sign by holding still is fine: the motionless hold is no longer fed to the classifier. Sit close
+enough that your face is large in the frame (within about 1–1.5 m). Unlike the training extraction, the
+browser cannot find very small faces.
+
 If something looks wrong, add a note and press **Save diagnostics snapshot**. The last ~20 s of
 landmarks and decisions are saved to `backend/data/diagnostics/` (no video).
 
@@ -39,6 +51,10 @@ session, and record:
 
 These recordings go to `backend/data/eval_recordings` and `backend/data/eval_sequences`. Training never reads them.
 
+**Record evaluation data only with the in-app recorder (Purpose: Evaluation only).** Videos added through
+**Upload sign videos** always become **training** data. Give every person their own **Signer ID**: the report
+warns about the default `signer1`, recordings without IDs, and a single session.
+
 ## 3. Measure
 On **Dataset & Model → Live evaluation → Evaluate active model**, or:
 ```powershell
@@ -47,11 +63,29 @@ cd backend; .\.venv\Scripts\python.exe tools\evaluate_live.py
 Reported: accuracy, macro precision, recall and F1 (a rejected word counts as "no word"), words
 rejected as uncertain, **false detections** (`_none` recordings that produced a word), accuracy by
 speed, distance, lighting and position, top confusions, and for sequences the **sign error rate**
-with substitutions, deletions (missed signs) and insertions (extra words). The JSON goes to
-`backend/reports/live_eval.json`.
+with substitutions, deletions (missed signs) and insertions (extra words).
+
+Also reported:
+- the confusion matrix and confidence distribution;
+- correct / wrong / rejected / false detections at the threshold, and the rejection rate;
+- classifier latency, recording FPS and dropped frames;
+- **every recording replayed through the live pipeline**, with each error attributed to a cause, and correct
+  words split by how the sign ended (hands lowered / held still / cut while moving).
+
+| Cause | Meaning |
+|---|---|
+| A | The right sign is not in the top 3 |
+| A2 | The right sign is 2nd or 3rd |
+| B | The right sign is top-1 but below the threshold |
+| C | Predicted but suppressed (duplicate / continuation) |
+| D | Face missing / few hand frames / out-of-distribution |
+| E | Sign boundary wrong (no segment / split) |
+
+Each run is saved to a **new** file, `backend/reports/live_eval_<UTC time>.json`; earlier reports are never
+overwritten. The in-app button shows the file name.
 
 ## 3b. Test the confidence threshold on webcam input
-The model's threshold (currently 0.40, model v20261010-081537) was chosen on dataset videos, not on your camera. Record evaluation sessions on
+The model's threshold (currently 0.40, model v20261010-101617, a bit-identical retrain of v20261010-081537) was chosen on dataset videos, not on your camera. Record evaluation sessions on
 **at least two** different days, lighting setups or distances. The Live evaluation card then shows a threshold
 table with correct words, wrong words, missed signs and false detections. It also gives a
 **leave-one-session-out** choice: the threshold is picked on the other sessions and scored on the held-out one.
@@ -66,9 +100,9 @@ with the word menu and the whole sequence is re-translated. Parts outside the ph
 
 ## 4. Improve and re-measure
 Record **training** sessions (Purpose: Training data) for the weak signs and conditions, plus `_none`.
-After ≥ 20 new samples, a training job is queued automatically. The new model only replaces the
-active one if it passes the held-out test, the fair comparison on the same unseen test samples and
-the smoke test. Run step 3 again with the **same** evaluation recordings to compare.
+Webcam recordings do not start training by themselves: click **Retrain model** on Dataset & Model (video
+imports queue training automatically when eligible). The new model only replaces the active one if it
+passes the held-out test, the comparison on the identical held-out test set and the smoke test. Run step 3 again with the **same** evaluation recordings to compare.
 
 ## Manual checklist
 - Hold one sign still for 5 s → added once

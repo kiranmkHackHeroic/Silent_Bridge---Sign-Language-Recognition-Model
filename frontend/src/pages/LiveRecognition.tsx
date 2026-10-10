@@ -26,6 +26,8 @@ interface ServerState {
   latency_ms: number | null;
   threshold?: number;
   diag?: FrameDiag | null;
+  /** sentence mode: tentative gloss decode of the sentence signed so far (never added to the transcript) */
+  partial?: { glosses: string[]; gloss_confidence: number; tentative: boolean } | null;
 }
 
 /** A recognised word waiting for confirmation before it enters the transcript. */
@@ -142,6 +144,7 @@ export function LiveRecognition() {
       at: Date.now() + Math.random(), type: msg.type, result: msg.result, label: best?.label, kannada: best?.kannada,
       confidence: best?.confidence, diagnosis: msg.diagnosis, ood: msg.ood, frames: msg.frames ?? msg.segment?.frames,
       reason: msg.reason ?? msg.segment?.reason,
+      trace: msg.trace ?? null,
     };
     setDecisions((ds) => [d, ...ds].slice(0, 30));
   }, []);
@@ -538,7 +541,10 @@ export function LiveRecognition() {
               )}
             </div>
             <div className="live-status">
-              {tentative ? (
+              {mode === "sentence" && serverState.activity === "signing" && serverState.partial?.glosses?.length ? (
+                <><StatusDot tone="info" /> Signing… tentative glosses <strong>{serverState.partial.glosses.join(" ")}</strong>{" "}
+                  <span className="muted">(live partial decode, not final, not added)</span></>
+              ) : tentative ? (
                 <><StatusDot tone="ok" /> Signing… current guess <strong lang="kn">{tentative.kannada || tentative.label}</strong> <span className="muted">({Math.round(tentative.confidence * 100)}%, not yet added)</span></>
               ) : (
                 <span className="muted">{eventMsg || (paused ? "Recognition paused." : "Waiting for a sign.")}</span>

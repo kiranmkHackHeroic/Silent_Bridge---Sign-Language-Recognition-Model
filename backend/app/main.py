@@ -152,6 +152,7 @@ def health():
 @app.get("/api/model/status")
 def model_status():
     s = S()
+    s.predictor.ensure_active()
     st = s.predictor.status()
     st["training_in_progress"] = s.jobs.active_training() is not None
     st["active_version"] = active_version()
@@ -561,9 +562,14 @@ def report_segmentation():
 async def evaluation_live():
     """Accuracy / precision / recall / macro-F1 / false detections / sequence errors of the ACTIVE model
     on the evaluation-only recordings."""
-    from .evaluation.live_eval import evaluate_live
+    from .evaluation.live_eval import evaluate_live, save_report
     s = S()
-    return await run_in_threadpool(evaluate_live, s.predictor, s.vocab)
+    s.predictor.ensure_active()                          # evaluate the registry's CURRENT active model
+    rep = await run_in_threadpool(evaluate_live, s.predictor, s.vocab)
+    has_data = rep.get("isolated", {}).get("recordings") or rep.get("sequences", {}).get("sequences")
+    if "error" not in rep and has_data:
+        rep["saved_to"] = str(save_report(rep))          # unique file per run, never overwritten
+    return rep
 
 
 @app.get("/api/dataset/summary")
@@ -713,7 +719,7 @@ def diagnostics_compare(req: CompareRequest):
     d, _ = _processed_sample(req.source, req.sample_id)
     result = compare_extractions(req.frames, d["frames"], float(d.get("video", {}).get("fps") or 30))
     s = S()
-    preds = {}
+    preds, probs = {}, {}
     for name, frames in (("browser", req.frames), ("python", d["frames"])):
         feats = []
         for f in frames:
@@ -722,7 +728,14 @@ def diagnostics_compare(req: CompareRequest):
             except Exception:
                 continue
         p = s.predictor.predict_frames(feats) if s.predictor.loaded else None
-        preds[name] = None if p is None else {"label": p.label, "confidence": round(p.confidence, 3)}
+        preds[name] = None if p is None else {"label": p.label, "confidence": round(p.confidence, 3),
+                                              "top3": [{"label": k, "p": round(v, 3)} for k, v in
+                                                       sorted(p.probabilities.items(), key=lambda kv: -kv[1])[:3]]}
+        probs[name] = None if p is None else p.probabilities
+    if probs["browser"] and probs["python"]:
+        # total variation distance between the two probability vectors (0 = identical, 1 = disjoint)
+        result["probability_difference"] = round(0.5 * sum(abs(probs["browser"][c] - probs["python"][c])
+                                                           for c in probs["python"]), 4)
     result["true_label"] = d["label"]
     result["prediction_from_browser_landmarks"] = preds["browser"]
     result["prediction_from_python_landmarks"] = preds["python"]
@@ -752,6 +765,7 @@ async def _demo_loop(ws: WebSocket, session: RecognitionSession):
 async def ws_recognition(ws: WebSocket):
     await ws.accept()
     s = S()
+    s.predictor.ensure_active()                          # new live sessions use the registry's active model
     session = RecognitionSession(s.predictor, s.vocab, continuous=s.continuous)
     demo_task: asyncio.Task | None = None
     await ws.send_json({"type": "hello", "model": s.predictor.status(), "continuous": s.continuous.status(),

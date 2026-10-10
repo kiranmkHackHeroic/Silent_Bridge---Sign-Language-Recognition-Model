@@ -140,6 +140,15 @@ export function VideoPipelineTest() {
                 <tr><td>Feature difference by block</td><td className="xs">{Object.entries(compare.feature_difference_by_block).map(([k, v]) => `${k} ${v}`).join(" · ")}</td></tr>
               )}
               <tr><td>Model on browser landmarks (whole clip)</td><td>{compare.prediction_from_browser_landmarks ? `${compare.prediction_from_browser_landmarks.label} ${Math.round(compare.prediction_from_browser_landmarks.confidence * 100)}%` : "—"}</td></tr>
+              {compare.prediction_from_browser_landmarks?.top3 && (
+                <tr><td>Top 3 browser / Python</td><td className="xs">
+                  {compare.prediction_from_browser_landmarks.top3.map((c) => `${c.label} ${Math.round(c.p * 100)}%`).join(", ")}
+                  {" / "}{compare.prediction_from_python_landmarks?.top3?.map((c) => `${c.label} ${Math.round(c.p * 100)}%`).join(", ")}
+                </td></tr>
+              )}
+              {compare.probability_difference != null && (
+                <tr><td>Probability difference (total variation, 0 = identical)</td><td>{compare.probability_difference}</td></tr>
+              )}
               <tr><td>Model on Python landmarks (whole clip)</td><td>{compare.prediction_from_python_landmarks ? `${compare.prediction_from_python_landmarks.label} ${Math.round(compare.prediction_from_python_landmarks.confidence * 100)}%` : "—"}</td></tr>
             </tbody>
           </table>

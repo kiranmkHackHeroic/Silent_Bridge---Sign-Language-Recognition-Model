@@ -34,6 +34,7 @@ class ActivitySegmenter:
         self._preroll: deque[FrameFeatures] = deque(maxlen=max(1, self.settings.preroll_frames + 1))
         self._start_count = 0
         self._still_ms = 0.0
+        self._still_from = 0          # index in self.frames where the current stillness began
         self._absent_ms = 0.0
         self._start_t = 0.0
         self._last_t: float | None = None
@@ -45,11 +46,17 @@ class ActivitySegmenter:
         self.split_candidate = False
 
     def _end(self, reason: str, t: float) -> Segment:
-        seg = Segment(frames=self.frames, reason=reason, start_t=self._start_t, end_t=t)
+        frames = self.frames
+        self.last_trimmed = 0
+        if reason == "still" and self.settings.trim_still_tail and self._still_from > 0:
+            self.last_trimmed = len(frames) - (self._still_from + 1)
+            frames = frames[: self._still_from + 1]          # keep the frame where the hold began
+        seg = Segment(frames=frames, reason=reason, start_t=self._start_t, end_t=t)
         self.active = False
         self.frames = []
         self._start_count = 0
         self._still_ms = 0.0
+        self._still_from = 0
         self._absent_ms = 0.0
         self._absent_streak = 0
         self._reset_dip()
@@ -73,6 +80,7 @@ class ActivitySegmenter:
         self.frames = [self.frames[-1]]
         self._start_t = t
         self._still_ms = 0.0
+        self._still_from = 0
         self._reset_dip()
         self._dip_armed = False            # re-arm only after the hand speeds up again
         return seg
@@ -105,6 +113,7 @@ class ActivitySegmenter:
                 self.frames = [f for f in self._preroll if f.has_hands]
                 self._start_t = self.frames[0].t if self.frames else frame.t
                 self._still_ms = 0.0
+                self._still_from = 0
                 self._absent_ms = 0.0
             return None
 
@@ -112,9 +121,12 @@ class ActivitySegmenter:
             self.frames.append(frame)
             self._absent_ms = 0.0
             if self.motion_ema < s.motion_still:
+                if self._still_ms == 0.0:
+                    self._still_from = len(self.frames) - 1
                 self._still_ms += dt
             else:
                 self._still_ms = 0.0
+                self._still_from = 0
             self._track_dip(frame, dt)
         else:
             self._absent_ms += dt

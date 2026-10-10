@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from app.config import LABELS_FILE  # noqa: E402
-from app.evaluation.live_eval import evaluate_live  # noqa: E402
+from app.evaluation.live_eval import evaluate_live, save_report  # noqa: E402
 from app.recognition.predictor import SignPredictor  # noqa: E402
 from app.translation.kannada_mapping import Vocabulary  # noqa: E402
 
@@ -23,9 +23,11 @@ from app.translation.kannada_mapping import Vocabulary  # noqa: E402
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--threshold", type=float, default=None, help="default: the model's calibrated threshold")
-    ap.add_argument("--out", default="reports/live_eval.json")
+    ap.add_argument("--out", default=None,
+                    help="report path (default: reports/live_eval_<UTC timestamp>.json; existing files are never overwritten)")
     a = ap.parse_args()
-    predictor = SignPredictor()
+    predictor = SignPredictor()            # follows the registry's active version
+    predictor.load()
     if not predictor.loaded:
         sys.exit(f"no model loaded: {predictor.error}")
     rep = evaluate_live(predictor, Vocabulary(LABELS_FILE), a.threshold)
@@ -44,6 +46,15 @@ def main():
                 print(f"  by {k}: " + ", ".join(f"{v} {d['accuracy']:.2f} (n={d['n']})" for v, d in vals.items()))
         if iso.get("none_recordings"):
             print(f"  false detections: {iso['false_detections']}/{iso['none_recordings']} non-sign recordings produced a word")
+        if iso.get("outcomes_at_threshold"):
+            print(f"  at threshold: {iso['outcomes_at_threshold']}, rejection rate {iso['rejection_rate']:.3f}")
+        lr = iso.get("live_replay")
+        if lr:
+            print(f"  live replay ({lr['completed_signs']} completed signs): causes {lr['causes']}")
+            print(f"  correct by end style: {lr['correct_by_end_style']}")
+            print("  causes: correct | E boundary | C suppressed | B rejected | D landmarks | A2 near miss | A not in top 3")
+        if iso.get("classifier_latency_ms"):
+            print(f"  classifier latency {iso['classifier_latency_ms']} ms; recordings {iso['recording_timing']}")
     else:
         print("no evaluation-only single-sign recordings yet")
     if seq.get("sequences"):
@@ -53,9 +64,12 @@ def main():
             print(f"  {' '.join(p['glosses'])!s:40s} -> {' '.join(p['emitted'])}")
     else:
         print("no evaluation sequences yet")
-    out = Path(a.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(rep, indent=1, ensure_ascii=False), encoding="utf-8")
+    for w in rep["data"].get("metadata_warnings", []):
+        print("  WARNING:", w)
+    if not (iso.get("recordings") or seq.get("sequences")) and not a.out:
+        print("nothing to evaluate yet: no report written")      # never leave empty reports behind
+        return
+    out = save_report(rep, Path(a.out) if a.out else None)
     print("wrote", out)
 
 

@@ -56,6 +56,14 @@ class RecognitionSettings:
     motion_start: float = 0.008        # motion (per 30 fps frame) needed to start a sign
     motion_still: float = 0.003        # motion below this counts as "still"
     still_ms: int = 800                # stillness that ends a sign (inactivity boundary)
+    # Drop the held-still frames that ended a segment ("still" boundary) before classifying it. Training clips
+    # end with the hands moving down, not with an 800 ms motionless hold, which filled ~half of the 16
+    # resampled steps. Held-out evidence (tools/trace_live_pipeline.py, reports/trace_live_pipeline.json):
+    # validation signer "hold" 89 -> 151 / 296 correct, "lowered" unchanged (171); test "hold" 136 -> 184 / 268.
+    trim_still_tail: bool = True
+    # the same for SENTENCE mode, decided separately on the ISL-CSLTR validation round (tools/eval_sentence_trim.py):
+    # held-still endings 15 -> 47 / 73 correct on validation, 14 -> 42 / 154 on test; lowered endings unchanged
+    trim_sentence_still_tail: bool = True
     absent_ms: int = 200               # hands missing this long ends a sign
     max_segment_ms: int = 4000         # forced boundary for very long segments
     preroll_frames: int = 3

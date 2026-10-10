@@ -53,6 +53,19 @@ class SignPredictor:
     def loaded(self) -> bool:
         return self.model is not None
 
+    def ensure_active(self) -> bool:
+        """Reload if the registry's active model changed since loading (e.g. promoted by train-model.ps1 while
+        the server was running). Returns True when a reload happened. No-op for explicitly chosen files."""
+        if self._explicit:
+            return False
+        from ..training.registry import active_paths
+        model_file, _, _ = active_paths()
+        if Path(model_file) == Path(self.model_file) and self.loaded:
+            return False
+        log.info("Active model changed in the registry (%s): reloading", model_file)
+        self.load()
+        return True
+
     def load(self, required: bool = False) -> bool:
         """Load the model bundle. Returns False (and records `error`) on failure."""
         with self._lock:

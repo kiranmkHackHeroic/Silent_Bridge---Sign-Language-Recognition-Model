@@ -1,0 +1,61 @@
+{
+ "continuous_model": "c20261010-051510",
+ "validation_round": "rec2",
+ "test_rounds": [
+  "rec4",
+  "rec5"
+ ],
+ "validation": {
+  "lowered": {
+   "correct": 51,
+   "wrong": 11,
+   "uncertain": 11,
+   "no_sentence": 0
+  },
+  "lowered_trim": {
+   "correct": 51,
+   "wrong": 11,
+   "uncertain": 11,
+   "no_sentence": 0
+  },
+  "hold": {
+   "correct": 15,
+   "wrong": 34,
+   "uncertain": 24,
+   "no_sentence": 0
+  },
+  "hold_trim": {
+   "correct": 47,
+   "wrong": 20,
+   "uncertain": 6,
+   "no_sentence": 0
+  }
+ },
+ "trim_in_sentence_mode_decision_on_validation": true,
+ "test": {
+  "lowered": {
+   "correct": 39,
+   "wrong": 78,
+   "uncertain": 37,
+   "no_sentence": 0
+  },
+  "lowered_trim": {
+   "correct": 39,
+   "wrong": 78,
+   "uncertain": 37,
+   "no_sentence": 0
+  },
+  "hold": {
+   "correct": 14,
+   "wrong": 102,
+   "uncertain": 38,
+   "no_sentence": 0
+  },
+  "hold_trim": {
+   "correct": 42,
+   "wrong": 78,
+   "uncertain": 34,
+   "no_sentence": 0
+  }
+ }
+}

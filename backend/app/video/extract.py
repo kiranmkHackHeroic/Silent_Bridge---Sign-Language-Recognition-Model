@@ -32,6 +32,9 @@ VIDEO_EXTENSIONS = {".mp4", ".mov", ".avi", ".webm", ".mkv", ".m4v"}
 # upper-centre crop of the ORIGINAL-resolution frame and mapped back to full-frame coordinates.
 EXTRACTOR_VERSION = "mp0.10.21-tasks-640-facecrop-v2"
 FACE_CROP_W, FACE_CROP_H = 0.3, 0.5          # crop size as a fraction of the frame (validated in Phase 6)
+# the same algorithm WITHOUT the crop fallback = the original v1 extractor settings (used to extend a dataset that
+# was extracted with v1). Hands match v1 exactly; face tracking is order-dependent, so faces are not bit-identical.
+EXTRACTOR_VERSION_V1 = "mp0.10.21-tasks-640-v1"
 
 
 class VideoError(ValueError):
@@ -93,7 +96,7 @@ def probe_video(path: Path, min_frames: int = 8, min_duration_s: float = 0.3,
 class LandmarkExtractor:
     """Holds MediaPipe Hand + Face landmarkers (create one per process)."""
 
-    def __init__(self, face: bool = True, max_side: int = 640):
+    def __init__(self, face: bool = True, max_side: int = 640, face_crop: bool = True):
         import mediapipe as mp
         from mediapipe.tasks.python import BaseOptions
         from mediapipe.tasks.python import vision
@@ -102,6 +105,8 @@ class LandmarkExtractor:
             raise FileNotFoundError(f"missing {HAND_MODEL}; run setup.ps1")
         self.mp = mp
         self.max_side = max_side
+        self.face_crop_enabled = face_crop
+        self.version = EXTRACTOR_VERSION if face_crop else EXTRACTOR_VERSION_V1
         self.hands = vision.HandLandmarker.create_from_options(vision.HandLandmarkerOptions(
             base_options=BaseOptions(model_asset_path=str(HAND_MODEL)),
             running_mode=vision.RunningMode.VIDEO, num_hands=2,
@@ -201,11 +206,13 @@ class LandmarkExtractor:
                         ys = [p.y for p in fr.face_landmarks[0]]
                         last_face = {"cx": r4((min(xs) + max(xs)) / 2), "cy": r4((min(ys) + max(ys)) / 2),
                                      "w": r4(max(xs) - min(xs)), "h": r4(max(ys) - min(ys))}
-                    else:
+                    elif self.face_crop_enabled:
                         prev_cx = last_face["cx"] if last_face else self._crop_cx
                         last_face = self._face_in_crop(orig, prev_cx)
                         if last_face:
                             stats["face_crop_frames"] = stats.get("face_crop_frames", 0) + 1
+                    else:
+                        last_face = None
                     if last_face:
                         self._crop_cx = last_face["cx"]
                 stats["hand_frames"] += bool(hands)

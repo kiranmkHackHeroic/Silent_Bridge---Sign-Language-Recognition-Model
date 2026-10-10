@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Callable
 
 from ..config import DATA_DIR
-from .extract import EXTRACTOR_VERSION, VIDEO_EXTENSIONS, VideoError, probe_video
+from .extract import EXTRACTOR_VERSION, EXTRACTOR_VERSION_V1, VIDEO_EXTENSIONS, VideoError, probe_video
 
 PROCESSED = DATA_DIR / "processed"
 LANDMARKS = PROCESSED / "landmarks"
@@ -133,12 +133,12 @@ def output_root(dataset: str) -> Path:
 _EXTRACTOR = None
 
 
-def _init_worker() -> None:
+def _init_worker(face_crop: bool = True) -> None:
     global _EXTRACTOR
     import os
     os.environ.setdefault("GLOG_minloglevel", "2")
     from .extract import LandmarkExtractor
-    _EXTRACTOR = LandmarkExtractor()
+    _EXTRACTOR = LandmarkExtractor(face_crop=face_crop)
 
 
 def process_item(item: ImportItem, out_root: Path) -> dict:
@@ -146,12 +146,12 @@ def process_item(item: ImportItem, out_root: Path) -> dict:
     row = {"sample_id": item.sample_id, "source": item.source, "file": item.path, "label": item.label,
            "group": item.group, "split": item.split, "status": "rejected", "reasons": "", "frames": 0,
            "hand_frames": 0, "face_frames": 0, "fps": 0, "width": 0, "height": 0, "duration_s": 0,
-           "extractor": EXTRACTOR_VERSION}
+           "extractor": _EXTRACTOR.version if _EXTRACTOR else EXTRACTOR_VERSION}
     out = out_root / item.label / f"{item.sample_id}.json"
     if out.exists():
         try:
             prev = json.loads(out.read_text(encoding="utf-8"))
-            if prev.get("extractor_version") != EXTRACTOR_VERSION:
+            if prev.get("extractor_version") != (_EXTRACTOR.version if _EXTRACTOR else EXTRACTOR_VERSION):
                 raise KeyError("older extractor version: re-extract")
             row.update(status="accepted", frames=prev["num_frames"], hand_frames=prev["hand_frames"],
                        face_frames=prev.get("face_frames", 0), fps=prev["video"].get("fps", 0),
@@ -177,7 +177,7 @@ def process_item(item: ImportItem, out_root: Path) -> dict:
             "source": item.source, "source_file": item.path, "split": item.split,
             "transcript": item.transcript, "gloss": item.gloss, "meta": item.meta,
             "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "extractor_version": EXTRACTOR_VERSION,
+            "extractor_version": _EXTRACTOR.version,
             "video": {"w": frames[0]["w"] if frames else 0, "h": frames[0]["h"] if frames else 0,
                       "fps": stats["fps"], "duration_s": info.duration_s,
                       "original_w": info.width, "original_h": info.height},
@@ -209,14 +209,16 @@ def write_manifest(dataset: str, rows: list[dict]) -> Path:
 
 def run_import(dataset: str, items: list[ImportItem], workers: int = 2,
                progress: ProgressFn | None = None, cancel: Callable[[], bool] | None = None,
-               out_root: Path | None = None) -> dict:
+               out_root: Path | None = None, face_crop: bool = True) -> dict:
+    """face_crop=False uses the extractor v1 settings (no face-crop fallback), to extend a dataset extracted with
+    v1. Hand landmarks match v1 exactly; face tracking is order-dependent, so faces are not bit-identical."""
     out_root = Path(out_root) if out_root else LANDMARKS / dataset
     out_root.mkdir(parents=True, exist_ok=True)
     progress = progress or (lambda done, total, msg: None)
     rows: list[dict] = []
     t0 = time.time()
     total = len(items)
-    with ProcessPoolExecutor(max_workers=max(1, workers), initializer=_init_worker) as pool:
+    with ProcessPoolExecutor(max_workers=max(1, workers), initializer=_init_worker, initargs=(face_crop,)) as pool:
         futures = {pool.submit(process_item, it, out_root): it for it in items}
         for fut in as_completed(futures):
             rows.append(fut.result())
@@ -237,7 +239,7 @@ def run_import(dataset: str, items: list[ImportItem], workers: int = 2,
         "rejected": sum(r["status"] == "rejected" for r in rows),
         "classes": len({r["label"] for r in rows if r["status"] == "accepted"}),
         "groups": len({r["group"] for r in rows if r["status"] == "accepted"}),
-        "extractor_version": EXTRACTOR_VERSION, "manifest": str(manifest),
+        "extractor_version": EXTRACTOR_VERSION if face_crop else EXTRACTOR_VERSION_V1, "manifest": str(manifest),
         "seconds": round(time.time() - t0, 1),
         "finished_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "rejection_reasons": sorted({r["reasons"] for r in rows if r["status"] == "rejected"})[:20],

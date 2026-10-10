@@ -55,6 +55,17 @@ class ContinuousRecognizer:
                 "ctc": self.metrics.get("ctc"), "baseline": self.metrics.get("baseline"),
                 "sentences": self.metrics.get("sentences"), "gloss_vocabulary": self.metrics.get("gloss_vocabulary")}
 
+    def partial(self, feats: list[FrameFeatures]) -> dict | None:
+        """Incremental (tentative) gloss decode of the sentence signed SO FAR: greedy CTC path only. Shown
+        while signing; never added to the transcript (the final sentence is decided at the segment end)."""
+        if not self.loaded:
+            return None
+        seq = features_to_sequence(feats)
+        if seq is None:
+            return None
+        glosses, conf = self.bundle["ctc"].decode(seq)
+        return {"glosses": glosses, "gloss_confidence": round(conf, 3), "tentative": True}
+
     def recognize(self, feats: list[FrameFeatures]) -> dict | None:
         if not self.loaded:
             return None

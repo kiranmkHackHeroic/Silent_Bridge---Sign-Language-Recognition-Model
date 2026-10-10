@@ -26,6 +26,48 @@ export interface Decision {
   ood?: { mean_abs_z: number; reference_p99: number | null; out_of_distribution: boolean; worst_block: string } | null;
   frames?: number;
   reason?: string;
+  trace?: SignTrace | null;
+}
+
+/** Privacy-safe summary of one completed sign (no images, no raw landmarks, no full feature vector). */
+export interface SignTrace {
+  model_version?: string;
+  error?: string;
+  segment?: { frames: number; hand_frames: number; face_frame_share: number; duration_ms: number; boundary: string;
+    still_tail_frames_trimmed: number; resampled_to: number };
+  input?: { ok: boolean; dim?: number; expected_dim?: number; detail?: string } | null;
+  members?: { model: string; weight: number; top3: { label: string; p: number }[] }[];
+  combined_top3?: { label: string; p: number }[];
+  threshold?: number;
+  class_mapping_ok?: boolean;
+}
+
+const fmtTop = (t?: { label: string; p: number }[]) => (t ?? []).map((c) => `${c.label} ${Math.round(c.p * 100)}%`).join(" · ") || "—";
+
+function LatestSign({ d }: { d: Decision }) {
+  const tr = d.trace;
+  if (!tr) return null;
+  if (tr.error) return <Notice tone="warn">{tr.error}</Notice>;
+  const s = tr.segment;
+  const outcome = d.type === "sign" ? "added (accepted)" : d.type === "uncertain" ? "rejected: below threshold" : `not added: ${d.result}`;
+  return (
+    <div className="diag-grid">
+      <div className="diag-row"><span className="diag-stage">Segment</span><span className="diag-detail">
+        {s ? `${s.frames} frames (${s.hand_frames} with hands, face in ${Math.round(s.face_frame_share * 100)}%), ${Math.round(s.duration_ms)} ms, ended by ${s.boundary}${s.still_tail_frames_trimmed ? `, ${s.still_tail_frames_trimmed} still frames trimmed` : ""} → resampled to ${s.resampled_to} steps` : "—"}
+      </span></div>
+      <div className="diag-row"><span className="diag-stage">Model input</span><span className="diag-detail">
+        {tr.input?.ok ? `✓ ${tr.input.dim} values (expected ${tr.input.expected_dim}), all finite` : `✗ ${tr.input?.detail ?? `${tr.input?.dim} values, expected ${tr.input?.expected_dim}`}`}
+        {tr.class_mapping_ok === false && <Chip tone="bad">class mapping mismatch</Chip>} · model {tr.model_version}
+      </span></div>
+      {(tr.members ?? []).map((m) => (
+        <div key={m.model} className="diag-row"><span className="diag-stage">{m.model} ×{m.weight}</span><span className="diag-detail">{fmtTop(m.top3)}</span></div>
+      ))}
+      <div className="diag-row"><span className="diag-stage">Combined (before threshold)</span><span className="diag-detail">{fmtTop(tr.combined_top3)}</span></div>
+      <div className="diag-row"><span className="diag-stage">Decision</span><span className="diag-detail">
+        {outcome} · threshold {Math.round((tr.threshold ?? 0) * 100)}%{d.diagnosis ? ` · ${d.diagnosis.detail}` : ""}
+      </span></div>
+    </div>
+  );
 }
 
 interface Props {
@@ -107,6 +149,12 @@ export function PipelineDiagnostics(p: Props) {
             {last?.label ? <>{last.label} → <span lang="kn">{last.kannada || "—"}</span></> : "—"}
           </Row>
         </div>
+        {p.decisions[0]?.trace && (
+          <>
+            <h3 className="small">Latest completed sign</h3>
+            <LatestSign d={p.decisions[0]} />
+          </>
+        )}
         <h3 className="small">Recent decisions</h3>
         {p.decisions.length === 0 ? <span className="muted xs">No segments yet.</span> : (
           <div className="table-wrap" style={{ maxHeight: 220, overflowY: "auto" }}>

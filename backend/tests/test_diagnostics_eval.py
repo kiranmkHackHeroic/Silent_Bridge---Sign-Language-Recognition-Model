@@ -4,6 +4,8 @@ All landmark data here is SYNTHETIC test fixture data (geometric shapes), used o
 code paths; it is never used to produce the application's model or its reported results.
 """
 import json
+import sys
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -247,3 +249,179 @@ def test_threshold_analysis_reports_false_detections_and_chooses_on_other_sessio
     assert sel["held_out_totals"]["false_detections"] == 0
     single = live_eval.threshold_analysis([dict(r, session="s1") for r in rows], 0.45)
     assert not single["selection"]["possible"]
+
+
+def test_evaluate_live_cli_loads_the_active_model(eval_dirs, tmp_path, monkeypatch, capsys):
+    """tools/evaluate_live.py must load the registry's active model (it once exited with 'no model loaded')."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("evaluate_live_tool", Path(__file__).resolve().parents[1] / "tools" / "evaluate_live.py")
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+    out = tmp_path / "live.json"
+    monkeypatch.setattr(sys, "argv", ["evaluate_live.py", "--out", str(out)])
+    tool.main()
+    rep = json.loads(out.read_text(encoding="utf-8"))
+    assert rep["model_version"] and rep["threshold"] > 0 and rep["isolated"] == {"recordings": 0}
+    assert "no evaluation-only single-sign recordings yet" in capsys.readouterr().out
+
+
+def _held(frames, n=36):
+    last = frames[-1]
+    return [{**last, "t": last["t"] + (i + 1) * 33.3} for i in range(n)]
+
+
+def test_still_hold_at_the_end_of_a_sign_is_trimmed_before_classification(model):
+    """Regression: a segment ended by the 'still' boundary used to include ~800 ms of motionless hold, which
+    filled about half of the 16 resampled steps and halved live accuracy on held-out recordings."""
+    from app.config import RecognitionSettings
+    rng = np.random.default_rng(9)
+    sign = sign_frames("circle", t0=400, n=30, rng=rng)
+    stream = empty_frames(0, 12) + sign + _held(sign) + empty_frames(sign[-1]["t"] + 37 * 33.3, 15)
+    outcome = {}
+    for trim in (False, True):
+        session = RecognitionSession(model, Vocabulary(), RecognitionSettings(confidence_threshold=0.3, trim_still_tail=trim))
+        evs = [e for f in stream for e in session.process(f) if e["type"] in ("sign", "uncertain", "segment")]
+        outcome[trim] = evs
+    trimmed = outcome[True][0]["trace"]["segment"]
+    untrimmed = outcome[False][0]["trace"]["segment"]
+    assert untrimmed["boundary"] == trimmed["boundary"] == "still"
+    assert trimmed["still_tail_frames_trimmed"] >= 15 and untrimmed["still_tail_frames_trimmed"] == 0
+    assert trimmed["frames"] <= untrimmed["frames"] - 15
+    assert [e["token"]["label"] for e in outcome[True] if e["type"] == "sign"] == ["namaskara"]
+    assert RecognitionSettings().trim_still_tail is True                    # on by default
+
+
+def test_sign_trace_reports_ensemble_members_and_parity(tmp_path):
+    from app.diagnostics import sign_trace
+    from app.training.train_model import fit_model, load_valid_samples
+    store = DatasetStore(tmp_path / "ds")
+    rng = np.random.default_rng(2)
+    for session in ("a", "b"):
+        for kind, label in CLASSES.items():
+            for _ in range(4):
+                store.save(label, sign_frames(kind, n=30, rng=rng, noise=0.003), session)
+    samples, _ = load_valid_samples([("app", store)], KNOWN, FeatureConfig(), True)
+    ens = fit_model("ensemble", samples, FeatureConfig(), TrainingConfig(augment_copies=1), np.random.default_rng(0))
+    pred = SignPredictor()
+    pred.model, pred.classes, pred.meta = ens, [str(c) for c in ens.classes_], {"model_version": "test"}
+    feats = [parse_frame(f) for f in sign_frames("wave", rng=rng)]
+    vec = frames_to_vector(feats, pred.feature_config)
+    tr = sign_trace(pred, feats, vec, 0.4, "still", 5)
+    assert tr["input"]["ok"] and tr["input"]["dim"] == tr["input"]["expected_dim"] == 2444
+    assert [m["model"] for m in tr["members"]] == ["LogisticRegression", "GRU"] and tr["class_mapping_ok"]
+    assert tr["segment"]["still_tail_frames_trimmed"] == 5 and tr["segment"]["resampled_to"] == 16
+    # the combined top-1 is the weighted average of the members' probabilities
+    x = vec.reshape(1, -1)
+    avg = 0.5 * ens.members[0].predict_proba(x)[0] + 0.5 * ens.members[1].predict_proba(x)[0]
+    assert tr["combined_top3"][0]["label"] == pred.classes[int(np.argmax(avg))]
+    assert "landmarks" not in json.dumps(tr)                               # privacy: no raw landmarks
+    empty = sign_trace(pred, feats[:2], None, 0.4, "absent")
+    assert not empty["input"]["ok"] and empty["members"] == []
+
+
+def _ev(kind, top, result=None, frames=30, face=1.0, hand_frames=30):
+    e = {"type": kind, "top": [{"label": l, "confidence": c} for l, c in top], "frames": frames,
+         "trace": {"segment": {"face_frame_share": face, "hand_frames": hand_frames, "boundary": "still"}}}
+    if result:
+        e["result"] = result
+    if kind == "sign":
+        e["token"] = {"label": top[0][0]}
+    return e
+
+
+def test_error_cause_attribution():
+    from app.evaluation.error_causes import classify
+    assert classify("yes", [_ev("sign", [("yes", .9), ("no", .05)])])["cause"] == "correct"
+    assert classify("yes", [])["cause"] == "E"                                               # no segment
+    assert classify("yes", [_ev("sign", [("no", .5)]), _ev("sign", [("yes", .9)])])["cause"] == "E"        # split: 2 words
+    # a rejected fragment followed by the right word still leaves exactly the right word -> correct
+    assert classify("yes", [_ev("uncertain", [("yes", .2)]), _ev("sign", [("yes", .9)])])["cause"] == "correct"
+    assert classify("yes", [_ev("segment", [("yes", .9)], "suppressed_duplicate")])["cause"] == "C"
+    assert classify("yes", [_ev("uncertain", [("yes", .3), ("no", .2)])])["cause"] == "B"
+    assert classify("yes", [_ev("sign", [("no", .6), ("yes", .3)], face=0.2)])["cause"] == "D"
+    assert classify("yes", [_ev("sign", [("no", .6), ("yes", .3)])])["cause"] == "A2"
+    assert classify("yes", [_ev("sign", [("no", .6), ("cat", .3), ("dog", .1)])])["cause"] == "A"
+
+
+def test_live_evaluation_reports_all_phase7_fields_and_never_overwrites(model, eval_dirs, tmp_path):
+    rng = np.random.default_rng(12)
+    store = live_eval.eval_store()
+    for kind, label in CLASSES.items():
+        for _ in range(2):
+            frames = sign_frames(kind, n=30, rng=rng, noise=0.003)
+            if kind == "circle":
+                frames = frames + _held(frames, 20)                                         # ends with a still hold
+            store.save(label, frames, "evalS", extra={"purpose": "eval"})
+    rep = live_eval.evaluate_live(model, Vocabulary())
+    iso = rep["isolated"]
+    for key in ("total_labeled_examples", "confusion_matrix", "confidence_histogram_top1", "rejection_rate",
+                "outcomes_at_threshold", "classifier_latency_ms", "recording_timing", "live_replay", "thresholds"):
+        assert key in iso, key
+    lr = iso["live_replay"]
+    assert lr["recordings"] == 8 and sum(lr["causes"].values()) == 8 and lr["completed_signs"] >= 1
+    assert "hold" in lr["by_end_style"]                                                    # held-still endings reported apart
+    assert set(lr["causes"]) <= {"correct", "E", "C", "B", "D", "A2", "A"}
+    first = live_eval.save_report(rep, tmp_path / "r.json")
+    second = live_eval.save_report(rep, tmp_path / "r.json")
+    assert first != second and first.exists() and second.exists()                         # never overwritten
+
+
+def test_evaluation_recordings_are_never_a_training_source():
+    from app.training.train_model import default_stores
+    roots = {str(Path(st.root).resolve()) for _, st in default_stores()}
+    for d in (live_eval.EVAL_DATASET_DIR, live_eval.EVAL_SEQUENCE_DIR):
+        assert not any(str(Path(d).resolve()).startswith(r) or r.startswith(str(Path(d).resolve())) for r in roots)
+
+
+def test_sentence_mode_trimming_is_an_explicit_separate_setting(model):
+    from app.config import RecognitionSettings
+    on = RecognitionSession(model, Vocabulary(), RecognitionSettings(mode="sentence"))
+    off = RecognitionSession(model, Vocabulary(), RecognitionSettings(mode="sentence", trim_sentence_still_tail=False))
+    iso = RecognitionSession(model, Vocabulary(), RecognitionSettings(mode="segment", trim_sentence_still_tail=False))
+    assert on.segmenter.settings.trim_still_tail is True and on.segmenter.settings.still_ms >= 1500
+    assert off.segmenter.settings.trim_still_tail is False
+    assert iso.segmenter.settings.trim_still_tail is True        # isolated mode keeps its own setting
+
+
+def test_predictor_follows_registry_changes_made_while_the_server_runs(model, tmp_path, monkeypatch):
+    """Regression: the server loaded the model once; a model promoted by train-model.ps1 while the app was
+    running was ignored by the in-app evaluation and by new live sessions."""
+    import shutil
+    from app.training import registry
+    a = Path(model.model_file).parent
+    b = tmp_path / "v_new"
+    shutil.copytree(a, b)
+    current = {"dir": a}
+    monkeypatch.setattr(registry, "active_paths", lambda root=None: (current["dir"] / "sign_model.joblib",
+                                                                     current["dir"] / "model_meta.json", current["dir"] / "metrics.json"))
+    p = SignPredictor()
+    assert p.load() and p.model_file == a / "sign_model.joblib"
+    assert p.ensure_active() is False                              # unchanged pointer: no reload
+    current["dir"] = b                                             # promoted elsewhere
+    assert p.ensure_active() is True and p.model_file == b / "sign_model.joblib" and p.loaded
+    explicit = SignPredictor(a / "sign_model.joblib", a / "model_meta.json")
+    assert explicit.load() and explicit.ensure_active() is False   # explicitly chosen files never switch
+
+
+def test_cli_does_not_leave_empty_reports(eval_dirs, tmp_path, monkeypatch, capsys):
+    import importlib.util
+    monkeypatch.setattr(live_eval, "REPORTS_DIR", tmp_path / "reports")
+    spec = importlib.util.spec_from_file_location("evaluate_live_tool2", Path(__file__).resolve().parents[1] / "tools" / "evaluate_live.py")
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+    monkeypatch.setattr(sys, "argv", ["evaluate_live.py"])
+    tool.main()
+    assert "no report written" in capsys.readouterr().out
+    assert not (tmp_path / "reports").exists() or not list((tmp_path / "reports").glob("*.json"))
+
+
+def test_evaluation_metadata_warnings(eval_dirs):
+    store = live_eval.eval_store()
+    store.save("yes", sign_frames("push"), "sessA", "signer1", extra={"purpose": "eval"})
+    store.save("yes", sign_frames("push"), "sessA", "asha", extra={"purpose": "eval"})
+    d = live_eval.eval_data_summary({"yes", "_none"})
+    assert d["signers"] == ["asha", "signer1"] and d["sessions"] == ["sessA"]
+    text = " ".join(d["metadata_warnings"])
+    assert "default signer ID" in text and "only one evaluation session" in text
+    store.save("yes", sign_frames("push"), "sessB", "asha", extra={"purpose": "eval"})
+    assert not any("only one" in w for w in live_eval.eval_data_summary({"yes"})["metadata_warnings"])

@@ -1,0 +1,56 @@
+{
+ "production_version": "c20261010-051510",
+ "diagnostic_only": true,
+ "extended_listedval:42": {
+  "train": 372,
+  "val": 72,
+  "epochs": 63,
+  "sentence_accuracy": 0.2532,
+  "sentences_correct": 39,
+  "shown": 118,
+  "correct_and_shown": 36,
+  "precision_of_shown": 0.3051,
+  "gloss_error_rate_chosen_sentence": 0.7236,
+  "gloss_error_rate_ctc_greedy": 0.8071,
+  "per_round": {
+   "rec4": {
+    "videos": 85,
+    "sentence_accuracy": 0.3647,
+    "shown": 65,
+    "correct_and_shown": 28
+   },
+   "rec5": {
+    "videos": 69,
+    "sentence_accuracy": 0.1159,
+    "shown": 53,
+    "correct_and_shown": 8
+   }
+  }
+ },
+ "original:7": {
+  "train": 265,
+  "val": 73,
+  "epochs": 86,
+  "sentence_accuracy": 0.2013,
+  "sentences_correct": 31,
+  "shown": 118,
+  "correct_and_shown": 28,
+  "precision_of_shown": 0.2373,
+  "gloss_error_rate_chosen_sentence": 0.8108,
+  "gloss_error_rate_ctc_greedy": 0.8293,
+  "per_round": {
+   "rec4": {
+    "videos": 85,
+    "sentence_accuracy": 0.2353,
+    "shown": 64,
+    "correct_and_shown": 20
+   },
+   "rec5": {
+    "videos": 69,
+    "sentence_accuracy": 0.1594,
+    "shown": 54,
+    "correct_and_shown": 8
+   }
+  }
+ }
+}

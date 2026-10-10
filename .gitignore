@@ -13,3 +13,6 @@ backend/data/raw/
 backend/data/processed/
 backend/models/
 backend/data/processed_backup/
+backend/data/eval_recordings/
+backend/data/eval_sequences/
+backend/data/diagnostics/

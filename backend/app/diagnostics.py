@@ -190,3 +190,43 @@ def compare_extractions(browser_frames: list[dict], python_frames: list[dict], p
         "face_presence_agreement": round(float(np.mean(face_agree)), 3) if face_agree else None,
         "note": "distances are in normalized image units (1.0 = frame width/height)",
     }
+
+
+# ---------------------------------------------------------------- latest completed sign (privacy-safe trace)
+def _top3(classes, probs) -> list[dict]:
+    order = np.argsort(-np.asarray(probs))[:3]
+    return [{"label": str(classes[i]), "p": round(float(probs[i]), 3)} for i in order]
+
+
+def sign_trace(predictor, frames: list[FrameFeatures], vector, threshold: float, reason: str, trimmed: int = 0) -> dict:
+    """Summary of one completed sign for the diagnostics panel: segment, input checks and the per-member
+    probabilities of an ensemble BEFORE thresholding. No images, no raw landmarks, no full feature vector."""
+    from .recognition.sequence_features import feature_dim
+    n = len(frames)
+    hand = sum(f.has_hands for f in frames)
+    out = {
+        "model_version": (predictor.meta or {}).get("model_version"),
+        "segment": {"frames": n, "hand_frames": hand, "face_frame_share": round(sum(f.face for f in frames) / n, 2) if n else 0.0,
+                    "duration_ms": round(frames[-1].t - frames[0].t, 1) if n > 1 else 0.0, "boundary": reason,
+                    "still_tail_frames_trimmed": trimmed, "resampled_to": predictor.feature_config.resample_frames},
+        "input": None, "members": [], "combined_top3": [], "threshold": threshold,
+    }
+    if vector is None:
+        out["input"] = {"ok": False, "detail": "too few hand frames to build the model input"}
+        return out
+    expected = feature_dim(predictor.feature_config)
+    out["input"] = {"dim": int(vector.shape[0]), "expected_dim": int(expected),
+                    "ok": bool(vector.shape[0] == expected and np.all(np.isfinite(vector)))}
+    model = predictor.model
+    if model is None:
+        return out
+    x = vector.reshape(1, -1)
+    classes = [str(c) for c in model.classes_]
+    if hasattr(model, "members"):
+        for m, w in zip(model.members, model.weights):
+            p = m.predict_proba(x)[0]
+            out["members"].append({"model": type(m).__name__.replace("TorchGRUClassifier", "GRU").replace("Pipeline", "LogisticRegression"),
+                                   "weight": w, "top3": _top3([str(c) for c in m.classes_], p)})
+    out["combined_top3"] = _top3(classes, model.predict_proba(x)[0])
+    out["class_mapping_ok"] = classes == list(predictor.classes)
+    return out

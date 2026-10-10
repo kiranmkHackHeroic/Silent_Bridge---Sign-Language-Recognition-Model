@@ -13,8 +13,9 @@ export interface CompareResult {
   feature_difference_by_block?: Record<string, number>;
   face_presence_agreement?: number | null;
   true_label: string;
-  prediction_from_browser_landmarks: { label: string; confidence: number } | null;
-  prediction_from_python_landmarks: { label: string; confidence: number } | null;
+  prediction_from_browser_landmarks: { label: string; confidence: number; top3?: { label: string; p: number }[] } | null;
+  prediction_from_python_landmarks: { label: string; confidence: number; top3?: { label: string; p: number }[] } | null;
+  probability_difference?: number;
   note: string;
 }
 
@@ -30,12 +31,22 @@ export interface LiveEvalReport {
   model_version: string | null;
   threshold: number;
   note: string;
+  saved_to?: string;
   isolated: {
     recordings: number; not_in_model_vocabulary: number; sign_recordings: number; none_recordings: number;
     accuracy?: number; top1_accuracy_ignoring_threshold?: number; rejected_as_uncertain?: number;
     macro_precision?: number; macro_recall?: number; macro_f1?: number;
     false_detections?: number; false_detection_rate?: number;
     top_confusions?: { true: string; predicted: string; count: number }[];
+    rejection_rate?: number;
+    outcomes_at_threshold?: { correct: number; wrong: number; rejected_or_missed: number; false_detections: number };
+    classifier_latency_ms?: { mean: number; p95: number } | null;
+    recording_timing?: { mean_fps: number | null; dropped_frames: number; frames: number };
+    live_replay?: {
+      recordings: number; completed_signs: number; causes: Record<string, number>;
+      correct_by_end_style: Record<string, { correct: number; n: number }>;
+      frame_processing_ms: { mean: number; p95: number } | null;
+    };
     accuracy_by_condition?: Record<string, Record<string, { accuracy: number; n: number }>>;
     thresholds?: {
       curve: ThresholdPoint[];
@@ -155,7 +166,8 @@ export const api = {
   recordSequence: (body: { glosses: string[]; session_id: string; signer_id: string; conditions: Record<string, string>; frames: LandmarkFrame[] }) =>
     request<{ sequence_id: string; num_frames: number; hand_frames: number }>("/api/evaluation/sequence", { method: "POST", body: JSON.stringify(body) }),
   evaluationData: () =>
-    request<{ isolated: number; per_label: Record<string, number>; sessions: string[]; sequences: number; sequence_signs: number }>("/api/evaluation/data"),
+    request<{ isolated: number; per_label: Record<string, number>; sessions: string[]; signers?: string[]; sequences: number;
+      sequence_signs: number; metadata_warnings?: string[] }>("/api/evaluation/data"),
   evaluateLive: () => request<LiveEvalReport>("/api/evaluation/live", { method: "POST" }),
   translateGlosses: (labels: string[]) =>
     request<GlossTranslation>("/api/translate/glosses", { method: "POST", body: JSON.stringify({ labels }) }),

@@ -15,7 +15,7 @@ import numpy as np
 from ..config import NONE_LABEL, RecognitionSettings
 from ..translation.kannada_mapping import Vocabulary
 from ..translation.sentence_builder import SentenceBuilder
-from ..diagnostics import frame_diag, ood_stats
+from ..diagnostics import frame_diag, ood_stats, sign_trace
 from .landmarks import FrameFeatures, FrameValidationError, compute_motion, parse_frame
 from .sequence_features import frames_to_vector
 from .predictor import ModelLoadError, Prediction, SignPredictor
@@ -24,6 +24,7 @@ from .sequence_buffer import SequenceBuffer
 from .temporal_smoothing import ProbabilitySmoother, StablePredictionGate
 
 TENTATIVE_EVERY = 4
+PARTIAL_EVERY = 15             # sentence mode: tentative gloss decode every ~0.5 s of signing
 
 
 class RecognitionSession:
@@ -54,7 +55,10 @@ class RecognitionSession:
         if s.mode == "sentence":
             # a whole signed sentence is one segment: longer pause, no splitting at slow-downs
             from dataclasses import replace
-            seg = replace(s, still_ms=max(s.still_ms, 1500), absent_ms=700, max_segment_ms=15000, dip_split=False)
+            # still-tail trimming is set explicitly for sentences too: validated separately on ISL-CSLTR
+            # (tools/eval_sentence_trim.py: held-still endings 14 -> 42 / 154 correct on test, lowered unchanged)
+            seg = replace(s, still_ms=max(s.still_ms, 1500), absent_ms=700, max_segment_ms=15000, dip_split=False,
+                          trim_still_tail=s.trim_sentence_still_tail)
             self.segmenter = ActivitySegmenter(seg)
         else:
             self.segmenter = ActivitySegmenter(s)
@@ -163,6 +167,7 @@ class RecognitionSession:
             "motion": round(self.segmenter.motion_ema if self.settings.mode != "sliding" else frame.motion, 4),
             "buffer": len(self.segmenter.frames) if self.settings.mode != "sliding" else len(self.buffer),
             "tentative": self.tentative,
+            "partial": getattr(self, "partial", None) if self.settings.mode == "sentence" else None,
             "proc_ms": round(self.proc_ms, 3),
             "latency_ms": None if self.last_latency_ms is None else round(self.last_latency_ms, 3),
             "model_loaded": self.predictor.loaded,
@@ -227,6 +232,15 @@ class RecognitionSession:
         return self._best_split(frames[:i], ca, depth + 1) + self._best_split(frames[i:], cb, depth + 1)
 
     def _finish_segment(self, seg: Segment, allow_split: bool = True) -> list[dict]:
+        """Decides one completed segment and attaches the privacy-safe trace of that decision."""
+        self._last_trace = None
+        events = self._decide_segment(seg, allow_split)
+        for ev in events:
+            if self._last_trace is not None and "trace" not in ev:
+                ev["trace"] = self._last_trace
+        return events
+
+    def _decide_segment(self, seg: Segment, allow_split: bool = True) -> list[dict]:
         if allow_split and self.settings.split_long and self.predictor.loaded and seg.end_t - seg.start_t >= self.settings.split_long_min_ms:
             whole = self._predict(seg.frames)
             parts = self._best_split(seg.frames, whole.confidence if whole else 0.0) if whole else [seg.frames]
@@ -249,6 +263,12 @@ class RecognitionSession:
                      "diagnosis": {"stage": "classification", "detail": "no trained model is loaded"}}]
         hand_frames = sum(1 for f in seg.frames if f.has_hands)
         pred = self._predict(seg.frames)
+        try:
+            self._last_trace = sign_trace(self.predictor, seg.frames, self.last_vector if pred is not None else None,
+                                          self.settings.confidence_threshold, seg.reason,
+                                          getattr(self.segmenter, "last_trimmed", 0))
+        except Exception as exc:  # diagnostics must never break recognition
+            self._last_trace = {"error": f"trace unavailable: {exc.__class__.__name__}"}
         if pred is None:
             return [{"type": "segment", **base, "result": "too_short",
                      "diagnosis": {"stage": "segmentation", "detail": f"only {hand_frames} usable hand frame(s) in the segment"}}]
@@ -279,7 +299,20 @@ class RecognitionSession:
     def _process_sentence(self, frame: FrameFeatures) -> list[dict]:
         seg = self.segmenter.update(frame)
         if seg is None:
+            # incremental, TENTATIVE gloss decode while the sentence is being signed (every ~0.5 s)
+            self._since_eval += 1
+            if (self.segmenter.active and self.continuous is not None and self.continuous.loaded
+                    and self._since_eval >= PARTIAL_EVERY and len(self.segmenter.frames) >= 15):
+                self._since_eval = 0
+                try:
+                    self.partial = self.continuous.partial(self.segmenter.frames)
+                except Exception:  # a failed partial decode must never break recognition
+                    self.partial = None
+            elif not self.segmenter.active:
+                self.partial = None
             return []
+        self.partial = None
+        self._since_eval = 0
         base = {"frames": len(seg.frames), "reason": seg.reason, "duration_ms": round(seg.end_t - seg.start_t, 1)}
         if self.continuous is None or not self.continuous.loaded:
             return [{"type": "segment", **base, "result": "no_continuous_model"}]

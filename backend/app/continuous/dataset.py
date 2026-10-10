@@ -24,6 +24,22 @@ from ..recognition.landmarks import FRAME_DIM, HAND_DIM, POS_OFFSET, parse_frame
 CONTINUOUS_DIR = DATA_DIR / "processed" / "continuous"
 MAPPING = DATA_DIR / "mappings" / "isl_csltr.json"
 RAW_ROOT = DATA_DIR / "raw" / "isl_csltr" / "extracted"
+# Phase 9 integrity audit (tools/csltr_integrity.py): duplicate videos with conflicting labels etc.
+INTEGRITY_FILE = DATA_DIR / "mappings" / "isl_csltr_integrity.json"
+
+
+def excluded_files() -> set[str]:
+    """Corpus-relative paths that training/evaluation must skip (see tools/csltr_integrity.py)."""
+    if not INTEGRITY_FILE.exists():
+        return set()
+    return {e["file"] for e in json.loads(INTEGRITY_FILE.read_text(encoding="utf-8")).get("excluded", [])}
+
+
+def _corpus_relative(source_file: str) -> str | None:
+    try:
+        return Path(source_file).resolve().relative_to(RAW_ROOT.resolve()).as_posix()
+    except (ValueError, OSError):
+        return None
 STRIDE = 2               # use every 2nd frame (~15 fps) for the sequence model
 SEQ_DIM = FRAME_DIM + 6  # frame features + wrist velocities of both hands
 
@@ -78,12 +94,19 @@ def frames_to_sequence(frames: list[dict], stride: int = STRIDE) -> np.ndarray |
     return np.concatenate([mat, vel], axis=1).astype(np.float32)
 
 
-def load_samples() -> list[dict]:
+def load_samples(apply_exclusions: bool = True, include_unlisted: bool = False) -> list[dict]:
+    """include_unlisted: also load the spreadsheet-unlisted videos (tools/import_csltr_unlisted.py). Off by default:
+    in Phase 11 a model trained with them was worse on the held-out rounds (docs/PHASE11_REPORT.md)."""
     from ..video.extract import mirror_frame
     root = CONTINUOUS_DIR / "isl_csltr"
+    skip = excluded_files() if apply_exclusions else set()
     out = []
     for f in sorted(root.glob("*/*.json")) if root.exists() else []:
         d = json.loads(f.read_text(encoding="utf-8"))
+        if skip and _corpus_relative(d.get("source_file", "")) in skip:
+            continue                                   # duplicate / conflicting label: rejected
+        if not include_unlisted and "provenance" in d.get("meta", {}):
+            continue
         seq = frames_to_sequence(d["frames"])
         if seq is None or not d.get("gloss"):
             continue

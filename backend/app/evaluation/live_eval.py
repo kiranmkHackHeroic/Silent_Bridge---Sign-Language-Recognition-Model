@@ -18,6 +18,7 @@ import secrets
 import time
 from collections import Counter
 from datetime import datetime, timezone
+from pathlib import Path
 
 import numpy as np
 
@@ -90,16 +91,39 @@ def delete_sequence(seq_id: str) -> bool:
     return False
 
 
-def eval_data_summary() -> dict:
+def eval_data_summary(vocab_labels: set[str] | None = None) -> dict:
+    """What the evaluation data contains, plus metadata warnings (labels, signer and session IDs)."""
     store = eval_store()
     per_label: Counter = Counter()
-    sessions = set()
+    sessions, signers = Counter(), Counter()
+    warnings: list[str] = []
+    missing_meta = default_signer = not_eval = unknown = 0
     for s in store.iter_samples():
         per_label[s["label"]] += 1
-        sessions.add(s.get("session_id"))
+        sessions[s.get("session_id") or ""] += 1
+        signers[s.get("signer_id") or ""] += 1
+        missing_meta += not s.get("session_id") or not s.get("signer_id")
+        default_signer += s.get("signer_id") == "signer1"
+        not_eval += s.get("purpose") != "eval"
+        unknown += bool(vocab_labels) and s["label"] not in vocab_labels
     seqs = list_sequences()
-    return {"isolated": sum(per_label.values()), "per_label": dict(per_label), "sessions": sorted(x for x in sessions if x),
-            "sequences": len(seqs), "sequence_signs": sum(len(s["glosses"]) for s in seqs)}
+    for d in seqs:
+        signers[d.get("signer_id") or ""] += 0
+        sessions[d.get("session_id") or ""] += 0
+    total = sum(per_label.values())
+    if missing_meta:
+        warnings.append(f"{missing_meta} recording(s) without a signer or session ID")
+    if default_signer:
+        warnings.append(f"{default_signer} recording(s) use the default signer ID 'signer1': give every person their own ID")
+    if not_eval:
+        warnings.append(f"{not_eval} recording(s) in the evaluation store are not marked purpose=eval")
+    if unknown:
+        warnings.append(f"{unknown} recording(s) have a label that is not in the vocabulary")
+    if total and len([k for k in sessions if k]) < 2:
+        warnings.append("only one evaluation session: record a second one so the threshold can be checked fairly")
+    return {"isolated": total, "per_label": dict(per_label), "sessions": sorted(x for x in sessions if x),
+            "signers": sorted(x for x in signers if x), "recordings_per_session": {k: v for k, v in sessions.items() if k},
+            "sequences": len(seqs), "sequence_signs": sum(len(s["glosses"]) for s in seqs), "metadata_warnings": warnings}
 
 
 def _effective(pred_label: str, conf: float, threshold: float) -> str:
@@ -107,9 +131,84 @@ def _effective(pred_label: str, conf: float, threshold: float) -> str:
     return pred_label if (pred_label != NONE_LABEL and conf >= threshold) else NONE_LABEL
 
 
-def evaluate_isolated(predictor, threshold: float) -> dict:
-    from sklearn.metrics import precision_recall_fscore_support
+REPORTS_DIR = DATA_DIR.parent / "reports"
+
+
+def save_report(rep: dict, out: Path | None = None, prefix: str = "live_eval") -> Path:
+    """Write a report WITHOUT overwriting earlier ones: <prefix>_<UTC timestamp>.json (+ -2, -3 ... if taken)."""
+    if out is None:
+        REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        out = REPORTS_DIR / f"{prefix}_{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}.json"
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    base, k = out, 2
+    while out.exists():
+        out = base.with_name(f"{base.stem}-{k}{base.suffix}")
+        k += 1
+    out.write_text(json.dumps(rep, indent=1, ensure_ascii=False), encoding="utf-8")
+    return out
+
+
+def end_style(frames: list[dict]) -> str:
+    """How the recorded sign ended: 'lowered' (hands gone at the end), 'hold' (hands still for the last
+    ~0.5 s) or 'moving' (recording stopped while the hands were still moving)."""
+    tail = frames[-15:]
+    if not tail or not any(f.get("hands") for f in tail[-5:]):
+        return "lowered"
+    wrists = [f["hands"][0]["landmarks"][0][:2] for f in tail if f.get("hands")]
+    if len(wrists) >= 10:
+        steps = np.linalg.norm(np.diff(np.asarray(wrists, dtype=float), axis=0), axis=1)
+        if float(np.mean(steps)) < 0.004:
+            return "hold"
+    return "moving"
+
+
+def frame_timing(frames: list[dict]) -> dict:
+    t = np.asarray([float(f.get("t", 0)) for f in frames])
+    if len(t) < 3:
+        return {"frames": len(t), "fps": None, "dropped_frames": 0}
+    dt = np.diff(t)
+    med = float(np.median(dt)) or 33.3
+    return {"frames": len(t), "fps": round(1000.0 / med, 1), "dropped_frames": int(np.sum(dt > 1.5 * med)),
+            "max_gap_ms": round(float(dt.max()), 1)}
+
+
+def replay_isolated(predictor, vocab, threshold: float, samples: list[dict]) -> dict:
+    """Each single-sign recording through the LIVE session (segmentation, threshold, suppression), then the
+    cause of every error (app.evaluation.error_causes)."""
+    import time as _time
+    from ..recognition.pipeline import RecognitionSession
+    from .error_causes import classify
+    per, proc = [], []
+    for s in samples:
+        frames = s["frames"]
+        sess = RecognitionSession(predictor, vocab, RecognitionSettings(confidence_threshold=threshold))
+        last_t = float(frames[-1].get("t", 0))
+        stream = list(frames) + [{"t": last_t + (i + 1) * 33.3, "w": frames[-1].get("w", 640), "h": frames[-1].get("h", 480),
+                                  "hands": []} for i in range(30)]
+        events = []
+        for f in stream:
+            t0 = _time.perf_counter()
+            events += [e for e in sess.process(f) if e.get("type") in ("sign", "uncertain", "segment")]
+            proc.append((_time.perf_counter() - t0) * 1000)
+        c = classify(s["label"], events)
+        per.append({"sample_id": s["sample_id"], "label": s["label"], "session": s.get("session_id"),
+                    "end_style": end_style(frames), **c})
+    causes = Counter(r["cause"] for r in per)
+    by_end: dict = {}
+    for r in per:
+        by_end.setdefault(r["end_style"], Counter())[r["cause"]] += 1
+    return {"recordings": len(per), "completed_signs": sum(r["decided_segments"] for r in per),
+            "causes": dict(causes), "by_end_style": {k: dict(v) for k, v in by_end.items()},
+            "correct_by_end_style": {k: {"correct": v.get("correct", 0), "n": sum(v.values())} for k, v in by_end.items()},
+            "frame_processing_ms": {"mean": round(float(np.mean(proc)), 2), "p95": round(float(np.percentile(proc, 95)), 2)} if proc else None,
+            "errors": [r for r in per if r["cause"] != "correct"]}
+
+
+def evaluate_isolated(predictor, threshold: float, vocab=None) -> dict:
+    from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
     rows = []
+    raw_samples = []
     for s in eval_store().iter_samples():
         frames = []
         for f in s.get("frames") or []:
@@ -123,7 +222,8 @@ def evaluate_isolated(predictor, threshold: float) -> dict:
             continue
         p = predictor.predict_vector(vec)
         rows.append({"label": s["label"], "pred": p.label, "conf": float(p.confidence), "conditions": s.get("conditions") or {},
-                     "session": s.get("session_id")})
+                     "session": s.get("session_id"), "latency_ms": p.latency_ms, "timing": frame_timing(s.get("frames") or [])})
+        raw_samples.append(s)
     if not rows:
         return {"recordings": 0}
     known = set(predictor.classes)
@@ -135,12 +235,35 @@ def evaluate_isolated(predictor, threshold: float) -> dict:
     sign_labels = sorted({y for y in y_true if y != NONE_LABEL})
     signs = [i for i, y in enumerate(y_true) if y != NONE_LABEL]
     nones = [i for i, y in enumerate(y_true) if y == NONE_LABEL]
-    res: dict = {"recordings": len(rows), "not_in_model_vocabulary": out_vocab, "threshold": threshold,
-                 "sign_recordings": len(signs), "none_recordings": len(nones)}
+    res: dict = {"recordings": len(rows), "total_labeled_examples": len(rows), "not_in_model_vocabulary": out_vocab,
+                 "threshold": threshold, "sign_recordings": len(signs), "none_recordings": len(nones)}
+    all_labels = sorted(set(y_true) | set(y_eff))
+    res["confusion_matrix"] = {"labels": all_labels, "matrix": confusion_matrix(y_true, y_eff, labels=all_labels).tolist(),
+                               "note": "columns: word added at the threshold; '_none' = no word"}
+    hist = {"correct": [0] * 10, "wrong": [0] * 10}
+    for i in signs:
+        if in_vocab[i]["pred"] is not None:
+            b = min(9, int(in_vocab[i]["conf"] * 10))
+            hist["correct" if y_top1[i] == y_true[i] else "wrong"][b] += 1
+    res["confidence_histogram_top1"] = {"bins": [f"{b / 10:.1f}-{(b + 1) / 10:.1f}" for b in range(10)], **hist}
+    lat = [r["latency_ms"] for r in in_vocab if r.get("latency_ms") is not None]
+    res["classifier_latency_ms"] = ({"mean": round(float(np.mean(lat)), 2), "p95": round(float(np.percentile(lat, 95)), 2)}
+                                    if lat else None)
+    tim = [r["timing"] for r in in_vocab if r.get("timing")]
+    fps = [t["fps"] for t in tim if t.get("fps")]
+    res["recording_timing"] = {"mean_fps": round(float(np.mean(fps)), 1) if fps else None,
+                               "dropped_frames": int(sum(t["dropped_frames"] for t in tim)),
+                               "frames": int(sum(t["frames"] for t in tim))}
     if signs:
         res["top1_accuracy_ignoring_threshold"] = round(float(np.mean([y_top1[i] == y_true[i] for i in signs])), 4)
         res["accuracy"] = round(float(np.mean([y_eff[i] == y_true[i] for i in signs])), 4)
         res["rejected_as_uncertain"] = int(sum(y_eff[i] == NONE_LABEL for i in signs))
+        res["rejection_rate"] = round(res["rejected_as_uncertain"] / len(signs), 4)
+        res["outcomes_at_threshold"] = {
+            "correct": int(sum(y_eff[i] == y_true[i] for i in signs)),
+            "wrong": int(sum(y_eff[i] not in (NONE_LABEL, y_true[i]) for i in signs)),
+            "rejected_or_missed": int(sum(y_eff[i] == NONE_LABEL for i in signs)),
+            "false_detections": int(sum(y_eff[i] != NONE_LABEL for i in nones))}
         p, r, f, _ = precision_recall_fscore_support(y_true, y_eff, labels=sign_labels, average="macro", zero_division=0)
         res.update({"macro_precision": round(float(p), 4), "macro_recall": round(float(r), 4), "macro_f1": round(float(f), 4)})
         pc, rc, fc, sup = precision_recall_fscore_support(y_true, y_eff, labels=sign_labels, zero_division=0)
@@ -157,6 +280,9 @@ def evaluate_isolated(predictor, threshold: float) -> dict:
         res["accuracy_by_condition"] = {k: {v: {"accuracy": round(a / n, 3), "n": n} for v, (a, n) in vals.items()}
                                         for k, vals in by_cond.items()}
     res["thresholds"] = threshold_analysis(in_vocab, threshold)
+    if vocab is not None:
+        known_samples = [x for x in raw_samples if x["label"] in known and x.get("frames")]
+        res["live_replay"] = replay_isolated(predictor, vocab, threshold, known_samples)
     if nones:
         fd = sum(y_eff[i] != NONE_LABEL for i in nones)
         res["false_detections"] = int(fd)
@@ -239,7 +365,8 @@ def evaluate_sequences(predictor, vocab, threshold: float, settings: dict | None
         for k in ("reference_signs", "emitted_signs", "substitutions", "deletions", "insertions"):
             total[k] += c[k]
         per.append({"sequence_id": d["sequence_id"], "glosses": d["glosses"], "emitted": emitted,
-                    "sign_error_rate": c["sign_error_rate"], "conditions": d.get("conditions") or {}})
+                    "sign_error_rate": c["sign_error_rate"], "conditions": d.get("conditions") or {},
+                    "timing": frame_timing(frames)})
     n = total["reference_signs"]
     return {"sequences": len(seqs), **dict(total),
             "sign_error_rate": round((total["substitutions"] + total["deletions"] + total["insertions"]) / n, 4) if n else None,
@@ -255,9 +382,9 @@ def evaluate_live(predictor, vocab, threshold: float | None = None) -> dict:
     return {
         "model_version": (predictor.meta or {}).get("model_version"),
         "threshold": threshold,
-        "isolated": evaluate_isolated(predictor, threshold),
+        "isolated": evaluate_isolated(predictor, threshold, vocab),
         "sequences": evaluate_sequences(predictor, vocab, threshold),
-        "data": eval_data_summary(),
+        "data": eval_data_summary(set(vocab.entries) if vocab is not None else None),
         "note": "Evaluation-only webcam recordings (stored separately, never used for training).",
         "evaluated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
