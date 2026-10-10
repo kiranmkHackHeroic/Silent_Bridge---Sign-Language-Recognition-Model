@@ -190,6 +190,29 @@ export function UploadCard({ vocab, onQueued }: { vocab: VocabEntry[]; onQueued:
             Dataset <code>{batch.dataset}</code>, signer <code>{batch.signer_id}</code>, session <code>{batch.session_id}</code>{batch.annotations ? `, ${batch.annotations} annotation rows` : ""}.
             {batch.problems.map((p) => <div key={p}>⚠ {p}</div>)}
           </Notice>
+          {batch.label_summary && (
+            <div className="table-wrap" style={{ maxHeight: 220, overflowY: "auto" }}>
+              <table>
+                <thead><tr><th>Label (checked before import)</th><th>Videos ready</th><th>Valid examples now → after</th><th></th></tr></thead>
+                <tbody>
+                  {Object.entries(batch.label_summary.labels).map(([lab, d]) => (
+                    <tr key={lab}>
+                      <td>{lab}</td>
+                      <td>{d.ok} / {d.videos}</td>
+                      <td>{d.valid_now} → {d.after_import}</td>
+                      <td className="xs">
+                        {d.ok === 0 ? <Chip tone="bad">unsupported label: nothing will be imported</Chip> : <>
+                          {d.priority_class && <Chip tone="info">priority (weak) class</Chip>}
+                          {d.new_class && <Chip tone="accent">new class</Chip>}
+                          {!d.meets_training_minimum && <Chip tone="warn">below {batch.label_summary!.min_per_class} examples: not trained yet</Chip>}
+                        </>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
           <div className="table-wrap" style={{ maxHeight: 260, overflowY: "auto" }}>
             <table>
               <thead><tr><th>File</th><th>Label</th><th>Duration</th><th>Resolution</th><th>Status</th></tr></thead>

@@ -129,7 +129,10 @@ class TrainingConfig:
     random_seed: int = 42
     cv_folds: int = 3
     test_fraction: float = 0.2         # share of signer groups held out when no official test split exists
-    candidate_models: list[str] = field(default_factory=lambda: ["logreg", "svm_rbf", "mlp", "gru"])
+    # Phase 6 (reports/phase6_experiments.json, phase6_seed_check.json): on identical signer-grouped validation
+    # folds the logreg+GRU ensemble beat logreg (0.420 vs 0.388 macro-F1); RBF-SVM (0.342) and MLP (0.359) never
+    # won, so they are no longer trained by default (still available via --models / the API).
+    candidate_models: list[str] = field(default_factory=lambda: ["logreg", "gru", "ensemble"])
     sources: list[str] | None = None   # None = all sources (app recordings + every imported dataset)
     # promotion / acceptance criteria for a newly trained candidate
     min_test_macro_f1: float = 0.40

@@ -12,3 +12,4 @@ backend/data/jobs.json
 backend/data/raw/
 backend/data/processed/
 backend/models/
+backend/data/processed_backup/

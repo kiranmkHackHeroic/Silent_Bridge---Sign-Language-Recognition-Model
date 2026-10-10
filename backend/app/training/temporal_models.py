@@ -146,3 +146,42 @@ class TorchGRUClassifier:
             self.net = self._build(n_extra, len(self.classes_))
             self.net.load_state_dict(torch.load(io.BytesIO(weights), weights_only=True))
             self.net.eval()
+
+
+
+class ProbabilityEnsemble:
+    """Weighted average of the class probabilities of several fitted classifiers (here logistic regression
+    on the whole resampled sequence + the GRU over its frames). Selected in Phase 6 on signer-grouped
+    validation folds (tools/phase6_experiments.py). Exposes the sklearn-like API used by the app."""
+
+    def __init__(self, members: list, weights: list[float]):
+        self.members = members
+        self.weights = list(weights)
+        self.classes_: np.ndarray = np.array([])
+        self.n_features_in_: int = 0
+
+    def fit(self, X: np.ndarray, y: np.ndarray, groups: np.ndarray | None = None):
+        for m in self.members:
+            if isinstance(m, TorchGRUClassifier):
+                m.fit(X, y, groups=groups)
+            else:
+                m.fit(X, y)
+        self.classes_ = np.array(sorted(set(np.asarray(y).tolist())))
+        self.n_features_in_ = X.shape[1]
+        first = self.members[0]
+        sc = first.named_steps["scale"] if hasattr(first, "named_steps") else None
+        if sc is not None:                          # scaler statistics for the out-of-distribution score
+            self.mu_, self.sd_ = sc.mean_, sc.scale_
+        return self
+
+    def predict_proba(self, X: np.ndarray) -> np.ndarray:
+        out = np.zeros((len(X), len(self.classes_)))
+        idx = {c: i for i, c in enumerate(self.classes_)}
+        for m, w in zip(self.members, self.weights):
+            p = m.predict_proba(X)
+            for j, c in enumerate(m.classes_):
+                out[:, idx[c]] += w * p[:, j]
+        return out / max(sum(self.weights), 1e-9)
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        return self.classes_[self.predict_proba(X).argmax(1)]

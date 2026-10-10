@@ -68,6 +68,8 @@ MODEL_DESCRIPTIONS = {
     "gru": "Temporal model: per-frame linear embedding (96) -> bidirectional GRU (96 per direction) -> mean+max pooling "
            "+ global motion features -> linear softmax; AdamW, class-weighted loss, early stopping on a held-out "
            "split of training samples (PyTorch, CPU)",
+    "ensemble": "Equal-weight average of the class probabilities of the logistic-regression baseline and the GRU "
+                "temporal model (weight chosen on signer-grouped validation folds)",
 }
 
 ProgressFn = Callable[[str, float], None]
@@ -159,6 +161,11 @@ def build_model(kind: str, seed: int, fcfg: FeatureConfig = DEFAULT_FEATURE_CONF
                             early_stopping=True, validation_fraction=0.15, n_iter_no_change=15, random_state=seed)
     elif kind == "gru":
         return TorchGRUClassifier(seq_len=fcfg.resample_frames, frame_dim=FRAME_DIM, seed=seed)
+    elif kind == "ensemble":
+        # equal-weight probability average of logreg + GRU: weight 0.5 chosen on signer-grouped validation
+        # folds among 0.3 / 0.5 / 0.7 (tools/phase6_experiments.py, reports/phase6_experiments.json)
+        from .temporal_models import ProbabilityEnsemble
+        return ProbabilityEnsemble([build_model("logreg", seed, fcfg), build_model("gru", seed, fcfg)], [0.5, 0.5])
     else:
         raise ValueError(f"unknown model type {kind!r}")
     return Pipeline([("scale", StandardScaler()), ("clf", clf)])
@@ -201,7 +208,7 @@ def fit_model(kind: str, samples: list[Sample], fcfg: FeatureConfig, tcfg: Train
     model = build_model(kind, tcfg.random_seed, fcfg)
     if kind == "mlp":
         x, y = oversample(x, y, rng)
-    if kind == "gru":
+    if kind in ("gru", "ensemble"):
         model.fit(x, y, groups=g)
     else:
         model.fit(x, y)
@@ -610,7 +617,7 @@ def main() -> None:
     parser.add_argument("--no-save", action="store_true", help="evaluate only, do not create a model version")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--augment", type=int, default=3, help="augmented copies per training sample")
-    parser.add_argument("--models", default="logreg,svm_rbf,mlp,gru", help="comma-separated candidates")
+    parser.add_argument("--models", default="logreg,gru,ensemble", help="comma-separated candidates (also: svm_rbf, mlp)")
     parser.add_argument("--sources", default="", help="comma-separated data sources (default: all)")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO)

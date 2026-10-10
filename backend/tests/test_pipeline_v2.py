@@ -215,3 +215,14 @@ def test_training_eligibility_rules(tmp_path):
     assert not empty["eligible"] and "at least 2 classes" in empty["reasons"][0]
     full = training_eligibility(tmp_path / "models", stores=[("app", _synthetic_store(tmp_path / "ds"))], known=KNOWN)
     assert full["eligible"] and full["usable_classes"] == 4 and full["new_samples"] == 48
+
+
+def test_upload_label_summary_reports_unsupported_minimum_and_priority():
+    from app.uploads import label_summary
+    items = [{"label": "yes", "ok": True}, {"label": "yes", "ok": True}, {"label": "boy", "ok": True},
+             {"label": "zzz", "ok": False}, {"label": "", "ok": False}]
+    s = label_summary(items, existing_counts={"yes": 2, "boy": 19}, trained_classes={"boy"}, priority=["boy"])
+    assert s["unsupported_labels"] == ["(no label)", "zzz"]
+    assert s["labels"]["yes"]["after_import"] == 4 and not s["labels"]["yes"]["meets_training_minimum"]
+    assert s["labels"]["yes"]["new_class"] and not s["labels"]["boy"]["new_class"]
+    assert s["labels"]["boy"]["priority_class"] and s["priority_classes_covered"] == ["boy"]

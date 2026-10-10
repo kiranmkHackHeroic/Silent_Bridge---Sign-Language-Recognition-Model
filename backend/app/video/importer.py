@@ -151,6 +151,8 @@ def process_item(item: ImportItem, out_root: Path) -> dict:
     if out.exists():
         try:
             prev = json.loads(out.read_text(encoding="utf-8"))
+            if prev.get("extractor_version") != EXTRACTOR_VERSION:
+                raise KeyError("older extractor version: re-extract")
             row.update(status="accepted", frames=prev["num_frames"], hand_frames=prev["hand_frames"],
                        face_frames=prev.get("face_frames", 0), fps=prev["video"].get("fps", 0),
                        width=prev["video"].get("w", 0), height=prev["video"].get("h", 0),

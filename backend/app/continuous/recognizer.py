@@ -71,15 +71,32 @@ class ContinuousRecognizer:
         base_sid = classes[int(np.argmax(probs))]
         base_p = float(np.max(probs))
         decoder = b.get("decoder") or ("greedy_nearest" if b["selected"] == "ctc" else "baseline")
+        posterior, candidates = None, []
         if decoder in ("ctc_likelihood", "fusion"):
             ll = b["ctc"].sentence_log_likelihoods(seq, {k: e["gloss"] for k, e in table.items()})
             lam = float(b.get("fusion_lambda", 1.0)) if decoder == "fusion" else 0.0
             logpb = dict(zip(classes, np.log(np.maximum(probs, 1e-12))))
-            chosen = max(ll, key=lambda k: ll[k] + lam * logpb.get(k, float("-inf")))
+            ids = list(ll)
+            score = np.array([ll[k] + lam * logpb.get(k, float("-inf")) for k in ids])
+            finite = np.isfinite(score)
+            post = np.zeros(len(ids))
+            if finite.any():
+                e = np.exp(score[finite] - score[finite].max())
+                post[finite] = e / e.sum()
+            order = np.argsort(-post)
+            chosen = ids[order[0]]
+            posterior = float(post[order[0]])
+            candidates = [{"sentence_id": ids[i], "sentence": table[ids[i]]["sentence"], "kannada": table[ids[i]]["kannada"],
+                           "posterior": round(float(post[i]), 3)} for i in order[:3]]
         else:
             chosen = sid if decoder == "greedy_nearest" else base_sid
+        # below the validation-chosen threshold the result is reported as uncertain, never as a translation
+        threshold = b.get("accept_threshold")
+        accepted = posterior is None or threshold is None or posterior >= float(threshold)
         entry = table[chosen]
         return {
+            "accepted": accepted, "posterior": None if posterior is None else round(posterior, 3),
+            "accept_threshold": threshold, "candidates": candidates,
             "glosses": glosses, "gloss_confidence": round(conf, 3), "method": decoder,
             "sentence_id": chosen, "sentence": entry["sentence"], "kannada": entry["kannada"],
             "reference_gloss": entry["gloss"], "gloss_distance": int(dist),

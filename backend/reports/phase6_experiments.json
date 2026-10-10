@@ -1,0 +1,245 @@
+{
+ "variants_validation": {
+  "logreg_T12": {
+   "accuracy": 0.3982,
+   "macro_f1": 0.3772,
+   "fit_seconds": 152.2,
+   "kind": "logreg",
+   "resample_frames": 12
+  },
+  "logreg_T16": {
+   "accuracy": 0.4119,
+   "macro_f1": 0.3881,
+   "fit_seconds": 89.7,
+   "kind": "logreg",
+   "resample_frames": 16
+  },
+  "logreg_T24": {
+   "accuracy": 0.4129,
+   "macro_f1": 0.3849,
+   "fit_seconds": 76.5,
+   "kind": "logreg",
+   "resample_frames": 24
+  },
+  "logreg_T32": {
+   "accuracy": 0.4159,
+   "macro_f1": 0.3907,
+   "fit_seconds": 78.0,
+   "kind": "logreg",
+   "resample_frames": 32
+  },
+  "gru_T16": {
+   "accuracy": 0.4159,
+   "macro_f1": 0.3994,
+   "fit_seconds": 299.8,
+   "kind": "gru",
+   "resample_frames": 16
+  },
+  "ensemble_logreg0.3_gru0.7": {
+   "accuracy": 0.4344,
+   "macro_f1": 0.4168,
+   "kind": "ensemble",
+   "weights": {
+    "logreg": 0.3,
+    "gru": 0.7
+   },
+   "resample_frames": 16
+  },
+  "ensemble_logreg0.5_gru0.5": {
+   "accuracy": 0.4374,
+   "macro_f1": 0.4196,
+   "kind": "ensemble",
+   "weights": {
+    "logreg": 0.5,
+    "gru": 0.5
+   },
+   "resample_frames": 16
+  },
+  "ensemble_logreg0.7_gru0.3": {
+   "accuracy": 0.4237,
+   "macro_f1": 0.4024,
+   "kind": "ensemble",
+   "weights": {
+    "logreg": 0.7,
+    "gru": 0.3
+   },
+   "resample_frames": 16
+  }
+ },
+ "selected_on_validation": "ensemble_logreg0.5_gru0.5",
+ "min_gain": 0.01,
+ "gain": 0.0315,
+ "test_reported_for": [
+  "logreg_T16",
+  "ensemble_logreg0.5_gru0.5"
+ ],
+ "test": {
+  "logreg_T16": {
+   "accuracy": 0.6418,
+   "macro_f1": 0.6274,
+   "num_examples": 268,
+   "correct": 172,
+   "incorrect": 96,
+   "confused_pairs": [
+    {
+     "true": "eat",
+     "predicted": "nose",
+     "count": 5
+    },
+    {
+     "true": "grey",
+     "predicted": "namaskara",
+     "count": 3
+    },
+    {
+     "true": "stop",
+     "predicted": "ring",
+     "count": 3
+    },
+    {
+     "true": "you_are_perfect",
+     "predicted": "how_are_you",
+     "count": 3
+    },
+    {
+     "true": "bird",
+     "predicted": "good_evening",
+     "count": 2
+    },
+    {
+     "true": "boy",
+     "predicted": "girl",
+     "count": 2
+    },
+    {
+     "true": "cat",
+     "predicted": "black",
+     "count": 2
+    },
+    {
+     "true": "cow",
+     "predicted": "monsoon",
+     "count": 2
+    },
+    {
+     "true": "father",
+     "predicted": "bad",
+     "count": 2
+    },
+    {
+     "true": "girl",
+     "predicted": "mother",
+     "count": 2
+    }
+   ],
+   "per_source": {
+    "amrita_slr": {
+     "n": 213,
+     "accuracy": 0.5869
+    },
+    "include": {
+     "n": 55,
+     "accuracy": 0.8545
+    }
+   },
+   "per_signer_group": {
+    "amrita_slr:nachiketh": {
+     "n": 75,
+     "accuracy": 0.5333
+    },
+    "amrita_slr:signer_0403": {
+     "n": 138,
+     "accuracy": 0.6159
+    },
+    "include:include_test": {
+     "n": 55,
+     "accuracy": 0.8545
+    }
+   }
+  },
+  "ensemble_logreg0.5_gru0.5": {
+   "accuracy": 0.6978,
+   "macro_f1": 0.7031,
+   "num_examples": 268,
+   "correct": 187,
+   "incorrect": 81,
+   "confused_pairs": [
+    {
+     "true": "eat",
+     "predicted": "nose",
+     "count": 5
+    },
+    {
+     "true": "angry",
+     "predicted": "girl",
+     "count": 3
+    },
+    {
+     "true": "boy",
+     "predicted": "girl",
+     "count": 2
+    },
+    {
+     "true": "girl",
+     "predicted": "boy",
+     "count": 2
+    },
+    {
+     "true": "good_evening",
+     "predicted": "good_morning",
+     "count": 2
+    },
+    {
+     "true": "grey",
+     "predicted": "namaskara",
+     "count": 2
+    },
+    {
+     "true": "namaskara",
+     "predicted": "good",
+     "count": 2
+    },
+    {
+     "true": "stop",
+     "predicted": "friend",
+     "count": 2
+    },
+    {
+     "true": "teeth",
+     "predicted": "nose",
+     "count": 2
+    },
+    {
+     "true": "you_are_perfect",
+     "predicted": "how_are_you",
+     "count": 2
+    }
+   ],
+   "per_source": {
+    "amrita_slr": {
+     "n": 213,
+     "accuracy": 0.6479
+    },
+    "include": {
+     "n": 55,
+     "accuracy": 0.8909
+    }
+   },
+   "per_signer_group": {
+    "amrita_slr:nachiketh": {
+     "n": 75,
+     "accuracy": 0.6533
+    },
+    "amrita_slr:signer_0403": {
+     "n": 138,
+     "accuracy": 0.6449
+    },
+    "include:include_test": {
+     "n": 55,
+     "accuracy": 0.8909
+    }
+   }
+  }
+ },
+ "runtime_s": 1168.9
+}

@@ -51,7 +51,7 @@ with substitutions, deletions (missed signs) and insertions (extra words). The J
 `backend/reports/live_eval.json`.
 
 ## 3b. Test the confidence threshold on webcam input
-The model's threshold (0.45) was chosen on dataset videos, not on your camera. Record evaluation sessions on
+The model's threshold (currently 0.40, model v20261010-081537) was chosen on dataset videos, not on your camera. Record evaluation sessions on
 **at least two** different days, lighting setups or distances. The Live evaluation card then shows a threshold
 table with correct words, wrong words, missed signs and false detections. It also gives a
 **leave-one-session-out** choice: the threshold is picked on the other sessions and scored on the held-out one.

@@ -1,0 +1,662 @@
+{
+ "model_version": "c20261010-005738",
+ "validation_round": "rec2",
+ "test_rounds": [
+  "rec4",
+  "rec5"
+ ],
+ "fusion_lambda": 1.0,
+ "chosen_threshold_on_validation": 0.5,
+ "validation_curve": [
+  {
+   "threshold": 0.0,
+   "accepted": 73,
+   "coverage": 1.0,
+   "correct_accepted": 22,
+   "wrong_accepted": 51,
+   "precision": 0.3014,
+   "recall": 0.3014,
+   "f1": 0.3014
+  },
+  {
+   "threshold": 0.05,
+   "accepted": 73,
+   "coverage": 1.0,
+   "correct_accepted": 22,
+   "wrong_accepted": 51,
+   "precision": 0.3014,
+   "recall": 0.3014,
+   "f1": 0.3014
+  },
+  {
+   "threshold": 0.1,
+   "accepted": 73,
+   "coverage": 1.0,
+   "correct_accepted": 22,
+   "wrong_accepted": 51,
+   "precision": 0.3014,
+   "recall": 0.3014,
+   "f1": 0.3014
+  },
+  {
+   "threshold": 0.15,
+   "accepted": 73,
+   "coverage": 1.0,
+   "correct_accepted": 22,
+   "wrong_accepted": 51,
+   "precision": 0.3014,
+   "recall": 0.3014,
+   "f1": 0.3014
+  },
+  {
+   "threshold": 0.2,
+   "accepted": 73,
+   "coverage": 1.0,
+   "correct_accepted": 22,
+   "wrong_accepted": 51,
+   "precision": 0.3014,
+   "recall": 0.3014,
+   "f1": 0.3014
+  },
+  {
+   "threshold": 0.25,
+   "accepted": 72,
+   "coverage": 0.9863,
+   "correct_accepted": 22,
+   "wrong_accepted": 50,
+   "precision": 0.3056,
+   "recall": 0.3014,
+   "f1": 0.3034
+  },
+  {
+   "threshold": 0.3,
+   "accepted": 72,
+   "coverage": 0.9863,
+   "correct_accepted": 22,
+   "wrong_accepted": 50,
+   "precision": 0.3056,
+   "recall": 0.3014,
+   "f1": 0.3034
+  },
+  {
+   "threshold": 0.35,
+   "accepted": 68,
+   "coverage": 0.9315,
+   "correct_accepted": 22,
+   "wrong_accepted": 46,
+   "precision": 0.3235,
+   "recall": 0.3014,
+   "f1": 0.3121
+  },
+  {
+   "threshold": 0.4,
+   "accepted": 66,
+   "coverage": 0.9041,
+   "correct_accepted": 22,
+   "wrong_accepted": 44,
+   "precision": 0.3333,
+   "recall": 0.3014,
+   "f1": 0.3165
+  },
+  {
+   "threshold": 0.45,
+   "accepted": 60,
+   "coverage": 0.8219,
+   "correct_accepted": 21,
+   "wrong_accepted": 39,
+   "precision": 0.35,
+   "recall": 0.2877,
+   "f1": 0.3158
+  },
+  {
+   "threshold": 0.5,
+   "accepted": 53,
+   "coverage": 0.726,
+   "correct_accepted": 20,
+   "wrong_accepted": 33,
+   "precision": 0.3774,
+   "recall": 0.274,
+   "f1": 0.3175
+  },
+  {
+   "threshold": 0.55,
+   "accepted": 48,
+   "coverage": 0.6575,
+   "correct_accepted": 18,
+   "wrong_accepted": 30,
+   "precision": 0.375,
+   "recall": 0.2466,
+   "f1": 0.2975
+  },
+  {
+   "threshold": 0.6,
+   "accepted": 41,
+   "coverage": 0.5616,
+   "correct_accepted": 16,
+   "wrong_accepted": 25,
+   "precision": 0.3902,
+   "recall": 0.2192,
+   "f1": 0.2807
+  },
+  {
+   "threshold": 0.65,
+   "accepted": 39,
+   "coverage": 0.5342,
+   "correct_accepted": 16,
+   "wrong_accepted": 23,
+   "precision": 0.4103,
+   "recall": 0.2192,
+   "f1": 0.2857
+  },
+  {
+   "threshold": 0.7,
+   "accepted": 37,
+   "coverage": 0.5068,
+   "correct_accepted": 15,
+   "wrong_accepted": 22,
+   "precision": 0.4054,
+   "recall": 0.2055,
+   "f1": 0.2727
+  },
+  {
+   "threshold": 0.75,
+   "accepted": 31,
+   "coverage": 0.4247,
+   "correct_accepted": 15,
+   "wrong_accepted": 16,
+   "precision": 0.4839,
+   "recall": 0.2055,
+   "f1": 0.2885
+  },
+  {
+   "threshold": 0.8,
+   "accepted": 28,
+   "coverage": 0.3836,
+   "correct_accepted": 13,
+   "wrong_accepted": 15,
+   "precision": 0.4643,
+   "recall": 0.1781,
+   "f1": 0.2574
+  },
+  {
+   "threshold": 0.85,
+   "accepted": 22,
+   "coverage": 0.3014,
+   "correct_accepted": 12,
+   "wrong_accepted": 10,
+   "precision": 0.5455,
+   "recall": 0.1644,
+   "f1": 0.2526
+  },
+  {
+   "threshold": 0.9,
+   "accepted": 18,
+   "coverage": 0.2466,
+   "correct_accepted": 9,
+   "wrong_accepted": 9,
+   "precision": 0.5,
+   "recall": 0.1233,
+   "f1": 0.1978
+  },
+  {
+   "threshold": 0.95,
+   "accepted": 8,
+   "coverage": 0.1096,
+   "correct_accepted": 5,
+   "wrong_accepted": 3,
+   "precision": 0.625,
+   "recall": 0.0685,
+   "f1": 0.1235
+  }
+ ],
+ "test_without_rejection": {
+  "threshold": 0.0,
+  "accepted": 154,
+  "coverage": 1.0,
+  "correct_accepted": 45,
+  "wrong_accepted": 109,
+  "precision": 0.2922,
+  "recall": 0.2922,
+  "f1": 0.2922
+ },
+ "test_at_chosen_threshold": {
+  "threshold": 0.5,
+  "accepted": 122,
+  "coverage": 0.7922,
+  "correct_accepted": 43,
+  "wrong_accepted": 79,
+  "precision": 0.3525,
+  "recall": 0.2792,
+  "f1": 0.3116
+ },
+ "test_sentences_always_correct": 11,
+ "test_sentences_never_correct": 49,
+ "test_distinct_sentences": 85,
+ "per_sentence_test": [
+  {
+   "sentence": "He is going into the room",
+   "correct": 1,
+   "videos": 1
+  },
+  {
+   "sentence": "bring water for me",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "do not be stubborn",
+   "correct": 1,
+   "videos": 1
+  },
+  {
+   "sentence": "do not take it to the heart",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "hi how are you",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "i am (age)",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "i am hungry",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "i am sitting in the class",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "i am so sorry to hear that",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "let him take time",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "my name is xxxxxxxx",
+   "correct": 2,
+   "videos": 2
+  },
+  {
+   "sentence": "are you free today",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "can i help you",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "congratulations",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "do not make me angry",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "how can i help you",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "how old are you",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i am afraid of that",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i am crying",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i am suffering from fever",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i got hurt",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i promise",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i really appreciate it",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "i somehow got to know about it",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "now onwards he will never hurt you",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "prepare the bed",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "serve the food",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "take care of yourself",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "what are you doing",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "what do you think",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "what is your phone number",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "when will the train leave",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "where are you from",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "who are you",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "you are bad",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "you are welcome",
+   "correct": 1,
+   "videos": 2
+  },
+  {
+   "sentence": "This place is beautiful",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "can you repeat that please",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "comb your hair",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "could you please talk slower",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "do me a favour",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "do not abuse him",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "do not hurt me",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "do not worry",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "go and sleep",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "had your food",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "he came by train",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "he is on the way",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "he she is my friend",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "he would be coming today",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "help me",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "how are things",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "how can i trust you",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "how dare you",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i am feeling bored",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i am feeling cold",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i am fine. thank you sir",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i am in dilemma what to do",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i am not really sure",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "i am tired",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i am very happy",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "i do not agree",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i do not like it",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "i do not mean it",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "i enjoyed a lot",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "it does not make any difference to me",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "nice to meet you",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "pour some more water into the glass",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "shall we go outside",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "speak softly",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "tell me truth",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "thank you so much",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "try to understand",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "turn on light turn off light",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "wear the shirt",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "what did you tell him",
+   "correct": 0,
+   "videos": 1
+  },
+  {
+   "sentence": "what do you do",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "what do you want to become",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "what you want",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "why are you angry",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "why are you crying",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "why are you disappointed",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "you are good",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "you can do it",
+   "correct": 0,
+   "videos": 2
+  },
+  {
+   "sentence": "you need a medicine, take this one",
+   "correct": 0,
+   "videos": 2
+  }
+ ]
+}

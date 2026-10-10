@@ -35,6 +35,8 @@ function cameraErrorMessage(err: unknown): string {
 }
 
 const r4 = (v: number) => Math.round(v * 10000) / 10000;
+/** Python extracts training landmarks at max side 640 px (EXTRACTOR_VERSION ...-640-...). */
+const TRAINING_MAX_SIDE = 640;
 
 export function useVision({ face, overlay, onResult }: Options) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -100,19 +102,21 @@ export function useVision({ face, overlay, onResult }: Options) {
       box: null, blend: null, detected: false,
     };
 
-    return (frameT?: number) => {
+    // `input`: optional pre-scaled copy of the frame (video-file mode downscales to the training extraction size)
+    return (frameT?: number, input?: HTMLCanvasElement) => {
       const video = videoRef.current;
       const models = modelsRef.current;
       if (!video || !models || video.readyState < 2) return;
       const now = Math.max(performance.now(), tsRef.current + 1);
       tsRef.current = now;
-      const w = video.videoWidth || 640;
-      const h = video.videoHeight || 480;
+      const w = input?.width || video.videoWidth || 640;
+      const h = input?.height || video.videoHeight || 480;
+      const src = input ?? video;
       const start = performance.now();
 
       let handsOut: HandPayload[] = [];
       try {
-        const res = models.hands.detectForVideo(video, now);
+        const res = models.hands.detectForVideo(src, now);
         // 0.10.x exposes `handedness`; older builds used `handednesses`
         const handedness = (res as unknown as { handedness?: { categoryName: string; score: number }[][]; handednesses?: { categoryName: string; score: number }[][] });
         const cats = handedness.handedness ?? handedness.handednesses ?? [];
@@ -130,7 +134,7 @@ export function useVision({ face, overlay, onResult }: Options) {
         faceToggle = (faceToggle + 1) % 3; // face every 3rd frame keeps hands fast
         if (faceToggle === 0) {
           try {
-            const fr = models.face.detectForVideo(video, now);
+            const fr = models.face.detectForVideo(src, now);
             const lm = fr.faceLandmarks?.[0];
             if (lm && lm.length) {
               let minX = 1, minY = 1, maxX = 0, maxY = 0;
@@ -215,12 +219,28 @@ export function useVision({ face, overlay, onResult }: Options) {
   const loop = useCallback(() => {
     const process = makeProcessor();
     let lastVideoTime = -1;
+    let scaled: HTMLCanvasElement | null = null;
     const tick = () => {
       rafRef.current = requestAnimationFrame(tick);
       const video = videoRef.current;
       if (!video || video.readyState < 2 || video.currentTime === lastVideoTime) return;
       lastVideoTime = video.currentTime;
-      process();
+      // cameras often ignore the 640x480 request; downscale larger frames to the training extraction size
+      const side = Math.max(video.videoWidth, video.videoHeight);
+      if (side > TRAINING_MAX_SIDE) {
+        const k = TRAINING_MAX_SIDE / side;
+        const w = Math.round(video.videoWidth * k);
+        const h = Math.round(video.videoHeight * k);
+        if (!scaled || scaled.width !== w || scaled.height !== h) {
+          scaled = document.createElement("canvas");
+          scaled.width = w;
+          scaled.height = h;
+        }
+        scaled.getContext("2d")!.drawImage(video, 0, 0, w, h);
+        process(undefined, scaled);
+      } else {
+        process();
+      }
     };
     rafRef.current = requestAnimationFrame(tick);
   }, [makeProcessor]);
@@ -265,6 +285,13 @@ export function useVision({ face, overlay, onResult }: Options) {
       setTrackInfo({ width: video.videoWidth, height: video.videoHeight, frameRate: fps, label: "video file (stepped frame by frame)" });
       setCamera("on");
       const process = makeProcessor();
+      // same size as the Python training extraction (max side 640 px): face detection under hand occlusion
+      // is resolution-sensitive (tools/parity_resolution.py), so a full-resolution file would not be comparable
+      const scale = Math.min(1, TRAINING_MAX_SIDE / Math.max(video.videoWidth, video.videoHeight));
+      const scaled = document.createElement("canvas");
+      scaled.width = Math.round(video.videoWidth * scale);
+      scaled.height = Math.round(video.videoHeight * scale);
+      const sctx = scaled.getContext("2d")!;
       const base = Math.max(performance.now(), tsRef.current + 1);
       const seek = (t: number) => new Promise<void>((resolve) => {
         if (Math.abs(video.currentTime - t) < 1e-4) return resolve();
@@ -276,7 +303,8 @@ export function useVision({ face, overlay, onResult }: Options) {
         const t = (i + 0.5) / fps;
         await seek(t);
         if (fileRunRef.current !== run) return;          // stopped meanwhile
-        process(base + (i / fps) * 1000);
+        sctx.drawImage(video, 0, 0, scaled.width, scaled.height);
+        process(base + (i / fps) * 1000, scaled);
       }
       if (fileRunRef.current !== run) return;
       setCamera("off");

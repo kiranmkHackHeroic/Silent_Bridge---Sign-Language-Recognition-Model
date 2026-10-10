@@ -1,0 +1,89 @@
+{
+ "face_frame_rate": {
+  "v1": {
+   "amrita_slr": 0.831,
+   "include": 0.0
+  },
+  "v2": {
+   "amrita_slr": 0.984,
+   "include": 1.0
+  }
+ },
+ "test_groups": [
+  "amrita_slr:nachiketh",
+  "amrita_slr:signer_0403",
+  "include:include_test"
+ ],
+ "dev": 1022,
+ "test": 268,
+ "results": {
+  "logreg": {
+   "train_v1_test_v1": {
+    "accuracy": 0.6194,
+    "macro_f1": 0.6216,
+    "per_source": {
+     "amrita_slr": 0.5634,
+     "include": 0.8364
+    }
+   },
+   "train_v1_test_v2_live_like": {
+    "accuracy": 0.6231,
+    "macro_f1": 0.6307,
+    "per_source": {
+     "amrita_slr": 0.6385,
+     "include": 0.5636
+    }
+   },
+   "train_v2_test_v2": {
+    "accuracy": 0.6455,
+    "macro_f1": 0.6582,
+    "per_source": {
+     "amrita_slr": 0.5915,
+     "include": 0.8545
+    }
+   },
+   "validation_v1": {
+    "accuracy": 0.4051,
+    "macro_f1": 0.3861
+   },
+   "validation_v2": {
+    "accuracy": 0.4129,
+    "macro_f1": 0.3943
+   }
+  },
+  "ensemble": {
+   "train_v1_test_v1": {
+    "accuracy": 0.6754,
+    "macro_f1": 0.6634,
+    "per_source": {
+     "amrita_slr": 0.6291,
+     "include": 0.8545
+    }
+   },
+   "train_v1_test_v2_live_like": {
+    "accuracy": 0.6828,
+    "macro_f1": 0.6909,
+    "per_source": {
+     "amrita_slr": 0.6901,
+     "include": 0.6545
+    }
+   },
+   "train_v2_test_v2": {
+    "accuracy": 0.7239,
+    "macro_f1": 0.7334,
+    "per_source": {
+     "amrita_slr": 0.6854,
+     "include": 0.8727
+    }
+   },
+   "validation_v1": {
+    "accuracy": 0.4481,
+    "macro_f1": 0.4188
+   },
+   "validation_v2": {
+    "accuracy": 0.4511,
+    "macro_f1": 0.4294
+   }
+  }
+ }
+}

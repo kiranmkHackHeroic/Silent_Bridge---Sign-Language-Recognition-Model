@@ -30,9 +30,11 @@ Annotation facts we found and handle (not hidden):
 
 ## Results (measured on this laptop, 2026-10-10)
 
+**Phase 6 (accuracy): see [`docs/PHASE6_REPORT.md`](docs/PHASE6_REPORT.md).** The active isolated model is now `v20261010-081537` (logreg + GRU ensemble on face-crop landmarks): **72.4% accuracy / macro-F1 0.708** on the same 268 held-out videos where the previous model scored 59.7% / 0.591. Sentence mode now marks low-confidence sentences as uncertain (`c20261010-051510`). What to record next: [`docs/DATA_COLLECTION_PLAN.md`](docs/DATA_COLLECTION_PLAN.md).
+
 **Phase 5 (audit, English intermediate layer, continuous decoder, phrases, avatar): see [`docs/PHASE5_REPORT.md`](docs/PHASE5_REPORT.md).** Supported phrases: [`docs/PHRASES.md`](docs/PHRASES.md).
 
-### Isolated-sign recognition: active model `v20261009-225256`
+### Isolated-sign recognition: previous model `v20261009-225256` (superseded in Phase 6, kept for rollback)
 - **Data:** 1,290 valid videos, **63 signs**: Amrita SLR 933, INCLUDE Greetings + **Pronouns** 357 (Pronouns imported 2026-10-10: 484/484 videos accepted, 8 new signs).
 - **Independent test set:** 268 videos = INCLUDE's official test split + **two Amrita signers never seen in training**.
 
@@ -185,7 +187,7 @@ Step-by-step procedure: [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE
 - **Sentence mode:** one segment = one sentence (1.5 s pause or hands down) → CTC decoding → nearest corpus sentence → Kannada.
 
 ## Tests (2026-10-10)
-- **Backend pytest: 135 passed** (Phase 5 adds: sequence-level meaning, ambiguity and unknown signs, phrase-table integrity, Unicode API round trip, reverse ISL ordering, dictionary edits do not trigger retraining, webcam threshold selection with false detections). Earlier: Adds diagnostics per frame and per stage, the OOD score, threshold calibration (F1, `_none` false alarms), browser-vs-Python comparison, snapshot API, evaluation-only storage (never mixed with training data), sequence recordings and the live evaluation report, the classifier-verified split, face-dropout augmentation, and the registry's fair comparison on an identical test set. Earlier coverage: Kannada Unicode, phrases, mapping consistency, validation, training/saving/loading, registry promote/reject/rollback, job queue, eligibility, video extraction, ZIP path traversal, GRU/CTC, sentence mode, API and WebSocket.
+- **Backend pytest: 137 passed** (Phase 6 adds the ensemble model type and the upload label summary). Phase 5: (Phase 5 adds: sequence-level meaning, ambiguity and unknown signs, phrase-table integrity, Unicode API round trip, reverse ISL ordering, dictionary edits do not trigger retraining, webcam threshold selection with false detections). Earlier: Adds diagnostics per frame and per stage, the OOD score, threshold calibration (F1, `_none` false alarms), browser-vs-Python comparison, snapshot API, evaluation-only storage (never mixed with training data), sequence recordings and the live evaluation report, the classifier-verified split, face-dropout augmentation, and the registry's fair comparison on an identical test set. Earlier coverage: Kannada Unicode, phrases, mapping consistency, validation, training/saving/loading, registry promote/reject/rollback, job queue, eligibility, video extraction, ZIP path traversal, GRU/CTC, sentence mode, API and WebSocket.
 - **Frontend vitest: 25 passed** (adds Kannada speech text and expression-label stability). **TypeScript clean. Production build OK.**
 - **Browser pipeline:** verified with real dataset videos through the same in-browser MediaPipe → WebSocket path (table above).
 - **Webcam:** the development environment blocks camera access (the app correctly shows its "permission denied" message), so **live signing with a real person was not tested** and no live accuracy is claimed. Measure it with [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE.md).

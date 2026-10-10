@@ -8,80 +8,80 @@
  "conditions": {
   "original": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5634,
-   "top1_ignoring_threshold": 0.6007,
+   "accuracy_accepted_and_correct": 0.6306,
+   "top1_ignoring_threshold": 0.6679,
    "coverage": 0.8694,
-   "wrong_accepted": 82
+   "wrong_accepted": 64
   },
   "mirrored (selfie video)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5709,
-   "top1_ignoring_threshold": 0.6157,
-   "coverage": 0.8619,
-   "wrong_accepted": 78
+   "accuracy_accepted_and_correct": 0.6269,
+   "top1_ignoring_threshold": 0.6567,
+   "coverage": 0.8657,
+   "wrong_accepted": 64
   },
   "no face visible": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.4925,
-   "top1_ignoring_threshold": 0.5299,
-   "coverage": 0.8321,
-   "wrong_accepted": 91
+   "accuracy_accepted_and_correct": 0.4478,
+   "top1_ignoring_threshold": 0.4776,
+   "coverage": 0.8507,
+   "wrong_accepted": 108
   },
   "hand dropped in 20% of frames": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5597,
-   "top1_ignoring_threshold": 0.6007,
-   "coverage": 0.8396,
-   "wrong_accepted": 75
+   "accuracy_accepted_and_correct": 0.6269,
+   "top1_ignoring_threshold": 0.6716,
+   "coverage": 0.8619,
+   "wrong_accepted": 63
   },
   "hand dropped in 40% of frames": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5784,
-   "top1_ignoring_threshold": 0.6194,
-   "coverage": 0.847,
-   "wrong_accepted": 72
+   "accuracy_accepted_and_correct": 0.6381,
+   "top1_ignoring_threshold": 0.6754,
+   "coverage": 0.8582,
+   "wrong_accepted": 59
   },
   "fast (1.5x speed)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5522,
-   "top1_ignoring_threshold": 0.5896,
-   "coverage": 0.8433,
-   "wrong_accepted": 78
+   "accuracy_accepted_and_correct": 0.6157,
+   "top1_ignoring_threshold": 0.6567,
+   "coverage": 0.8694,
+   "wrong_accepted": 68
   },
   "slow (0.67x speed)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5746,
-   "top1_ignoring_threshold": 0.6082,
-   "coverage": 0.8694,
-   "wrong_accepted": 79
+   "accuracy_accepted_and_correct": 0.6194,
+   "top1_ignoring_threshold": 0.6604,
+   "coverage": 0.8582,
+   "wrong_accepted": 64
   },
   "far (0.7x size)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.541,
-   "top1_ignoring_threshold": 0.597,
-   "coverage": 0.8731,
-   "wrong_accepted": 89
+   "accuracy_accepted_and_correct": 0.6269,
+   "top1_ignoring_threshold": 0.6679,
+   "coverage": 0.8694,
+   "wrong_accepted": 65
   },
   "near (1.3x size)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5709,
-   "top1_ignoring_threshold": 0.6157,
+   "accuracy_accepted_and_correct": 0.6157,
+   "top1_ignoring_threshold": 0.6567,
    "coverage": 0.8433,
-   "wrong_accepted": 73
+   "wrong_accepted": 61
   },
   "off-centre (+0.15 width)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5746,
-   "top1_ignoring_threshold": 0.6045,
-   "coverage": 0.8843,
-   "wrong_accepted": 83
+   "accuracy_accepted_and_correct": 0.6418,
+   "top1_ignoring_threshold": 0.6828,
+   "coverage": 0.8507,
+   "wrong_accepted": 56
   },
   "landmark jitter (sd 0.01)": {
    "recordings": 268,
-   "accuracy_accepted_and_correct": 0.5373,
-   "top1_ignoring_threshold": 0.5896,
-   "coverage": 0.8507,
-   "wrong_accepted": 84
+   "accuracy_accepted_and_correct": 0.6269,
+   "top1_ignoring_threshold": 0.6642,
+   "coverage": 0.8843,
+   "wrong_accepted": 69
   }
  },
  "note": "synthetic perturbations of real held-out recordings (landmark level); a proxy, not webcam results"

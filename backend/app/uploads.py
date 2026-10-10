@@ -113,9 +113,36 @@ def parse_annotations(path: Path) -> list[dict]:
     return out
 
 
+def label_summary(items: list[dict], existing_counts: dict[str, int] | None = None,
+                  trained_classes: set[str] | None = None, priority: list[str] | None = None,
+                  min_per_class: int = 5) -> dict:
+    """Batch-level label check shown BEFORE import: unsupported labels, examples per class now and after
+    import, whether a class reaches the training minimum, and whether it is a priority (weak) class."""
+    existing_counts = existing_counts or {}
+    trained_classes = trained_classes or set()
+    priority = priority or []
+    per: dict[str, dict] = {}
+    for it in items:
+        lab = it["label"] or "(no label)"
+        d = per.setdefault(lab, {"videos": 0, "ok": 0})
+        d["videos"] += 1
+        d["ok"] += bool(it["ok"])
+    unsupported = sorted(l for l, d in per.items() if d["ok"] == 0)
+    rows = {}
+    for lab, d in sorted(per.items()):
+        before = int(existing_counts.get(lab, 0))
+        rows[lab] = {**d, "valid_now": before, "after_import": before + d["ok"],
+                     "meets_training_minimum": before + d["ok"] >= min_per_class,
+                     "new_class": lab not in trained_classes and d["ok"] > 0,
+                     "priority_class": lab in priority}
+    return {"labels": rows, "unsupported_labels": unsupported,
+            "priority_classes_covered": sorted(l for l in per if l in priority),
+            "min_per_class": min_per_class}
+
+
 def create_batch(files: list[tuple[str, bytes]], dataset_name: str, signer_id: str, session_id: str,
                  label_mode: str, label: str, known_labels: set[str], language: str = "ISL",
-                 annotation_type: str = "isolated") -> dict:
+                 annotation_type: str = "isolated", label_context: dict | None = None) -> dict:
     if label_mode not in ("single", "annotation", "folders"):
         raise UploadError("label_mode must be single, annotation or folders")
     dataset = SAFE.sub("_", dataset_name.strip() or "user_uploads")[:40] or "user_uploads"
@@ -185,7 +212,8 @@ def create_batch(files: list[tuple[str, bytes]], dataset_name: str, signer_id: s
              "label_mode": label_mode, "language": language, "annotation_type": annotation_type,
              "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "items": items,
              "problems": problems, "videos": len(videos), "ready": sum(i["ok"] for i in items),
-             "annotations": len(annotations), "state": "previewed"}
+             "annotations": len(annotations), "state": "previewed",
+             "label_summary": label_summary(items, **(label_context or {}))}
     (root / "batch.json").write_text(json.dumps(batch, ensure_ascii=False, indent=1), encoding="utf-8")
     return batch
 

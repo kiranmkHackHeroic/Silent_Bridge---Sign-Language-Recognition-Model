@@ -26,7 +26,12 @@ MODELS_DIR = BACKEND_DIR.parent / "frontend" / "public" / "models"
 HAND_MODEL = MODELS_DIR / "hand_landmarker.task"
 FACE_MODEL = MODELS_DIR / "face_landmarker.task"
 VIDEO_EXTENSIONS = {".mp4", ".mov", ".avi", ".webm", ".mkv", ".m4v"}
-EXTRACTOR_VERSION = "mp0.10.21-tasks-640-v1"
+# v2: face-crop fallback (Phase 6). Signers filmed from a distance (INCLUDE: full body, face ~25 px at
+# 640 px) were never face-detected, so their face-relative features were always empty, unlike a webcam
+# user close to the camera. When the full-frame face detector finds nothing, the face is searched in an
+# upper-centre crop of the ORIGINAL-resolution frame and mapped back to full-frame coordinates.
+EXTRACTOR_VERSION = "mp0.10.21-tasks-640-facecrop-v2"
+FACE_CROP_W, FACE_CROP_H = 0.3, 0.5          # crop size as a fraction of the frame (validated in Phase 6)
 
 
 class VideoError(ValueError):
@@ -107,12 +112,36 @@ class LandmarkExtractor:
                 base_options=BaseOptions(model_asset_path=str(FACE_MODEL)),
                 running_mode=vision.RunningMode.VIDEO, num_faces=1, output_face_blendshapes=False,
                 min_face_detection_confidence=0.5, min_face_presence_confidence=0.5, min_tracking_confidence=0.5))
+            # stateless detector for the crop fallback (a crop is not a continuous video stream)
+            self.face_crop = vision.FaceLandmarker.create_from_options(vision.FaceLandmarkerOptions(
+                base_options=BaseOptions(model_asset_path=str(FACE_MODEL)),
+                running_mode=vision.RunningMode.IMAGE, num_faces=1, output_face_blendshapes=False,
+                min_face_detection_confidence=0.5, min_face_presence_confidence=0.5))
         self._ts = 0
 
     def close(self) -> None:
         self.hands.close()
         if self.face:
             self.face.close()
+            self.face_crop.close()
+
+    def _face_in_crop(self, orig_bgr, centre_x: float | None) -> dict | None:
+        """Face box (full-frame normalised coords) found in an upper-centre crop of the original frame."""
+        import cv2
+        H, W = orig_bgr.shape[:2]
+        cw, ch = int(FACE_CROP_W * W), int(FACE_CROP_H * H)
+        cx = (centre_x if centre_x is not None else 0.5) * W
+        x0 = int(max(0, min(W - cw, cx - cw / 2)))
+        crop = orig_bgr[0:ch, x0:x0 + cw]
+        res = self.face_crop.detect(self.mp.Image(image_format=self.mp.ImageFormat.SRGB,
+                                                  data=cv2.cvtColor(crop, cv2.COLOR_BGR2RGB)))
+        if not res.face_landmarks:
+            return None
+        xs = [x0 / W + p.x * cw / W for p in res.face_landmarks[0]]
+        ys = [p.y * ch / H for p in res.face_landmarks[0]]
+        r4 = lambda v: round(float(v), 4)  # noqa: E731
+        return {"cx": r4((min(xs) + max(xs)) / 2), "cy": r4((min(ys) + max(ys)) / 2),
+                "w": r4(max(xs) - min(xs)), "h": r4(max(ys) - min(ys))}
 
     def extract(self, path: Path, sample_every: int = 1, max_frames: int = 600,
                 start_s: float | None = None, end_s: float | None = None) -> tuple[list[dict], dict]:
@@ -127,6 +156,7 @@ class LandmarkExtractor:
             fps = 30.0
         frames: list[dict] = []
         last_face = None
+        self._crop_cx = None
         idx = 0
         stats = {"decoded": 0, "hand_frames": 0, "face_frames": 0}
         r4 = lambda v: round(float(v), 4)  # noqa: E731  (same rounding as the browser)
@@ -144,6 +174,7 @@ class LandmarkExtractor:
                 if end_s is not None and t_s > end_s:
                     break
                 stats["decoded"] += 1
+                orig = bgr
                 h, w = bgr.shape[:2]
                 scale = min(1.0, self.max_side / max(h, w))
                 if scale < 1.0:
@@ -171,7 +202,12 @@ class LandmarkExtractor:
                         last_face = {"cx": r4((min(xs) + max(xs)) / 2), "cy": r4((min(ys) + max(ys)) / 2),
                                      "w": r4(max(xs) - min(xs)), "h": r4(max(ys) - min(ys))}
                     else:
-                        last_face = None
+                        prev_cx = last_face["cx"] if last_face else self._crop_cx
+                        last_face = self._face_in_crop(orig, prev_cx)
+                        if last_face:
+                            stats["face_crop_frames"] = stats.get("face_crop_frames", 0) + 1
+                    if last_face:
+                        self._crop_cx = last_face["cx"]
                 stats["hand_frames"] += bool(hands)
                 stats["face_frames"] += last_face is not None
                 frames.append({"t": round(t_ms, 1), "w": w, "h": h, "hands": hands, "face": last_face})

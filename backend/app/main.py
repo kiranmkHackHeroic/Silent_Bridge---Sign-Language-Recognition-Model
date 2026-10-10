@@ -323,6 +323,27 @@ def dataset_import(key: str):
     return S().jobs.submit("import_dataset", {"dataset": key, "workers": 2}, f"Import {key}")
 
 
+def _label_context() -> dict:
+    """Existing valid examples per class, trained classes and the weakest classes (Phase 6 baseline report)."""
+    from .config import DEFAULT_FEATURE_CONFIG
+    from .jobs import AUTO_MIN_PER_CLASS
+    from .training.train_model import default_stores, known_labels_from
+    try:
+        summary = cached_validation(default_stores(), known_labels_from(), DEFAULT_FEATURE_CONFIG)
+        counts = {c: v["valid"] for c, v in summary["per_class"].items()}
+    except Exception:  # never block an upload preview on the dataset summary
+        counts = {}
+    priority = []
+    report = DATA_DIR.parent / "reports" / "phase6_baseline.json"
+    if report.exists():
+        try:
+            priority = [r["class"] for r in json.loads(report.read_text(encoding="utf-8"))["weakest_validation_classes"]]
+        except (OSError, KeyError, json.JSONDecodeError):
+            priority = []
+    return {"existing_counts": counts, "trained_classes": set(S().predictor.classes), "priority": priority,
+            "min_per_class": AUTO_MIN_PER_CLASS}
+
+
 @app.post("/api/uploads")
 async def upload_files(files: list[UploadFile] = File(...), dataset_name: str = Form("user_uploads"),
                        signer_id: str = Form("signer1"), session_id: str = Form(""),
@@ -331,7 +352,7 @@ async def upload_files(files: list[UploadFile] = File(...), dataset_name: str = 
     payload = [(f.filename or "upload", await f.read()) for f in files]
     try:
         return await run_in_threadpool(create_batch, payload, dataset_name, signer_id, session_id, label_mode,
-                                       label, set(S().vocab.entries), language, annotation_type)
+                                       label, set(S().vocab.entries), language, annotation_type, _label_context())
     except UploadError as exc:
         raise HTTPException(400, str(exc)) from exc
 

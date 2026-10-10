@@ -1,0 +1,71 @@
+{
+ "test_videos": 268,
+ "test_groups": [
+  "amrita_slr:nachiketh",
+  "amrita_slr:signer_0403",
+  "include:include_test"
+ ],
+ "runs": [
+  {
+   "seed": 7,
+   "logreg": {
+    "accuracy": 0.6418,
+    "macro_f1": 0.6274
+   },
+   "ensemble": {
+    "accuracy": 0.6978,
+    "macro_f1": 0.7031
+   }
+  },
+  {
+   "seed": 11,
+   "logreg": {
+    "accuracy": 0.6231,
+    "macro_f1": 0.6024
+   },
+   "ensemble": {
+    "accuracy": 0.6978,
+    "macro_f1": 0.6872
+   }
+  },
+  {
+   "seed": 23,
+   "logreg": {
+    "accuracy": 0.6007,
+    "macro_f1": 0.5849
+   },
+   "ensemble": {
+    "accuracy": 0.7201,
+    "macro_f1": 0.7073
+   }
+  }
+ ],
+ "summary": {
+  "logreg": {
+   "accuracy": {
+    "mean": 0.6219,
+    "sd": 0.0206
+   },
+   "macro_f1": {
+    "mean": 0.6049,
+    "sd": 0.0214
+   }
+  },
+  "ensemble": {
+   "accuracy": {
+    "mean": 0.7052,
+    "sd": 0.0129
+   },
+   "macro_f1": {
+    "mean": 0.6992,
+    "sd": 0.0106
+   }
+  }
+ },
+ "paired": {
+  "videos_only_baseline_right": 35,
+  "videos_only_ensemble_right": 102,
+  "mcnemar_exact_p": 8.691651732727623e-09,
+  "note": "pooled over seeds; each seed pairs both models trained with the same seed"
+ }
+}

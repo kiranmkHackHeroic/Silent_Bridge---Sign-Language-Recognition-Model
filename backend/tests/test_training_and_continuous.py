@@ -211,3 +211,27 @@ def test_validating_a_temporary_dataset_never_touches_the_project_manifest(tmp_p
     assert (tmp_path / "ds_manifest.csv").exists()
     after = MANIFEST_FILE.read_bytes() if MANIFEST_FILE.exists() else None
     assert before == after
+
+
+def test_probability_ensemble_trains_saves_and_predicts(tmp_path):
+    """Synthetic fixture data: exercises the ensemble model type end to end (fit, pickle, OOD scaler)."""
+    import joblib
+    from app.training.train_model import _scaler_of, build_model, fit_model
+    from app.training.train_model import load_valid_samples
+    store = DatasetStore(tmp_path / "ds")
+    rng = np.random.default_rng(1)
+    for session in ("a", "b"):
+        for kind, label in CLASSES.items():
+            for _ in range(4):
+                store.save(label, sign_frames(kind, n=30, rng=rng, noise=0.003), session)
+    samples, _ = load_valid_samples([("app", store)], KNOWN, FeatureConfig(), True)
+    model = fit_model("ensemble", samples, FeatureConfig(), TrainingConfig(augment_copies=1), np.random.default_rng(0))
+    assert list(model.classes_) == sorted(CLASSES.values())
+    joblib.dump(model, tmp_path / "m.joblib")
+    loaded = joblib.load(tmp_path / "m.joblib")
+    from app.recognition.sequence_features import matrix_to_vector
+    x = np.stack([matrix_to_vector(s.mat, FeatureConfig()) for s in samples[:8]])
+    p = loaded.predict_proba(x)
+    assert p.shape == (8, 4) and np.allclose(p.sum(1), 1.0, atol=1e-5)
+    assert np.mean(loaded.predict(x) == np.array([s.label for s in samples[:8]])) >= 0.75
+    assert _scaler_of(loaded) is not None and build_model("ensemble", 0).weights == [0.5, 0.5]

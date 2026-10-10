@@ -1,0 +1,373 @@
+{
+ "summary": {
+  "videos": 20,
+  "same_prediction": 19,
+  "mean_face_presence_agreement": 0.926,
+  "mean_hand_presence_agreement": 0.988,
+  "mean_face_rate_640": 0.777,
+  "mean_face_rate_full": 0.798
+ },
+ "videos": [
+  {
+   "sample_id": "amrita_slr_48f729f636d0fe",
+   "label": "cat",
+   "full_resolution": "474x850",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 0.976,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0372,
+    "image_position": 0.0089,
+    "face_relative": 0.0698,
+    "orientation": 0.0308,
+    "presence": 0.0172
+   },
+   "pred_640": "cat",
+   "pred_full": "cat"
+  },
+  {
+   "sample_id": "amrita_slr_c2b0d006edc3de",
+   "label": "namaskara",
+   "full_resolution": "472x850",
+   "face_rate_640": 0.491,
+   "face_rate_full": 0.855,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 0.636,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0226,
+    "image_position": 0.0077,
+    "face_relative": 0.6479,
+    "orientation": 0.0266,
+    "presence": 0.0
+   },
+   "pred_640": "namaskara",
+   "pred_full": "namaskara"
+  },
+  {
+   "sample_id": "amrita_slr_697232964757a5",
+   "label": "sleep",
+   "full_resolution": "848x478",
+   "face_rate_640": 0.94,
+   "face_rate_full": 0.94,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.1442,
+    "image_position": 0.0602,
+    "face_relative": 0.1532,
+    "orientation": 0.1209,
+    "presence": 0.1818
+   },
+   "pred_640": "sleep",
+   "pred_full": "sleep"
+  },
+  {
+   "sample_id": "amrita_slr_2df702167961ca",
+   "label": "bad",
+   "full_resolution": "848x480",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 0.984,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0393,
+    "image_position": 0.0246,
+    "face_relative": 0.0711,
+    "orientation": 0.0387,
+    "presence": 0.0395
+   },
+   "pred_640": "bad",
+   "pred_full": "bad"
+  },
+  {
+   "sample_id": "amrita_slr_9b121decfba60b",
+   "label": "write",
+   "full_resolution": "1280x720",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.1163,
+    "image_position": 0.0467,
+    "face_relative": 0.1276,
+    "orientation": 0.0642,
+    "presence": 0.0556
+   },
+   "pred_640": "write",
+   "pred_full": "write"
+  },
+  {
+   "sample_id": "amrita_slr_7cb72798656c99",
+   "label": "sleep",
+   "full_resolution": "1280x720",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0536,
+    "image_position": 0.0225,
+    "face_relative": 0.0528,
+    "orientation": 0.0447,
+    "presence": 0.0588
+   },
+   "pred_640": "sleep",
+   "pred_full": "sleep"
+  },
+  {
+   "sample_id": "amrita_slr_0c4c19ba6e8289",
+   "label": "nose",
+   "full_resolution": "848x480",
+   "face_rate_640": 0.976,
+   "face_rate_full": 0.976,
+   "hand_presence_agreement": 0.976,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0278,
+    "image_position": 0.0087,
+    "face_relative": 0.0209,
+    "orientation": 0.0162,
+    "presence": 0.0125
+   },
+   "pred_640": "nose",
+   "pred_full": "nose"
+  },
+  {
+   "sample_id": "amrita_slr_233b65559f8645",
+   "label": "name",
+   "full_resolution": "1908x1080",
+   "face_rate_640": 0.698,
+   "face_rate_full": 0.86,
+   "hand_presence_agreement": 0.988,
+   "face_presence_agreement": 0.837,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0516,
+    "image_position": 0.024,
+    "face_relative": 0.1475,
+    "orientation": 0.0348,
+    "presence": 0.0476
+   },
+   "pred_640": "name",
+   "pred_full": "name"
+  },
+  {
+   "sample_id": "amrita_slr_7451fe8908f4aa",
+   "label": "good",
+   "full_resolution": "1280x720",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0243,
+    "image_position": 0.0117,
+    "face_relative": 0.0356,
+    "orientation": 0.0137,
+    "presence": 0.0167
+   },
+   "pred_640": "good",
+   "pred_full": "good"
+  },
+  {
+   "sample_id": "amrita_slr_ca82eaf425a146",
+   "label": "evening",
+   "full_resolution": "848x480",
+   "face_rate_640": 0.968,
+   "face_rate_full": 0.968,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0336,
+    "image_position": 0.011,
+    "face_relative": 0.0246,
+    "orientation": 0.0162,
+    "presence": 0.0152
+   },
+   "pred_640": "evening",
+   "pred_full": "evening"
+  },
+  {
+   "sample_id": "amrita_slr_ccc2e17850347e",
+   "label": "good",
+   "full_resolution": "1280x720",
+   "face_rate_640": 0.975,
+   "face_rate_full": 0.975,
+   "hand_presence_agreement": 0.987,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0813,
+    "image_position": 0.0403,
+    "face_relative": 0.1466,
+    "orientation": 0.0626,
+    "presence": 0.0909
+   },
+   "pred_640": "good",
+   "pred_full": "good_morning"
+  },
+  {
+   "sample_id": "amrita_slr_f927a6d35c0ab6",
+   "label": "name",
+   "full_resolution": "1920x1080",
+   "face_rate_640": 0.966,
+   "face_rate_full": 0.966,
+   "hand_presence_agreement": 0.983,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0068,
+    "image_position": 0.0013,
+    "face_relative": 0.0023,
+    "orientation": 0.0043,
+    "presence": 0.0
+   },
+   "pred_640": "name",
+   "pred_full": "name"
+  },
+  {
+   "sample_id": "amrita_slr_5f840ec07214cd",
+   "label": "sorry",
+   "full_resolution": "1908x1080",
+   "face_rate_640": 0.0,
+   "face_rate_full": 0.194,
+   "hand_presence_agreement": 0.984,
+   "face_presence_agreement": 0.806,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0274,
+    "image_position": 0.0076,
+    "face_relative": 0.0,
+    "orientation": 0.017,
+    "presence": 0.0109
+   },
+   "pred_640": "sorry",
+   "pred_full": "sorry"
+  },
+  {
+   "sample_id": "amrita_slr_457558a1f3328b",
+   "label": "today",
+   "full_resolution": "1908x1080",
+   "face_rate_640": 0.0,
+   "face_rate_full": 0.0,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0715,
+    "image_position": 0.0249,
+    "face_relative": 0.0,
+    "orientation": 0.0437,
+    "presence": 0.0571
+   },
+   "pred_640": "today",
+   "pred_full": "today"
+  },
+  {
+   "sample_id": "amrita_slr_47b6f3b0971ca2",
+   "label": "mother",
+   "full_resolution": "1920x1080",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 0.974,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.012,
+    "image_position": 0.0025,
+    "face_relative": 0.0054,
+    "orientation": 0.0091,
+    "presence": 0.0
+   },
+   "pred_640": "mother",
+   "pred_full": "mother"
+  },
+  {
+   "sample_id": "amrita_slr_65864bbfe0fe64",
+   "label": "mother",
+   "full_resolution": "1908x1080",
+   "face_rate_640": 0.25,
+   "face_rate_full": 0.25,
+   "hand_presence_agreement": 0.963,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.032,
+    "image_position": 0.019,
+    "face_relative": 0.046,
+    "orientation": 0.029,
+    "presence": 0.0283
+   },
+   "pred_640": "mother",
+   "pred_full": "mother"
+  },
+  {
+   "sample_id": "amrita_slr_8c31e11ed7984e",
+   "label": "music",
+   "full_resolution": "1908x1080",
+   "face_rate_640": 1.0,
+   "face_rate_full": 1.0,
+   "hand_presence_agreement": 0.983,
+   "face_presence_agreement": 1.0,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0619,
+    "image_position": 0.0151,
+    "face_relative": 0.0452,
+    "orientation": 0.0384,
+    "presence": 0.0055
+   },
+   "pred_640": "music",
+   "pred_full": "music"
+  },
+  {
+   "sample_id": "amrita_slr_05e11657db3cfa",
+   "label": "study",
+   "full_resolution": "848x480",
+   "face_rate_640": 0.559,
+   "face_rate_full": 0.593,
+   "hand_presence_agreement": 0.983,
+   "face_presence_agreement": 0.966,
+   "feature_difference_by_block": {
+    "hand_shape": 0.0248,
+    "image_position": 0.0033,
+    "face_relative": 0.0445,
+    "orientation": 0.0177,
+    "presence": 0.0
+   },
+   "pred_640": "study",
+   "pred_full": "study"
+  },
+  {
+   "sample_id": "amrita_slr_0a42b2a147cb71",
+   "label": "hand",
+   "full_resolution": "848x478",
+   "face_rate_640": 0.941,
+   "face_rate_full": 0.412,
+   "hand_presence_agreement": 1.0,
+   "face_presence_agreement": 0.471,
+   "feature_difference_by_block": {
+    "hand_shape": 0.023,
+    "image_position": 0.0025,
+    "face_relative": 0.9063,
+    "orientation": 0.0137,
+    "presence": 0.0
+   },
+   "pred_640": "hand",
+   "pred_full": "hand"
+  },
+  {
+   "sample_id": "amrita_slr_a51b9970cc74c4",
+   "label": "stand",
+   "full_resolution": "848x478",
+   "face_rate_640": 0.784,
+   "face_rate_full": 0.973,
+   "hand_presence_agreement": 0.973,
+   "face_presence_agreement": 0.811,
+   "feature_difference_by_block": {
+    "hand_shape": 0.1967,
+    "image_position": 0.0432,
+    "face_relative": 0.1267,
+    "orientation": 0.1134,
+    "presence": 0.0476
+   },
+   "pred_640": "stand",
+   "pred_full": "stand"
+  }
+ ],
+ "note": "Feature-parity check: does extraction RESOLUTION change the landmarks / features / prediction?\n\nTraining landmarks were extracted at max side 640 px (EXTRACTOR_VERSION ...-640-...). The live webcam runs at\n640x480, but the browser's video-file test fed MediaPipe the ORIGINAL video resolution. This re-extracts the\nsame dataset videos at 640 px and at full resolution in Python (same MediaPipe version) and compares hand and\nface detection agreement, feature difference and the active model's prediction."
+}

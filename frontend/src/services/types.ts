@@ -292,6 +292,12 @@ export interface UploadBatch {
   ready: number;
   annotations: number;
   state: string;
+  label_summary?: {
+    labels: Record<string, { videos: number; ok: number; valid_now: number; after_import: number; meets_training_minimum: boolean; new_class: boolean; priority_class: boolean }>;
+    unsupported_labels: string[];
+    priority_classes_covered: string[];
+    min_per_class: number;
+  };
 }
 
 export interface Job {
