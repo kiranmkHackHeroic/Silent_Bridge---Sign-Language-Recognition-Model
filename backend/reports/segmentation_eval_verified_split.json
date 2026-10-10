@@ -1,0 +1,131 @@
+{
+ "created": "2026-10-10 02:58:49",
+ "method": "Continuous-segmentation evaluation on REAL recordings with KNOWN sign boundaries.",
+ "conditions": [
+  "pause",
+  "back_to_back",
+  "trimmed"
+ ],
+ "stream_length": 5,
+ "variants": {
+  "current: still 800 ms, absent 200 ms": {},
+  "verified split of long segments": {
+   "split_long": true
+  }
+ },
+ "validation_groups": [
+  "amrita_slr:signer_plain",
+  "include:include_train",
+  "amrita_slr:manideep"
+ ],
+ "validation_mean_ser": {
+  "current: still 800 ms, absent 200 ms": 0.7594,
+  "verified split of long segments": 0.9687
+ },
+ "chosen_on_validation": "current: still 800 ms, absent 200 ms",
+ "test_groups": [
+  "amrita_slr:nachiketh",
+  "amrita_slr:signer_0403",
+  "include:include_test"
+ ],
+ "test_threshold": 0.45,
+ "test_streams": 50,
+ "test_classification_only": {
+  "recordings": 245,
+  "accuracy_top1_accepted_and_correct": 0.5429,
+  "accepted": 211
+ },
+ "test": {
+  "current: still 800 ms, absent 200 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 213,
+    "substitutions": 76,
+    "deletions": 36,
+    "insertions": 4,
+    "sign_error_rate": 0.4735,
+    "streams": 50,
+    "streams_exactly_right": 3,
+    "rejected_segments_by_stage": {
+     "classification": 44,
+     "segmentation": 5
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 202,
+    "substitutions": 85,
+    "deletions": 45,
+    "insertions": 2,
+    "sign_error_rate": 0.5388,
+    "streams": 50,
+    "streams_exactly_right": 2,
+    "rejected_segments_by_stage": {
+     "classification": 38,
+     "segmentation": 4
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 111,
+    "substitutions": 76,
+    "deletions": 134,
+    "insertions": 0,
+    "sign_error_rate": 0.8571,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 35,
+     "segmentation": 2
+    }
+   },
+   "mean_ser": 0.6231
+  },
+  "verified split of long segments": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 310,
+    "substitutions": 105,
+    "deletions": 6,
+    "insertions": 71,
+    "sign_error_rate": 0.7429,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "classification": 29,
+     "segmentation": 10
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 311,
+    "substitutions": 114,
+    "deletions": 5,
+    "insertions": 71,
+    "sign_error_rate": 0.7755,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "classification": 24,
+     "segmentation": 10
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 259,
+    "substitutions": 128,
+    "deletions": 18,
+    "insertions": 32,
+    "sign_error_rate": 0.7265,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 7,
+     "segmentation": 4
+    }
+   },
+   "mean_ser": 0.7483
+  }
+ },
+ "runtime_s": 1596.4
+}

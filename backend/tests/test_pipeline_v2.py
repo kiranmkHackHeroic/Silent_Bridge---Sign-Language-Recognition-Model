@@ -163,6 +163,9 @@ def test_registry_promotes_rejects_and_rolls_back(tmp_path):
                                         known_labels=KNOWN, root=root)
     assert not strict["promoted"] and "below the acceptance threshold" in strict["decision"]
     assert strict["comparison"]["previous_version"] == first["version"]
+    # the first model's final fit saw every sample, yet a fair comparison is still made: both
+    # development-only models were scored on the identical held-out test set
+    assert strict["comparison"]["fair_test_samples"] > 0 and "previous_macro_f1" in strict["comparison"]
     assert registry.active_version(root) == first["version"]        # previous model stays active
     statuses = {v["version"]: v["status"] for v in registry.list_versions(root)}
     assert statuses[strict["version"]] == "rejected"

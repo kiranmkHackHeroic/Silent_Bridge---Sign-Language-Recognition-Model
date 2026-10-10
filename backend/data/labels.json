@@ -7,7 +7,12 @@
       "english": "Hello / Namaste",
       "kannada": "ನಮಸ್ಕಾರ",
       "verified": false,
-      "notes": "Standard Kannada greeting."
+      "notes": "Standard Kannada greeting.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "thank_you",
@@ -15,7 +20,12 @@
       "english": "Thank you",
       "kannada": "ಧನ್ಯವಾದಗಳು",
       "verified": false,
-      "notes": "Plural/polite form; ಧನ್ಯವಾದ is accepted as an alias."
+      "notes": "Plural/polite form; ಧನ್ಯವಾದ is accepted as an alias.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "yes",
@@ -23,7 +33,12 @@
       "english": "Yes",
       "kannada": "ಹೌದು",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "no",
@@ -31,7 +46,12 @@
       "english": "No",
       "kannada": "ಇಲ್ಲ",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "water",
@@ -39,7 +59,12 @@
       "english": "Water",
       "kannada": "ನೀರು",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "food",
@@ -47,7 +72,12 @@
       "english": "Food / Meal",
       "kannada": "ಊಟ",
       "verified": false,
-      "notes": "ಊಟ = meal; ಆಹಾರ = food in general."
+      "notes": "ಊಟ = meal; ಆಹಾರ = food in general.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ಊಟ = meal; ಆಹಾರ = food in general",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "help",
@@ -55,7 +85,12 @@
       "english": "Help",
       "kannada": "ಸಹಾಯ",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "please",
@@ -63,7 +98,12 @@
       "english": "Please",
       "kannada": "ದಯವಿಟ್ಟು",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "sorry",
@@ -71,7 +111,12 @@
       "english": "Sorry",
       "kannada": "ಕ್ಷಮಿಸಿ",
       "verified": false,
-      "notes": "Polite imperative 'please forgive'."
+      "notes": "Polite imperative 'please forgive'.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "good",
@@ -79,7 +124,12 @@
       "english": "Good",
       "kannada": "ಒಳ್ಳೆಯದು",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "i_me",
@@ -87,7 +137,12 @@
       "english": "I / Me",
       "kannada": "ನಾನು",
       "verified": false,
-      "notes": "Pointing sign; inflected forms (ನನಗೆ, ನನ್ನ) map here in Kannada-to-Sign."
+      "notes": "Pointing sign; inflected forms (ನನಗೆ, ನನ್ನ) map here in Kannada-to-Sign.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "you",
@@ -95,7 +150,12 @@
       "english": "You",
       "kannada": "ನೀವು",
       "verified": false,
-      "notes": "Polite form; ನೀನು maps here in Kannada-to-Sign."
+      "notes": "Polite form; ನೀನು maps here in Kannada-to-Sign.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "your",
@@ -103,7 +163,12 @@
       "english": "Your",
       "kannada": "ನಿಮ್ಮ",
       "verified": false,
-      "notes": "Possessive of ನೀವು."
+      "notes": "Possessive of ನೀವು.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "name",
@@ -111,7 +176,12 @@
       "english": "Name",
       "kannada": "ಹೆಸರು",
       "verified": false,
-      "notes": ""
+      "notes": "",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "what",
@@ -119,7 +189,12 @@
       "english": "What",
       "kannada": "ಏನು",
       "verified": false,
-      "notes": "Question word."
+      "notes": "Question word.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "need",
@@ -127,7 +202,12 @@
       "english": "Need / Want",
       "kannada": "ಬೇಕು",
       "verified": false,
-      "notes": "ಬೇಕು covers both 'need' and 'want'."
+      "notes": "ಬೇಕು covers both 'need' and 'want'.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ಬೇಕು = 'need / want' (modal); a sentence needs the subject in the dative (ನನಗೆ ... ಬೇಕು)",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "bird",
@@ -135,7 +215,12 @@
       "english": "Bird",
       "kannada": "ಹಕ್ಕಿ",
       "verified": false,
-      "notes": "Class '1.bird' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '1.bird' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "black",
@@ -143,7 +228,12 @@
       "english": "Black",
       "kannada": "ಕಪ್ಪು",
       "verified": false,
-      "notes": "Class '2.black' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '2.black' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "cat",
@@ -151,7 +241,12 @@
       "english": "Cat",
       "kannada": "ಬೆಕ್ಕು",
       "verified": false,
-      "notes": "Class '3.cat' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '3.cat' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "cow",
@@ -159,7 +254,12 @@
       "english": "Cow",
       "kannada": "ಹಸು",
       "verified": false,
-      "notes": "Class '4.cow' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '4.cow' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "dog",
@@ -167,7 +267,12 @@
       "english": "Dog",
       "kannada": "ನಾಯಿ",
       "verified": false,
-      "notes": "Class '5.dog' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '5.dog' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "fish",
@@ -175,7 +280,12 @@
       "english": "Fish",
       "kannada": "ಮೀನು",
       "verified": false,
-      "notes": "Class '6.fish' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '6.fish' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "good_morning",
@@ -183,7 +293,12 @@
       "english": "Good morning",
       "kannada": "ಶುಭೋದಯ",
       "verified": false,
-      "notes": "Class '7.goodmorning' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '7.goodmorning' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "grey",
@@ -191,7 +306,12 @@
       "english": "Grey",
       "kannada": "ಬೂದು ಬಣ್ಣ",
       "verified": false,
-      "notes": "Class '8.grey' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '8.grey' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ಬೂದು ಬಣ್ಣ = 'grey colour'",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "you_are_perfect",
@@ -199,7 +319,12 @@
       "english": "You are perfect",
       "kannada": "ನೀವು ಪರಿಪೂರ್ಣರು",
       "verified": false,
-      "notes": "Class '10.youareperfect' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '10.youareperfect' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "monsoon",
@@ -207,7 +332,12 @@
       "english": "Monsoon / rainy season",
       "kannada": "ಮಳೆಗಾಲ",
       "verified": false,
-      "notes": "Class '11.monsoon' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '11.monsoon' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "afternoon",
@@ -215,7 +345,12 @@
       "english": "Afternoon",
       "kannada": "ಮಧ್ಯಾಹ್ನ",
       "verified": false,
-      "notes": "Class '12.afternoon' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '12.afternoon' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "angry",
@@ -223,7 +358,12 @@
       "english": "Angry",
       "kannada": "ಕೋಪ",
       "verified": false,
-      "notes": "Class '13.angry' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '13.angry' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "bad",
@@ -231,7 +371,12 @@
       "english": "Bad",
       "kannada": "ಕೆಟ್ಟದು",
       "verified": false,
-      "notes": "Class '14.bad' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '14.bad' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "boy",
@@ -239,7 +384,12 @@
       "english": "Boy",
       "kannada": "ಹುಡುಗ",
       "verified": false,
-      "notes": "Class '15.boy' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '15.boy' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "eat",
@@ -247,7 +397,12 @@
       "english": "Eat",
       "kannada": "ತಿನ್ನು",
       "verified": false,
-      "notes": "Class '16.eat' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '16.eat' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "friend",
@@ -255,7 +410,12 @@
       "english": "Friend",
       "kannada": "ಸ್ನೇಹಿತ",
       "verified": false,
-      "notes": "Class '17.friend' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '17.friend' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "drink",
@@ -263,7 +423,12 @@
       "english": "Drink",
       "kannada": "ಕುಡಿ",
       "verified": false,
-      "notes": "Class '18.drinking' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '18.drinking' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "girl",
@@ -271,7 +436,12 @@
       "english": "Girl",
       "kannada": "ಹುಡುಗಿ",
       "verified": false,
-      "notes": "Class '19.girl' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '19.girl' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "brother",
@@ -279,7 +449,12 @@
       "english": "Brother",
       "kannada": "ಸಹೋದರ",
       "verified": false,
-      "notes": "Class '20.brother' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '20.brother' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "father",
@@ -287,7 +462,12 @@
       "english": "Father",
       "kannada": "ತಂದೆ",
       "verified": false,
-      "notes": "Class '22.father' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '22.father' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "evening",
@@ -295,7 +475,12 @@
       "english": "Evening",
       "kannada": "ಸಂಜೆ",
       "verified": false,
-      "notes": "Class '23.evening' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '23.evening' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "mother",
@@ -303,7 +488,12 @@
       "english": "Mother",
       "kannada": "ತಾಯಿ",
       "verified": false,
-      "notes": "Class '25.mother' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '25.mother' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "night",
@@ -311,7 +501,12 @@
       "english": "Night",
       "kannada": "ರಾತ್ರಿ",
       "verified": false,
-      "notes": "Class '27.Night' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '27.Night' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "music",
@@ -319,7 +514,12 @@
       "english": "Music",
       "kannada": "ಸಂಗೀತ",
       "verified": false,
-      "notes": "Class '28.Music' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '28.Music' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "nose",
@@ -327,7 +527,12 @@
       "english": "Nose",
       "kannada": "ಮೂಗು",
       "verified": false,
-      "notes": "Class '29.nose' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '29.nose' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "sleep",
@@ -335,7 +540,12 @@
       "english": "Sleep",
       "kannada": "ನಿದ್ರೆ",
       "verified": false,
-      "notes": "Class '30.sleep' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '30.sleep' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "sit",
@@ -343,7 +553,12 @@
       "english": "Sit",
       "kannada": "ಕುಳಿತುಕೊಳ್ಳಿ",
       "verified": false,
-      "notes": "Class '31.sit' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '31.sit' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "polite imperative ('please sit'); eat/drink/write use the plain verb form: register to be harmonised by a native speaker",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "stand",
@@ -351,7 +566,12 @@
       "english": "Stand",
       "kannada": "ನಿಂತುಕೊಳ್ಳಿ",
       "verified": false,
-      "notes": "Class '33.stand' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '33.stand' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "polite imperative ('please stand'); see 'sit'",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "stop",
@@ -359,7 +579,12 @@
       "english": "Stop",
       "kannada": "ನಿಲ್ಲಿಸಿ",
       "verified": false,
-      "notes": "Class '34.stop' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '34.stop' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "polite imperative ('please stop'); see 'sit'",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "student",
@@ -367,7 +592,12 @@
       "english": "Student",
       "kannada": "ವಿದ್ಯಾರ್ಥಿ",
       "verified": false,
-      "notes": "Class '35.student' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '35.student' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "study",
@@ -375,7 +605,12 @@
       "english": "Study",
       "kannada": "ಓದು",
       "verified": false,
-      "notes": "Class '36.study' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '36.study' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ಓದು means both 'read' and 'study'",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "teacher",
@@ -383,7 +618,12 @@
       "english": "Teacher",
       "kannada": "ಶಿಕ್ಷಕ",
       "verified": false,
-      "notes": "Class '37.teacher' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '37.teacher' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "today",
@@ -391,7 +631,12 @@
       "english": "Today",
       "kannada": "ಇಂದು",
       "verified": false,
-      "notes": "Class '39.today' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '39.today' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "tomorrow",
@@ -399,7 +644,12 @@
       "english": "Tomorrow",
       "kannada": "ನಾಳೆ",
       "verified": false,
-      "notes": "Class '40.tommorow' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '40.tommorow' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "welcome",
@@ -407,7 +657,12 @@
       "english": "Welcome",
       "kannada": "ಸುಸ್ವಾಗತ",
       "verified": false,
-      "notes": "Class '41.welcome' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '41.welcome' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "work",
@@ -415,7 +670,12 @@
       "english": "Work",
       "kannada": "ಕೆಲಸ",
       "verified": false,
-      "notes": "Class '42.work' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '42.work' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "yesterday",
@@ -423,7 +683,12 @@
       "english": "Yesterday",
       "kannada": "ನಿನ್ನೆ",
       "verified": false,
-      "notes": "Class '43.yesterday' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '43.yesterday' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "teeth",
@@ -431,7 +696,12 @@
       "english": "Teeth",
       "kannada": "ಹಲ್ಲು",
       "verified": false,
-      "notes": "Class '44.teeth' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '44.teeth' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "hand",
@@ -439,7 +709,12 @@
       "english": "Hand",
       "kannada": "ಕೈ",
       "verified": false,
-      "notes": "Class '45.hand' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '45.hand' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "write",
@@ -447,7 +722,12 @@
       "english": "Write",
       "kannada": "ಬರೆ",
       "verified": false,
-      "notes": "Class '46.write' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '46.write' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "umbrella",
@@ -455,7 +735,12 @@
       "english": "Umbrella",
       "kannada": "ಕೊಡೆ",
       "verified": false,
-      "notes": "Class '47.umberlla' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '47.umberlla' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "ring",
@@ -463,7 +748,12 @@
       "english": "Ring",
       "kannada": "ಉಂಗುರ",
       "verified": false,
-      "notes": "Class '48.ring' of the Amrita SLR dataset (CC BY 4.0). "
+      "notes": "Class '48.ring' of the Amrita SLR dataset (CC BY 4.0). ",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "power",
@@ -471,7 +761,12 @@
       "english": "Power (electricity)",
       "kannada": "ವಿದ್ಯುತ್",
       "verified": false,
-      "notes": "Class '50.power' of the Amrita SLR dataset (CC BY 4.0). English class name is ambiguous (electricity vs strength)."
+      "notes": "Class '50.power' of the Amrita SLR dataset (CC BY 4.0). English class name is ambiguous (electricity vs strength).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "English class name is ambiguous (electricity vs strength); ವಿದ್ಯುತ್ = electricity",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "how",
@@ -479,15 +774,25 @@
       "english": "How",
       "kannada": "ಹೇಗೆ",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "understand",
       "isl_gloss": "UNDERSTAND",
       "english": "Understand",
-      "kannada": "ಅರ್ಥ",
+      "kannada": "ಅರ್ಥಮಾಡಿಕೊಳ್ಳು",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "changed",
+        "note": "ಅರ್ಥ alone is the noun 'meaning'; the verb 'understand' is ಅರ್ಥಮಾಡಿಕೊಳ್ಳು",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "again",
@@ -495,7 +800,12 @@
       "english": "Again",
       "kannada": "ಮತ್ತೆ",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "say",
@@ -503,7 +813,12 @@
       "english": "Say / tell",
       "kannada": "ಹೇಳು",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "where",
@@ -511,7 +826,12 @@
       "english": "Where",
       "kannada": "ಎಲ್ಲಿ",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "go",
@@ -519,7 +839,12 @@
       "english": "Go",
       "kannada": "ಹೋಗು",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "home",
@@ -527,7 +852,12 @@
       "english": "Home / house",
       "kannada": "ಮನೆ",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "wait",
@@ -535,7 +865,12 @@
       "english": "Wait",
       "kannada": "ಕಾಯಿರಿ",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "polite imperative ('please wait'); see 'sit'",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "emergency",
@@ -543,7 +878,12 @@
       "english": "Emergency",
       "kannada": "ತುರ್ತು",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "sick",
@@ -551,7 +891,12 @@
       "english": "Sick / unwell",
       "kannada": "ಅನಾರೋಗ್ಯ",
       "verified": false,
-      "notes": "Needed by the phrase dictionary; no training data or animation yet."
+      "notes": "Needed by the phrase dictionary; no training data or animation yet.",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ಅನಾರೋಗ್ಯ is the noun 'illness', used as the gloss word",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "how_are_you",
@@ -559,7 +904,12 @@
       "english": "How are you?",
       "kannada": "ನೀವು ಹೇಗಿದ್ದೀರಿ",
       "verified": false,
-      "notes": "Class '49. How are you' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '49. How are you' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "alright",
@@ -567,7 +917,12 @@
       "english": "Alright / OK",
       "kannada": "ಸರಿ",
       "verified": false,
-      "notes": "Class '50. Alright' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '50. Alright' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "good_afternoon",
@@ -575,7 +930,12 @@
       "english": "Good afternoon",
       "kannada": "ಶುಭ ಮಧ್ಯಾಹ್ನ",
       "verified": false,
-      "notes": "Class '52. Good afternoon' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '52. Good afternoon' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "good_evening",
@@ -583,7 +943,12 @@
       "english": "Good evening",
       "kannada": "ಶುಭ ಸಂಜೆ",
       "verified": false,
-      "notes": "Class '53. Good evening' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '53. Good evening' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "good_night",
@@ -591,7 +956,12 @@
       "english": "Good night",
       "kannada": "ಶುಭ ರಾತ್ರಿ",
       "verified": false,
-      "notes": "Class '54. Good night' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '54. Good night' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "pleased",
@@ -599,7 +969,12 @@
       "english": "Pleased",
       "kannada": "ಸಂತೋಷ",
       "verified": false,
-      "notes": "Class '56. Pleased' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '56. Pleased' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ಸಂತೋಷ is the noun 'happiness/pleasure', used as the gloss word",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "he",
@@ -607,7 +982,12 @@
       "english": "He",
       "kannada": "ಅವನು",
       "verified": false,
-      "notes": "Class '42. he' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '42. he' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "she",
@@ -615,7 +995,12 @@
       "english": "She",
       "kannada": "ಅವಳು",
       "verified": false,
-      "notes": "Class '43. she' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '43. she' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "it",
@@ -623,7 +1008,12 @@
       "english": "It",
       "kannada": "ಅದು",
       "verified": false,
-      "notes": "Class '44. it' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '44. it' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "we",
@@ -631,7 +1021,12 @@
       "english": "We",
       "kannada": "ನಾವು",
       "verified": false,
-      "notes": "Class '45. we' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '45. we' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "you_plural",
@@ -639,7 +1034,12 @@
       "english": "You (plural)",
       "kannada": "ನೀವೆಲ್ಲರೂ",
       "verified": false,
-      "notes": "Class '46. you (plural)' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '46. you (plural)' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "ನೀವೆಲ್ಲರೂ = 'all of you'",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "they",
@@ -647,7 +1047,12 @@
       "english": "They",
       "kannada": "ಅವರು",
       "verified": false,
-      "notes": "Class '47. they' of the INCLUDE dataset (CC BY 4.0)."
+      "notes": "Class '47. they' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word-choice check (2026-10-10); native-speaker and ISL review pending"
+      }
     },
     {
       "label": "_none",

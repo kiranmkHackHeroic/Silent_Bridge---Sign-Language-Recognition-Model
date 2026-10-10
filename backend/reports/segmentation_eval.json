@@ -1,0 +1,370 @@
+{
+ "created": "2026-10-10 02:28:36",
+ "method": "Continuous-segmentation evaluation on REAL recordings with KNOWN sign boundaries.",
+ "conditions": [
+  "pause",
+  "back_to_back",
+  "trimmed"
+ ],
+ "stream_length": 5,
+ "variants": {
+  "current: still 800 ms, absent 200 ms": {},
+  "absent 400 ms": {
+   "absent_ms": 400
+  },
+  "absent 600 ms": {
+   "absent_ms": 600
+  },
+  "still 600 ms + absent 400 ms": {
+   "still_ms": 600,
+   "absent_ms": 400
+  },
+  "still 500 ms + absent 400 ms": {
+   "still_ms": 500,
+   "absent_ms": 400
+  },
+  "dip split + absent 400 ms": {
+   "dip_split": true,
+   "absent_ms": 400
+  },
+  "sliding window + stability gate": {
+   "mode": "sliding"
+  }
+ },
+ "validation_groups": [
+  "amrita_slr:signer_plain",
+  "include:include_train",
+  "amrita_slr:manideep"
+ ],
+ "validation_mean_ser": {
+  "current: still 800 ms, absent 200 ms": 0.7594,
+  "absent 400 ms": 0.7182,
+  "absent 600 ms": 0.7238,
+  "still 600 ms + absent 400 ms": 0.7173,
+  "still 500 ms + absent 400 ms": 0.7225,
+  "dip split + absent 400 ms": 1.5619,
+  "sliding window + stability gate": 1.2377
+ },
+ "chosen_on_validation": "still 600 ms + absent 400 ms",
+ "test_groups": [
+  "amrita_slr:nachiketh",
+  "amrita_slr:signer_0403",
+  "include:include_test"
+ ],
+ "test_threshold": 0.45,
+ "test_streams": 50,
+ "test_classification_only": {
+  "recordings": 245,
+  "accuracy_top1_accepted_and_correct": 0.5429,
+  "accepted": 211
+ },
+ "test": {
+  "current: still 800 ms, absent 200 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 213,
+    "substitutions": 76,
+    "deletions": 36,
+    "insertions": 4,
+    "sign_error_rate": 0.4735,
+    "streams": 50,
+    "streams_exactly_right": 3,
+    "rejected_segments_by_stage": {
+     "classification": 44,
+     "segmentation": 5
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 202,
+    "substitutions": 85,
+    "deletions": 45,
+    "insertions": 2,
+    "sign_error_rate": 0.5388,
+    "streams": 50,
+    "streams_exactly_right": 2,
+    "rejected_segments_by_stage": {
+     "classification": 38,
+     "segmentation": 4
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 111,
+    "substitutions": 76,
+    "deletions": 134,
+    "insertions": 0,
+    "sign_error_rate": 0.8571,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 35,
+     "segmentation": 2
+    }
+   },
+   "mean_ser": 0.6231
+  },
+  "absent 400 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 204,
+    "substitutions": 84,
+    "deletions": 43,
+    "insertions": 2,
+    "sign_error_rate": 0.5265,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 41,
+     "segmentation": 3
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 188,
+    "substitutions": 78,
+    "deletions": 57,
+    "insertions": 0,
+    "sign_error_rate": 0.551,
+    "streams": 50,
+    "streams_exactly_right": 2,
+    "rejected_segments_by_stage": {
+     "classification": 34,
+     "segmentation": 2
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 105,
+    "substitutions": 70,
+    "deletions": 140,
+    "insertions": 0,
+    "sign_error_rate": 0.8571,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 34,
+     "segmentation": 1
+    }
+   },
+   "mean_ser": 0.6449
+  },
+  "absent 600 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 200,
+    "substitutions": 88,
+    "deletions": 46,
+    "insertions": 1,
+    "sign_error_rate": 0.551,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 39,
+     "segmentation": 2
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 161,
+    "substitutions": 80,
+    "deletions": 84,
+    "insertions": 0,
+    "sign_error_rate": 0.6694,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 40,
+     "segmentation": 3
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 103,
+    "substitutions": 70,
+    "deletions": 142,
+    "insertions": 0,
+    "sign_error_rate": 0.8653,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 35,
+     "segmentation": 1
+    }
+   },
+   "mean_ser": 0.6952
+  },
+  "still 600 ms + absent 400 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 207,
+    "substitutions": 78,
+    "deletions": 44,
+    "insertions": 6,
+    "sign_error_rate": 0.5224,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 46,
+     "segmentation": 2
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 190,
+    "substitutions": 78,
+    "deletions": 57,
+    "insertions": 2,
+    "sign_error_rate": 0.5592,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 37,
+     "segmentation": 2
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 106,
+    "substitutions": 72,
+    "deletions": 140,
+    "insertions": 1,
+    "sign_error_rate": 0.8694,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "classification": 34,
+     "segmentation": 1
+    }
+   },
+   "mean_ser": 0.6503
+  },
+  "still 500 ms + absent 400 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 215,
+    "substitutions": 80,
+    "deletions": 41,
+    "insertions": 11,
+    "sign_error_rate": 0.5388,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 44,
+     "segmentation": 3
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 191,
+    "substitutions": 77,
+    "deletions": 57,
+    "insertions": 3,
+    "sign_error_rate": 0.5592,
+    "streams": 50,
+    "streams_exactly_right": 1,
+    "rejected_segments_by_stage": {
+     "classification": 39,
+     "segmentation": 3
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 109,
+    "substitutions": 71,
+    "deletions": 137,
+    "insertions": 1,
+    "sign_error_rate": 0.8531,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "classification": 35,
+     "segmentation": 1
+    }
+   },
+   "mean_ser": 0.6504
+  },
+  "dip split + absent 400 ms": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 449,
+    "substitutions": 96,
+    "deletions": 0,
+    "insertions": 204,
+    "sign_error_rate": 1.2245,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "segmentation": 67,
+     "classification": 41
+    }
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 438,
+    "substitutions": 94,
+    "deletions": 0,
+    "insertions": 193,
+    "sign_error_rate": 1.1714,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "segmentation": 53,
+     "classification": 39
+    }
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 383,
+    "substitutions": 122,
+    "deletions": 10,
+    "insertions": 148,
+    "sign_error_rate": 1.1429,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {
+     "segmentation": 9,
+     "classification": 14
+    }
+   },
+   "mean_ser": 1.1796
+  },
+  "sliding window + stability gate": {
+   "pause": {
+    "reference_signs": 245,
+    "emitted_signs": 327,
+    "substitutions": 108,
+    "deletions": 8,
+    "insertions": 90,
+    "sign_error_rate": 0.8408,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {}
+   },
+   "back_to_back": {
+    "reference_signs": 245,
+    "emitted_signs": 333,
+    "substitutions": 105,
+    "deletions": 9,
+    "insertions": 97,
+    "sign_error_rate": 0.8612,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {}
+   },
+   "trimmed": {
+    "reference_signs": 245,
+    "emitted_signs": 331,
+    "substitutions": 93,
+    "deletions": 16,
+    "insertions": 102,
+    "sign_error_rate": 0.8612,
+    "streams": 50,
+    "streams_exactly_right": 0,
+    "rejected_segments_by_stage": {}
+   },
+   "mean_ser": 0.8544
+  }
+ },
+ "runtime_s": 2083.8
+}

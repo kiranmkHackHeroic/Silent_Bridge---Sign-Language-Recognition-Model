@@ -30,7 +30,7 @@ class DatasetStore:
         self.root.mkdir(parents=True, exist_ok=True)
 
     def save(self, label: str, frames: list[dict], session_id: str, signer_id: str = "signer1",
-             video: dict | None = None) -> dict:
+             video: dict | None = None, extra: dict | None = None) -> dict:
         for name, value in (("label", label), ("session_id", session_id), ("signer_id", signer_id)):
             if not SAFE_ID.match(value or ""):
                 raise DatasetError(f"invalid {name}")
@@ -49,6 +49,7 @@ class DatasetStore:
             "video": video or {},
             "num_frames": len(frames),
             "hand_frames": hand_frames,
+            **(extra or {}),
             "frames": frames,
         }
         folder = self.root / label

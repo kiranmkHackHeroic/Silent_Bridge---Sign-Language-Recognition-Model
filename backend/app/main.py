@@ -11,17 +11,19 @@ import logging
 import threading
 import time
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .animation.library import AnimationLibrary
 from .animation.retarget import sample_to_animation
 from .config import DATA_DIR, RecognitionSettings
 from .continuous.recognizer import ContinuousRecognizer
+from .diagnostics import compare_extractions, save_snapshot, schema_report
 from .jobs import JobQueue, training_eligibility
 from .dataset.store import DatasetError, DatasetStore
 from .dataset.validate import cached_validation
@@ -97,6 +99,10 @@ class TranslateRequest(BaseModel):
     text: str = Field(..., max_length=2000)
 
 
+class GlossTranslateRequest(BaseModel):
+    labels: list[str] = Field(..., max_length=60)
+
+
 class VocabRequest(BaseModel):
     label: str = Field(..., min_length=1, max_length=40)
     english: str = Field("", max_length=80)
@@ -110,6 +116,17 @@ class RecordRequest(BaseModel):
     signer_id: str = Field("signer1", min_length=1, max_length=64)
     video: dict = Field(default_factory=dict)
     frames: list[dict] = Field(..., min_length=1, max_length=600)
+    # "train": used for training; "eval": stored separately and NEVER trained on (live evaluation)
+    purpose: str = Field("train", pattern="^(train|eval)$")
+    conditions: dict = Field(default_factory=dict)
+
+
+class SequenceRecordRequest(BaseModel):
+    glosses: list[str] = Field(..., min_length=1, max_length=12)
+    session_id: str = Field(..., min_length=1, max_length=64)
+    signer_id: str = Field("signer1", min_length=1, max_length=64)
+    conditions: dict = Field(default_factory=dict)
+    frames: list[dict] = Field(..., min_length=1, max_length=2400)
 
 
 class CaptureRequest(BaseModel):
@@ -382,7 +399,11 @@ def translate_kannada(req: TranslateRequest):
                           "animation": s.animations.info(sign_id)})
         item["signs"] = signs
     unsupported = [i["text"] for i in items if not i["supported"]]
+    meaning = _semantic().reverse(normalized)
     return {
+        "english_meaning": meaning["english_meaning"],
+        "gloss_sequence": meaning["gloss_sequence"],
+        "meaning_items": meaning["items"],
         "input": req.text,
         "normalized": normalized,
         "contains_kannada": is_kannada(normalized),
@@ -396,6 +417,24 @@ def translate_kannada(req: TranslateRequest):
         "note": "Supported-vocabulary lookup (word and phrase level) producing an ISL gloss sequence; "
                 "this is not full grammatical Kannada-to-ISL translation.",
     }
+
+
+def _semantic():
+    from .translation.semantic import SemanticTranslator
+    s = S()
+    return SemanticTranslator(s.vocab, s.mapper, s.predictor.classes)
+
+
+@app.post("/api/translate/glosses")
+def translate_glosses(req: GlossTranslateRequest):
+    """Recognised sign labels (signing order) -> ISL gloss sequence -> English meaning -> Kannada, plus the
+    word-by-word baseline. Used by the Live page whenever the transcript changes or is corrected."""
+    if any(len(lab) > 40 for lab in req.labels):
+        raise HTTPException(422, "label too long")
+    t = _semantic()
+    out = t.translate(req.labels)
+    out["direct_kannada"] = t.direct_kannada(req.labels)
+    return out
 
 
 @app.get("/api/phrases")
@@ -444,10 +483,66 @@ def dataset_record(req: RecordRequest):
     s = S()
     if s.vocab.get(req.label) is None:
         raise HTTPException(400, f"unknown label '{req.label}' - add it to the vocabulary first")
+    from .evaluation.live_eval import clean_conditions, eval_store
+    store = eval_store() if req.purpose == "eval" else s.dataset
     try:
-        return s.dataset.save(req.label, req.frames, req.session_id, req.signer_id, req.video)
+        return {**store.save(req.label, req.frames, req.session_id, req.signer_id, req.video,
+                             extra={"purpose": req.purpose, "conditions": clean_conditions(req.conditions)}),
+                "stored_in": "evaluation set (never used for training)" if req.purpose == "eval" else "training data"}
     except DatasetError as exc:
         raise HTTPException(400, str(exc)) from exc
+
+
+@app.post("/api/evaluation/sequence")
+def evaluation_record_sequence(req: SequenceRecordRequest):
+    """A recording of several consecutive signs (no button presses between them) + the signs performed."""
+    from .evaluation.live_eval import save_sequence
+    s = S()
+    unknown = [g for g in req.glosses if s.vocab.get(g) is None or g == "_none"]
+    if unknown:
+        raise HTTPException(400, f"unknown sign label(s): {', '.join(unknown)}")
+    try:
+        return save_sequence(req.glosses, req.frames, req.session_id, req.signer_id, req.conditions)
+    except DatasetError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.get("/api/evaluation/data")
+def evaluation_data():
+    from .evaluation.live_eval import eval_data_summary, list_sequences
+    return {**eval_data_summary(),
+            "sequence_list": [{k: v for k, v in d.items() if k != "frames"} for d in list_sequences()]}
+
+
+@app.delete("/api/evaluation/sequence/{seq_id}")
+def evaluation_delete_sequence(seq_id: str):
+    from .evaluation.live_eval import delete_sequence
+    try:
+        return {"deleted": delete_sequence(seq_id)}
+    except DatasetError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.get("/api/reports/segmentation")
+def report_segmentation():
+    """Results of tools/eval_segmentation.py (continuous segmentation on held-out recordings)."""
+    out = {}
+    for name in ("segmentation_eval", "segmentation_eval_verified_split"):
+        f = DATA_DIR.parent / "reports" / f"{name}.json"
+        if f.exists():
+            d = json.loads(f.read_text(encoding="utf-8"))
+            d.pop("method", None)
+            out[name] = d
+    return out
+
+
+@app.post("/api/evaluation/live")
+async def evaluation_live():
+    """Accuracy / precision / recall / macro-F1 / false detections / sequence errors of the ACTIVE model
+    on the evaluation-only recordings."""
+    from .evaluation.live_eval import evaluate_live
+    s = S()
+    return await run_in_threadpool(evaluate_live, s.predictor, s.vocab)
 
 
 @app.get("/api/dataset/summary")
@@ -499,6 +594,120 @@ def tts(req: TTSRequest):
         raise HTTPException(502, f"online TTS failed: {exc}") from exc
     buf.seek(0)
     return StreamingResponse(buf, media_type="audio/mpeg")
+
+
+# ---------------------------------------------------------------- diagnostics
+class SnapshotRequest(BaseModel):
+    frames: list[dict] = Field(default_factory=list, max_length=3000)
+    events: list[dict] = Field(default_factory=list, max_length=1000)
+    note: str = Field("", max_length=500)
+
+
+class CompareRequest(BaseModel):
+    source: str = Field(..., max_length=40)
+    sample_id: str = Field(..., max_length=80)
+    frames: list[dict] = Field(..., min_length=1, max_length=3000)
+
+
+def _processed_sample(source: str, sample_id: str) -> tuple[dict, Path]:
+    import re
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", source) or not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", sample_id):
+        raise HTTPException(400, "invalid id")
+    from .video.importer import output_root
+    root = output_root(source)
+    hits = list(root.glob(f"*/{sample_id}.json"))
+    if not hits:
+        raise HTTPException(404, "sample not found")
+    return json.loads(hits[0].read_text(encoding="utf-8")), hits[0]
+
+
+@app.get("/api/diagnostics/schema")
+def diagnostics_schema():
+    s = S()
+    return {**schema_report(), "model_calibration": (s.predictor.meta or {}).get("calibration"),
+            "model_ood_reference": (s.predictor.meta or {}).get("ood_reference"),
+            "model_version": s.predictor.meta.get("model_version")}
+
+
+@app.post("/api/diagnostics/snapshot")
+def diagnostics_snapshot(req: SnapshotRequest):
+    """Saves the last seconds of live frames + events to data/diagnostics/ and returns a per-stage summary."""
+    return save_snapshot(req.frames, req.events, req.note)
+
+
+@app.get("/api/diagnostics/dataset-samples")
+def diagnostics_dataset_samples(source: str = "amrita_slr", limit: int = 60):
+    """Imported dataset recordings whose original video is available (for the video-file pipeline test).
+    Videos NOT used to train the active model are listed first."""
+    import csv
+    import random
+    from .video.importer import output_root
+    root = output_root(source)
+    manifest = root.parent / f"{root.name}_manifest.csv"
+    if not manifest.exists():
+        return {"samples": []}
+    _, meta_file, _ = active_paths()
+    try:
+        trained = set(json.loads(meta_file.read_text(encoding="utf-8")).get("trained_sample_ids") or [])
+    except (OSError, json.JSONDecodeError):
+        trained = set()
+    with manifest.open(encoding="utf-8") as fh:
+        rows = [r for r in csv.DictReader(fh) if r.get("status") == "valid"]
+    random.Random(7).shuffle(rows)
+    rows.sort(key=lambda r: r["sample_id"] in trained)          # held-out first (stable sort keeps the shuffle)
+    out = []
+    for r in rows:
+        if len(out) >= max(1, min(limit, 200)):
+            break
+        f = root / r["file"]
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        src = Path(d.get("source_file", ""))
+        if not src.exists():
+            continue
+        out.append({"source": source, "sample_id": d["sample_id"], "label": d["label"], "group": d.get("session_id"),
+                    "file": src.name, "frames": d.get("num_frames"), "fps": (d.get("video") or {}).get("fps"),
+                    "used_to_train_active_model": (d["sample_id"] in trained) if trained else None})
+    return {"samples": out}
+
+
+@app.get("/api/diagnostics/video/{source}/{sample_id}")
+def diagnostics_video(source: str, sample_id: str):
+    d, _ = _processed_sample(source, sample_id)
+    src = Path(d.get("source_file", "")).resolve()
+    raw = (DATA_DIR / "raw").resolve()
+    if raw not in src.parents or not src.exists():
+        raise HTTPException(404, "original video not available")
+    media = {".mp4": "video/mp4", ".mov": "video/quicktime", ".webm": "video/webm", ".avi": "video/x-msvideo"}
+    return FileResponse(src, media_type=media.get(src.suffix.lower(), "application/octet-stream"))
+
+
+@app.post("/api/diagnostics/compare")
+def diagnostics_compare(req: CompareRequest):
+    """Browser (live path) vs Python (training path) extraction of the same video, plus what the model
+    predicts from each. Proves (or disproves) that live features match the training features."""
+    from .recognition.landmarks import parse_frame
+    d, _ = _processed_sample(req.source, req.sample_id)
+    result = compare_extractions(req.frames, d["frames"], float(d.get("video", {}).get("fps") or 30))
+    s = S()
+    preds = {}
+    for name, frames in (("browser", req.frames), ("python", d["frames"])):
+        feats = []
+        for f in frames:
+            try:
+                feats.append(parse_frame(f))
+            except Exception:
+                continue
+        p = s.predictor.predict_frames(feats) if s.predictor.loaded else None
+        preds[name] = None if p is None else {"label": p.label, "confidence": round(p.confidence, 3)}
+    result["true_label"] = d["label"]
+    result["prediction_from_browser_landmarks"] = preds["browser"]
+    result["prediction_from_python_landmarks"] = preds["python"]
+    result["note"] += ("; the active model may have been trained on this recording, so the predictions show "
+                       "pipeline consistency, not generalisation accuracy")
+    return result
 
 
 # ---------------------------------------------------------------- websocket

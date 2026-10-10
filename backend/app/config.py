@@ -66,6 +66,11 @@ class RecognitionSettings:
     dip_ratio: float = 0.35            # speed below this fraction of the segment's peak = a dip
     dip_ms: int = 100                  # dip must last this long
     min_sign_ms: int = 350             # a split never produces a sign shorter than this
+    # classifier-verified split of LONG segments (signs performed without a pause / hand drop merge into
+    # one segment): every cut point is tried and the segment is split only if BOTH parts are classified
+    # confidently and more confidently than the whole. Evaluated in tools/eval_segmentation.py.
+    split_long: bool = False
+    split_long_min_ms: int = 1500      # only segments at least this long are candidates
     # sliding mode
     window_frames: int = 30
     stride_frames: int = 3
@@ -114,6 +119,12 @@ class TrainingConfig:
     crop_fraction: float = 0.15        # random trim of up to 15% at each end
     noise_std: float = 0.015           # landmark jitter in normalized hand units
     position_jitter: float = 0.04
+    # face dropout: blank the face-relative block for a random span of frames in this share of augmented
+    # copies. The face is often not detected while the hands cover it (signs at the face), and whether it
+    # is found differs between cameras/resolutions; the model must not depend on it frame by frame.
+    # A/B (tools/ab_face_dropout.py, decided on development CV only): 0.3 gave CV macro-F1 0.539 vs 0.544
+    # without it, so it is OFF by default.
+    face_dropout: float = 0.0
     mirror_augment: bool = True        # add left/right mirrored copies (left-handed signers, mirrored videos)
     random_seed: int = 42
     cv_folds: int = 3

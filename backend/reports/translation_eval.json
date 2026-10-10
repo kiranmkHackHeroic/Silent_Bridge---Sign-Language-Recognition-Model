@@ -1,0 +1,208 @@
+{
+ "phrases_evaluated": 31,
+ "streams": 124,
+ "threshold": 0.45,
+ "test_groups": [
+  "amrita_slr:nachiketh",
+  "amrita_slr:signer_0403",
+  "include:include_test"
+ ],
+ "streams_recognised_exactly": 75,
+ "recognition_pooled": {
+  "reference_signs": 176,
+  "emitted_signs": 160,
+  "substitutions": 33,
+  "deletions": 18,
+  "insertions": 2,
+  "sign_error_rate": 0.3011
+ },
+ "recognised": {
+  "direct": {
+   "exact_match": 0.3952,
+   "chrF": 0.6053
+  },
+  "semantic_english_intermediate": {
+   "exact_match": 0.6048,
+   "chrF": 0.6693
+  }
+ },
+ "oracle_perfect_recognition": {
+  "direct": {
+   "exact_match": 0.6129,
+   "chrF": 0.8508
+  },
+  "semantic_english_intermediate": {
+   "exact_match": 1.0,
+   "chrF": 1.0
+  }
+ },
+ "caveat": "the references are the phrase table's own Kannada sentences (AI-assisted drafts, not yet\nreviewed by a native speaker), so the oracle semantic score is 100% by construction; the comparison\nshows what sequence-level translation adds over word-by-word glossing, not absolute Kannada quality.",
+ "examples": [
+  {
+   "english": "Hello",
+   "signs": [
+    "namaskara"
+   ],
+   "recognised": [],
+   "recognised_direct": "",
+   "recognised_semantic": "",
+   "recognised_english": ""
+  },
+  {
+   "english": "Sorry.",
+   "signs": [
+    "sorry"
+   ],
+   "recognised": [
+    "nose"
+   ],
+   "recognised_direct": "ಮೂಗು",
+   "recognised_semantic": "ಮೂಗು",
+   "recognised_english": "[nose]"
+  },
+  {
+   "english": "Stop!",
+   "signs": [
+    "stop"
+   ],
+   "recognised": [
+    "ring"
+   ],
+   "recognised_direct": "ಉಂಗುರ",
+   "recognised_semantic": "ಉಂಗುರ",
+   "recognised_english": "[ring]"
+  },
+  {
+   "english": "Tomorrow",
+   "signs": [
+    "tomorrow"
+   ],
+   "recognised": [
+    "friend"
+   ],
+   "recognised_direct": "ಸ್ನೇಹಿತ",
+   "recognised_semantic": "ಸ್ನೇಹಿತ",
+   "recognised_english": "[friend]"
+  },
+  {
+   "english": "Good night",
+   "signs": [
+    "good_night"
+   ],
+   "recognised": [
+    "good_night"
+   ],
+   "recognised_direct": "ಶುಭ ರಾತ್ರಿ",
+   "recognised_semantic": "ಶುಭ ರಾತ್ರಿ",
+   "recognised_english": "Good night"
+  },
+  {
+   "english": "OK.",
+   "signs": [
+    "alright"
+   ],
+   "recognised": [
+    "alright"
+   ],
+   "recognised_direct": "ಸರಿ",
+   "recognised_semantic": "ಸರಿ",
+   "recognised_english": "OK."
+  },
+  {
+   "english": "Hello, how are you?",
+   "signs": [
+    "namaskara",
+    "how_are_you"
+   ],
+   "recognised": [
+    "black",
+    "how_are_you",
+    "you"
+   ],
+   "recognised_direct": "ಕಪ್ಪು ನೀವು ಹೇಗಿದ್ದೀರಿ ನೀವು",
+   "recognised_semantic": "ಕಪ್ಪು ನೀವು ಹೇಗಿದ್ದೀರಿ ನೀವು",
+   "recognised_english": "[black] How are you? [you]"
+  },
+  {
+   "english": "What is your name?",
+   "signs": [
+    "you",
+    "name"
+   ],
+   "recognised": [
+    "you"
+   ],
+   "recognised_direct": "ನೀವು",
+   "recognised_semantic": "ನೀವು",
+   "recognised_english": "[you]"
+  },
+  {
+   "english": "They are students.",
+   "signs": [
+    "they",
+    "student"
+   ],
+   "recognised": [
+    "they",
+    "student"
+   ],
+   "recognised_direct": "ಅವರು ವಿದ್ಯಾರ್ಥಿ",
+   "recognised_semantic": "ಅವರು ವಿದ್ಯಾರ್ಥಿಗಳು",
+   "recognised_english": "They are students."
+  },
+  {
+   "english": "Thank you, teacher.",
+   "signs": [
+    "thank_you",
+    "teacher"
+   ],
+   "recognised": [
+    "thank_you",
+    "teacher"
+   ],
+   "recognised_direct": "ಧನ್ಯವಾದಗಳು ಶಿಕ್ಷಕ",
+   "recognised_semantic": "ಧನ್ಯವಾದಗಳು, ಶಿಕ್ಷಕರೇ",
+   "recognised_english": "Thank you, teacher."
+  },
+  {
+   "english": "Are you a student?",
+   "signs": [
+    "you",
+    "student"
+   ],
+   "recognised": [
+    "you_plural",
+    "student"
+   ],
+   "recognised_direct": "ನೀವೆಲ್ಲರೂ ವಿದ್ಯಾರ್ಥಿ",
+   "recognised_semantic": "ನೀವೆಲ್ಲರೂ ವಿದ್ಯಾರ್ಥಿ",
+   "recognised_english": "[you (plural)] [student]"
+  },
+  {
+   "english": "Help!",
+   "signs": [
+    "help"
+   ],
+   "recognised": [
+    "help"
+   ],
+   "recognised_direct": "ಸಹಾಯ",
+   "recognised_semantic": "ಸಹಾಯ ಮಾಡಿ!",
+   "recognised_english": "Help!"
+  },
+  {
+   "english": "Tonight",
+   "signs": [
+    "today",
+    "night"
+   ],
+   "recognised": [
+    "today",
+    "night"
+   ],
+   "recognised_direct": "ಇಂದು ರಾತ್ರಿ",
+   "recognised_semantic": "ಇಂದು ರಾತ್ರಿ",
+   "recognised_english": "Tonight"
+  }
+ ]
+}

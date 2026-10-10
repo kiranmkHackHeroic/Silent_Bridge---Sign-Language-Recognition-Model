@@ -15,7 +15,9 @@ import numpy as np
 from ..config import NONE_LABEL, RecognitionSettings
 from ..translation.kannada_mapping import Vocabulary
 from ..translation.sentence_builder import SentenceBuilder
+from ..diagnostics import frame_diag, ood_stats
 from .landmarks import FrameFeatures, FrameValidationError, compute_motion, parse_frame
+from .sequence_features import frames_to_vector
 from .predictor import ModelLoadError, Prediction, SignPredictor
 from .segmenter import ActivitySegmenter, Segment
 from .sequence_buffer import SequenceBuffer
@@ -30,7 +32,13 @@ class RecognitionSession:
         self.predictor = predictor
         self.continuous = continuous          # ContinuousRecognizer for "sentence" mode (optional)
         self.vocab = vocab
-        self.settings = settings or RecognitionSettings()
+        if settings is None:
+            settings = RecognitionSettings()
+            cal = (getattr(predictor, "meta", None) or {}).get("calibration")
+            if cal and cal.get("threshold"):
+                # default acceptance threshold = the one calibrated on validation data for this model
+                settings.confidence_threshold = float(cal["threshold"])
+        self.settings = settings
         self.builder = SentenceBuilder(vocab)
         self.paused = False
         self.frames_in = 0
@@ -94,12 +102,28 @@ class RecognitionSession:
 
     def _predict(self, frames: list[FrameFeatures]) -> Prediction | None:
         try:
-            pred = self.predictor.predict_frames(frames)
+            vector = frames_to_vector(frames, self.predictor.feature_config)
+            if vector is None:
+                self.last_vector = None
+                return None
+            pred = self.predictor.predict_vector(vector)
         except ModelLoadError:
             return None
+        except AttributeError:            # predictor stubs without predict_vector (tests)
+            pred = self.predictor.predict_frames(frames)
+            vector = None
+        self.last_vector = vector
         if pred is not None:
             self.last_latency_ms = pred.latency_ms
         return pred
+
+    def _diagnose(self, stage: str, detail: str) -> dict:
+        ood = ood_stats(self.predictor, getattr(self, "last_vector", None))
+        if stage == "classification" and ood and ood.get("out_of_distribution"):
+            stage = "features"
+            detail += (f"; live features are outside the training distribution (mean |z| {ood['mean_abs_z']} > "
+                       f"{ood['reference_p99']}, worst block: {ood['worst_block']})")
+        return {"diagnosis": {"stage": stage, "detail": detail}, "ood": ood}
 
     # ---- main entry ------------------------------------------------------
     def process(self, payload: dict) -> list[dict]:
@@ -111,8 +135,10 @@ class RecognitionSession:
         except FrameValidationError as exc:
             self.invalid_frames += 1
             return [{"type": "error", "message": f"invalid frame: {exc}"}]
+        prev_t = self._prev.t if self._prev is not None else None
         compute_motion(self._prev, frame)
         self._prev = frame
+        self._diag = frame_diag(payload, frame, prev_t)
         self.frames_in += 1
 
         if self.settings.mode == "sliding":
@@ -140,6 +166,8 @@ class RecognitionSession:
             "proc_ms": round(self.proc_ms, 3),
             "latency_ms": None if self.last_latency_ms is None else round(self.last_latency_ms, 3),
             "model_loaded": self.predictor.loaded,
+            "threshold": self.settings.confidence_threshold,
+            "diag": getattr(self, "_diag", None),
         }
 
     # ---- segment mode ----------------------------------------------------
@@ -179,7 +207,37 @@ class RecognitionSession:
             ev["boundary"] = "motion_minimum"
         return events
 
-    def _finish_segment(self, seg: Segment) -> list[dict]:
+    def _best_split(self, frames: list[FrameFeatures], whole_conf: float, depth: int = 0) -> list[list[FrameFeatures]]:
+        """Split a long segment where the classifier is confident about both parts (recursive, max 3 parts)."""
+        s = self.settings
+        if depth >= 2 or not frames or frames[-1].t - frames[0].t < s.split_long_min_ms:
+            return [frames]
+        best = None
+        min_frames = max(6, int(s.min_sign_ms / 33.3))
+        for i in range(min_frames, len(frames) - min_frames + 1, 2):
+            a, b = self._predict(frames[:i]), self._predict(frames[i:])
+            if a is None or b is None or a.label == NONE_LABEL or b.label == NONE_LABEL:
+                continue
+            lo = min(a.confidence, b.confidence)
+            if lo >= s.confidence_threshold and lo > whole_conf and (best is None or lo > best[0]):
+                best = (lo, i, a.confidence, b.confidence)
+        if best is None:
+            return [frames]
+        _, i, ca, cb = best
+        return self._best_split(frames[:i], ca, depth + 1) + self._best_split(frames[i:], cb, depth + 1)
+
+    def _finish_segment(self, seg: Segment, allow_split: bool = True) -> list[dict]:
+        if allow_split and self.settings.split_long and self.predictor.loaded and seg.end_t - seg.start_t >= self.settings.split_long_min_ms:
+            whole = self._predict(seg.frames)
+            parts = self._best_split(seg.frames, whole.confidence if whole else 0.0) if whole else [seg.frames]
+            if len(parts) > 1:
+                events = []
+                for part in parts:
+                    events += self._finish_segment(Segment(frames=part, reason=f"{seg.reason}+verified_split",
+                                                           start_t=part[0].t, end_t=part[-1].t), allow_split=False)
+                for ev in events:
+                    ev["boundary"] = "verified_split"
+                return events
         self.smoother.reset()
         self.tentative = None
         self._since_eval = 0
@@ -187,19 +245,34 @@ class RecognitionSession:
         base = {"frames": len(seg.frames), "reason": seg.reason,
                 "duration_ms": round(seg.end_t - seg.start_t, 1)}
         if not self.predictor.loaded:
-            return [{"type": "segment", **base, "result": "no_model"}]
+            return [{"type": "segment", **base, "result": "no_model",
+                     "diagnosis": {"stage": "classification", "detail": "no trained model is loaded"}}]
+        hand_frames = sum(1 for f in seg.frames if f.has_hands)
         pred = self._predict(seg.frames)
         if pred is None:
-            return [{"type": "segment", **base, "result": "too_short"}]
+            return [{"type": "segment", **base, "result": "too_short",
+                     "diagnosis": {"stage": "segmentation", "detail": f"only {hand_frames} usable hand frame(s) in the segment"}}]
+        top = self._top(pred.probabilities)
         if pred.label == NONE_LABEL:
-            return [{"type": "segment", **base, "result": "background", "top": self._top(pred.probabilities)}]
+            return [{"type": "segment", **base, "result": "background", "top": top,
+                     **self._diagnose("classification", "classified as no-sign / transition (_none)")}]
         if pred.confidence < self.settings.confidence_threshold:
-            return [{"type": "uncertain", **base, "top": self._top(pred.probabilities)}]
+            return [{"type": "uncertain", **base, "top": top,
+                     **self._diagnose("classification", f"best guess '{pred.label}' {pred.confidence:.2f} is below the "
+                                                        f"threshold {self.settings.confidence_threshold:.2f}")}]
         if pred.label == split_label:
-            return [{"type": "segment", **base, "result": "continuation", "top": self._top(pred.probabilities)}]
+            return [{"type": "segment", **base, "result": "continuation", "top": top,
+                     "diagnosis": {"stage": "segmentation", "detail": "rest of the previous sign (continuation)"}}]
+        if not self.vocab.emittable(pred.label):
+            return [{"type": "segment", **base, "result": "no_kannada", "top": top,
+                     "diagnosis": {"stage": "translation", "detail": f"'{pred.label}' has no Kannada text in labels.json"}}]
         events = self._emit(pred.label, pred.confidence, seg.end_t, pred.probabilities)
         if not events:
-            return [{"type": "segment", **base, "result": "suppressed_duplicate", "top": self._top(pred.probabilities)}]
+            return [{"type": "segment", **base, "result": "suppressed_duplicate", "top": top,
+                     "diagnosis": {"stage": "segmentation", "detail": "same sign twice within 600 ms (duplicate suppressed)"}}]
+        for ev in events:
+            ev.update(self._diagnose("ok", f"recognised with confidence {pred.confidence:.2f}"))
+            ev["segment"] = base
         return events
 
     # ---- sentence mode (continuous model) ---------------------------------

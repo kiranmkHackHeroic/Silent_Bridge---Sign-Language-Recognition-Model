@@ -20,6 +20,8 @@ export interface LandmarkFrame {
   h: number;
   hands: HandPayload[];
   face: FaceBox | null;
+  /** position in a video file (s) when the pipeline runs on a file instead of the webcam */
+  media_t?: number;
 }
 
 export interface VocabEntry {
@@ -32,6 +34,7 @@ export interface VocabEntry {
   notes: string;
   trained?: boolean;
   animation?: AnimationInfo;
+  kannada_review?: { status: string; note: string; by: string } | null;
 }
 
 export type ReviewState = "unchecked" | "ok" | "wrong";
@@ -51,6 +54,15 @@ export interface AnimationInfo {
   verified: boolean;
   file?: string;
   review?: AnimationReview | null;
+  dataset_source?: DatasetSource | null;
+}
+
+/** Recording an avatar clip was retargeted from. Being extracted from a video does NOT make it verified ISL. */
+export interface DatasetSource {
+  dataset: string;
+  sample_id: string;
+  signer_group?: string;
+  file?: string;
 }
 
 export interface ModelStatus {
@@ -65,6 +77,7 @@ export interface ModelStatus {
   architecture?: string | null;
   dataset_hash?: string | null;
   sources?: Record<string, number> | null;
+  calibration?: { threshold: number; precision_at_threshold: number; coverage_at_threshold: number; method: string; samples: number } | null;
   active_version?: string | null;
   training_in_progress?: boolean;
   defaults?: RecognitionSettings;
@@ -197,6 +210,7 @@ export interface AnimationClip {
   description: string;
   duration: number;
   keyframes: Keyframe[];
+  dataset_source?: DatasetSource | null;
 }
 
 export interface TranslationSign {
@@ -228,6 +242,10 @@ export interface TranslationResult {
   unsupported: string[];
   unsupported_message: string | null;
   note: string;
+  /** Meaning layer: English meaning of the supported parts and the planned ISL gloss sequence. */
+  english_meaning?: string;
+  gloss_sequence?: string[];
+  meaning_items?: { text: string; supported: boolean; phrase: boolean; english: string; glosses: string[]; mapping_source: string | null; verified: boolean }[];
 }
 
 export interface ExternalDataset {
@@ -337,6 +355,15 @@ export interface ContinuousStatus {
   metrics: {
     version: string;
     trained_at: string;
+    decoder?: string;
+    derived_from?: string;
+    decoder_comparison?: {
+      validation_round: string;
+      chosen_on_validation: string;
+      validation: Record<string, { sentence_accuracy: number }>;
+      test: Record<string, { sentence_accuracy: number; sentences_correct: number; videos: number; gloss_error_rate_of_chosen_sentence: number }>;
+      audit?: string;
+    };
     dataset: string;
     videos: number;
     train_videos: number;

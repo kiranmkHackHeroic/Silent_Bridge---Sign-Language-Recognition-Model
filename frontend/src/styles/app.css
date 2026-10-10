@@ -362,3 +362,23 @@ table.cm { width: auto; min-width: 60%; }
 .dropzone.drag { border-color: var(--accent); background: var(--accent-soft); }
 .job { border: 1px solid var(--border); border-radius: var(--r-md); padding: 10px 12px; display: grid; gap: 6px; background: var(--surface-2); }
 details > summary { cursor: pointer; }
+.diag-grid { display: grid; gap: 6px; }
+.diag-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px; font-size: 0.84rem; padding: 6px 8px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); }
+.diag-stage { font-weight: 650; display: inline-flex; align-items: center; gap: 6px; }
+.diag-detail { color: var(--text-2); overflow-wrap: anywhere; }
+@media (max-width: 600px) { .diag-row { grid-template-columns: 1fr; } }
+.pending-box { border: 1px dashed var(--accent); border-radius: var(--r-md); padding: 10px 12px; display: grid; gap: 8px; background: var(--accent-soft); }
+.pending-word { font-family: var(--font-kn); font-size: 1.5rem; font-weight: 700; }
+.gloss-tag { display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); font-family: var(--font-ui); line-height: 1.1; }
+.linkish { background: none; border: 0; padding: 0 2px; color: var(--accent); cursor: pointer; font: inherit; text-decoration: underline; }
+.linkish:hover { color: var(--text); }
+.meaning-row { display: grid; grid-template-columns: 90px 1fr; gap: 10px; align-items: baseline; }
+.meaning-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.meaning-kn { font-family: var(--font-kn); font-size: 1.35rem; font-weight: 650; }
+.gloss-seg { display: inline-block; margin: 0 6px 4px 0; padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 650; border: 1px solid var(--border); }
+.gloss-phrase { background: var(--accent-soft); }
+.gloss-word { border-style: dashed; }
+.gloss-unknown { border-color: var(--bad, #e5484d); color: var(--bad, #e5484d); }
+.linkish.strong { font-weight: 700; text-decoration: none; }
+.plan-preview { display: grid; gap: 6px; padding: 10px 12px; margin-bottom: 10px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--border); }
+.row-hl td { background: var(--accent-soft); font-weight: 650; }

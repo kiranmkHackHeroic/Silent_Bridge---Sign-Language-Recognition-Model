@@ -68,6 +68,7 @@ class VocabEntry:
     isl_gloss: str = ""
     verified: bool = False
     notes: str = ""
+    kannada_review: dict | None = None      # wording check record (who / status / note); not an ISL verification
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -95,6 +96,7 @@ class Vocabulary:
                 isl_gloss=item.get("isl_gloss", label.upper()),
                 verified=bool(item.get("verified", False)),
                 notes=item.get("notes", ""),
+                kannada_review=item.get("kannada_review"),
             )
         if NONE_LABEL not in entries:
             entries[NONE_LABEL] = VocabEntry(NONE_LABEL, "(no sign)", "", emit=False)
@@ -103,7 +105,8 @@ class Vocabulary:
     def save(self) -> None:
         data = json.loads(self.labels_file.read_text(encoding="utf-8"))
         data["labels"] = [
-            {k: v for k, v in e.to_dict().items() if not (k == "emit" and v)} for e in self.entries.values()
+            {k: v for k, v in e.to_dict().items() if not (k == "emit" and v) and not (k == "kannada_review" and v is None)}
+            for e in self.entries.values()
         ]
         self.labels_file.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 

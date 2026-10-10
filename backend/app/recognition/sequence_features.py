@@ -13,7 +13,7 @@ from __future__ import annotations
 import numpy as np
 
 from ..config import FeatureConfig, TrainingConfig
-from .landmarks import FACEREL_OFFSET, FRAME_DIM, HAND_DIM, HAND_SHAPE_DIM, POS_OFFSET, PRESENCE_OFFSET, FrameFeatures
+from .landmarks import FACE_FLAG_INDEX, FACEREL_OFFSET, FRAME_DIM, HAND_DIM, HAND_SHAPE_DIM, POS_OFFSET, PRESENCE_OFFSET, FrameFeatures
 
 
 def feature_dim(cfg: FeatureConfig) -> int:
@@ -140,4 +140,13 @@ def augment_matrix(mat: np.ndarray, rng: np.random.Generator, tcfg: TrainingConf
         out[pres, lo + FACEREL_OFFSET] += face_shift[0]
         out[pres, lo + FACEREL_OFFSET + 1] += face_shift[1]
         out[pres, lo + FACEREL_OFFSET + 2] *= scale
+    p_drop = getattr(tcfg, "face_dropout", 0.0)
+    if p_drop > 0 and rng.random() < p_drop and len(out) >= 2:
+        # same encoding as a frame without a detected face: face-relative values 0, face flag 0
+        span = int(rng.integers(max(1, len(out) // 4), len(out) + 1))
+        a = int(rng.integers(0, len(out) - span + 1))
+        for slot in range(2):
+            lo = slot * HAND_DIM + FACEREL_OFFSET
+            out[a:a + span, lo:lo + 3] = 0.0
+        out[a:a + span, FACE_FLAG_INDEX] = 0.0
     return out

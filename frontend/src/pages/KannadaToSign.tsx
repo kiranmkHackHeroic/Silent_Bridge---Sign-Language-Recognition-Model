@@ -18,7 +18,12 @@ interface SeqSign {
 
 function clipBadge(s: SeqSign) {
   if (!s.clip) return <Chip tone="warn" icon="alert">{s.error ? "clip failed to load" : "no animation yet"}</Chip>;
-  if (s.clip.type === "captured") return <Chip tone={s.clip.verified ? "ok" : "info"} title={s.clip.description}>captured{s.clip.verified ? " · verified" : " · unverified"}</Chip>;
+  if (s.clip.type === "captured") {
+    const src = s.clip.dataset_source;
+    const name = src ? ({ amrita_slr: "Amrita SLR", include: "INCLUDE", isl_csltr: "ISL-CSLTR" } as Record<string, string>)[src.dataset] ?? src.dataset : null;
+    const where = src ? `extracted from ${name} video ${src.file ?? src.sample_id}` : "captured from a recording";
+    return <Chip tone={s.clip.verified ? "ok" : "info"} title={`${s.clip.description ?? ""} Source: ${src ? `${src.dataset}/${src.sample_id} (${src.file ?? ""}, signer group ${src.signer_group ?? "?"})` : "your recording"}`}>{where}{s.clip.verified ? " · verified" : " · unverified ISL"}</Chip>;
+  }
   return <Chip tone="sim" title={s.clip.description}>placeholder · not verified ISL</Chip>;
 }
 
@@ -186,6 +191,14 @@ export function KannadaToSign() {
             {!result ? (
               <Empty icon="layers">The ISL sign sequence (gloss order) appears here after translation.</Empty>
             ) : (
+              <>
+              <div className="plan-preview">
+                <div className="meaning-row"><span className="meaning-label">Meaning</span><span>{result.english_meaning || "—"}</span></div>
+                <div className="meaning-row"><span className="meaning-label">ISL plan</span>
+                  <span>{(result.gloss_sequence ?? []).map((g, i) => <span key={i} className="gloss-seg gloss-phrase">{g}</span>)}</span>
+                </div>
+                <div className="muted xs">The sign order comes from the phrase mappings (proposed ISL order), never from English word order. All mappings are unverified until reviewed by an ISL user.</div>
+              </div>
               <ol className="timeline">
                 {groups.map((item, g) => (
                   <li key={g} className={`tl-group ${item.supported ? "" : "unsupported"}`}>
@@ -200,6 +213,12 @@ export function KannadaToSign() {
                         <Chip tone="bad" icon="x">unsupported · skipped</Chip>
                       )}
                     </div>
+                    {item.supported && (
+                      <div className="muted xs">
+                        {result.meaning_items?.[g]?.english && <>“{result.meaning_items[g].english}” · </>}
+                        mapping: {item.source ?? "unspecified"}
+                      </div>
+                    )}
                     {item.supported && (
                       <div className="tl-signs">
                         {sequence.filter((s) => s.group === g).map((s) => {
@@ -227,6 +246,7 @@ export function KannadaToSign() {
                   </li>
                 ))}
               </ol>
+              </>
             )}
             {result && <p className="muted xs">{result.note}</p>}
           </Card>

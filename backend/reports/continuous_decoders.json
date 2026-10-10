@@ -1,0 +1,75 @@
+{
+ "created": "2026-10-10T00:57:38+00:00",
+ "model_version": "c20261009-194444",
+ "validation_round": "rec2",
+ "test_rounds": [
+  "rec4",
+  "rec5"
+ ],
+ "current_decoder": "baseline",
+ "validation": {
+  "greedy_nearest": {
+   "sentence_accuracy": 0.1781,
+   "sentences_correct": 13,
+   "gloss_error_rate_of_chosen_sentence": 0.7619,
+   "videos": 73
+  },
+  "baseline": {
+   "sentence_accuracy": 0.1507,
+   "sentences_correct": 11,
+   "gloss_error_rate_of_chosen_sentence": 0.8498,
+   "videos": 73
+  },
+  "ctc_likelihood": {
+   "sentence_accuracy": 0.2329,
+   "sentences_correct": 17,
+   "gloss_error_rate_of_chosen_sentence": 0.7729,
+   "videos": 73
+  },
+  "fusion": {
+   "sentence_accuracy": 0.3014,
+   "sentences_correct": 22,
+   "gloss_error_rate_of_chosen_sentence": 0.641,
+   "videos": 73,
+   "lambda": 1.0
+  }
+ },
+ "fusion_lambda_validation_accuracy": {
+  "0.1": 0.2603,
+  "0.25": 0.2603,
+  "0.5": 0.274,
+  "1.0": 0.3014,
+  "2.0": 0.2329,
+  "4.0": 0.2329
+ },
+ "chosen_on_validation": "fusion",
+ "test": {
+  "greedy_nearest": {
+   "sentence_accuracy": 0.1818,
+   "sentences_correct": 28,
+   "gloss_error_rate_of_chosen_sentence": 0.7421,
+   "videos": 154
+  },
+  "baseline": {
+   "sentence_accuracy": 0.2013,
+   "sentences_correct": 31,
+   "gloss_error_rate_of_chosen_sentence": 0.8831,
+   "videos": 154
+  },
+  "ctc_likelihood": {
+   "sentence_accuracy": 0.2208,
+   "sentences_correct": 34,
+   "gloss_error_rate_of_chosen_sentence": 0.7236,
+   "videos": 154
+  },
+  "fusion": {
+   "sentence_accuracy": 0.2922,
+   "sentences_correct": 45,
+   "gloss_error_rate_of_chosen_sentence": 0.6846,
+   "videos": 154
+  }
+ },
+ "test_greedy_gloss_error_rate": 0.7328,
+ "note": "decoder chosen on the validation round only (classifier for validation fitted on the training rounds only); test reported once for every decoder with the deployed networks",
+ "audit": "the original training selected the live method by comparing TEST accuracies; this tool replaces that with a validation-only choice"
+}

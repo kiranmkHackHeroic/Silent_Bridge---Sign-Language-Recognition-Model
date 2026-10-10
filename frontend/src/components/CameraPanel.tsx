@@ -74,7 +74,7 @@ export function CameraPanel({ vision, overlay, setOverlay, controls, switches, t
       <div className="status-row">
         <span className="status-item"><StatusDot tone={camTone} /> Camera: {camera}</span>
         <span className="status-item"><StatusDot tone={lmTone} /> Landmarks: {modelState}{stats.delegate ? ` (${stats.delegate})` : ""}</span>
-        {camera === "on" && <span className="status-item">{stats.fps} FPS</span>}
+        {camera === "on" && <span className="status-item">{Number.isFinite(stats.fps) ? stats.fps : "—"} FPS</span>}
         {camera === "on" && <span className="status-item" title="MediaPipe landmark inference per frame">{stats.inferenceMs} ms / frame</span>}
       </div>
     </div>

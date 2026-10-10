@@ -137,6 +137,18 @@ def _smoke_test(result: TrainResult, folder: Path) -> tuple[bool, str]:
     return True, "reload + prediction + live-pipeline smoke test passed"
 
 
+def _same_held_out_test(old_meta: dict, old_metrics: dict, result) -> bool:
+    """True when the active model was evaluated on exactly the candidate's held-out test samples."""
+    new_ids = sorted(s.sample_id for s in result.test_samples)
+    if old_meta.get("test_sample_ids"):
+        return sorted(old_meta["test_sample_ids"]) == new_ids
+    # older models: same dataset content + same deterministic test groups + same size
+    old_test = old_metrics.get("test") or {}
+    new_test = result.metrics.get("test") or {}
+    return (bool(old_meta.get("dataset_hash")) and old_meta.get("dataset_hash") == result.meta.get("dataset_hash")
+            and old_test.get("groups") == new_test.get("groups") and old_metrics.get("num_test") == len(new_ids))
+
+
 def train_and_promote(tcfg: TrainingConfig | None = None, progress: ProgressFn | None = None,
                       stores=None, known_labels: set[str] | None = None, root: Path = MODELS_DIR) -> dict:
     tcfg = tcfg or TrainingConfig()
@@ -168,7 +180,39 @@ def train_and_promote(tcfg: TrainingConfig | None = None, progress: ProgressFn |
         else:
             # fair comparison: test samples NEITHER model trained on, restricted to signs the old model knows
             fair = [s for s in result.test_samples if s.sample_id not in seen and s.label in old.classes]
-            if len(fair) < 20:
+            if len(fair) < 20 and _same_held_out_test(old_meta, _read(pf / METRICS_FILE.name, {}) or {}, result):
+                # the active model's final fit saw every sample, but its development-only model was scored on
+                # EXACTLY the same held-out test samples with the same protocol: compare those recorded scores
+                old_m = _read(pf / METRICS_FILE.name, {}) or {}
+                comparison = {"previous_version": prev, "fair_test_samples": len(result.test_samples),
+                              "candidate_accuracy": m["accuracy"], "candidate_macro_f1": cand_score,
+                              "previous_accuracy": old_m.get("accuracy"), "previous_macro_f1": old_m.get("macro_f1"),
+                              "note": "recorded held-out scores of both development-only models on the identical test set"}
+                if cand_score < float(old_m.get("macro_f1") or 0) - tcfg.max_regression:
+                    reasons.append(f"worse than active {prev} on the identical held-out test set "
+                                   f"({cand_score:.3f} < {old_m.get('macro_f1'):.3f} - {tcfg.max_regression})")
+            elif len(fair) < 20 and ((_read(pf / METRICS_FILE.name, {}) or {}).get("test_predictions")):
+                # both versions recorded their development-only predictions on held-out test samples:
+                # compare on the samples both held out, restricted to signs both models know
+                old_preds = (_read(pf / METRICS_FILE.name, {}) or {})["test_predictions"]
+                cand_pred = {s.sample_id: p for s, p in zip(result.test_samples, result.test_predictions)}
+                shared = [s for s in result.test_samples if s.sample_id in old_preds and s.label in old.classes]
+                if len(shared) >= 20:
+                    y_true = [s.label for s in shared]
+                    classes = sorted(set(y_true))
+                    c_block = metric_block(y_true, [cand_pred[s.sample_id] for s in shared], classes)
+                    o_block = metric_block(y_true, [old_preds[s.sample_id] for s in shared], classes)
+                    comparison = {"previous_version": prev, "fair_test_samples": len(shared),
+                                  "candidate_accuracy": c_block["accuracy"], "candidate_macro_f1": c_block["macro_f1"],
+                                  "previous_accuracy": o_block["accuracy"], "previous_macro_f1": o_block["macro_f1"],
+                                  "note": "development-only predictions of both versions on the held-out test samples they share"}
+                    if c_block["macro_f1"] < o_block["macro_f1"] - tcfg.max_regression:
+                        reasons.append(f"worse than active {prev} on {len(shared)} shared held-out test samples "
+                                       f"({c_block['macro_f1']:.3f} < {o_block['macro_f1']:.3f} - {tcfg.max_regression})")
+                else:
+                    comparison = {"previous_version": prev, "fair_test_samples": len(shared),
+                                  "note": "too few shared held-out test samples for a fair comparison"}
+            elif len(fair) < 20:
                 comparison = {"previous_version": prev, "fair_test_samples": len(fair),
                               "note": "too few test samples unseen by the active model for a fair comparison"}
             else:

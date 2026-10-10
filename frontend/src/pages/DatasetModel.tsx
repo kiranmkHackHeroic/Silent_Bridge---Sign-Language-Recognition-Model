@@ -3,6 +3,7 @@ import { CameraPanel } from "../components/CameraPanel";
 import { ContinuousCard, ExternalDatasetsCard, JobsCard, RegistryCard, UploadCard, useJobs } from "../components/DataPipeline";
 import { Icon } from "../components/Icon";
 import { LandmarkReplay, quickCheck } from "../components/LandmarkReplay";
+import { LiveEvalCard } from "../components/LiveEvalCard";
 import { MetricsReport } from "../components/MetricsReport";
 import { Btn, Card, Chip, Empty, Notice, Spinner, Stat } from "../components/ui";
 import { api } from "../services/api";
@@ -21,6 +22,18 @@ const newSessionId = () => {
   return `s${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
 };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const CONDITION_OPTIONS: Record<string, string[]> = {
+  speed: ["normal", "slow", "fast"],
+  distance: ["near", "medium", "far"],
+  lighting: ["bright", "normal", "dim", "backlit"],
+  position: ["centre", "left", "right", "high", "low"],
+};
+/** Guided variation: sample i asks for a different speed / hand position so the data covers them. */
+const guidedConditions = (i: number) => ({
+  speed: CONDITION_OPTIONS.speed[i % 3],
+  position: CONDITION_OPTIONS.position[Math.floor(i / 3) % 5],
+});
 
 export function DatasetModel() {
   const [overlay, setOverlay] = useState(true);
@@ -54,6 +67,16 @@ export function DatasetModel() {
   const [captureMsg, setCaptureMsg] = useState("");
   const [newVocab, setNewVocab] = useState({ label: "", english: "", kannada: "", gloss: "" });
   const [vocabMsg, setVocabMsg] = useState("");
+  const [purpose, setPurpose] = useState<"train" | "eval">("train");
+  const [conditions, setConditions] = useState<Record<string, string>>({ speed: "normal", distance: "medium", lighting: "normal", position: "centre" });
+  const [guided, setGuided] = useState(true);
+  const [samplePrompt, setSamplePrompt] = useState("");
+  const [seqGlosses, setSeqGlosses] = useState<string[]>([]);
+  const [seqSeconds, setSeqSeconds] = useState(12);
+  const [seqPhase, setSeqPhase] = useState<"idle" | "ready" | "recording" | "saving">("idle");
+  const [seqLeft, setSeqLeft] = useState(0);
+  const [seqMsg, setSeqMsg] = useState<{ tone: "ok" | "bad"; text: string } | null>(null);
+  const [evalKey, setEvalKey] = useState(0);
 
   const recordingRef = useRef(false);
   const framesRef = useRef<LandmarkFrame[]>([]);
@@ -113,9 +136,39 @@ export function DatasetModel() {
   }, []);
   const vision = useVision({ face: true, overlay, onResult });
 
-  const save = async (frames: LandmarkFrame[]) => {
+  const save = async (frames: LandmarkFrame[], cond: Record<string, string>) => {
     const video = { w: frames[0]?.w ?? 640, h: frames[0]?.h ?? 480 };
-    await api.record({ label, session_id: sessionId, signer_id: signer, video, frames });
+    await api.record({ label, session_id: sessionId, signer_id: signer, video, frames, purpose, conditions: cond });
+  };
+
+  const recordSequence = async () => {
+    if (vision.camera !== "on") return setSeqMsg({ tone: "bad", text: "Start the camera first." });
+    if (!seqGlosses.length) return setSeqMsg({ tone: "bad", text: "Choose the signs you will perform, in order." });
+    setSeqMsg(null);
+    setSeqPhase("ready");
+    for (let c = 3; c > 0; c--) {
+      setSeqLeft(c);
+      await sleep(700);
+    }
+    framesRef.current = [];
+    recordingRef.current = true;
+    setSeqPhase("recording");
+    const end = Date.now() + seqSeconds * 1000;
+    while (Date.now() < end && !abortRef.current) {
+      setSeqLeft(Math.ceil((end - Date.now()) / 1000));
+      await sleep(200);
+    }
+    recordingRef.current = false;
+    const frames = framesRef.current;
+    setSeqPhase("saving");
+    try {
+      const r = await api.recordSequence({ glosses: seqGlosses, session_id: sessionId, signer_id: signer, conditions, frames });
+      setSeqMsg({ tone: "ok", text: `Saved evaluation sequence ${r.sequence_id} (${r.num_frames} frames, hands in ${r.hand_frames}). It is never used for training.` });
+      setEvalKey((k) => k + 1);
+    } catch (err) {
+      setSeqMsg({ tone: "bad", text: String((err as Error).message || err) });
+    }
+    setSeqPhase("idle");
   };
 
   const recordBatch = async () => {
@@ -126,6 +179,8 @@ export function DatasetModel() {
     let saved = 0;
     let skipped = 0;
     for (let i = 0; i < count && !abortRef.current; i++) {
+      const cond = guided ? { ...conditions, ...guidedConditions(i) } : conditions;
+      setSamplePrompt(guided ? `${cond.speed} speed · hands ${cond.position === "centre" ? "in the centre" : `to the ${cond.position}`}` : "");
       setPhase("ready");
       for (let c = 3; c > 0 && !abortRef.current; c--) {
         setCountdown(c);
@@ -152,7 +207,7 @@ export function DatasetModel() {
       }
       setPhase("saving");
       try {
-        await save(frames);
+        await save(frames, cond);
         saved++;
         setLastSaved(frames);
         setProgress({ done: saved, total: count });
@@ -163,8 +218,10 @@ export function DatasetModel() {
     }
     setPhase("idle");
     setCountdown(0);
-    setRecMsg((m) => (m?.tone === "bad" ? m : { tone: "ok", text: `Saved ${saved} sample(s) of “${label}” in session ${sessionId}${skipped ? `; ${skipped} discarded` : ""}.` }));
+    setSamplePrompt("");
+    setRecMsg((m) => (m?.tone === "bad" ? m : { tone: "ok", text: `Saved ${saved} sample(s) of “${label}” in session ${sessionId} as ${purpose === "eval" ? "EVALUATION-ONLY data (never trained on)" : "training data"}${skipped ? `; ${skipped} discarded` : ""}.` }));
     refresh();
+    setEvalKey((k) => k + 1);
   };
 
   const importExternal = async (key: string) => {
@@ -312,8 +369,10 @@ export function DatasetModel() {
               overlay={overlay}
               setOverlay={setOverlay}
               topLeft={
-                phase === "ready" ? <span className="pill pill-ready">Get ready… {countdown}</span>
-                : phase === "recording" ? <span className="pill pill-rec">● REC {progress.done + 1}/{progress.total}</span>
+                phase === "ready" ? <span className="pill pill-ready">Get ready… {countdown}{samplePrompt && ` · ${samplePrompt}`}</span>
+                : phase === "recording" ? <span className="pill pill-rec">● REC {progress.done + 1}/{progress.total}{samplePrompt && ` · ${samplePrompt}`}</span>
+                : seqPhase === "ready" ? <span className="pill pill-ready">Sequence starts in {seqLeft}…</span>
+                : seqPhase === "recording" ? <span className="pill pill-rec">● SEQUENCE {seqLeft}s: {seqGlosses.join(" → ")}</span>
                 : phase === "saving" ? <span className="pill">Saving…</span>
                 : <span className="pill">{handsNow} hand(s) visible</span>
               }
@@ -353,6 +412,26 @@ export function DatasetModel() {
                   <input type="range" min={1} max={20} step={1} value={count} onChange={(e) => setCount(Number(e.target.value))} disabled={busy} />
                 </label>
               </div>
+              <label className="field">Purpose
+                <select value={purpose} onChange={(e) => setPurpose(e.target.value as "train" | "eval")} disabled={busy}>
+                  <option value="train">Training data (used by the next training run)</option>
+                  <option value="eval">Evaluation only: stored separately, never trained on</option>
+                </select>
+                {purpose === "eval" && <span className="hint">Use a NEW session (another day, lighting or distance) so the evaluation measures generalisation, not memory.</span>}
+              </label>
+              <div className="form-grid cols-2">
+                {Object.entries(CONDITION_OPTIONS).map(([k, opts]) => (
+                  <label key={k} className="field">{k[0].toUpperCase() + k.slice(1)}
+                    <select value={conditions[k]} onChange={(e) => setConditions((c) => ({ ...c, [k]: e.target.value }))} disabled={busy || (guided && (k === "speed" || k === "position"))}>
+                      {opts.map((o) => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                  </label>
+                ))}
+              </div>
+              <label className="switch">
+                <input type="checkbox" checked={guided} onChange={(e) => setGuided(e.target.checked)} disabled={busy} />
+                Guided variation: each sample asks for a different speed and hand position (shown on the camera)
+              </label>
               <label className="switch">
                 <input type="checkbox" checked={reviewEach} onChange={(e) => setReviewEach(e.target.checked)} disabled={busy} />
                 Review each sample before saving (incomplete samples are always shown for review)
@@ -375,15 +454,43 @@ export function DatasetModel() {
             )}
           </Card>
 
+          <Card title="Record a sign sequence (evaluation)" icon="record" subtitle="Several signs in a row, no button presses between them">
+            <div className="form-grid">
+              <label className="field">Add sign
+                <select value="" onChange={(e) => e.target.value && setSeqGlosses((g) => [...g, e.target.value].slice(0, 12))} disabled={seqPhase !== "idle" || busy}>
+                  <option value="">Choose…</option>
+                  {vocab.filter((v) => v.label !== "_none" && v.trained !== false).map((v) => <option key={v.label} value={v.label}>{v.kannada} · {v.english}</option>)}
+                </select>
+              </label>
+              <div className="small">
+                Order: {seqGlosses.length ? seqGlosses.map((g, i) => <Chip key={i} tone="info">{i + 1}. {g}</Chip>) : <span className="muted">none yet</span>}
+                {seqGlosses.length > 0 && <Btn size="sm" variant="ghost" icon="x" onClick={() => setSeqGlosses([])} disabled={seqPhase !== "idle"}>Clear</Btn>}
+              </div>
+              <label className="field">Recording length: {seqSeconds} s
+                <input type="range" min={5} max={60} step={1} value={seqSeconds} onChange={(e) => setSeqSeconds(Number(e.target.value))} disabled={seqPhase !== "idle"} />
+              </label>
+            </div>
+            <div className="toolbar">
+              <Btn icon="record" variant="primary" onClick={recordSequence} disabled={vision.camera !== "on" || busy || seqPhase !== "idle" || !seqGlosses.length}>Record sequence</Btn>
+              <span className="muted xs">Sign the words in this order at your natural pace, then lower your hands. Repeated signs are allowed.</span>
+            </div>
+            {seqMsg && <Notice tone={seqMsg.tone}>{seqMsg.text}</Notice>}
+          </Card>
+
           <Card title="How to record good data" icon="info">
             <ol className="list">
               <li>Learn each sign from a verified ISL source (e.g. the ISLRTC dictionary) before recording.</li>
               <li>Each sample: start with hands <strong>down or out of view</strong>, sign once during the red REC window, then lower your hands.</li>
               <li>Aim for <strong>{RECOMMENDED}–20 samples per sign</strong>, plus the <strong>_none</strong> class.</li>
-              <li>Record each sign in <strong>3 sessions</strong> (press New between them; vary lighting, clothing or signer). With 3+ sessions the latest one becomes an independent test set.</li>
+              <li>Record each sign in <strong>3 sessions</strong> (press New between them; vary lighting, clothing or signer). Whole sessions are held out for testing, never split.</li>
+              <li>Use <strong>guided variation</strong> (slow / normal / fast, hands centre / left / right / high / low) and vary distance and lighting between sessions.</li>
+              <li>Record <strong>_none</strong>: raising/lowering hands, scratching, adjusting glasses, transitions between signs. This is how unknown movements get rejected.</li>
+              <li>Keep one session as <strong>Evaluation only</strong> to measure real live accuracy below.</li>
             </ol>
           </Card>
         </div>
+
+        <LiveEvalCard refreshKey={evalKey} />
 
         <Card title="Dataset validation" icon="check" className="span-all"
           actions={validation && <Chip tone={validation.rejected ? "warn" : validation.valid ? "ok" : "muted"}>{validation.valid} valid · {validation.rejected} rejected</Chip>}>

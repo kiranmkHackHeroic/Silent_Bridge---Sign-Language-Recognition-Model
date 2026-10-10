@@ -1,0 +1,27 @@
+{
+ "0.0": {
+  "cv_macro_f1": 0.5436,
+  "cv_accuracy": 0.5778,
+  "test_accuracy": 0.6009,
+  "test_macro_f1": 0.5907,
+  "test_per_source": {
+   "amrita_slr": {
+    "examples": 213,
+    "accuracy": 0.6009
+   }
+  }
+ },
+ "0.3": {
+  "cv_macro_f1": 0.5386,
+  "cv_accuracy": 0.5806,
+  "test_accuracy": 0.6103,
+  "test_macro_f1": 0.6044,
+  "test_per_source": {
+   "amrita_slr": {
+    "examples": 213,
+    "accuracy": 0.6103
+   }
+  }
+ },
+ "decision": "disable face dropout (decided on development CV only)"
+}

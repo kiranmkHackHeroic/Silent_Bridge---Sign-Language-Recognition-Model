@@ -115,6 +115,8 @@ class SignPredictor:
             "architecture": self.meta.get("architecture") or meta.get("architecture"),
             "dataset_hash": self.meta.get("dataset_hash") or meta.get("dataset_hash"),
             "sources": self.meta.get("sources") or meta.get("sources"),
+            "calibration": {k: v for k, v in ((self.meta.get("calibration") or meta.get("calibration")) or {}).items()
+                            if k != "curve"} or None,
             "feature_config": self.feature_config.to_dict(),
         }
 

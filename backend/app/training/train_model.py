@@ -233,6 +233,62 @@ def metric_block(y_true, y_pred, classes) -> dict:
     }
 
 
+# ---------------------------------------------------------------- calibration / OOD
+def calibrate_threshold(y_true, y_pred, conf, objective: str = "f1", false_accept_cost: float = 2.0) -> dict:
+    """Choose the confidence threshold on OUT-OF-FOLD development predictions.
+
+    A prediction becomes a word only if its confidence >= threshold. With objective "f1" (default) the
+    threshold maximises the F1 of accepted words: precision = correct / accepted, recall = correct /
+    sign samples ('_none' samples predicted as a sign count as wrong accepted words). This needs no
+    hand-picked cost. objective "cost" maximises (correct - false_accept_cost x wrong) instead; with
+    signer-independent accuracy below 2/3 that rejects nearly everything, which is why it is not the default.
+    Returns the threshold, its precision / recall / coverage and the whole curve for the report."""
+    y_true, y_pred, conf = np.asarray(y_true), np.asarray(y_pred), np.asarray(conf)
+    correct = (y_true == y_pred) & (y_pred != NONE_LABEL)
+    is_sign_pred = y_pred != NONE_LABEL
+    n_sign = max(1, int(np.sum(y_true != NONE_LABEL)))
+    curve, best = [], None
+    for t in np.round(np.arange(0.05, 0.96, 0.05), 2):
+        acc = (conf >= t) & is_sign_pred
+        tp, fp = int(np.sum(acc & correct)), int(np.sum(acc & ~correct))
+        precision, recall = tp / max(1, tp + fp), tp / n_sign
+        f1 = 2 * precision * recall / max(1e-9, precision + recall)
+        utility = tp - false_accept_cost * fp
+        row = {"threshold": float(t), "accepted": int(acc.sum()), "precision": round(precision, 4),
+               "recall": round(recall, 4), "f1": round(f1, 4), "coverage": round(float(acc.mean()), 4),
+               "utility": round(float(utility), 2)}
+        curve.append(row)
+        score = f1 if objective == "f1" else utility
+        if best is None or score > best[0] + 1e-12:
+            best = (score, row)
+    row = best[1]
+    method = ("maximise F1 of accepted words on out-of-fold development predictions" if objective == "f1" else
+              f"maximise (correct - {false_accept_cost} x wrong) accepted words on out-of-fold development predictions")
+    return {"threshold": row["threshold"], "precision_at_threshold": row["precision"], "recall_at_threshold": row["recall"],
+            "f1_at_threshold": row["f1"], "coverage_at_threshold": row["coverage"], "objective": objective,
+            "method": method, "samples": int(len(y_true)), "curve": curve}
+
+
+def _scaler_of(model):
+    if hasattr(model, "named_steps") and "scale" in model.named_steps:
+        sc = model.named_steps["scale"]
+        return sc.mean_, sc.scale_
+    if hasattr(model, "mu_"):
+        return model.mu_, model.sd_
+    return None
+
+
+def ood_reference_stats(model, vectors) -> dict | None:
+    """Distribution of the mean |z|-score of TRAINING vectors (live segments far above it are OOD)."""
+    sc = _scaler_of(model)
+    if sc is None or not vectors:
+        return None
+    mu, sd = sc
+    z = np.array([float(np.mean(np.abs((v - mu) / np.where(sd == 0, 1, sd)))) for v in vectors if v is not None])
+    return {"mean_abs_z_p50": round(float(np.percentile(z, 50)), 3), "mean_abs_z_p95": round(float(np.percentile(z, 95)), 3),
+            "mean_abs_z_p99": round(float(np.percentile(z, 99)), 3)}
+
+
 # ---------------------------------------------------------------- splits
 def choose_test_groups(samples: list[Sample], fraction: float, seed: int) -> set[str]:
     # datasets with an official test split use it; the others get held-out signer/session groups
@@ -398,17 +454,27 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
     candidates: dict[str, dict] = {}
     n_steps = len(tcfg.candidate_models) * len(folds)
     step = 0
+    oof_conf: dict[str, np.ndarray] = {}
     for kind in tcfg.candidate_models:
         y_pred = np.empty(len(dev), dtype=object)
+        conf = np.zeros(len(dev))
         t_kind = time.perf_counter()
         for k, (tr, te) in enumerate(folds):
             step += 1
             progress(f"Cross-validating {kind} (fold {k + 1}/{len(folds)})", 0.05 + 0.65 * step / n_steps)
             model = fit_model(kind, [dev[i] for i in tr], fcfg, tcfg, rng)
-            y_pred[te] = predict_labels(model, [dev[i] for i in te], fcfg)
+            x_te = np.stack([matrix_to_vector(dev[i].mat, fcfg) for i in te])
+            proba = model.predict_proba(x_te)
+            y_pred[te] = np.asarray(model.classes_)[proba.argmax(1)].astype(str)
+            conf[te] = proba.max(1)
         candidates[kind] = metric_block(y_dev, y_pred.astype(str), dev_classes)
+        oof_conf[kind] = conf
+        candidates[kind]["_oof_pred"] = y_pred.astype(str)
         candidates[kind]["fit_seconds"] = round(time.perf_counter() - t_kind, 1)
     best_kind = max(candidates, key=lambda k: (candidates[k]["macro_f1"], k == "logreg"))
+    calibration = calibrate_threshold(y_dev, candidates[best_kind]["_oof_pred"], oof_conf[best_kind])
+    for c in candidates.values():
+        c.pop("_oof_pred", None)
 
     test_results = None
     test_preds: list[str] = []
@@ -439,6 +505,7 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
     progress("Fitting final model on all valid data", 0.9)
     final = fit_model(best_kind, samples, fcfg, tcfg, rng)
     final_classes = [str(c) for c in final.classes_]
+    ood_reference = ood_reference_stats(final, [matrix_to_vector(s.mat, fcfg) for s in samples])
     probe = matrix_to_vector(samples[0].mat, fcfg).reshape(1, -1)
     start = time.perf_counter()
     for _ in range(30):
@@ -461,6 +528,9 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
         "test": test_results,
         "sources": dict(sources), "per_source": validation["per_source"],
         "test_per_source": (test_results or {}).get("per_source"),
+        # development-only model's prediction per held-out test sample: lets the registry compare two
+        # versions on the test samples they share, even after the final model is refit on everything
+        "test_predictions": {s.sample_id: p for s, p in zip(test, test_preds)} if test_preds else None,
         "num_samples": len(samples), "num_train_dev": len(dev), "num_test": len(test),
         "num_sessions": len({s.group for s in samples}), "num_classes": len(classes),
         "class_counts": {c: int(counts[c]) for c in classes},
@@ -470,6 +540,8 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
         "per_class": headline["per_class"], "confusion_matrix": headline["confusion_matrix"],
         "confused_pairs": headline["confused_pairs"],
         "imbalance_ratio": validation["imbalance_ratio"],
+        "calibration": calibration,
+        "ood_reference": ood_reference,
         "inference_latency_ms": round(latency_ms, 3),
         "training_seconds": round(time.perf_counter() - t0, 1),
         "dataset_hash": validation["dataset_hash"], "warnings": warnings,
@@ -481,6 +553,8 @@ def train_candidate(stores: list[tuple[str, DatasetStore]] | None = None, fcfg: 
             "architecture": MODEL_DESCRIPTIONS[best_kind], "num_samples": len(samples), "classes": final_classes,
             "feature_config": fcfg.to_dict(), "dataset_hash": validation["dataset_hash"], "sources": dict(sources),
             "trained_sample_ids": sorted(s.sample_id for s in samples),
+            "test_sample_ids": sorted(s.sample_id for s in test),
+            "calibration": calibration, "ood_reference": ood_reference,
             "sklearn_version": sklearn.__version__, "training_config": asdict(tcfg)}
     progress("Done", 1.0)
     return TrainResult(metrics, final, final_classes, meta, test, test_preds)

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CameraPanel } from "../components/CameraPanel";
 import { Icon } from "../components/Icon";
+import { MeaningPanel } from "../components/MeaningPanel";
+import { PipelineDiagnostics, type Decision, type FrameDiag } from "../components/PipelineDiagnostics";
 import { Btn, Card, Chip, ConfidenceBar, Notice, StatusDot } from "../components/ui";
 import { EXPRESSION_TEXT, ExpressionSmoother, type ExpressionEstimate } from "../expression/expressionClassifier";
-import { api } from "../services/api";
+import { api, WEBCAM_THRESHOLD_KEY } from "../services/api";
 import { RecognitionSocket, type ServerMessage, type SocketStatus } from "../services/recognitionSocket";
 import { sessionStats } from "../services/sessionStats";
 import { kannadaVoice, onVoicesChanged, speakKannada } from "../services/speech";
@@ -11,7 +13,7 @@ import {
   PUNCTUATION, correctAt, exportText, fromServerToken, insertPunctuation, joinTranscript, removeAt,
   type TranscriptItem,
 } from "../services/transcript";
-import type { Candidate, ModelStatus, TranscriptToken, VocabEntry } from "../services/types";
+import type { Candidate, LandmarkFrame, ModelStatus, TranscriptToken, VocabEntry } from "../services/types";
 import { useVision, type VisionResult } from "../services/useVision";
 
 interface ServerState {
@@ -22,7 +24,27 @@ interface ServerState {
   tentative: Candidate | null;
   proc_ms: number;
   latency_ms: number | null;
+  threshold?: number;
+  diag?: FrameDiag | null;
 }
+
+/** A recognised word waiting for confirmation before it enters the transcript. */
+interface PendingWord {
+  id: string;
+  token: TranscriptToken;
+  top: Candidate[];
+  created: number;
+}
+
+interface UncertainWord {
+  id: string;
+  top: Candidate[];
+  at: number;
+}
+
+const FRAME_RING = 600;   // ~20 s of landmark frames kept for a diagnostics snapshot
+const EVENT_RING = 300;
+let pendingCounter = 0;
 
 interface SentenceResult {
   glosses: string[];
@@ -50,10 +72,18 @@ export function LiveRecognition() {
   const [model, setModel] = useState<ModelStatus | null>(null);
   const [paused, setPaused] = useState(false);
   const [demo, setDemo] = useState(false);
-  const [threshold, setThreshold] = useState(0.6);
+  const [threshold, setThreshold] = useState(() => {
+    try {
+      const v = Number(localStorage.getItem("signbridge.webcamThreshold"));
+      return v > 0 && v < 1 ? v : 0.6;
+    } catch {
+      return 0.6;
+    }
+  });
   const [mode, setMode] = useState<"segment" | "sliding" | "sentence">("segment");
   const [continuous, setContinuous] = useState<{ loaded: boolean; version: string | null; error: string | null; sentences: number | null } | null>(null);
   const [dipSplit, setDipSplit] = useState(false);
+  const [splitLong, setSplitLong] = useState(false);
   const [stillMs, setStillMs] = useState(800);
   const [serverState, setServerState] = useState<ServerState>(EMPTY_STATE);
   const [hero, setHero] = useState<Hero | null>(null);
@@ -66,6 +96,22 @@ export function LiveRecognition() {
   const [allowOnlineTts, setAllowOnlineTts] = useState(false);
   const [hasKnVoice, setHasKnVoice] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [pending, setPending] = useState<PendingWord[]>([]);
+  const [uncertain, setUncertain] = useState<UncertainWord[]>([]);
+  const [confirmMode, setConfirmMode] = useState<"auto" | "manual" | "off">("auto");
+  const [commitSec, setCommitSec] = useState(4);
+  const [decisions, setDecisions] = useState<Decision[]>([]);
+  // a threshold chosen on the user's own webcam evaluation recordings (Dataset & Model) wins over the default
+  const [webcamThreshold] = useState<number | null>(() => {
+    try {
+      const v = Number(localStorage.getItem(WEBCAM_THRESHOLD_KEY));
+      return v > 0 && v < 1 ? v : null;
+    } catch {
+      return null;
+    }
+  });
+  const [thresholdTouched, setThresholdTouched] = useState(webcamThreshold !== null);
+  const [now, setNow] = useState(Date.now());
 
   const socketRef = useRef<RecognitionSocket | null>(null);
   const stateRef = useRef<ServerState>(EMPTY_STATE);
@@ -77,12 +123,36 @@ export function LiveRecognition() {
   pausedRef.current = paused;
   demoRef.current = demo;
   exprEnabledRef.current = exprEnabled;
+  const thresholdTouchedRef = useRef(thresholdTouched);
+  thresholdTouchedRef.current = thresholdTouched;
+  const confirmModeRef = useRef(confirmMode);
+  confirmModeRef.current = confirmMode;
+  const committedRef = useRef(new Set<string>());
+  const framesRef = useRef<LandmarkFrame[]>([]);
+  const eventsRef = useRef<object[]>([]);
+
+  const recordDecision = useCallback((msg: ServerMessage) => {
+    const best = msg.token ?? msg.top?.[0];
+    const d: Decision = {
+      at: Date.now() + Math.random(), type: msg.type, result: msg.result, label: best?.label, kannada: best?.kannada,
+      confidence: best?.confidence, diagnosis: msg.diagnosis, ood: msg.ood, frames: msg.frames ?? msg.segment?.frames,
+      reason: msg.reason ?? msg.segment?.reason,
+    };
+    setDecisions((ds) => [d, ...ds].slice(0, 30));
+  }, []);
 
   const handleMessage = useCallback((msg: ServerMessage) => {
+    if (msg.type !== "state" && msg.type !== "hello") {
+      eventsRef.current.push({ ...msg, received_at: Date.now() });
+      if (eventsRef.current.length > EVENT_RING) eventsRef.current.splice(0, eventsRef.current.length - EVENT_RING);
+    }
+    if (msg.type === "sign" || msg.type === "uncertain" || msg.type === "segment") recordDecision(msg);
     switch (msg.type) {
       case "hello":
         setModel(msg.model);
-        setContinuous(msg.continuous ?? null);
+        if (msg.continuous) setContinuous(msg.continuous);
+        // adopt the server's (validation-calibrated) threshold unless the user moved the slider
+        if (!thresholdTouchedRef.current && typeof msg.settings?.confidence_threshold === "number") setThreshold(msg.settings.confidence_threshold);
         break;
       case "sentence": {
         const r = msg as unknown as SentenceResult;
@@ -96,7 +166,8 @@ export function LiveRecognition() {
         break;
       case "sign": {
         const token = msg.token as TranscriptToken;
-        setItems((t) => [...t, fromServerToken(token)]);
+        if (msg.simulated || confirmModeRef.current === "off") setItems((t) => [...t, fromServerToken(token)]);
+        else setPending((ps) => [...ps, { id: `p${pendingCounter++}`, token, top: msg.top ?? [], created: Date.now() }]);
         setHero({ kind: "sign", token, top: msg.top ?? [], simulated: Boolean(msg.simulated), boundary: msg.boundary, at: Date.now() });
         setEventMsg(msg.boundary === "motion_minimum" ? "Sign boundary found at a pause in hand movement." : "");
         if (!msg.simulated) sessionStats.signsRecognized++;
@@ -104,6 +175,7 @@ export function LiveRecognition() {
       }
       case "uncertain":
         setHero({ kind: "uncertain", best: msg.top?.[0] ?? null, at: Date.now() });
+        if (msg.top?.length) setUncertain((us) => [{ id: `u${pendingCounter++}`, top: msg.top, at: Date.now() }, ...us].slice(0, 4));
         setEventMsg("Not confident enough. Nothing was added. Try the sign again more clearly.");
         sessionStats.uncertainSegments++;
         break;
@@ -114,12 +186,13 @@ export function LiveRecognition() {
         else if (msg.result === "too_short") setEventMsg("Movement too short to classify.");
         else if (msg.result === "suppressed_duplicate") setEventMsg("Same sign detected twice in a row; the duplicate was suppressed.");
         else if (msg.result === "continuation") setEventMsg("Continuation of the previous sign; not added again.");
+        else if (msg.result === "no_kannada") setEventMsg(`Recognised '${msg.top?.[0]?.label}', but it has no Kannada text, so nothing was added.`);
         break;
       case "error":
         setEventMsg(`Backend: ${msg.message}`);
         break;
     }
-  }, []);
+  }, [recordDecision]);
 
   useEffect(() => {
     const sock = new RecognitionSocket(handleMessage, setSocketStatus);
@@ -128,6 +201,7 @@ export function LiveRecognition() {
     api.vocabulary().then((v) => setVocab(v.labels.filter((l) => l.emit && l.kannada))).catch(() => undefined);
     const timer = window.setInterval(() => {
       setServerState({ ...stateRef.current });
+      setNow(Date.now());
       if (exprValueRef.current) setExpression(exprValueRef.current);
     }, 120);
     const updateVoice = () => setHasKnVoice(Boolean(kannadaVoice()));
@@ -142,8 +216,47 @@ export function LiveRecognition() {
 
   useEffect(() => {
     if (socketStatus !== "open") return;
-    socketRef.current?.send({ type: "config", settings: { confidence_threshold: threshold, mode, still_ms: stillMs, dip_split: dipSplit } });
-  }, [threshold, mode, stillMs, dipSplit, socketStatus]);
+    // the threshold is only sent once the user moves the slider; until then the server uses the
+    // model's threshold calibrated on validation data
+    const settings: Record<string, unknown> = { mode, still_ms: stillMs, dip_split: dipSplit, split_long: splitLong };
+    if (thresholdTouched) settings.confidence_threshold = threshold;
+    socketRef.current?.send({ type: "config", settings });
+  }, [threshold, thresholdTouched, mode, stillMs, dipSplit, splitLong, socketStatus]);
+
+  // pending words: confirmed by the user, or automatically after the countdown in "auto" mode
+  const commitPending = useCallback((p: PendingWord, choice?: Candidate) => {
+    if (committedRef.current.has(p.id)) return;
+    committedRef.current.add(p.id);
+    setPending((ps) => ps.filter((x) => x.id !== p.id));
+    const tok: TranscriptToken = choice && choice.label !== p.token.label
+      ? { ...p.token, label: choice.label, kannada: choice.kannada, english: choice.english, confidence: choice.confidence, source: "edited" }
+      : p.token;
+    setItems((t) => [...t, fromServerToken(tok)]);
+  }, []);
+  useEffect(() => {
+    if (confirmMode !== "auto") return;
+    pending.filter((p) => now - p.created >= commitSec * 1000).forEach((p) => commitPending(p));
+  }, [now, pending, confirmMode, commitSec, commitPending]);
+  const rejectPending = (id: string) => {
+    committedRef.current.add(id);
+    setPending((ps) => ps.filter((x) => x.id !== id));
+    setEventMsg("Word rejected; it was not added to the transcript.");
+  };
+  const addUncertain = (u: UncertainWord, c: Candidate) => {
+    setUncertain((us) => us.filter((x) => x.id !== u.id));
+    setItems((t) => [...t, fromServerToken({ label: c.label, kannada: c.kannada, english: c.english, confidence: c.confidence, source: "edited", t: Date.now() })]);
+  };
+
+  const saveSnapshot = useCallback(async (note: string) => {
+    try {
+      const r = await api.diagnosticsSnapshot({ frames: framesRef.current.slice(-FRAME_RING), events: eventsRef.current.slice(-EVENT_RING), note });
+      const sum = r.summary as { frames?: number; camera?: { mean_fps?: number }; detection?: { frames_with_hands?: number; frames_with_face?: number } };
+      const stages = Object.entries(r.event_stages).map(([k, v]) => `${k} ${v}`).join(", ") || "no segments";
+      return `Saved ${r.file}. ${sum.frames ?? 0} frames, ${sum.camera?.mean_fps ?? "?"} FPS, hands in ${Math.round((sum.detection?.frames_with_hands ?? 0) * 100)}% / face in ${Math.round((sum.detection?.frames_with_face ?? 0) * 100)}% of frames. Decisions by stage: ${stages}.`;
+    } catch (err) {
+      return `Snapshot failed: ${(err as Error).message}`;
+    }
+  }, []);
 
   useEffect(() => {
     if (socketStatus === "open") socketRef.current?.send({ type: "demo", enabled: demo });
@@ -151,6 +264,8 @@ export function LiveRecognition() {
 
   const onResult = useCallback((r: VisionResult) => {
     if (!pausedRef.current && !demoRef.current) socketRef.current?.send({ type: "frame", ...r.frame });
+    framesRef.current.push(r.frame);
+    if (framesRef.current.length > FRAME_RING * 1.5) framesRef.current.splice(0, framesRef.current.length - FRAME_RING);
     if (exprEnabledRef.current) exprValueRef.current = exprRef.current.update(r.faceDetected ? r.blendshapes : null);
   }, []);
 
@@ -167,6 +282,8 @@ export function LiveRecognition() {
   }, [vision.camera, vision.stats, serverState.proc_ms, serverState.latency_ms]);
 
   const transcriptText = useMemo(() => joinTranscript(items), [items]);
+  // ISL gloss of a model class (e.g. namaskara -> HELLO), never the internal class id when a gloss exists
+  const glossOf = (label: string) => vocab.find((v) => v.label === label)?.isl_gloss || label.toUpperCase();
   const displayText = manualText ?? transcriptText;
 
   const togglePause = () => {
@@ -183,6 +300,8 @@ export function LiveRecognition() {
   const clearTranscript = () => {
     socketRef.current?.send({ type: "reset", clear: true });
     setItems([]);
+    setPending([]);
+    setUncertain([]);
     setManualText(null);
     setHero(null);
     setEventMsg("");
@@ -275,8 +394,13 @@ export function LiveRecognition() {
                 <div className="form-grid cols-2">
                   <label className="field">
                     <span>Confidence threshold: {Math.round(threshold * 100)}%</span>
-                    <input type="range" min={0.3} max={0.95} step={0.05} value={threshold} onChange={(e) => setThreshold(Number(e.target.value))} />
-                    <span className="hint">Signs below this are reported as uncertain and not added.</span>
+                    <input type="range" min={0.05} max={0.95} step={0.05} value={threshold} onChange={(e) => { setThresholdTouched(true); setThreshold(Number(e.target.value)); }} />
+                    <span className="hint">
+                      Signs below this are reported as uncertain and not added.{" "}
+                      {thresholdTouched ? <>Set by you. <button className="linkish" onClick={() => { const t = model?.calibration?.threshold ?? 0.6; setThresholdTouched(false); setThreshold(t); socketRef.current?.send({ type: "config", settings: { confidence_threshold: t } }); }}>Use calibrated value</button></>
+                        : model?.calibration ? <>Calibrated on {model.calibration.samples} out-of-fold validation predictions (expected precision {Math.round(model.calibration.precision_at_threshold * 100)}%, coverage {Math.round(model.calibration.coverage_at_threshold * 100)}%).</>
+                        : "Default value: this model has no validation calibration."}
+                    </span>
                   </label>
                   <label className="field">
                     <span>Pause that ends a sign: {stillMs} ms</span>
@@ -298,6 +422,23 @@ export function LiveRecognition() {
                       <input type="checkbox" checked={dipSplit} onChange={(e) => setDipSplit(e.target.checked)} disabled={mode !== "segment"} />
                       Experimental: split signs at brief slow-downs (off: real ISL signs contain internal holds)
                     </label>
+                    <label className="switch" title="Measured on held-out recordings (About & Testing): sign error rate 0.86 -> 0.73 when the hands are never lowered, but 0.47 -> 0.74 for normal signing with pauses">
+                      <input type="checkbox" checked={splitLong} onChange={(e) => setSplitLong(e.target.checked)} disabled={mode !== "segment"} />
+                      Experimental: split long movements where the classifier is confident about both parts (only helps if you never lower your hands; worse for normal signing)
+                    </label>
+                    <label className="field">
+                      <span>Confirm recognised words</span>
+                      <select value={confirmMode} onChange={(e) => setConfirmMode(e.target.value as "auto" | "manual" | "off")}>
+                        <option value="auto">Pending, auto-confirm after a countdown (correct or reject meanwhile)</option>
+                        <option value="manual">Pending until I confirm each word</option>
+                        <option value="off">Add immediately</option>
+                      </select>
+                    </label>
+                    {confirmMode === "auto" && (
+                      <label className="field"><span>Countdown: {commitSec} s</span>
+                        <input type="range" min={1} max={10} step={1} value={commitSec} onChange={(e) => setCommitSec(Number(e.target.value))} />
+                      </label>
+                    )}
                     <label className="switch">
                       <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />
                       Simulated demo (scripted words, ignores camera)
@@ -306,6 +447,13 @@ export function LiveRecognition() {
                 </div>
               </div>
             </details>
+            <PipelineDiagnostics
+              diag={serverState.diag ?? null} activity={serverState.activity} motion={serverState.motion} buffer={serverState.buffer}
+              procMs={serverState.proc_ms} latencyMs={serverState.latency_ms} threshold={serverState.threshold ?? threshold}
+              thresholdSource={webcamThreshold !== null && threshold === webcamThreshold ? "chosen on your webcam evaluation recordings" : thresholdTouched ? "set by you" : model?.calibration ? "calibrated on validation data" : "default"}
+              fps={vision.stats.fps} inferenceMs={vision.stats.inferenceMs} track={vision.trackInfo} source={vision.source}
+              camera={vision.camera} decisions={decisions} onSnapshot={saveSnapshot}
+            />
             <div className="toolbar">
               <Btn icon="refresh" size="sm" variant="ghost" onClick={resetRecognition}>Reset recognition</Btn>
               <span className="grow" />
@@ -383,7 +531,7 @@ export function LiveRecognition() {
           <Card
             title="Kannada transcript"
             icon="text"
-            subtitle="Kannada gloss of the supported signs, in the order signed"
+            subtitle="Kannada words for the recognised ISL glosses, in signing order: not a grammatical translation"
             actions={
               <>
                 <Btn icon={copied ? "check" : "copy"} size="sm" onClick={copy} disabled={!displayText}>{copied ? "Copied" : "Copy"}</Btn>
@@ -391,6 +539,45 @@ export function LiveRecognition() {
               </>
             }
           >
+            {pending.length > 0 && (
+              <div className="pending-box" aria-label="Words waiting for confirmation">
+                <span className="xs muted">
+                  Recognised, not yet in the transcript{confirmMode === "auto" ? ` (added automatically after ${commitSec} s)` : ""}. Pick the right word or reject it.
+                </span>
+                {pending.map((p) => (
+                  <div key={p.id} className="toolbar" style={{ margin: 0 }}>
+                    <span className="pending-word" lang="kn"><span className="gloss-tag">ISL gloss {glossOf(p.token.label)}</span>{p.token.kannada}</span>
+                    <span className="muted xs">{Math.round(p.token.confidence * 100)}%{confirmMode === "auto" ? ` · ${Math.max(0, Math.ceil(commitSec - (now - p.created) / 1000))} s` : ""}</span>
+                    <Btn icon="check" size="sm" variant="primary" onClick={() => commitPending(p)}>Add</Btn>
+                    {p.top.filter((c) => c.label !== p.token.label && c.kannada).slice(0, 2).map((c) => (
+                      <Btn key={c.label} size="sm" onClick={() => commitPending(p, c)} title={`${c.english} (${Math.round(c.confidence * 100)}%)`}>
+                        <span lang="kn">{c.kannada}</span>&nbsp;<span className="muted xs">{Math.round(c.confidence * 100)}%</span>
+                      </Btn>
+                    ))}
+                    <select aria-label="Choose another word" value="" onChange={(e) => { const v = vocab.find((x) => x.label === e.target.value); if (v) commitPending(p, { label: v.label, kannada: v.kannada, english: v.english, confidence: 1 }); }}>
+                      <option value="">Other word…</option>
+                      {vocab.map((v) => <option key={v.label} value={v.label}>{v.kannada} ({v.english})</option>)}
+                    </select>
+                    <Btn icon="x" size="sm" variant="ghost" onClick={() => rejectPending(p.id)}>Reject</Btn>
+                  </div>
+                ))}
+              </div>
+            )}
+            {uncertain.length > 0 && (
+              <div className="xs muted" aria-label="Uncertain predictions">
+                Uncertain, not added:{" "}
+                {uncertain.map((u) => (
+                  <span key={u.id} style={{ marginRight: 10 }}>
+                    {u.top.filter((c) => c.kannada).slice(0, 2).map((c) => (
+                      <button key={c.label} className="linkish" title="Add this word to the transcript" onClick={() => addUncertain(u, c)}>
+                        <span lang="kn">{c.kannada}</span>? {Math.round(c.confidence * 100)}%
+                      </button>
+                    ))}
+                  </span>
+                ))}
+                <button className="linkish" onClick={() => setUncertain([])}>clear</button>
+              </div>
+            )}
             <div className="transcript-box" aria-label="Recognised words">
               {items.length === 0 && <span className="muted small">Recognised signs appear here. Click a word to correct or remove it.</span>}
               {items.map((t, i) => t.kind === "punct" || t.label === "sentence" ? (
@@ -400,7 +587,7 @@ export function LiveRecognition() {
                 </span>
               ) : (
                 <label key={t.id} className={`token token-${t.source}`} title={`${t.english} · ${t.source}${t.confidence !== null ? ` · ${Math.round(t.confidence * 100)}%` : ""} (click to correct)`}>
-                  <span lang="kn">{t.kannada}</span>
+                  <span lang="kn"><span className="gloss-tag">{glossOf(t.label)}</span>{t.kannada}</span>
                   <select value={t.label} onChange={(e) => correct(i, e.target.value)} aria-label={`Correct word ${i + 1}: ${t.kannada}`}>
                     {vocab.map((v) => <option key={v.label} value={v.label}>{v.kannada} ({v.english})</option>)}
                     <option value="__delete__">✕ Remove this word</option>
@@ -430,6 +617,11 @@ export function LiveRecognition() {
             </div>
             {speakMsg && <Notice tone={speakMsg.tone}>{speakMsg.text}</Notice>}
           </Card>
+
+          <MeaningPanel
+            labels={items.filter((t) => t.kind === "sign" && t.label !== "sentence").map((t) => t.label)}
+            onUseKannada={(text) => setManualText(text)}
+          />
 
           <Card title="Facial expression" icon="face" subtitle="Visible-expression estimate, shown separately from the sign">
             {!exprEnabled ? (

@@ -65,12 +65,22 @@ class ContinuousRecognizer:
         table = b["table"]
         glosses, conf = b["ctc"].decode(seq)
         sid, dist = nearest_sentence(glosses, table, b.get("normalized_matcher", False))
-        base_sid = str(b["baseline"].predict(resample(seq, b["resample"]).reshape(1, -1))[0])
-        base_p = float(np.max(b["baseline"].predict_proba(resample(seq, b["resample"]).reshape(1, -1))))
-        chosen = sid if b["selected"] == "ctc" else base_sid
+        x = resample(seq, b["resample"]).reshape(1, -1)
+        probs = b["baseline"].predict_proba(x)[0]
+        classes = [str(c) for c in b["baseline"].classes_]
+        base_sid = classes[int(np.argmax(probs))]
+        base_p = float(np.max(probs))
+        decoder = b.get("decoder") or ("greedy_nearest" if b["selected"] == "ctc" else "baseline")
+        if decoder in ("ctc_likelihood", "fusion"):
+            ll = b["ctc"].sentence_log_likelihoods(seq, {k: e["gloss"] for k, e in table.items()})
+            lam = float(b.get("fusion_lambda", 1.0)) if decoder == "fusion" else 0.0
+            logpb = dict(zip(classes, np.log(np.maximum(probs, 1e-12))))
+            chosen = max(ll, key=lambda k: ll[k] + lam * logpb.get(k, float("-inf")))
+        else:
+            chosen = sid if decoder == "greedy_nearest" else base_sid
         entry = table[chosen]
         return {
-            "glosses": glosses, "gloss_confidence": round(conf, 3), "method": b["selected"],
+            "glosses": glosses, "gloss_confidence": round(conf, 3), "method": decoder,
             "sentence_id": chosen, "sentence": entry["sentence"], "kannada": entry["kannada"],
             "reference_gloss": entry["gloss"], "gloss_distance": int(dist),
             "baseline_sentence": table[base_sid]["sentence"], "baseline_confidence": round(base_p, 3),

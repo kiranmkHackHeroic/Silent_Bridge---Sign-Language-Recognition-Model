@@ -325,6 +325,13 @@ export function RegistryCard({ versions, eligibility, onChange }: { versions: Mo
   );
 }
 
+const DECODER_TEXT: Record<string, string> = {
+  greedy_nearest: "CTC greedy path → nearest sentence",
+  baseline: "Sentence classifier",
+  ctc_likelihood: "CTC full likelihood of each sentence",
+  fusion: "CTC likelihood + sentence classifier",
+};
+
 export function ContinuousCard({ status, onTrain, showTrain = true }: { status: ContinuousStatus | null; onTrain?: () => void; showTrain?: boolean }) {
   const m = status?.metrics;
   return (
@@ -350,6 +357,25 @@ export function ContinuousCard({ status, onTrain, showTrain = true }: { status: 
               </tbody>
             </table>
           </div>
+          {m.decoder_comparison && (
+            <div className="table-wrap">
+              <table>
+                <thead><tr><th>Sentence decoder (same networks)</th><th>Validation accuracy (used to choose)</th><th>Test sentence accuracy</th><th>Test GER of chosen sentence</th><th></th></tr></thead>
+                <tbody>
+                  {Object.entries(m.decoder_comparison.test).map(([k, t]) => (
+                    <tr key={k} className={m.decoder === k ? "selected" : ""}>
+                      <td><strong>{DECODER_TEXT[k] ?? k}</strong></td>
+                      <td>{pct(m.decoder_comparison!.validation[k]?.sentence_accuracy)}</td>
+                      <td>{pct(t.sentence_accuracy)} <span className="muted xs">({t.sentences_correct}/{t.videos})</span></td>
+                      <td>{pct(t.gloss_error_rate_of_chosen_sentence)}</td>
+                      <td>{m.decoder === k && <Chip tone="ok">used live</Chip>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="muted xs">Chosen on validation round {m.decoder_comparison.validation_round} only; the validation classifier was fitted on training rounds only. {m.decoder_comparison.audit}</p>
+            </div>
+          )}
           <Notice tone="info" title={`${m.videos} sentence videos: train ${m.train_videos} / validation ${m.val_videos} / test ${m.test_videos}`}>
             Split: {m.split}. Test recording groups: {m.test_groups.join(", ")}. {m.limitations}
           </Notice>

@@ -71,27 +71,57 @@ export function classify(scores: Record<Scored, number>, margin = 0.15): Express
 export class ExpressionSmoother {
   private value: Record<Scored, number> | null = null;
   private missingFrames = 0;
+  private shown: ExpressionLabel | null = null;
+  private pending: ExpressionLabel | null = null;
+  private pendingCount = 0;
 
-  constructor(private alpha = 0.25, private missingLimit = 15) {}
+  /** alpha: score EMA weight; missingLimit: frames without a face before "no face";
+   *  holdFrames: a new label must persist this many updates before it is shown (no flicker). */
+  constructor(private alpha = 0.25, private missingLimit = 15, private holdFrames = 3) {}
+
+  private stabilise(e: ExpressionEstimate): ExpressionEstimate {
+    if (this.shown === null || e.label === this.shown) {
+      this.shown = e.label;
+      this.pending = null;
+      this.pendingCount = 0;
+      return e;
+    }
+    if (e.label === this.pending) this.pendingCount++;
+    else {
+      this.pending = e.label;
+      this.pendingCount = 1;
+    }
+    if (this.pendingCount >= this.holdFrames) {
+      this.shown = e.label;
+      this.pending = null;
+      this.pendingCount = 0;
+      return e;
+    }
+    return { ...e, label: this.shown };   // keep the shown label; scores stay current
+  }
 
   update(blend: Record<string, number> | null): ExpressionEstimate {
     if (!blend) {
       this.missingFrames++;
       if (this.missingFrames >= this.missingLimit || !this.value) {
         this.value = null;
+        this.shown = null;
         return { label: "no_face", intensity: 0, scores: { happy: 0, sad: 0, angry: 0, surprised: 0 } };
       }
-      return classify(this.value);
+      return this.stabilise(classify(this.value));
     }
     this.missingFrames = 0;
     const raw = rawScores(blend);
     if (!this.value) this.value = raw;
     else for (const k of Object.keys(raw) as Scored[]) this.value[k] = this.alpha * raw[k] + (1 - this.alpha) * this.value[k];
-    return classify(this.value);
+    return this.stabilise(classify(this.value));
   }
 
   reset() {
     this.value = null;
     this.missingFrames = 0;
+    this.shown = null;
+    this.pending = null;
+    this.pendingCount = 0;
   }
 }

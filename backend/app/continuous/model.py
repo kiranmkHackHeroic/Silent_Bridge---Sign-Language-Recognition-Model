@@ -137,6 +137,28 @@ class CTCGlossRecognizer:
             prev = k
         return out, float(np.mean(confs)) if confs else 0.0
 
+    def sentence_log_likelihoods(self, seq: np.ndarray, candidates: dict[str, list[str]]) -> dict[str, float]:
+        """log P(gloss sequence | video) under the CTC model for every candidate sentence (summed over all
+        alignments, not just the greedy path), divided by the number of glosses. Candidates containing a
+        gloss outside the model vocabulary get -inf."""
+        import torch
+        with torch.no_grad():
+            logp = self.net(torch.tensor(self._norm(seq)[None]))[0]          # (T, V+1) log-probabilities
+        tok = {g: i + 1 for i, g in enumerate(self.vocab)}
+        ids = [sid for sid, gl in candidates.items() if gl and all(g in tok for g in gl)]
+        out = {sid: float("-inf") for sid in candidates}
+        if not ids:
+            return out
+        targets = torch.tensor([tok[g] for sid in ids for g in candidates[sid]], dtype=torch.long)
+        lengths = torch.tensor([len(candidates[sid]) for sid in ids], dtype=torch.long)
+        T = logp.shape[0]
+        lp = logp[:, None, :].expand(T, len(ids), logp.shape[1])
+        nll = torch.nn.functional.ctc_loss(lp, targets, torch.full((len(ids),), T, dtype=torch.long), lengths,
+                                           blank=0, reduction="none", zero_infinity=False)
+        for sid, v, n in zip(ids, nll.tolist(), lengths.tolist()):
+            out[sid] = -v / n
+        return out
+
     def gloss_error_rate(self, samples: list[dict]) -> float:
         errs = sum(edit_distance(self.decode(s["seq"])[0], s["gloss"]) for s in samples)
         return errs / max(1, sum(len(s["gloss"]) for s in samples))

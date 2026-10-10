@@ -33,6 +33,18 @@ describe("expression heuristic", () => {
     expect(sm.update(null).label).toBe("no_face");
   });
 
+  it("does not flicker between labels on alternating frames", () => {
+    const sm = new ExpressionSmoother(1, 15, 3);           // alpha 1: no score smoothing, only label hysteresis
+    sm.update({});
+    const smile = { mouthSmileLeft: 0.9, mouthSmileRight: 0.9 };
+    const seen = new Set<string>();
+    for (let i = 0; i < 10; i++) seen.add(sm.update(i % 2 ? smile : {}).label);
+    expect([...seen]).toEqual(["neutral"]);                // a smile on every other frame never wins
+    let last = "";
+    for (let i = 0; i < 3; i++) last = sm.update(smile).label;
+    expect(last).toBe("happy");                            // a sustained change is shown after 3 frames
+  });
+
   it("smooths over time", () => {
     const sm = new ExpressionSmoother(0.25);
     sm.update({});

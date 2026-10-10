@@ -42,6 +42,8 @@ export function useVision({ face, overlay, onResult }: Options) {
   const streamRef = useRef<MediaStream | null>(null);
   const modelsRef = useRef<VisionModels | null>(null);
   const rafRef = useRef<number | null>(null);
+  const tsRef = useRef(0);          // MediaPipe needs strictly increasing timestamps across runs
+  const fileRunRef = useRef(0);     // incremented to abort a running video-file run
   const optsRef = useRef({ face, overlay, onResult });
   optsRef.current = { face, overlay, onResult };
 
@@ -51,6 +53,8 @@ export function useVision({ face, overlay, onResult }: Options) {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [deviceId, setDeviceId] = useState<string>("");
   const [stats, setStats] = useState({ fps: 0, inferenceMs: 0, delegate: "" as string, faceError: null as string | null });
+  const [source, setSource] = useState<"camera" | "file">("camera");
+  const [trackInfo, setTrackInfo] = useState<{ width?: number; height?: number; frameRate?: number; label?: string } | null>(null);
 
   const refreshDevices = useCallback(async () => {
     try {
@@ -68,16 +72,26 @@ export function useVision({ face, overlay, onResult }: Options) {
 
   const stop = useCallback(() => {
     stopLoop();
+    fileRunRef.current++;
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
-    if (videoRef.current) videoRef.current.srcObject = null;
+    if (videoRef.current) {
+      videoRef.current.onended = null;
+      videoRef.current.srcObject = null;
+      if (videoRef.current.getAttribute("src")) {
+        videoRef.current.pause();
+        videoRef.current.removeAttribute("src");
+        videoRef.current.load();
+      }
+    }
     const ctx = canvasRef.current?.getContext("2d");
     if (ctx && canvasRef.current) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     setCamera("off");
   }, []);
 
-  const loop = useCallback(() => {
-    let lastVideoTime = -1;
+  /** Per-frame processor: detection -> overlay -> onResult. `frameT` (ms) overrides the frame time
+   *  (video-file mode uses the video's own clock so segmentation sees real signing speed). */
+  const makeProcessor = useCallback(() => {
     let frameCount = 0;
     let fpsWindowStart = performance.now();
     let infAvg = 0;
@@ -86,13 +100,12 @@ export function useVision({ face, overlay, onResult }: Options) {
       box: null, blend: null, detected: false,
     };
 
-    const tick = () => {
-      rafRef.current = requestAnimationFrame(tick);
+    return (frameT?: number) => {
       const video = videoRef.current;
       const models = modelsRef.current;
-      if (!video || !models || video.readyState < 2 || video.currentTime === lastVideoTime) return;
-      lastVideoTime = video.currentTime;
-      const now = performance.now();
+      if (!video || !models || video.readyState < 2) return;
+      const now = Math.max(performance.now(), tsRef.current + 1);
+      tsRef.current = now;
       const w = video.videoWidth || 640;
       const h = video.videoHeight || 480;
       const start = performance.now();
@@ -191,13 +204,89 @@ export function useVision({ face, overlay, onResult }: Options) {
       }
 
       cb({
-        frame: { t: Math.round(now * 10) / 10, w, h, hands: handsOut, face: lastFace.box },
+        // media_t: position in the video (seconds) - used to align browser and Python extractions of a file
+        frame: { t: Math.round((frameT ?? now) * 10) / 10, w, h, hands: handsOut, face: lastFace.box, media_t: Math.round(video.currentTime * 1000) / 1000 },
         blendshapes: lastFace.blend,
         faceDetected: lastFace.detected,
       });
     };
-    rafRef.current = requestAnimationFrame(tick);
   }, []);
+
+  const loop = useCallback(() => {
+    const process = makeProcessor();
+    let lastVideoTime = -1;
+    const tick = () => {
+      rafRef.current = requestAnimationFrame(tick);
+      const video = videoRef.current;
+      if (!video || video.readyState < 2 || video.currentTime === lastVideoTime) return;
+      lastVideoTime = video.currentTime;
+      process();
+    };
+    rafRef.current = requestAnimationFrame(tick);
+  }, [makeProcessor]);
+
+  const ensureModels = useCallback(async (): Promise<boolean> => {
+    if (modelsRef.current) return true;
+    setModelState("loading");
+    try {
+      modelsRef.current = await loadVisionModels();
+      setModelState("ready");
+      setStats((s) => ({ ...s, delegate: modelsRef.current!.delegate, faceError: modelsRef.current!.faceError }));
+      return true;
+    } catch (err) {
+      setModelState("error");
+      setCamera("error");
+      setError(`Could not load the MediaPipe hand model: ${String((err as Error)?.message || err)}. Check that frontend/public/models/hand_landmarker.task exists.`);
+      return false;
+    }
+  }, []);
+
+  /** Run the SAME per-frame pipeline on a video file. Frames are stepped deterministically at `fps`
+   *  (seek to the middle of each frame), so the result does not depend on rendering or CPU speed, and
+   *  frame times follow the video clock (like a webcam at that frame rate). */
+  const startFile = useCallback(async (url: string, onEnded?: () => void, fps = 30) => {
+    setError(null);
+    stop();
+    setCamera("starting");
+    if (!(await ensureModels())) return;
+    const run = ++fileRunRef.current;
+    const video = videoRef.current!;
+    video.srcObject = null;
+    video.muted = true;
+    try {
+      await new Promise<void>((resolve, reject) => {
+        video.onloadeddata = () => resolve();
+        video.onerror = () => reject(new Error("the browser cannot decode this video format"));
+        video.src = url;
+        video.load();
+      });
+      video.pause();
+      setSource("file");
+      setTrackInfo({ width: video.videoWidth, height: video.videoHeight, frameRate: fps, label: "video file (stepped frame by frame)" });
+      setCamera("on");
+      const process = makeProcessor();
+      const base = Math.max(performance.now(), tsRef.current + 1);
+      const seek = (t: number) => new Promise<void>((resolve) => {
+        if (Math.abs(video.currentTime - t) < 1e-4) return resolve();
+        video.onseeked = () => resolve();
+        video.currentTime = t;
+      });
+      const n = Math.floor(video.duration * fps);
+      for (let i = 0; i < n; i++) {
+        const t = (i + 0.5) / fps;
+        await seek(t);
+        if (fileRunRef.current !== run) return;          // stopped meanwhile
+        process(base + (i / fps) * 1000);
+      }
+      if (fileRunRef.current !== run) return;
+      setCamera("off");
+      onEnded?.();
+    } catch (err) {
+      stop();
+      setCamera("error");
+      setError(`Could not process the video file: ${String((err as Error)?.message || err)}`);
+    }
+  }, [ensureModels, makeProcessor, stop]);
 
   const start = useCallback(async (requestedDevice?: string) => {
     setError(null);
@@ -208,19 +297,7 @@ export function useVision({ face, overlay, onResult }: Options) {
     }
     stop();
     setCamera("starting");
-    if (!modelsRef.current) {
-      setModelState("loading");
-      try {
-        modelsRef.current = await loadVisionModels();
-        setModelState("ready");
-        setStats((s) => ({ ...s, delegate: modelsRef.current!.delegate, faceError: modelsRef.current!.faceError }));
-      } catch (err) {
-        setModelState("error");
-        setCamera("error");
-        setError(`Could not load the MediaPipe hand model: ${String((err as Error)?.message || err)}. Check that frontend/public/models/hand_landmarker.task exists.`);
-        return;
-      }
-    }
+    if (!(await ensureModels())) return;
     const id = requestedDevice ?? deviceId;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -243,7 +320,10 @@ export function useVision({ face, overlay, onResult }: Options) {
       video.srcObject = stream;
       await video.play();
       setCamera("on");
-      const settingsId = track.getSettings().deviceId;
+      setSource("camera");
+      const ts = track.getSettings();
+      setTrackInfo({ width: ts.width, height: ts.height, frameRate: ts.frameRate, label: track.label });
+      const settingsId = ts.deviceId;
       if (settingsId) setDeviceId(settingsId);
       refreshDevices();
       loop();
@@ -252,7 +332,7 @@ export function useVision({ face, overlay, onResult }: Options) {
       setCamera("error");
       setError(cameraErrorMessage(err));
     }
-  }, [deviceId, loop, refreshDevices, stop]);
+  }, [deviceId, ensureModels, loop, refreshDevices, stop]);
 
   const switchCamera = useCallback((id: string) => {
     setDeviceId(id);
@@ -264,5 +344,5 @@ export function useVision({ face, overlay, onResult }: Options) {
     return () => stop();
   }, [refreshDevices, stop]);
 
-  return { videoRef, canvasRef, camera, modelState, error, devices, deviceId, stats, start, stop, switchCamera };
+  return { videoRef, canvasRef, camera, modelState, error, devices, deviceId, stats, start, startFile, stop, switchCamera, source, trackInfo };
 }

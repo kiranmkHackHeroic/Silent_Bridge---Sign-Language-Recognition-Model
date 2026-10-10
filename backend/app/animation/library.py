@@ -43,7 +43,7 @@ class AnimationLibrary:
             return {"available": False, "type": None, "verified": False}
         file = self.animations_dir / entry["file"]
         return {"available": file.exists(), "type": entry.get("type"), "verified": bool(entry.get("verified")),
-                "file": entry["file"], "review": entry.get("review")}
+                "file": entry["file"], "review": entry.get("review"), "dataset_source": entry.get("dataset_source")}
 
     def get(self, sign_id: str) -> dict | None:
         self._maybe_reload()
@@ -58,6 +58,7 @@ class AnimationLibrary:
             return None
         clip["type"] = entry.get("type", clip.get("type"))
         clip["verified"] = bool(entry.get("verified", False))
+        clip["dataset_source"] = entry.get("dataset_source")      # provenance; extraction != verified ISL
         return clip
 
     def save_captured(self, sign_id: str, clip: dict) -> dict:

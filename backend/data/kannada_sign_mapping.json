@@ -110,7 +110,10 @@
       ],
       "verified": false,
       "source": "project vocabulary",
-      "notes": ""
+      "notes": "",
+      "english": "Good.",
+      "category": "Everyday responses",
+      "display": "ಒಳ್ಳೆಯದು"
     },
     "ನಾನು": {
       "sign_ids": [
@@ -465,7 +468,10 @@
       ],
       "verified": false,
       "source": "Amrita SLR class vocabulary (lexical lookup)",
-      "notes": ""
+      "notes": "",
+      "english": "Stop!",
+      "category": "Health and emergencies",
+      "display": "ನಿಲ್ಲಿಸಿ!"
     },
     "ವಿದ್ಯಾರ್ಥಿ": {
       "sign_ids": [
@@ -794,7 +800,10 @@
       ],
       "verified": false,
       "source": "INCLUDE class vocabulary (dedicated sign)",
-      "notes": ""
+      "notes": "",
+      "english": "OK.",
+      "category": "Everyday responses",
+      "display": "ಸರಿ"
     },
     "ಶುಭ ಮಧ್ಯಾಹ್ನ": {
       "sign_ids": [
@@ -802,7 +811,10 @@
       ],
       "verified": false,
       "source": "INCLUDE class vocabulary (dedicated sign)",
-      "notes": ""
+      "notes": "",
+      "english": "Good afternoon",
+      "category": "Greetings",
+      "display": "ಶುಭ ಮಧ್ಯಾಹ್ನ"
     },
     "ಶುಭ ಸಂಜೆ": {
       "sign_ids": [
@@ -810,7 +822,10 @@
       ],
       "verified": false,
       "source": "INCLUDE class vocabulary (dedicated sign)",
-      "notes": ""
+      "notes": "",
+      "english": "Good evening",
+      "category": "Greetings",
+      "display": "ಶುಭ ಸಂಜೆ"
     },
     "ಸಂತೋಷ": {
       "sign_ids": [
@@ -867,6 +882,465 @@
       "verified": false,
       "source": "INCLUDE class vocabulary (dedicated sign)",
       "notes": ""
+    },
+    "ನಮಸ್ಕಾರ ನೀವು ಹೇಗಿದ್ದೀರಿ": {
+      "sign_ids": [
+        "namaskara",
+        "how_are_you"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Hello, how are you?",
+      "category": "Greetings",
+      "display": "ನಮಸ್ಕಾರ, ನೀವು ಹೇಗಿದ್ದೀರಿ?"
+    },
+    "ಶುಭೋದಯ ಶಿಕ್ಷಕರೇ": {
+      "sign_ids": [
+        "good_morning",
+        "teacher"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Good morning, teacher.",
+      "category": "Greetings",
+      "display": "ಶುಭೋದಯ, ಶಿಕ್ಷಕರೇ"
+    },
+    "ನಿಮ್ಮ ಹೆಸರೇನು": {
+      "sign_ids": [
+        "you",
+        "name"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Question vs statement is marked by facial expression in ISL; the manual signs are the same.",
+      "english": "What is your name?",
+      "category": "Introductions",
+      "display": "ನಿಮ್ಮ ಹೆಸರೇನು?"
+    },
+    "ನಿಮ್ಮ ಹೆಸರು": {
+      "sign_ids": [
+        "you",
+        "name"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Statement reading of YOU NAME.",
+      "english": "Your name",
+      "category": "Introductions",
+      "display": "ನಿಮ್ಮ ಹೆಸರು"
+    },
+    "ನಾನು ಶಿಕ್ಷಕ": {
+      "sign_ids": [
+        "i_me",
+        "teacher"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "ಶಿಕ್ಷಕಿ when the signer is a woman.",
+      "english": "I am a teacher.",
+      "category": "Introductions",
+      "display": "ನಾನು ಶಿಕ್ಷಕ"
+    },
+    "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "good"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am fine.",
+      "category": "Introductions",
+      "display": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ"
+    },
+    "ನನಗೆ ಸಂತೋಷವಾಗಿದೆ": {
+      "sign_ids": [
+        "i_me",
+        "pleased"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am happy.",
+      "category": "Introductions",
+      "display": "ನನಗೆ ಸಂತೋಷವಾಗಿದೆ"
+    },
+    "ನಾನು ಇಂದು ಓದುತ್ತೇನೆ": {
+      "sign_ids": [
+        "today",
+        "i_me",
+        "study"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Time sign first.",
+      "english": "I will study today.",
+      "category": "Education and college",
+      "display": "ನಾನು ಇಂದು ಓದುತ್ತೇನೆ"
+    },
+    "ಅವನು ವಿದ್ಯಾರ್ಥಿ": {
+      "sign_ids": [
+        "he",
+        "student"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "He is a student.",
+      "category": "Education and college",
+      "display": "ಅವನು ವಿದ್ಯಾರ್ಥಿ"
+    },
+    "ಅವಳು ಶಿಕ್ಷಕಿ": {
+      "sign_ids": [
+        "she",
+        "teacher"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "She is a teacher.",
+      "category": "Education and college",
+      "display": "ಅವಳು ಶಿಕ್ಷಕಿ"
+    },
+    "ಅವರು ವಿದ್ಯಾರ್ಥಿಗಳು": {
+      "sign_ids": [
+        "they",
+        "student"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "They are students.",
+      "category": "Education and college",
+      "display": "ಅವರು ವಿದ್ಯಾರ್ಥಿಗಳು"
+    },
+    "ಶಿಕ್ಷಕರು ಒಳ್ಳೆಯವರು": {
+      "sign_ids": [
+        "teacher",
+        "good"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "The teacher is good.",
+      "category": "Education and college",
+      "display": "ಶಿಕ್ಷಕರು ಒಳ್ಳೆಯವರು"
+    },
+    "ಧನ್ಯವಾದಗಳು ಶಿಕ್ಷಕರೇ": {
+      "sign_ids": [
+        "thank_you",
+        "teacher"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Thank you, teacher.",
+      "category": "Education and college",
+      "display": "ಧನ್ಯವಾದಗಳು, ಶಿಕ್ಷಕರೇ"
+    },
+    "ನಾನು ಬರೆಯುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "write"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am writing.",
+      "category": "Education and college",
+      "display": "ನಾನು ಬರೆಯುತ್ತಿದ್ದೇನೆ"
+    },
+    "ನನ್ನ ಸ್ನೇಹಿತ": {
+      "sign_ids": [
+        "i_me",
+        "friend"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "My friend",
+      "category": "Family",
+      "display": "ನನ್ನ ಸ್ನೇಹಿತ"
+    },
+    "ನಾವು ಸ್ನೇಹಿತರು": {
+      "sign_ids": [
+        "we",
+        "friend"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "We are friends.",
+      "category": "Family",
+      "display": "ನಾವು ಸ್ನೇಹಿತರು"
+    },
+    "ಅವಳು ನನ್ನ ತಾಯಿ": {
+      "sign_ids": [
+        "she",
+        "i_me",
+        "mother"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "She is my mother.",
+      "category": "Family",
+      "display": "ಅವಳು ನನ್ನ ತಾಯಿ"
+    },
+    "ಅವನು ನನ್ನ ತಂದೆ": {
+      "sign_ids": [
+        "he",
+        "i_me",
+        "father"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "He is my father.",
+      "category": "Family",
+      "display": "ಅವನು ನನ್ನ ತಂದೆ"
+    },
+    "ಅವನು ನನ್ನ ಸಹೋದರ": {
+      "sign_ids": [
+        "he",
+        "i_me",
+        "brother"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "He is my brother.",
+      "category": "Family",
+      "display": "ಅವನು ನನ್ನ ಸಹೋದರ"
+    },
+    "ನೀವು ಊಟ ಮಾಡಿದಿರಾ": {
+      "sign_ids": [
+        "you",
+        "eat"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Question vs statement is marked by facial expression in ISL; the manual signs are the same.",
+      "english": "Did you eat?",
+      "category": "Food and water",
+      "display": "ನೀವು ಊಟ ಮಾಡಿದಿರಾ?"
+    },
+    "ದಯವಿಟ್ಟು ತಿನ್ನಿರಿ": {
+      "sign_ids": [
+        "you",
+        "eat"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Imperative reading of YOU EAT.",
+      "english": "Please eat.",
+      "category": "Food and water",
+      "display": "ದಯವಿಟ್ಟು ತಿನ್ನಿರಿ"
+    },
+    "ನಾನು ತಿನ್ನುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "eat"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am eating.",
+      "category": "Food and water",
+      "display": "ನಾನು ತಿನ್ನುತ್ತಿದ್ದೇನೆ"
+    },
+    "ನಾನು ಕುಡಿಯುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "drink"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am drinking.",
+      "category": "Food and water",
+      "display": "ನಾನು ಕುಡಿಯುತ್ತಿದ್ದೇನೆ"
+    },
+    "ನೀವು ವಿದ್ಯಾರ್ಥಿಯೇ": {
+      "sign_ids": [
+        "you",
+        "student"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Question vs statement is marked by facial expression in ISL; the manual signs are the same.",
+      "english": "Are you a student?",
+      "category": "Common questions",
+      "display": "ನೀವು ವಿದ್ಯಾರ್ಥಿಯೇ?"
+    },
+    "ನೀವು ವಿದ್ಯಾರ್ಥಿ": {
+      "sign_ids": [
+        "you",
+        "student"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Statement reading.",
+      "english": "You are a student.",
+      "category": "Common questions",
+      "display": "ನೀವು ವಿದ್ಯಾರ್ಥಿ"
+    },
+    "ನೀವು ಕೆಲಸ ಮಾಡುತ್ತೀರಾ": {
+      "sign_ids": [
+        "you",
+        "work"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Question vs statement is marked by facial expression in ISL; the manual signs are the same.",
+      "english": "Do you work?",
+      "category": "Common questions",
+      "display": "ನೀವು ಕೆಲಸ ಮಾಡುತ್ತೀರಾ?"
+    },
+    "ನೀವು ಕೆಲಸ ಮಾಡುತ್ತೀರಿ": {
+      "sign_ids": [
+        "you",
+        "work"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Statement reading.",
+      "english": "You work.",
+      "category": "Common questions",
+      "display": "ನೀವು ಕೆಲಸ ಮಾಡುತ್ತೀರಿ"
+    },
+    "ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "help"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Help!",
+      "category": "Assistance",
+      "display": "ಸಹಾಯ ಮಾಡಿ!"
+    },
+    "ನನಗೆ ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "i_me",
+        "help"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Directional verb in ISL: the movement direction distinguishes 'help me' from 'I will help'.",
+      "english": "Please help me.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ಸಹಾಯ ಮಾಡಿ"
+    },
+    "ನಾನು ಸಹಾಯ ಮಾಡುತ್ತೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "help"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Other reading of I HELP.",
+      "english": "I will help.",
+      "category": "Assistance",
+      "display": "ನಾನು ಸಹಾಯ ಮಾಡುತ್ತೇನೆ"
+    },
+    "ದಯವಿಟ್ಟು ಕುಳಿತುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "sit"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Please sit down.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಕುಳಿತುಕೊಳ್ಳಿ"
+    },
+    "ದಯವಿಟ್ಟು ನಿಂತುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "stand"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Please stand up.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಂತುಕೊಳ್ಳಿ"
+    },
+    "ನಾಳೆ ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ": {
+      "sign_ids": [
+        "tomorrow",
+        "i_me",
+        "work"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Time sign first.",
+      "english": "I will work tomorrow.",
+      "category": "Numbers and time",
+      "display": "ನಾಳೆ ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ"
+    },
+    "ನಿನ್ನೆ ನಾನು ಓದಿದೆ": {
+      "sign_ids": [
+        "yesterday",
+        "i_me",
+        "study"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "Time sign first.",
+      "english": "I studied yesterday.",
+      "category": "Numbers and time",
+      "display": "ನಿನ್ನೆ ನಾನು ಓದಿದೆ"
+    },
+    "ಇಂದು ರಾತ್ರಿ": {
+      "sign_ids": [
+        "today",
+        "night"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "Tonight",
+      "category": "Numbers and time",
+      "display": "ಇಂದು ರಾತ್ರಿ"
+    },
+    "ನಾನು ಮಲಗುತ್ತೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "sleep"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am going to sleep.",
+      "category": "Everyday responses",
+      "display": "ನಾನು ಮಲಗುತ್ತೇನೆ"
+    },
+    "ನನಗೆ ಕೋಪ ಬಂದಿದೆ": {
+      "sign_ids": [
+        "i_me",
+        "angry"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I am angry.",
+      "category": "Everyday responses",
+      "display": "ನನಗೆ ಕೋಪ ಬಂದಿದೆ"
+    },
+    "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "work"
+      ],
+      "verified": false,
+      "source": "phase-5 phrase set (AI-assisted Kannada, proposed ISL order; review pending)",
+      "notes": "",
+      "english": "I work.",
+      "category": "Everyday responses",
+      "display": "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ"
     }
   }
 }

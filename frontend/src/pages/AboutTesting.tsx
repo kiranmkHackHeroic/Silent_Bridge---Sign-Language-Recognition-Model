@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Icon, type IconName } from "../components/Icon";
 import { ContinuousCard } from "../components/DataPipeline";
 import { MetricsReport } from "../components/MetricsReport";
+import { SegmentationReport } from "../components/SegmentationReport";
+import { VideoPipelineTest } from "../components/VideoPipelineTest";
 import { Card, Chip, Notice, Stat } from "../components/ui";
 import { api } from "../services/api";
 import { sessionStats } from "../services/sessionStats";
@@ -115,6 +117,10 @@ export function AboutTesting() {
 
         <ContinuousCard status={continuous} showTrain={false} />
 
+        <SegmentationReport />
+
+        <VideoPipelineTest />
+
         <Card title="Datasets and citations" icon="database">
           <ul className="list">
             {datasets.map((d) => (
@@ -128,13 +134,16 @@ export function AboutTesting() {
           </ul>
         </Card>
 
-        <Card title="Supported vocabulary" icon="text" subtitle="Sign → Kannada mappings (all unverified until reviewed by an ISL expert)">
+        <Card title="Supported vocabulary" icon="text" subtitle="Sign → Kannada mappings. Wording got an AI-assisted check (hover * for remarks); native-speaker and ISL review are still pending">
           <div className="vocab-grid">
             {signs.map((v) => (
               <div key={v.label} className="vocab-item">
                 <span className="kn" lang="kn">{v.kannada}</span>
                 <span className="en">{v.isl_gloss} · {v.english}</span>
-                <span>{v.trained ? <Chip tone="ok">recognisable</Chip> : <Chip tone="muted">not trained</Chip>}</span>
+                <span>
+                  {v.trained ? <Chip tone="ok">recognisable</Chip> : <Chip tone="muted">not trained</Chip>}
+                  {v.kannada_review && <Chip tone={v.kannada_review.status === "changed" ? "warn" : "muted"} title={`${v.kannada_review.note || "no remarks"} · ${v.kannada_review.by}`}>wording {v.kannada_review.status === "changed" ? "corrected" : "checked"}{v.kannada_review.note ? " *" : ""}</Chip>}
+                </span>
               </div>
             ))}
           </div>
