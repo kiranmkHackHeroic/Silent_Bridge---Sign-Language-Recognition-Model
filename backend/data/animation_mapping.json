@@ -1237,12 +1237,6 @@
         "movement": "unchecked",
         "location": "unchecked",
         "non_manual": "unchecked"
-      },
-      "dataset_source": {
-        "dataset": "include",
-        "sample_id": "include_b239dae6a99400",
-        "signer_group": "include_test",
-        "file": "MVI_0018.MOV"
       }
     },
     "you_plural": {

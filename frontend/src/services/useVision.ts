@@ -131,7 +131,7 @@ export function useVision({ face, overlay, onResult }: Options) {
 
       const { face: wantFace, overlay: drawOverlay, onResult: cb } = optsRef.current;
       if (wantFace && models.face) {
-        faceToggle = (faceToggle + 1) % 3; // face every 3rd frame keeps hands fast
+        faceToggle = (faceToggle + 1) % 2; // face every 2nd frame captures faster facial expressions
         if (faceToggle === 0) {
           try {
             const fr = models.face.detectForVideo(src, now);
