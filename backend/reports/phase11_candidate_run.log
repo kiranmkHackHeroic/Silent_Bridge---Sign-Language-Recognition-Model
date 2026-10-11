@@ -1,0 +1,24 @@
+production c20261010-051510; train 372 (was 265), val 144, test 154; unlisted videos available 187
+leakage: {'shared_sample_ids': 0, 'test_videos_with_identical_file_in_fit': 0, 'test_videos_with_near_identical_landmarks_in_fit(cos>0.995)': 0, 'max_test_to_fit_similarity': 0.9187}
+production: {'sentence_accuracy': 0.2922, 'shown': 122, 'correct_and_shown': 43, 'precision_of_shown': 0.3525}
+candidate seed 42: {'sentence_accuracy': 0.2208, 'shown': 104, 'correct_and_shown': 30, 'precision_of_shown': 0.2885}
+candidate seed 7: {'sentence_accuracy': 0.1623, 'shown': 58, 'correct_and_shown': 18, 'precision_of_shown': 0.3103}
+candidate seed 123: {'sentence_accuracy': 0.1818, 'shown': 66, 'correct_and_shown': 18, 'precision_of_shown': 0.2727}
+{
+ "accuracy_gain": -0.0714,
+ "mean_gain_over_seeds": -0.1039,
+ "paired": {
+  "only_production_right": 19,
+  "only_candidate_right": 8,
+  "mcnemar_exact_p": 0.0522
+ },
+ "gates": {
+  "accuracy_gain_>=_3pp": false,
+  "mcnemar_p_<_0.10": true,
+  "precision_of_shown_not_lower": false,
+  "no_leakage": true,
+  "mean_gain_over_seeds_>=_3pp": false
+ },
+ "eligible_for_promotion": false
+}
+candidate saved (NOT activated): C:\Users\91938\Desktop\KannadaSignBridge\backend\models\continuous\c20261010-154341-candidate
