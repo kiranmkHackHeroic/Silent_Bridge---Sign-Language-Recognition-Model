@@ -24,8 +24,15 @@ import time
 import urllib.error
 import urllib.request
 import zipfile
+import ssl
 from datetime import datetime, timezone
 from pathlib import Path
+
+try:
+    import certifi
+    SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
+except Exception:
+    SSL_CONTEXT = ssl.create_default_context()
 
 BACKEND = Path(__file__).resolve().parent.parent
 REGISTRY = BACKEND / "data" / "datasets_registry.json"
@@ -41,7 +48,7 @@ def log(msg: str) -> None:
 def resolve_mendeley(entry: dict) -> dict:
     """Fill in file id, size and sha256 from Mendeley's public file listing."""
     url = f"https://data.mendeley.com/public-api/datasets/{entry['dataset_id']}/files?folder_id=root&version=1"
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60, context=SSL_CONTEXT) as r:
         files = json.load(r)
     for f in files:
         if f["filename"] == entry["name"]:
@@ -67,7 +74,7 @@ def download(url: str, dest: Path, expected_size: int | None, retries: int = 8) 
             break
         req = urllib.request.Request(url, headers={**UA, **({"Range": f"bytes={have}-"} if have else {})})
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
+            with urllib.request.urlopen(req, timeout=120, context=SSL_CONTEXT) as r:
                 if have and r.status != 206:      # server ignored Range -> restart
                     have = 0
                     part.unlink(missing_ok=True)
@@ -147,18 +154,24 @@ def write_status(ds_dir: Path, status: dict) -> None:
 
 
 def fetch_dataset(key: str, spec: dict, keep_archives: bool) -> dict:
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
     ds_dir = RAW / key
     ds_dir.mkdir(parents=True, exist_ok=True)
     status_file = ds_dir / "download_status.json"
     status = json.loads(status_file.read_text(encoding="utf-8")) if status_file.exists() else {"files": {}}
     status.update(dataset=key, source_url=spec["source_url"], license=spec["license"])
-    for entry in spec["files"]:
+    status_lock = threading.Lock()
+
+    def process_entry(raw_entry: dict):
+        entry = dict(raw_entry)
         if entry.get("resolve") == "mendeley":
             entry = resolve_mendeley(entry)
-        fstat = status["files"].get(entry["name"], {})
+        with status_lock:
+            fstat = status["files"].get(entry["name"], {})
         if fstat.get("state") == "extracted":
             log(f"{key}/{entry['name']}: already extracted, skipping")
-            continue
+            return
         dest = ds_dir / entry["name"]
         try:
             if not dest.exists():
@@ -179,8 +192,14 @@ def fetch_dataset(key: str, spec: dict, keep_archives: bool) -> dict:
             fstat = {"state": "failed", "error": str(exc),
                      "at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
             log(f"{key}: FAILED {entry['name']}: {exc}")
-        status["files"][entry["name"]] = fstat
-        write_status(ds_dir, status)
+        with status_lock:
+            status["files"][entry["name"]] = fstat
+            write_status(ds_dir, status)
+
+    workers = min(4, len(spec["files"]))
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        list(executor.map(process_entry, spec["files"]))
+
     states = {f.get("state") for f in status["files"].values()}
     status["state"] = "extracted" if states == {"extracted"} else ("partial" if "extracted" in states else "failed")
     write_status(ds_dir, status)

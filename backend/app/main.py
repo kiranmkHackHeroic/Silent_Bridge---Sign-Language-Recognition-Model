@@ -144,6 +144,17 @@ class TrainRequest(BaseModel):
 
 
 # ---------------------------------------------------------------- routes
+@app.get("/")
+def root():
+    return {
+        "service": "Kannada SignBridge API",
+        "version": "2.0.0",
+        "frontend": "http://127.0.0.1:5173",
+        "docs": "http://127.0.0.1:8000/docs",
+        "health": "/api/health",
+    }
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok", "time": time.time(), "model_loaded": S().predictor.loaded}

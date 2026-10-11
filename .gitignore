@@ -16,3 +16,8 @@ backend/data/processed_backup/
 backend/data/eval_recordings/
 backend/data/eval_sequences/
 backend/data/diagnostics/
+.claude/
+.DS_Store
+*.DS_Store
+*.log
+backend/data/raw/include/*.parquet
