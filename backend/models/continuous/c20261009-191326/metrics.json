@@ -1,0 +1,133 @@
+{
+ "version": "c20261009-191326",
+ "trained_at": "2026-10-09T19:13:26+00:00",
+ "task": "continuous",
+ "dataset": "ISL-CSLTR (Elakkiya & Natarajan 2021, CC BY 4.0)",
+ "videos": 492,
+ "train_videos": 189,
+ "val_videos": 149,
+ "test_videos": 154,
+ "sentences": 101,
+ "gloss_vocabulary": 168,
+ "test_groups": [
+  "rec4",
+  "rec5"
+ ],
+ "val_group": "rec1",
+ "test_videos_with_unseen_sentence": 0,
+ "split": "by recording index (whole recording rounds held out); signer identity is not annotated",
+ "baseline": {
+  "gloss_error_rate": 0.8831,
+  "sentence_accuracy": 0.2013,
+  "sentences_correct": 31,
+  "test_videos": 154,
+  "reference_glosses": 539,
+  "method": "closed-set sentence classifier: 32-step resampled landmarks + logistic regression"
+ },
+ "ctc": {
+  "gloss_error_rate": 0.7996,
+  "sentence_accuracy": 0.1299,
+  "sentences_correct": 20,
+  "test_videos": 154,
+  "reference_glosses": 539,
+  "method": "BiGRU (2x128, bidirectional) + CTC, greedy decoding; nearest corpus sentence (length-normalized gloss edit distance, chosen on validation)",
+  "epochs_trained": 64,
+  "decode_latency_ms": 34.39
+ },
+ "selected_method": "baseline",
+ "examples": [
+  {
+   "reference": "GO SLEEP",
+   "decoded": "I SLEEP",
+   "sentence": "go and sleep",
+   "nearest_sentence": "go and sleep",
+   "correct": true
+  },
+  {
+   "reference": "MY NAME NAME-FINGERSPELLED",
+   "decoded": "I NAME BY",
+   "sentence": "my name is xxxxxxxx",
+   "nearest_sentence": "i was stopped by some one",
+   "correct": false
+  },
+  {
+   "reference": "I DO NOT AGREE",
+   "decoded": "I DO NOT",
+   "sentence": "i do not agree",
+   "nearest_sentence": "i do not agree",
+   "correct": true
+  },
+  {
+   "reference": "I IN DILEMMA WHAT TO DO",
+   "decoded": "I IN DILEMMA",
+   "sentence": "i am in dilemma what to do",
+   "nearest_sentence": "i am in dilemma what to do",
+   "correct": true
+  },
+  {
+   "reference": "WHO YOU",
+   "decoded": "I YOU",
+   "sentence": "who are you",
+   "nearest_sentence": "can i help you",
+   "correct": false
+  },
+  {
+   "reference": "TRY TO UNDERSTAND",
+   "decoded": "DO YOU NEED",
+   "sentence": "try to understand",
+   "nearest_sentence": "do you need something",
+   "correct": false
+  },
+  {
+   "reference": "WHAT YOUR PHONE NUMBER",
+   "decoded": "HOW NOT",
+   "sentence": "what is your phone number",
+   "nearest_sentence": "how are things",
+   "correct": false
+  },
+  {
+   "reference": "YOU REPEAT PLEASE",
+   "decoded": "DO ME",
+   "sentence": "can you repeat that please",
+   "nearest_sentence": "do me a favour",
+   "correct": false
+  },
+  {
+   "reference": "I VERY HAPPY",
+   "decoded": "I SITTING APPRECIATE",
+   "sentence": "i am very happy",
+   "nearest_sentence": "i really appreciate it",
+   "correct": false
+  },
+  {
+   "reference": "CONGRATULATIONS",
+   "decoded": "SERVE BAD",
+   "sentence": "congratulations",
+   "nearest_sentence": "serve the food",
+   "correct": false
+  },
+  {
+   "reference": "I SITTING IN THE CLASS",
+   "decoded": "DO YOU NEED",
+   "sentence": "i am sitting in the class",
+   "nearest_sentence": "do you need something",
+   "correct": false
+  },
+  {
+   "reference": "HOW DARE YOU",
+   "decoded": "YOU",
+   "sentence": "how dare you",
+   "nearest_sentence": "who are you",
+   "correct": false
+  }
+ ],
+ "training_seconds": 1289.3,
+ "limitations": "Closed domain: only the corpus' ~100 sentences / 168 glosses. 116 glosses occur in a single sentence, so generalisation to new sentences is not expected. Recording groups are inferred from file names (no signer ids). Kannada sentences are draft translations.",
+ "matcher": {
+  "normalized_edit_distance": true,
+  "validation_sentence_accuracy": {
+   "raw": 0.0738,
+   "normalized": 0.1141
+  }
+ }
+}

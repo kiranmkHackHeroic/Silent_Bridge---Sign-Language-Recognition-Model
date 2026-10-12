@@ -1,0 +1,282 @@
+{
+ "created": "2026-10-10T15:43:41+00:00",
+ "version": "c20261010-154341-candidate",
+ "candidate": {
+  "videos": 154,
+  "sentence_accuracy": 0.2208,
+  "sentences_correct": 34,
+  "shown": 104,
+  "correct_and_shown": 30,
+  "wrong_shown": 74,
+  "precision_of_shown": 0.2885,
+  "gloss_error_rate_chosen_sentence": 0.7755,
+  "gloss_error_rate_ctc_greedy": 0.7922,
+  "latency_ms_per_sentence": {
+   "mean": 30.0,
+   "p95": 48.8
+  },
+  "per_round": {
+   "rec4": {
+    "videos": 85,
+    "sentence_accuracy": 0.2824,
+    "shown": 57,
+    "correct_and_shown": 20
+   },
+   "rec5": {
+    "videos": 69,
+    "sentence_accuracy": 0.1449,
+    "shown": 47,
+    "correct_and_shown": 10
+   }
+  }
+ },
+ "production_version": "c20261010-051510",
+ "data": {
+  "train_videos": 372,
+  "train_videos_before": 265,
+  "val_videos": 144,
+  "test_videos": 154,
+  "unlisted_added": 187,
+  "excluded_by_integrity_audit": 9,
+  "unlisted_excluded_by_length_check": [
+   {
+    "sample_id": "isl_csltr_08a6ba4646f260",
+    "sentence_id": "s023",
+    "length_ratio": 0.27
+   },
+   {
+    "sample_id": "isl_csltr_0bcd082f2b6256",
+    "sentence_id": "s025",
+    "length_ratio": 0.16
+   },
+   {
+    "sample_id": "isl_csltr_23e251cf537ebc",
+    "sentence_id": "s040",
+    "length_ratio": 0.32
+   },
+   {
+    "sample_id": "isl_csltr_993f9552886d10",
+    "sentence_id": "s020",
+    "length_ratio": 0.31
+   },
+   {
+    "sample_id": "isl_csltr_aa01991e87222a",
+    "sentence_id": "s026",
+    "length_ratio": 0.29
+   },
+   {
+    "sample_id": "isl_csltr_da739e5d673433",
+    "sentence_id": "s023",
+    "length_ratio": 0.27
+   },
+   {
+    "sample_id": "isl_csltr_f811e702b16221",
+    "sentence_id": "s041",
+    "length_ratio": 0.28
+   }
+  ],
+  "train_balance_before": {
+   "sentences": 101,
+   "videos": 265,
+   "min": 1,
+   "median": 2.0,
+   "max": 6
+  },
+  "train_balance_after": {
+   "sentences": 99,
+   "videos": 372,
+   "min": 1,
+   "median": 4.0,
+   "max": 7
+  },
+  "glosses_without_clean_training_example": [
+   "NO"
+  ],
+  "test_sentences_without_training_example_before": 0,
+  "test_sentences_without_training_example_after": 0
+ },
+ "leakage": {
+  "shared_sample_ids": 0,
+  "test_videos_with_identical_file_in_fit": 0,
+  "test_videos_with_near_identical_landmarks_in_fit(cos>0.995)": 0,
+  "max_test_to_fit_similarity": 0.9187
+ },
+ "decoding": {
+  "fusion_lambda": 1.0,
+  "accept_threshold": 0.5,
+  "identical_for_both": true
+ },
+ "production": {
+  "videos": 154,
+  "sentence_accuracy": 0.2922,
+  "sentences_correct": 45,
+  "shown": 122,
+  "correct_and_shown": 43,
+  "wrong_shown": 79,
+  "precision_of_shown": 0.3525,
+  "gloss_error_rate_chosen_sentence": 0.6846,
+  "gloss_error_rate_ctc_greedy": 0.7328,
+  "latency_ms_per_sentence": {
+   "mean": 45.5,
+   "p95": 118.7
+  },
+  "per_round": {
+   "rec4": {
+    "videos": 85,
+    "sentence_accuracy": 0.3765,
+    "shown": 69,
+    "correct_and_shown": 31
+   },
+   "rec5": {
+    "videos": 69,
+    "sentence_accuracy": 0.1884,
+    "shown": 53,
+    "correct_and_shown": 12
+   }
+  }
+ },
+ "seeds": {
+  "42": {
+   "sentence_accuracy": 0.2208,
+   "correct_and_shown": 30,
+   "precision_of_shown": 0.2885,
+   "epochs": 51
+  },
+  "7": {
+   "sentence_accuracy": 0.1623,
+   "correct_and_shown": 18,
+   "precision_of_shown": 0.3103,
+   "epochs": 27
+  },
+  "123": {
+   "sentence_accuracy": 0.1818,
+   "correct_and_shown": 18,
+   "precision_of_shown": 0.2727,
+   "epochs": 31
+  }
+ },
+ "paired": {
+  "only_production_right": 19,
+  "only_candidate_right": 8,
+  "mcnemar_exact_p": 0.0522
+ },
+ "accuracy_gain": -0.0714,
+ "mean_gain_over_seeds": -0.1039,
+ "gates": {
+  "accuracy_gain_>=_3pp": false,
+  "mcnemar_p_<_0.10": true,
+  "precision_of_shown_not_lower": false,
+  "no_leakage": true,
+  "mean_gain_over_seeds_>=_3pp": false
+ },
+ "eligible_for_promotion": false,
+ "failure_examples": [
+  {
+   "truth": "go and sleep",
+   "candidate": "hi how are you",
+   "posterior": 0.351,
+   "greedy_glosses": "HI SLEEP",
+   "round": "rec4"
+  },
+  {
+   "truth": "i do not agree",
+   "candidate": "you do anything, i do not care",
+   "posterior": 0.782,
+   "greedy_glosses": "I DO YOU",
+   "round": "rec4"
+  },
+  {
+   "truth": "try to understand",
+   "candidate": "are you free today",
+   "posterior": 0.261,
+   "greedy_glosses": "WHAT REPEAT",
+   "round": "rec5"
+  },
+  {
+   "truth": "can you repeat that please",
+   "candidate": "bring water for me",
+   "posterior": 0.781,
+   "greedy_glosses": "HE WATER",
+   "round": "rec4"
+  },
+  {
+   "truth": "i am very happy",
+   "candidate": "i am really grateful",
+   "posterior": 0.99,
+   "greedy_glosses": "I REALLY GRATEFUL",
+   "round": "rec4"
+  },
+  {
+   "truth": "congratulations",
+   "candidate": "can i help you",
+   "posterior": 0.343,
+   "greedy_glosses": "YOU",
+   "round": "rec4"
+  },
+  {
+   "truth": "i am sitting in the class",
+   "candidate": "i was stopped by some one",
+   "posterior": 0.326,
+   "greedy_glosses": "I SITTING HELP",
+   "round": "rec5"
+  },
+  {
+   "truth": "how dare you",
+   "candidate": "i am really grateful",
+   "posterior": 0.422,
+   "greedy_glosses": "I SITTING YOU",
+   "round": "rec4"
+  },
+  {
+   "truth": "prepare the bed",
+   "candidate": "you are bad",
+   "posterior": 0.366,
+   "greedy_glosses": "HE PLACE",
+   "round": "rec5"
+  },
+  {
+   "truth": "help me",
+   "candidate": "i am hungry",
+   "posterior": 0.285,
+   "greedy_glosses": "I TIRED",
+   "round": "rec4"
+  },
+  {
+   "truth": "now onwards he will never hurt you",
+   "candidate": "you do anything, i do not care",
+   "posterior": 0.623,
+   "greedy_glosses": "IT DO CHAT",
+   "round": "rec4"
+  },
+  {
+   "truth": "you need a medicine, take this one",
+   "candidate": "where are you from",
+   "posterior": 0.561,
+   "greedy_glosses": "I SITTING YOU FROM",
+   "round": "rec5"
+  },
+  {
+   "truth": "take care of yourself",
+   "candidate": "that is so kind of you",
+   "posterior": 0.704,
+   "greedy_glosses": "WHAT KIND YOU",
+   "round": "rec5"
+  },
+  {
+   "truth": "i promise",
+   "candidate": "i enjoyed a lot",
+   "posterior": 0.705,
+   "greedy_glosses": "I STOPPED",
+   "round": "rec4"
+  },
+  {
+   "truth": "how dare you",
+   "candidate": "go and sleep",
+   "posterior": 0.529,
+   "greedy_glosses": "HI YOU",
+   "round": "rec5"
+  }
+ ],
+ "note": "ISL-CSLTR has no signer IDs: rounds are recording indices, so signer independence is not guaranteed",
+ "runtime_s": 1430.3
+}

@@ -1,0 +1,21 @@
+{
+  "state": "active",
+  "decision": "promoted: reload + prediction + live-pipeline smoke test passed",
+  "comparison": {
+    "previous_version": "v20261009-192223",
+    "fair_test_samples": 0,
+    "note": "too few test samples unseen by the active model for a fair comparison"
+  },
+  "decided_at": "2026-10-09T20:48:56+00:00",
+  "retrospective_comparison": {
+    "previous_version": "v20261009-192223",
+    "identical_held_out_test_set": true,
+    "test_samples": 245,
+    "previous_accuracy": 0.5878,
+    "previous_macro_f1": 0.5773,
+    "candidate_accuracy": 0.5959,
+    "candidate_macro_f1": 0.5699,
+    "within_max_regression_0.02": true,
+    "note": "added 2026-10-10 after the registry learned to compare recorded held-out scores on an identical test set (same dataset hash, test groups and size)"
+  }
+}

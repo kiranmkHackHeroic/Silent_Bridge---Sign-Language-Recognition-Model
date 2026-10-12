@@ -1,0 +1,9 @@
+{
+  "state": "active",
+  "decision": "promoted: reload + prediction + live-pipeline smoke test passed",
+  "comparison": {
+    "previous_version": "v20261009-172730",
+    "note": "the active model does not record which samples it was trained on, so no fair comparison on unseen data is possible; acceptance uses the absolute threshold and smoke test only"
+  },
+  "decided_at": "2026-10-09T19:22:24+00:00"
+}

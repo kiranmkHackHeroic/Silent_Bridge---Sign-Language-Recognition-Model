@@ -1,0 +1,12 @@
+{
+  "state": "rejected",
+  "decision": "rejected: worse than active v20261009-172730 on the same test set (0.574 < 0.847 - 0.02)",
+  "comparison": {
+    "previous_version": "v20261009-172730",
+    "previous_macro_f1_on_same_test": 0.8474,
+    "previous_accuracy_on_same_test": 0.8735,
+    "candidate_macro_f1": 0.5741,
+    "note": "previous model may have been trained on these test samples (conservative)"
+  },
+  "decided_at": "2026-10-09T19:08:35+00:00"
+}

@@ -156,6 +156,8 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 Installs the backend venv (FastAPI, scikit-learn, MediaPipe 0.10.21, OpenCV, CPU PyTorch, pandas, pyarrow 17, openpyxl) and the frontend (React/Vite, bundled Inter + Noto Sans Kannada fonts), and downloads the MediaPipe `.task` models. Already done on this laptop.
 
+**Trained models are included** in `backend/models/` (44 MB): the active isolated model `v20261010-101617`, the active sentence model `c20261010-051510`, and all earlier and rejected versions for rollback. The app runs right after setup, without downloading datasets or training. Dataset videos (15 GB) and extracted landmarks are not in the repository; download and import them only to retrain.
+
 **Requirements:** Python 3.12, Node.js 18+, Chrome or Edge (camera access needs `http://127.0.0.1` or `localhost`). **macOS/Linux:** equivalent shell scripts exist: `start-backend.sh`, `start-frontend.sh`, `download-datasets.sh`, `import-datasets.sh`, `train-model.sh`. They expect the venv at `backend/.venv` (`python3 -m venv backend/.venv && backend/.venv/bin/pip install -r backend/requirements.txt`, then `npm install` in `frontend/`).
 
 ## Data and training workflow

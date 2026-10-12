@@ -1,0 +1,17 @@
+{
+  "state": "active",
+  "decision": "promoted: reload + prediction + live-pipeline smoke test passed",
+  "comparison": {
+    "previous_version": "v20261009-204853",
+    "fair_test_samples": 0,
+    "note": "too few test samples unseen by the active model for a fair comparison"
+  },
+  "decided_at": "2026-10-09T22:52:57+00:00",
+  "retrospective_comparison": {
+    "previous_version": "v20261009-204853",
+    "identical_subset": "Amrita SLR held-out signers nachiketh + signer_0403 (213 videos, same groups in both versions)",
+    "previous_accuracy": 0.5587,
+    "candidate_accuracy": 0.5446,
+    "note": "per-sample predictions were not yet recorded, so macro-F1 on the shared samples cannot be recomputed; the accuracy difference is 3 of 213 videos. The test set grew by 23 INCLUDE Pronouns test videos (8 new signs)."
+  }
+}

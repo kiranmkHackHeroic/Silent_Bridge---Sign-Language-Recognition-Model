@@ -1,0 +1,133 @@
+{
+ "version": "c20261011-174632",
+ "trained_at": "2026-10-11T17:46:32+00:00",
+ "task": "continuous",
+ "dataset": "ISL-CSLTR (Elakkiya & Natarajan 2021, CC BY 4.0)",
+ "videos": 483,
+ "train_videos": 257,
+ "val_videos": 72,
+ "test_videos": 154,
+ "sentences": 98,
+ "gloss_vocabulary": 164,
+ "test_groups": [
+  "rec4",
+  "rec5"
+ ],
+ "val_group": "rec2",
+ "test_videos_with_unseen_sentence": 0,
+ "split": "by recording index (whole recording rounds held out); signer identity is not annotated",
+ "baseline": {
+  "gloss_error_rate": 0.9035,
+  "sentence_accuracy": 0.1948,
+  "sentences_correct": 30,
+  "test_videos": 154,
+  "reference_glosses": 539,
+  "method": "closed-set sentence classifier: 32-step resampled landmarks + logistic regression"
+ },
+ "matcher": {
+  "normalized_edit_distance": true,
+  "validation_sentence_accuracy": {
+   "raw": 0.1528,
+   "normalized": 0.2083
+  }
+ },
+ "ctc": {
+  "gloss_error_rate": 0.8089,
+  "sentence_accuracy": 0.1364,
+  "sentences_correct": 21,
+  "test_videos": 154,
+  "reference_glosses": 539,
+  "method": "BiGRU (2x128, bidirectional) + CTC, greedy decoding; nearest corpus sentence (length-normalized gloss edit distance, chosen on validation)",
+  "epochs_trained": 87,
+  "decode_latency_ms": 33.93
+ },
+ "selected_method": "baseline",
+ "examples": [
+  {
+   "reference": "GO SLEEP",
+   "decoded": "I IN DILEMMA WHAT",
+   "sentence": "go and sleep",
+   "nearest_sentence": "i am in dilemma what to do",
+   "correct": false
+  },
+  {
+   "reference": "MY NAME NAME-FINGERSPELLED",
+   "decoded": "I STOPPED BY",
+   "sentence": "my name is xxxxxxxx",
+   "nearest_sentence": "i was stopped by some one",
+   "correct": false
+  },
+  {
+   "reference": "I DO NOT AGREE",
+   "decoded": "I DO ANYTHING I YOU",
+   "sentence": "i do not agree",
+   "nearest_sentence": "i like you i love you",
+   "correct": false
+  },
+  {
+   "reference": "I IN DILEMMA WHAT TO DO",
+   "decoded": "I NOT DILEMMA I LOVE DO",
+   "sentence": "i am in dilemma what to do",
+   "nearest_sentence": "i am in dilemma what to do",
+   "correct": true
+  },
+  {
+   "reference": "WHO YOU",
+   "decoded": "DO NEED",
+   "sentence": "who are you",
+   "nearest_sentence": "do you need something",
+   "correct": false
+  },
+  {
+   "reference": "TRY TO UNDERSTAND",
+   "decoded": "WHAT DO YOU",
+   "sentence": "try to understand",
+   "nearest_sentence": "what do you think",
+   "correct": false
+  },
+  {
+   "reference": "WHAT YOUR PHONE NUMBER",
+   "decoded": "HOW YOUR PHONE YOU",
+   "sentence": "what is your phone number",
+   "nearest_sentence": "how can i help you",
+   "correct": false
+  },
+  {
+   "reference": "YOU REPEAT PLEASE",
+   "decoded": "TURN REPEAT PLEASE",
+   "sentence": "can you repeat that please",
+   "nearest_sentence": "can you repeat that please",
+   "correct": true
+  },
+  {
+   "reference": "I VERY HAPPY",
+   "decoded": "I REALLY YOU",
+   "sentence": "i am very happy",
+   "nearest_sentence": "can i help you",
+   "correct": false
+  },
+  {
+   "reference": "CONGRATULATIONS",
+   "decoded": "YOU COMING",
+   "sentence": "congratulations",
+   "nearest_sentence": "you are bad",
+   "correct": false
+  },
+  {
+   "reference": "I SITTING IN THE CLASS",
+   "decoded": "I HELP YOU",
+   "sentence": "i am sitting in the class",
+   "nearest_sentence": "can i help you",
+   "correct": false
+  },
+  {
+   "reference": "HOW DARE YOU",
+   "decoded": "I NOT YOU",
+   "sentence": "how dare you",
+   "nearest_sentence": "can i help you",
+   "correct": false
+  }
+ ],
+ "training_seconds": 1371.6,
+ "limitations": "Closed domain: only the corpus' ~100 sentences / 168 glosses. 116 glosses occur in a single sentence, so generalisation to new sentences is not expected. Recording groups are inferred from file names (no signer ids). Kannada sentences are draft translations."
+}
