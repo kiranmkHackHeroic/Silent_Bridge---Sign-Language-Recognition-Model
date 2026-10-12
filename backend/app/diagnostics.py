@@ -71,7 +71,7 @@ def ood_stats(predictor, vector: np.ndarray | None) -> dict | None:
     z = np.abs((vector - mu) / np.where(sd == 0, 1, sd))
     ref = (predictor.meta or {}).get("ood_reference") or {}
     p99 = ref.get("mean_abs_z_p99")
-    T = DEFAULT_FEATURE_CONFIG.resample_frames
+    T = predictor.feature_config.resample_frames      # the loaded model's own setting, not the default
     per_block = {}
     frame_part = z[: T * FRAME_DIM].reshape(T, FRAME_DIM)
     for name, (a, b) in FEATURE_BLOCKS.items():
@@ -84,9 +84,11 @@ def ood_stats(predictor, vector: np.ndarray | None) -> dict | None:
             "worst_block": max(per_block, key=per_block.get)}
 
 
-def schema_report() -> dict:
+def schema_report(cfg=None) -> dict:
+    """cfg: the loaded model's feature settings (defaults to the settings used for new models)."""
+    cfg = cfg or DEFAULT_FEATURE_CONFIG
     return {"schema": FEATURE_SCHEMA, "frame_dim": FRAME_DIM, "hand_block_dim": HAND_DIM,
-            "model_input_dim": feature_dim(DEFAULT_FEATURE_CONFIG), "resample_frames": DEFAULT_FEATURE_CONFIG.resample_frames,
+            "model_input_dim": feature_dim(cfg), "resample_frames": cfg.resample_frames,
             "blocks": {k: list(v) for k, v in FEATURE_BLOCKS.items()}}
 
 

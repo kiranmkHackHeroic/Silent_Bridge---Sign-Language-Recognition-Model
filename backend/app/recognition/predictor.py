@@ -42,7 +42,8 @@ class SignPredictor:
         self._explicit = model_file is not None
         self.model_file = Path(model_file) if model_file else MODEL_FILE
         self.meta_file = Path(meta_file) if meta_file else MODEL_META_FILE
-        self.feature_config = feature_config
+        self._base_config = feature_config       # the code's current settings, used for new models
+        self.feature_config = feature_config     # the LOADED model's own settings once a model is loaded
         self.model = None
         self.classes: list[str] = []
         self.meta: dict = {}
@@ -70,11 +71,13 @@ class SignPredictor:
         """Load the model bundle. Returns False (and records `error`) on failure."""
         with self._lock:
             self.model, self.classes, self.meta, self.error = None, [], {}, None
+            self.feature_config = self._base_config
             if not self._explicit:
                 from ..training.registry import active_paths
                 self.model_file, self.meta_file, _ = active_paths()
             try:
-                bundle = self._read_bundle()
+                bundle, cfg = self._read_bundle()
+                self.feature_config = cfg
                 self.model = bundle["pipeline"]
                 self.classes = list(bundle["classes"])
                 self.meta = {k: v for k, v in bundle.items() if k != "pipeline"}
@@ -87,7 +90,22 @@ class SignPredictor:
                     raise
                 return False
 
-    def _read_bundle(self) -> dict:
+    def _model_config(self, saved: dict | None) -> FeatureConfig:
+        """Feature settings to use for a model: its OWN saved sequence settings (e.g. resample_frames), so a
+        model keeps working when the defaults for new models change. The per-frame feature schema must match
+        the code, because the frame features themselves are computed by the current code."""
+        base = self._base_config
+        if saved == base.to_dict():
+            return base
+        try:
+            cfg = FeatureConfig(**saved) if isinstance(saved, dict) else None
+        except TypeError:
+            cfg = None
+        if cfg is None or cfg.schema != base.schema or cfg.version != base.version:
+            raise ModelLoadError("model was trained with a different feature configuration (frame schema) - retrain it")
+        return cfg
+
+    def _read_bundle(self) -> tuple[dict, FeatureConfig]:
         if not self.model_file.exists():
             raise ModelLoadError(f"no trained model at {self.model_file.name} - record data and train first")
         try:
@@ -96,9 +114,8 @@ class SignPredictor:
             raise ModelLoadError(f"could not read model file: {exc}") from exc
         if not isinstance(bundle, dict) or "pipeline" not in bundle or "classes" not in bundle:
             raise ModelLoadError("model file has an unexpected format")
-        if bundle.get("feature_config") != self.feature_config.to_dict():
-            raise ModelLoadError("model was trained with a different feature configuration - retrain it")
-        expected = feature_dim(self.feature_config)
+        cfg = self._model_config(bundle.get("feature_config"))
+        expected = feature_dim(cfg)
         n_in = getattr(bundle["pipeline"], "n_features_in_", None)
         if n_in is not None and n_in != expected:
             raise ModelLoadError(f"model expects {n_in} features but the pipeline produces {expected}")
@@ -107,7 +124,7 @@ class SignPredictor:
             raise ModelLoadError("class mapping in model file is inconsistent")
         if len(bundle["classes"]) < 2:
             raise ModelLoadError("model must have at least two classes")
-        return bundle
+        return bundle, cfg
 
     def status(self) -> dict:
         meta = {}

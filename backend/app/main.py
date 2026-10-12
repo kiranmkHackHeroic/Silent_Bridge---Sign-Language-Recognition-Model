@@ -683,7 +683,7 @@ def _processed_sample(source: str, sample_id: str) -> tuple[dict, Path]:
 @app.get("/api/diagnostics/schema")
 def diagnostics_schema():
     s = S()
-    return {**schema_report(), "model_calibration": (s.predictor.meta or {}).get("calibration"),
+    return {**schema_report(s.predictor.feature_config), "model_calibration": (s.predictor.meta or {}).get("calibration"),
             "model_ood_reference": (s.predictor.meta or {}).get("ood_reference"),
             "model_version": s.predictor.meta.get("model_version")}
 

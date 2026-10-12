@@ -116,6 +116,17 @@ def test_incompatible_feature_schema_is_refused(trained, tmp_path):
     p = SignPredictor(tmp_path / "old.joblib", tmp_path / "meta.json")
     assert not p.load() and "different feature configuration" in p.error
 
+def test_model_keeps_its_own_sequence_settings_when_defaults_change(trained):
+    """Changing the default resample_frames for NEW models must not break an existing model: it is used with the
+    sequence settings it was trained with (same per-frame schema)."""
+    _, root, _ = trained
+    saved = joblib.load(root / "models" / "sign_model.joblib")["feature_config"]
+    other = FeatureConfig(resample_frames=saved["resample_frames"] + 8)
+    p = SignPredictor(root / "models" / "sign_model.joblib", root / "models" / "model_meta.json", feature_config=other)
+    assert p.load(), p.error
+    assert p.feature_config.to_dict() == saved
+    assert p.predict_frames([parse_frame(f) for f in sign_frames("circle", n=30)]) is not None
+
 
 class _UnsurePredictor(SignPredictor):
     """Stub classifier that is never confident (an untrained / unknown gesture)."""

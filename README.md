@@ -227,7 +227,7 @@ Step-by-step procedure: [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE
 
 ## How recognition works
 - **Features** (`backend/app/recognition/landmarks.py`, schema `hands-face-v2`, 147 values/frame): per hand, wrist-relative palm-scaled shape, image position, **face-relative position**, **finger direction + palm normal**, and a presence flag; plus a face flag. Missing hands are flagged, never zero-filled as a sign.
-- **Isolated model input:** segment resampled to 16 steps + velocities = 2,444 values. Training augments with temporal crop, speed, jitter and **left/right mirroring** (left-handed signers, mirrored videos).
+- **Isolated model input:** segment resampled to a fixed number of steps + velocities. The active model uses 16 steps (2,444 values). New models are trained with 24 steps (`FeatureConfig.resample_frames`). Each model is always run with the step count stored in it, so changing the default never breaks an existing model. Training augments with temporal crop, speed, jitter and **left/right mirroring** (left-handed signers, mirrored videos).
 - **Live isolated mode:** a sign starts when hands enter or move, and ends at a pause (800 ms, adjustable) or when the hands drop. Each segment is classified once with a confidence threshold, an "uncertain" state and duplicate suppression.
 - **Sentence mode:** one segment = one sentence (1.5 s pause or hands down) → CTC decoding → nearest corpus sentence → Kannada.
 

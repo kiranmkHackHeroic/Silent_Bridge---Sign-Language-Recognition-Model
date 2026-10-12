@@ -18,7 +18,7 @@ from app.evaluation import live_eval
 from app.recognition.landmarks import FRAME_DIM, parse_frame
 from app.recognition.pipeline import RecognitionSession
 from app.recognition.predictor import SignPredictor
-from app.recognition.sequence_features import frames_to_vector
+from app.recognition.sequence_features import feature_dim, frames_to_vector
 from app.training.train_model import calibrate_threshold, train
 from app.translation.kannada_mapping import Vocabulary
 from tests.synthetic import empty_frames, frame, hand_points, sign_frames
@@ -307,9 +307,9 @@ def test_sign_trace_reports_ensemble_members_and_parity(tmp_path):
     feats = [parse_frame(f) for f in sign_frames("wave", rng=rng)]
     vec = frames_to_vector(feats, pred.feature_config)
     tr = sign_trace(pred, feats, vec, 0.4, "still", 5)
-    assert tr["input"]["ok"] and tr["input"]["dim"] == tr["input"]["expected_dim"] == 2444
+    assert tr["input"]["ok"] and tr["input"]["dim"] == tr["input"]["expected_dim"] == feature_dim(FeatureConfig())
     assert [m["model"] for m in tr["members"]] == ["LogisticRegression", "GRU"] and tr["class_mapping_ok"]
-    assert tr["segment"]["still_tail_frames_trimmed"] == 5 and tr["segment"]["resampled_to"] == 16
+    assert tr["segment"]["still_tail_frames_trimmed"] == 5 and tr["segment"]["resampled_to"] == FeatureConfig().resample_frames
     # the combined top-1 is the weighted average of the members' probabilities
     x = vec.reshape(1, -1)
     avg = 0.5 * ens.members[0].predict_proba(x)[0] + 0.5 * ens.members[1].predict_proba(x)[0]
