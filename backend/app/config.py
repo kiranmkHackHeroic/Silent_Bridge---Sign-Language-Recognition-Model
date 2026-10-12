@@ -38,7 +38,7 @@ class FeatureConfig:
 
     version: int = FEATURE_VERSION
     schema: str = FEATURE_SCHEMA
-    resample_frames: int = 16          # every sequence is resampled to this many frames
+    resample_frames: int = 24          # every sequence is resampled to this many frames
     max_gap_fill: int = 4              # missing-hand gaps up to this many frames are filled
     min_hand_frames: int = 6           # sequences with fewer hand frames are not classified
 
@@ -51,7 +51,7 @@ class RecognitionSettings:
     """Continuous-recognition behaviour. Adjustable from the UI."""
 
     mode: str = "segment"              # "segment" (isolated signs), "sliding" (experimental) or "sentence" (continuous model)
-    confidence_threshold: float = 0.60
+    confidence_threshold: float = 0.45
     # segment mode
     motion_start: float = 0.008        # motion (per 30 fps frame) needed to start a sign
     motion_still: float = 0.003        # motion below this counts as "still"
@@ -123,10 +123,10 @@ DEFAULT_FEATURE_CONFIG = FeatureConfig()
 
 @dataclass
 class TrainingConfig:
-    augment_copies: int = 3
-    crop_fraction: float = 0.15        # random trim of up to 15% at each end
-    noise_std: float = 0.015           # landmark jitter in normalized hand units
-    position_jitter: float = 0.04
+    augment_copies: int = 5
+    crop_fraction: float = 0.20        # random trim of up to 20% at each end
+    noise_std: float = 0.020           # landmark jitter in normalized hand units
+    position_jitter: float = 0.05
     # face dropout: blank the face-relative block for a random span of frames in this share of augmented
     # copies. The face is often not detected while the hands cover it (signs at the face), and whether it
     # is found differs between cameras/resolutions; the model must not depend on it frame by frame.
