@@ -3,9 +3,9 @@
   "labels": [
     {
       "label": "namaskara",
-      "isl_gloss": "HELLO",
       "english": "Hello / Namaste",
       "kannada": "ನಮಸ್ಕಾರ",
+      "isl_gloss": "HELLO",
       "verified": false,
       "notes": "Standard Kannada greeting.",
       "kannada_review": {
@@ -16,9 +16,9 @@
     },
     {
       "label": "thank_you",
-      "isl_gloss": "THANK-YOU",
       "english": "Thank you",
       "kannada": "ಧನ್ಯವಾದಗಳು",
+      "isl_gloss": "THANK-YOU",
       "verified": false,
       "notes": "Plural/polite form; ಧನ್ಯವಾದ is accepted as an alias.",
       "kannada_review": {
@@ -29,9 +29,9 @@
     },
     {
       "label": "yes",
-      "isl_gloss": "YES",
       "english": "Yes",
       "kannada": "ಹೌದು",
+      "isl_gloss": "YES",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -42,9 +42,9 @@
     },
     {
       "label": "no",
-      "isl_gloss": "NO",
       "english": "No",
       "kannada": "ಇಲ್ಲ",
+      "isl_gloss": "NO",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -55,9 +55,9 @@
     },
     {
       "label": "water",
-      "isl_gloss": "WATER",
       "english": "Water",
       "kannada": "ನೀರು",
+      "isl_gloss": "WATER",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -68,9 +68,9 @@
     },
     {
       "label": "food",
-      "isl_gloss": "FOOD",
       "english": "Food / Meal",
       "kannada": "ಊಟ",
+      "isl_gloss": "FOOD",
       "verified": false,
       "notes": "ಊಟ = meal; ಆಹಾರ = food in general.",
       "kannada_review": {
@@ -81,9 +81,9 @@
     },
     {
       "label": "help",
-      "isl_gloss": "HELP",
       "english": "Help",
       "kannada": "ಸಹಾಯ",
+      "isl_gloss": "HELP",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -94,9 +94,9 @@
     },
     {
       "label": "please",
-      "isl_gloss": "PLEASE",
       "english": "Please",
       "kannada": "ದಯವಿಟ್ಟು",
+      "isl_gloss": "PLEASE",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -107,9 +107,9 @@
     },
     {
       "label": "sorry",
-      "isl_gloss": "SORRY",
       "english": "Sorry",
       "kannada": "ಕ್ಷಮಿಸಿ",
+      "isl_gloss": "SORRY",
       "verified": false,
       "notes": "Polite imperative 'please forgive'.",
       "kannada_review": {
@@ -120,9 +120,9 @@
     },
     {
       "label": "good",
-      "isl_gloss": "GOOD",
       "english": "Good",
       "kannada": "ಒಳ್ಳೆಯದು",
+      "isl_gloss": "GOOD",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -133,9 +133,9 @@
     },
     {
       "label": "i_me",
-      "isl_gloss": "I/ME",
       "english": "I / Me",
       "kannada": "ನಾನು",
+      "isl_gloss": "I/ME",
       "verified": false,
       "notes": "Pointing sign; inflected forms (ನನಗೆ, ನನ್ನ) map here in Kannada-to-Sign.",
       "kannada_review": {
@@ -146,9 +146,9 @@
     },
     {
       "label": "you",
-      "isl_gloss": "YOU",
       "english": "You",
       "kannada": "ನೀವು",
+      "isl_gloss": "YOU",
       "verified": false,
       "notes": "Polite form; ನೀನು maps here in Kannada-to-Sign.",
       "kannada_review": {
@@ -159,9 +159,9 @@
     },
     {
       "label": "your",
-      "isl_gloss": "YOUR",
       "english": "Your",
       "kannada": "ನಿಮ್ಮ",
+      "isl_gloss": "YOUR",
       "verified": false,
       "notes": "Possessive of ನೀವು.",
       "kannada_review": {
@@ -172,9 +172,9 @@
     },
     {
       "label": "name",
-      "isl_gloss": "NAME",
       "english": "Name",
       "kannada": "ಹೆಸರು",
+      "isl_gloss": "NAME",
       "verified": false,
       "notes": "",
       "kannada_review": {
@@ -185,9 +185,9 @@
     },
     {
       "label": "what",
-      "isl_gloss": "WHAT",
       "english": "What",
       "kannada": "ಏನು",
+      "isl_gloss": "WHAT",
       "verified": false,
       "notes": "Question word.",
       "kannada_review": {
@@ -198,9 +198,9 @@
     },
     {
       "label": "need",
-      "isl_gloss": "NEED",
       "english": "Need / Want",
       "kannada": "ಬೇಕು",
+      "isl_gloss": "NEED",
       "verified": false,
       "notes": "ಬೇಕು covers both 'need' and 'want'.",
       "kannada_review": {
@@ -211,9 +211,9 @@
     },
     {
       "label": "bird",
-      "isl_gloss": "BIRD",
       "english": "Bird",
       "kannada": "ಹಕ್ಕಿ",
+      "isl_gloss": "BIRD",
       "verified": false,
       "notes": "Class '1.bird' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -224,9 +224,9 @@
     },
     {
       "label": "black",
-      "isl_gloss": "BLACK",
       "english": "Black",
       "kannada": "ಕಪ್ಪು",
+      "isl_gloss": "BLACK",
       "verified": false,
       "notes": "Class '2.black' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -237,9 +237,9 @@
     },
     {
       "label": "cat",
-      "isl_gloss": "CAT",
       "english": "Cat",
       "kannada": "ಬೆಕ್ಕು",
+      "isl_gloss": "CAT",
       "verified": false,
       "notes": "Class '3.cat' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -250,9 +250,9 @@
     },
     {
       "label": "cow",
-      "isl_gloss": "COW",
       "english": "Cow",
       "kannada": "ಹಸು",
+      "isl_gloss": "COW",
       "verified": false,
       "notes": "Class '4.cow' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -263,9 +263,9 @@
     },
     {
       "label": "dog",
-      "isl_gloss": "DOG",
       "english": "Dog",
       "kannada": "ನಾಯಿ",
+      "isl_gloss": "DOG",
       "verified": false,
       "notes": "Class '5.dog' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -276,9 +276,9 @@
     },
     {
       "label": "fish",
-      "isl_gloss": "FISH",
       "english": "Fish",
       "kannada": "ಮೀನು",
+      "isl_gloss": "FISH",
       "verified": false,
       "notes": "Class '6.fish' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -289,9 +289,9 @@
     },
     {
       "label": "good_morning",
-      "isl_gloss": "GOOD-MORNING",
       "english": "Good morning",
       "kannada": "ಶುಭೋದಯ",
+      "isl_gloss": "GOOD-MORNING",
       "verified": false,
       "notes": "Class '7.goodmorning' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -302,9 +302,9 @@
     },
     {
       "label": "grey",
-      "isl_gloss": "GREY",
       "english": "Grey",
       "kannada": "ಬೂದು ಬಣ್ಣ",
+      "isl_gloss": "GREY",
       "verified": false,
       "notes": "Class '8.grey' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -315,9 +315,9 @@
     },
     {
       "label": "you_are_perfect",
-      "isl_gloss": "YOU PERFECT",
       "english": "You are perfect",
       "kannada": "ನೀವು ಪರಿಪೂರ್ಣರು",
+      "isl_gloss": "YOU PERFECT",
       "verified": false,
       "notes": "Class '10.youareperfect' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -328,9 +328,9 @@
     },
     {
       "label": "monsoon",
-      "isl_gloss": "MONSOON",
       "english": "Monsoon / rainy season",
       "kannada": "ಮಳೆಗಾಲ",
+      "isl_gloss": "MONSOON",
       "verified": false,
       "notes": "Class '11.monsoon' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -341,9 +341,9 @@
     },
     {
       "label": "afternoon",
-      "isl_gloss": "AFTERNOON",
       "english": "Afternoon",
       "kannada": "ಮಧ್ಯಾಹ್ನ",
+      "isl_gloss": "AFTERNOON",
       "verified": false,
       "notes": "Class '12.afternoon' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -354,9 +354,9 @@
     },
     {
       "label": "angry",
-      "isl_gloss": "ANGRY",
       "english": "Angry",
       "kannada": "ಕೋಪ",
+      "isl_gloss": "ANGRY",
       "verified": false,
       "notes": "Class '13.angry' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -367,9 +367,9 @@
     },
     {
       "label": "bad",
-      "isl_gloss": "BAD",
       "english": "Bad",
       "kannada": "ಕೆಟ್ಟದು",
+      "isl_gloss": "BAD",
       "verified": false,
       "notes": "Class '14.bad' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -380,9 +380,9 @@
     },
     {
       "label": "boy",
-      "isl_gloss": "BOY",
       "english": "Boy",
       "kannada": "ಹುಡುಗ",
+      "isl_gloss": "BOY",
       "verified": false,
       "notes": "Class '15.boy' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -393,9 +393,9 @@
     },
     {
       "label": "eat",
-      "isl_gloss": "EAT",
       "english": "Eat",
       "kannada": "ತಿನ್ನು",
+      "isl_gloss": "EAT",
       "verified": false,
       "notes": "Class '16.eat' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -406,9 +406,9 @@
     },
     {
       "label": "friend",
-      "isl_gloss": "FRIEND",
       "english": "Friend",
       "kannada": "ಸ್ನೇಹಿತ",
+      "isl_gloss": "FRIEND",
       "verified": false,
       "notes": "Class '17.friend' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -419,9 +419,9 @@
     },
     {
       "label": "drink",
-      "isl_gloss": "DRINK",
       "english": "Drink",
       "kannada": "ಕುಡಿ",
+      "isl_gloss": "DRINK",
       "verified": false,
       "notes": "Class '18.drinking' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -432,9 +432,9 @@
     },
     {
       "label": "girl",
-      "isl_gloss": "GIRL",
       "english": "Girl",
       "kannada": "ಹುಡುಗಿ",
+      "isl_gloss": "GIRL",
       "verified": false,
       "notes": "Class '19.girl' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -445,9 +445,9 @@
     },
     {
       "label": "brother",
-      "isl_gloss": "BROTHER",
       "english": "Brother",
       "kannada": "ಸಹೋದರ",
+      "isl_gloss": "BROTHER",
       "verified": false,
       "notes": "Class '20.brother' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -458,9 +458,9 @@
     },
     {
       "label": "father",
-      "isl_gloss": "FATHER",
       "english": "Father",
       "kannada": "ತಂದೆ",
+      "isl_gloss": "FATHER",
       "verified": false,
       "notes": "Class '22.father' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -471,9 +471,9 @@
     },
     {
       "label": "evening",
-      "isl_gloss": "EVENING",
       "english": "Evening",
       "kannada": "ಸಂಜೆ",
+      "isl_gloss": "EVENING",
       "verified": false,
       "notes": "Class '23.evening' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -484,9 +484,9 @@
     },
     {
       "label": "mother",
-      "isl_gloss": "MOTHER",
       "english": "Mother",
       "kannada": "ತಾಯಿ",
+      "isl_gloss": "MOTHER",
       "verified": false,
       "notes": "Class '25.mother' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -497,9 +497,9 @@
     },
     {
       "label": "night",
-      "isl_gloss": "NIGHT",
       "english": "Night",
       "kannada": "ರಾತ್ರಿ",
+      "isl_gloss": "NIGHT",
       "verified": false,
       "notes": "Class '27.Night' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -510,9 +510,9 @@
     },
     {
       "label": "music",
-      "isl_gloss": "MUSIC",
       "english": "Music",
       "kannada": "ಸಂಗೀತ",
+      "isl_gloss": "MUSIC",
       "verified": false,
       "notes": "Class '28.Music' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -523,9 +523,9 @@
     },
     {
       "label": "nose",
-      "isl_gloss": "NOSE",
       "english": "Nose",
       "kannada": "ಮೂಗು",
+      "isl_gloss": "NOSE",
       "verified": false,
       "notes": "Class '29.nose' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -536,9 +536,9 @@
     },
     {
       "label": "sleep",
-      "isl_gloss": "SLEEP",
       "english": "Sleep",
       "kannada": "ನಿದ್ರೆ",
+      "isl_gloss": "SLEEP",
       "verified": false,
       "notes": "Class '30.sleep' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -549,9 +549,9 @@
     },
     {
       "label": "sit",
-      "isl_gloss": "SIT",
       "english": "Sit",
       "kannada": "ಕುಳಿತುಕೊಳ್ಳಿ",
+      "isl_gloss": "SIT",
       "verified": false,
       "notes": "Class '31.sit' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -562,9 +562,9 @@
     },
     {
       "label": "stand",
-      "isl_gloss": "STAND",
       "english": "Stand",
       "kannada": "ನಿಂತುಕೊಳ್ಳಿ",
+      "isl_gloss": "STAND",
       "verified": false,
       "notes": "Class '33.stand' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -575,9 +575,9 @@
     },
     {
       "label": "stop",
-      "isl_gloss": "STOP",
       "english": "Stop",
       "kannada": "ನಿಲ್ಲಿಸಿ",
+      "isl_gloss": "STOP",
       "verified": false,
       "notes": "Class '34.stop' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -588,9 +588,9 @@
     },
     {
       "label": "student",
-      "isl_gloss": "STUDENT",
       "english": "Student",
       "kannada": "ವಿದ್ಯಾರ್ಥಿ",
+      "isl_gloss": "STUDENT",
       "verified": false,
       "notes": "Class '35.student' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -601,9 +601,9 @@
     },
     {
       "label": "study",
-      "isl_gloss": "STUDY",
       "english": "Study",
       "kannada": "ಓದು",
+      "isl_gloss": "STUDY",
       "verified": false,
       "notes": "Class '36.study' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -614,9 +614,9 @@
     },
     {
       "label": "teacher",
-      "isl_gloss": "TEACHER",
       "english": "Teacher",
       "kannada": "ಶಿಕ್ಷಕ",
+      "isl_gloss": "TEACHER",
       "verified": false,
       "notes": "Class '37.teacher' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -627,9 +627,9 @@
     },
     {
       "label": "today",
-      "isl_gloss": "TODAY",
       "english": "Today",
       "kannada": "ಇಂದು",
+      "isl_gloss": "TODAY",
       "verified": false,
       "notes": "Class '39.today' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -640,9 +640,9 @@
     },
     {
       "label": "tomorrow",
-      "isl_gloss": "TOMORROW",
       "english": "Tomorrow",
       "kannada": "ನಾಳೆ",
+      "isl_gloss": "TOMORROW",
       "verified": false,
       "notes": "Class '40.tommorow' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -653,9 +653,9 @@
     },
     {
       "label": "welcome",
-      "isl_gloss": "WELCOME",
       "english": "Welcome",
       "kannada": "ಸುಸ್ವಾಗತ",
+      "isl_gloss": "WELCOME",
       "verified": false,
       "notes": "Class '41.welcome' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -666,9 +666,9 @@
     },
     {
       "label": "work",
-      "isl_gloss": "WORK",
       "english": "Work",
       "kannada": "ಕೆಲಸ",
+      "isl_gloss": "WORK",
       "verified": false,
       "notes": "Class '42.work' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -679,9 +679,9 @@
     },
     {
       "label": "yesterday",
-      "isl_gloss": "YESTERDAY",
       "english": "Yesterday",
       "kannada": "ನಿನ್ನೆ",
+      "isl_gloss": "YESTERDAY",
       "verified": false,
       "notes": "Class '43.yesterday' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -692,9 +692,9 @@
     },
     {
       "label": "teeth",
-      "isl_gloss": "TEETH",
       "english": "Teeth",
       "kannada": "ಹಲ್ಲು",
+      "isl_gloss": "TEETH",
       "verified": false,
       "notes": "Class '44.teeth' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -705,9 +705,9 @@
     },
     {
       "label": "hand",
-      "isl_gloss": "HAND",
       "english": "Hand",
       "kannada": "ಕೈ",
+      "isl_gloss": "HAND",
       "verified": false,
       "notes": "Class '45.hand' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -718,9 +718,9 @@
     },
     {
       "label": "write",
-      "isl_gloss": "WRITE",
       "english": "Write",
       "kannada": "ಬರೆ",
+      "isl_gloss": "WRITE",
       "verified": false,
       "notes": "Class '46.write' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -731,9 +731,9 @@
     },
     {
       "label": "umbrella",
-      "isl_gloss": "UMBRELLA",
       "english": "Umbrella",
       "kannada": "ಕೊಡೆ",
+      "isl_gloss": "UMBRELLA",
       "verified": false,
       "notes": "Class '47.umberlla' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -744,9 +744,9 @@
     },
     {
       "label": "ring",
-      "isl_gloss": "RING",
       "english": "Ring",
       "kannada": "ಉಂಗುರ",
+      "isl_gloss": "RING",
       "verified": false,
       "notes": "Class '48.ring' of the Amrita SLR dataset (CC BY 4.0). ",
       "kannada_review": {
@@ -757,9 +757,9 @@
     },
     {
       "label": "power",
-      "isl_gloss": "POWER",
       "english": "Power (electricity)",
       "kannada": "ವಿದ್ಯುತ್",
+      "isl_gloss": "POWER",
       "verified": false,
       "notes": "Class '50.power' of the Amrita SLR dataset (CC BY 4.0). English class name is ambiguous (electricity vs strength).",
       "kannada_review": {
@@ -770,9 +770,9 @@
     },
     {
       "label": "how",
-      "isl_gloss": "HOW",
       "english": "How",
       "kannada": "ಹೇಗೆ",
+      "isl_gloss": "HOW",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -783,9 +783,9 @@
     },
     {
       "label": "understand",
-      "isl_gloss": "UNDERSTAND",
       "english": "Understand",
       "kannada": "ಅರ್ಥಮಾಡಿಕೊಳ್ಳು",
+      "isl_gloss": "UNDERSTAND",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -796,9 +796,9 @@
     },
     {
       "label": "again",
-      "isl_gloss": "AGAIN",
       "english": "Again",
       "kannada": "ಮತ್ತೆ",
+      "isl_gloss": "AGAIN",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -809,9 +809,9 @@
     },
     {
       "label": "say",
-      "isl_gloss": "SAY",
       "english": "Say / tell",
       "kannada": "ಹೇಳು",
+      "isl_gloss": "SAY",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -822,9 +822,9 @@
     },
     {
       "label": "where",
-      "isl_gloss": "WHERE",
       "english": "Where",
       "kannada": "ಎಲ್ಲಿ",
+      "isl_gloss": "WHERE",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -835,9 +835,9 @@
     },
     {
       "label": "go",
-      "isl_gloss": "GO",
       "english": "Go",
       "kannada": "ಹೋಗು",
+      "isl_gloss": "GO",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -848,9 +848,9 @@
     },
     {
       "label": "home",
-      "isl_gloss": "HOME",
       "english": "Home / house",
       "kannada": "ಮನೆ",
+      "isl_gloss": "HOME",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -861,9 +861,9 @@
     },
     {
       "label": "wait",
-      "isl_gloss": "WAIT",
       "english": "Wait",
       "kannada": "ಕಾಯಿರಿ",
+      "isl_gloss": "WAIT",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -874,9 +874,9 @@
     },
     {
       "label": "emergency",
-      "isl_gloss": "EMERGENCY",
       "english": "Emergency",
       "kannada": "ತುರ್ತು",
+      "isl_gloss": "EMERGENCY",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -887,9 +887,9 @@
     },
     {
       "label": "sick",
-      "isl_gloss": "SICK",
       "english": "Sick / unwell",
       "kannada": "ಅನಾರೋಗ್ಯ",
+      "isl_gloss": "SICK",
       "verified": false,
       "notes": "Needed by the phrase dictionary; no training data or animation yet.",
       "kannada_review": {
@@ -900,9 +900,9 @@
     },
     {
       "label": "how_are_you",
-      "isl_gloss": "HOW-ARE-YOU",
       "english": "How are you?",
       "kannada": "ನೀವು ಹೇಗಿದ್ದೀರಿ",
+      "isl_gloss": "HOW-ARE-YOU",
       "verified": false,
       "notes": "Class '49. How are you' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -913,9 +913,9 @@
     },
     {
       "label": "alright",
-      "isl_gloss": "ALRIGHT",
       "english": "Alright / OK",
       "kannada": "ಸರಿ",
+      "isl_gloss": "ALRIGHT",
       "verified": false,
       "notes": "Class '50. Alright' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -926,9 +926,9 @@
     },
     {
       "label": "good_afternoon",
-      "isl_gloss": "GOOD-AFTERNOON",
       "english": "Good afternoon",
       "kannada": "ಶುಭ ಮಧ್ಯಾಹ್ನ",
+      "isl_gloss": "GOOD-AFTERNOON",
       "verified": false,
       "notes": "Class '52. Good afternoon' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -939,9 +939,9 @@
     },
     {
       "label": "good_evening",
-      "isl_gloss": "GOOD-EVENING",
       "english": "Good evening",
       "kannada": "ಶುಭ ಸಂಜೆ",
+      "isl_gloss": "GOOD-EVENING",
       "verified": false,
       "notes": "Class '53. Good evening' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -952,9 +952,9 @@
     },
     {
       "label": "good_night",
-      "isl_gloss": "GOOD-NIGHT",
       "english": "Good night",
       "kannada": "ಶುಭ ರಾತ್ರಿ",
+      "isl_gloss": "GOOD-NIGHT",
       "verified": false,
       "notes": "Class '54. Good night' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -965,9 +965,9 @@
     },
     {
       "label": "pleased",
-      "isl_gloss": "PLEASED",
       "english": "Pleased",
       "kannada": "ಸಂತೋಷ",
+      "isl_gloss": "PLEASED",
       "verified": false,
       "notes": "Class '56. Pleased' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -978,9 +978,9 @@
     },
     {
       "label": "he",
-      "isl_gloss": "HE",
       "english": "He",
       "kannada": "ಅವನು",
+      "isl_gloss": "HE",
       "verified": false,
       "notes": "Class '42. he' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -991,9 +991,9 @@
     },
     {
       "label": "she",
-      "isl_gloss": "SHE",
       "english": "She",
       "kannada": "ಅವಳು",
+      "isl_gloss": "SHE",
       "verified": false,
       "notes": "Class '43. she' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -1004,9 +1004,9 @@
     },
     {
       "label": "it",
-      "isl_gloss": "IT",
       "english": "It",
       "kannada": "ಅದು",
+      "isl_gloss": "IT",
       "verified": false,
       "notes": "Class '44. it' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -1017,9 +1017,9 @@
     },
     {
       "label": "we",
-      "isl_gloss": "WE",
       "english": "We",
       "kannada": "ನಾವು",
+      "isl_gloss": "WE",
       "verified": false,
       "notes": "Class '45. we' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -1030,9 +1030,9 @@
     },
     {
       "label": "you_plural",
-      "isl_gloss": "YOU-PLURAL",
       "english": "You (plural)",
       "kannada": "ನೀವೆಲ್ಲರೂ",
+      "isl_gloss": "YOU-PLURAL",
       "verified": false,
       "notes": "Class '46. you (plural)' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -1043,9 +1043,9 @@
     },
     {
       "label": "they",
-      "isl_gloss": "THEY",
       "english": "They",
       "kannada": "ಅವರು",
+      "isl_gloss": "THEY",
       "verified": false,
       "notes": "Class '47. they' of the INCLUDE dataset (CC BY 4.0).",
       "kannada_review": {
@@ -1056,12 +1056,20 @@
     },
     {
       "label": "_none",
-      "isl_gloss": "",
       "english": "(no sign / transition / resting)",
       "kannada": "",
       "emit": false,
+      "isl_gloss": "",
       "verified": false,
       "notes": "Background class used to reject non-signs."
+    },
+    {
+      "label": "myname",
+      "english": "MY NAME",
+      "kannada": "ನನ್ನ ಹೆಸರು",
+      "isl_gloss": "MY NAME",
+      "verified": false,
+      "notes": "added from the Dataset & Model page"
     }
   ]
 }

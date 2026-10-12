@@ -89,7 +89,6 @@ export function UploadCard({ vocab, onQueued }: { vocab: VocabEntry[]; onQueued:
   const [session, setSession] = useState("");
   const [mode, setMode] = useState<"single" | "annotation" | "folders">("single");
   const [label, setLabel] = useState("");
-  const [annotationType, setAnnotationType] = useState("isolated");
   const [progress, setProgress] = useState<number | null>(null);
   const [batch, setBatch] = useState<UploadBatch | null>(null);
   const [msg, setMsg] = useState<{ tone: "ok" | "bad" | "info" | "warn"; text: string } | null>(null);
@@ -106,7 +105,7 @@ export function UploadCard({ vocab, onQueued }: { vocab: VocabEntry[]; onQueued:
     form.append("session_id", session);
     form.append("label_mode", mode);
     form.append("label", label);
-    form.append("annotation_type", annotationType);
+    form.append("annotation_type", "isolated");
     setProgress(0);
     try {
       const b = await uploadFiles(form, setProgress);
@@ -154,10 +153,10 @@ export function UploadCard({ vocab, onQueued }: { vocab: VocabEntry[]; onQueued:
       <div className="form-grid cols-2">
         <label className="field">Dataset name<input value={datasetName} onChange={(e) => setDatasetName(e.target.value.replace(/[^A-Za-z0-9_-]/g, "_"))} /></label>
         <label className="field">Annotation type
-          <select value={annotationType} onChange={(e) => setAnnotationType(e.target.value)}>
+          <select value="isolated" disabled>
             <option value="isolated">Isolated signs (one sign per video)</option>
-            <option value="continuous">Continuous sentence (stored for the sentence pipeline)</option>
           </select>
+          <span className="hint">Each video must contain exactly one sign. Sentence videos cannot be uploaded: the sentence model uses the ISL-CSLTR corpus only.</span>
         </label>
         <label className="field">Signer ID<input value={signer} onChange={(e) => setSigner(e.target.value.replace(/[^A-Za-z0-9_-]/g, ""))} /></label>
         <label className="field">Session ID<input placeholder="auto" value={session} onChange={(e) => setSession(e.target.value.replace(/[^A-Za-z0-9_-]/g, ""))} /></label>
@@ -419,7 +418,7 @@ export function ContinuousCard({ status, onTrain, showTrain = true }: { status: 
           </details>
         </>
       )}
-      {showTrain && onTrain && <div className="toolbar"><Btn icon="play" onClick={onTrain}>Train sentence model</Btn><span className="muted xs">Runs as a background job.</span></div>}
+      {showTrain && onTrain && <div className="toolbar"><Btn icon="play" onClick={onTrain}>Train candidate sentence model</Btn><span className="muted xs">Background job (~20 min). Saved as an inactive candidate: the active sentence model is not replaced.</span></div>}
     </Card>
   );
 }

@@ -10,6 +10,28 @@
 | Kannada → Sign | Kannada text → NFC normalisation → phrase dictionary (longest match) → English meaning + ISL gloss plan → avatar clips |
 | Face | Separate rule-based estimate of the *visible* expression; never changes a recognised sign |
 
+## Current status (2026-10-11)
+
+| Component | Active version | Measured on recorded videos (held out) | Real webcam |
+|---|---|---|---|
+| Isolated signs (63) | `v20261010-101617`: logistic regression + GRU ensemble, face-crop landmarks (bit-identical retrain of `v20261010-081537`) | **72.4% accuracy / macro-F1 0.708** on 268 videos of unseen signers (Amrita SLR unseen signers 67.1%, INCLUDE official test split 92.7%) | **not measured yet** |
+| Confidence threshold | **0.40**, calibrated on out-of-fold development data (precision 0.50, recall 0.42) | | |
+| Sentences (101, closed set) | `c20261010-051510`: BiGRU + CTC likelihood fused with a sentence classifier; posterior < 0.5 is shown as "uncertain" | **29.2%** (45/154) on unseen recording rounds; 43 of the 122 shown sentences correct | **not measured yet** |
+| Avatar | 63 clips retargeted from dataset recordings + 8 hand-written placeholders | **none verified as ISL** | |
+
+- **Recorded-video accuracy is not webcam accuracy.** All numbers above come from dataset videos. Webcam accuracy must be measured with [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE.md) (two *Evaluation only* sessions).
+- **Sentence mode is a closed set:** it can only output one of the ISL-CSLTR corpus' 101 sentences. It is not open sign-language translation.
+- A Phase 11 attempt to improve the sentence model was **rejected** (22.1% vs 29.2% on the same test videos): [`docs/PHASE11_REPORT.md`](docs/PHASE11_REPORT.md).
+- Kannada wording, ISL phrase orders and all avatar clips still need review by native Kannada speakers and ISL users.
+
+## Demo workflow (5 minutes)
+1. Start both servers (see [Start the application](#start-the-application)) and open **http://127.0.0.1:5173** in Chrome or Edge.
+2. **Live Recognition → Start camera.** Allow camera access. Sit 1–1.5 m away with face and both hands visible, in front lighting.
+3. Sign a trained word (e.g. HELLO/namaskara, THANK YOU, GOOD), then lower your hands. The word appears as *pending* with its confidence and alternatives, then joins the Kannada transcript. Low-confidence signs are listed as *uncertain* and never added automatically.
+4. Sign two or three words with a short pause between them. The **Meaning** panel shows the ISL gloss sequence, an English meaning and a Kannada sentence when the sequence is in the phrase table; otherwise it is marked "word-by-word". Press **Speak** to hear the Kannada (needs a Kannada voice, see limitations).
+5. **Kannada to Sign:** type or pick ನಮಸ್ಕಾರ or ನಿಮ್ಮ ಹೆಸರು ಏನು? and the avatar plays the sign sequence. Unsupported words are listed as skipped, never guessed.
+6. **About & Testing:** measured results, the browser-vs-Python pipeline check, and the model and data audit.
+
 ---
 
 ## Datasets (all CC BY 4.0, downloaded only from public files, checksums verified)
@@ -28,9 +50,16 @@ Annotation facts we found and handle (not hidden):
 - **ISL-CSLTR** gloss annotations contain typos and variants (`CONGRATULATIIONS`, `DONOT`/`DONT`/`DO NOT`, punctuation inside glosses). A documented normalisation map is applied for training; the original annotation is kept with every sample. There are no signer IDs (recording index from the file name), and 116 of 168 gloss types occur in only one sentence.
 - **INCLUDE** was recorded in Chennai, and ISL varies regionally. Merged labels (e.g. HELLO from Amrita and INCLUDE) may combine regional variants.
 
-## Results (measured on this laptop, 2026-10-10)
+## Results history (measured on this laptop)
 
-**Phase 6 (accuracy): see [`docs/PHASE6_REPORT.md`](docs/PHASE6_REPORT.md).** The active isolated model is now `v20261010-081537` (logreg + GRU ensemble on face-crop landmarks): **72.4% accuracy / macro-F1 0.708** on the same 268 held-out videos where the previous model scored 59.7% / 0.591. Sentence mode now marks low-confidence sentences as uncertain (`c20261010-051510`). What to record next: [`docs/DATA_COLLECTION_PLAN.md`](docs/DATA_COLLECTION_PLAN.md).
+**Project reports:**
+- **Phase 5:** audit, English meaning layer, phrases: [`PHASE5_REPORT.md`](docs/PHASE5_REPORT.md).
+- **Phase 6:** accuracy, ensemble: [`PHASE6_REPORT.md`](docs/PHASE6_REPORT.md).
+- **Phases 7–8:** live evaluation tooling: [`PHASE7_REPORT.md`](docs/PHASE7_REPORT.md), [`PHASE8_REPORT.md`](docs/PHASE8_REPORT.md).
+- **Phases 9–10:** ISL-only data audit, sentence partials: [`PHASE9_REPORT.md`](docs/PHASE9_REPORT.md), [`PHASE10_REPORT.md`](docs/PHASE10_REPORT.md).
+- **Phase 11:** sentence-model candidate, rejected: [`PHASE11_REPORT.md`](docs/PHASE11_REPORT.md).
+
+**Phase 6 (accuracy):** the logreg + GRU ensemble on face-crop landmarks (`v20261010-081537`, retrained bit-identically as the active `v20261010-101617`) reaches **72.4% accuracy / macro-F1 0.708** on the same 268 held-out videos where the previous model scored 59.7% / 0.591. Sentence mode marks low-confidence sentences as uncertain (`c20261010-051510`). What to record next: [`docs/DATA_COLLECTION_PLAN.md`](docs/DATA_COLLECTION_PLAN.md).
 
 **Phase 5 (audit, English intermediate layer, continuous decoder, phrases, avatar): see [`docs/PHASE5_REPORT.md`](docs/PHASE5_REPORT.md).** Supported phrases: [`docs/PHRASES.md`](docs/PHRASES.md).
 
@@ -55,7 +84,8 @@ Annotation facts we found and handle (not hidden):
 - **Face-dropout augmentation** (randomly blanking the face-relative features in training) was tested because the browser-vs-Python check showed face-detection flicker under hand occlusion. It lowered development CV macro-F1 (0.539 vs 0.544), so it is **off**. The decision used development data only: the test set happened to favour it (0.604 vs 0.591), and that was not used.
 - **Finding:** splitting signs at brief slow-downs ("motion minima") hurts on real signing (see the segmentation table below). It is off by default.
 
-### Continuous sentence recognition: active model `c20261010-005738` (ISL-CSLTR)
+### Continuous sentence recognition (ISL-CSLTR): decoder comparison
+The networks below are those of `c20261010-005738`. The active `c20261010-051510` uses the same networks with the fused decoder and adds an "uncertain" threshold (posterior 0.5, chosen on validation).
 - **Data:** 492 sentence videos (101 sentences, 168 normalised glosses).
 - **Split:** by recording round: train 263 / validation 75 / **test 154** (unseen rounds rec4, rec5).
 - **Decoder chosen on the validation round only** (`tools/eval_continuous_decoders.py`). The validation classifier was fitted on the training rounds only. The original selection compared test accuracies, which is now fixed.
@@ -70,7 +100,7 @@ Annotation facts we found and handle (not hidden):
 Chance for sentence accuracy ≈ 1%. These are weak results: ~4 recordings per sentence, and 116 glosses appear in only one sentence. **This is closed-domain recognition of the corpus' sentences, not sign-language translation.**
 
 ### Avatar
-All 55 recognisable signs have clips **retargeted from real dataset recordings** (Amrita SLR / INCLUDE). The source file and signer group are stored in `animation_mapping.json`. Arms are assigned by image position, so mirrored phone videos don't cross the arms. Retargeting is approximate (no elbow tracking, depth from hand size), and **no clip is verified ISL**. Signs without data keep the hand-written placeholders.
+All 63 recognisable signs have clips **retargeted from real dataset recordings** (Amrita SLR / INCLUDE). On Dataset & Model, **Use as avatar clip** can replace a sign's clip with your newest webcam recording or uploaded video of it. The source file and signer group are stored in `animation_mapping.json`. Arms are assigned by image position, so mirrored phone videos don't cross the arms. Retargeting is approximate (no elbow tracking, depth from hand size), and **no clip is verified ISL**. Signs without data keep the hand-written placeholders.
 
 ### Continuous segmentation (consecutive signs, no button presses)
 `tools/eval_segmentation.py`: held-out recordings are joined into 50 streams of 5 signs with **exact known boundaries**. ISL-CSLTR has no temporal annotations, so it cannot be used for this. The streams are fed frame by frame through the live pipeline. The evaluation model is trained on development signers only. Variants are **chosen on 3 validation folds of development signers** and then **reported on the test signers**. Full report: `backend/reports/segmentation_eval*.json`, also shown on About & Testing.
@@ -126,6 +156,8 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 Installs the backend venv (FastAPI, scikit-learn, MediaPipe 0.10.21, OpenCV, CPU PyTorch, pandas, pyarrow 17, openpyxl) and the frontend (React/Vite, bundled Inter + Noto Sans Kannada fonts), and downloads the MediaPipe `.task` models. Already done on this laptop.
 
+**Requirements:** Python 3.12, Node.js 18+, Chrome or Edge (camera access needs `http://127.0.0.1` or `localhost`). **macOS/Linux:** equivalent shell scripts exist: `start-backend.sh`, `start-frontend.sh`, `download-datasets.sh`, `import-datasets.sh`, `train-model.sh`. They expect the venv at `backend/.venv` (`python3 -m venv backend/.venv && backend/.venv/bin/pip install -r backend/requirements.txt`, then `npm install` in `frontend/`).
+
 ## Data and training workflow
 
 ```powershell
@@ -141,6 +173,10 @@ The same actions are available in the app on **Dataset & Model**: dataset import
 
 **Automatic retraining:** after each import job, an eligibility check runs. It needs ≥ 2 classes with ≥ 5 valid samples, data different from the active model's, and ≥ 20 new samples or a new class. Only then is **one** training job queued, so single uploads never trigger training. A new model becomes active only if its held-out macro-F1 ≥ 0.40, it is not worse than the active model on the same test samples (by more than 0.02), and it passes a reload + live-pipeline smoke test. Otherwise the previous model stays active. Jobs survive restarts.
 
+**Uploads** are isolated signs only (one sign per video, label chosen explicitly, never guessed from file names). Uploaded videos always become **training** data. To measure accuracy, record with the in-app recorder using *Evaluation only*. New signs need about 5 or more videos each before training uses them (minimum 3; 10–15 recommended).
+
+**Sentence model training** (Dataset & Model → *Train candidate sentence model*) saves an **inactive candidate** and never replaces the active sentence model. Replacing it requires the gated comparison on the same held-out test videos (`tools/train_continuous_candidate.py`), because a single training run varies by about 9 points with the random seed.
+
 ## Start the application
 
 Terminal 1:
@@ -154,6 +190,15 @@ cd $HOME\Desktop\KannadaSignBridge
 powershell -ExecutionPolicy Bypass -File .\start-frontend.ps1
 ```
 Open **http://127.0.0.1:5173** (Chrome/Edge). API docs: http://127.0.0.1:8000/docs. Status: `/api/model/status`, `/api/model/registry`, `/api/datasets`, `/api/jobs`, `/api/continuous/status`.
+
+### Camera setup and troubleshooting
+| Message in the app | What to do |
+|---|---|
+| Camera permission denied | Click the camera icon in the address bar → *Allow*, then **Start camera** again. On Windows, also check Settings → Privacy & security → Camera → *Let desktop apps access your camera* |
+| No camera found / camera in use | Close Teams, Zoom or the Camera app, then press **Start camera**; pick the right device in the camera list |
+| "This browser does not support camera access" | Use a recent Chrome or Edge at `http://127.0.0.1:5173` (not a file:// page or an embedded preview) |
+| Hands detected but no words | Lower your hands or pause briefly after each sign; keep both hands and your face in view; check **Pipeline diagnostics** (all 6 stages green) |
+| Backend disconnected | Start `start-backend.ps1`; the page reconnects automatically |
 
 ## Diagnosing the live pipeline
 Live Recognition → **Pipeline diagnostics** shows each stage for the current frame and for every decided segment:
@@ -169,7 +214,7 @@ Live Recognition → **Pipeline diagnostics** shows each stage for the current f
 
 Every segment result names the **stage that decided it**: segmentation (too short, duplicate, continuation), classification (below threshold, `_none`, out of distribution → *features*), translation, or ok. **Save diagnostics snapshot** stores the last ~20 s of landmarks and decisions (no video) in `backend/data/diagnostics/`.
 
-**Confidence threshold:** calibrated per model on out-of-fold development predictions by maximising the F1 of accepted words. A `_none` recording predicted as a sign counts as a wrong word. Active model: **0.45** (precision 0.48, recall 0.38 on 1,022 validation predictions). The slider overrides it, and "Use calibrated value" restores it.
+**Confidence threshold:** calibrated per model on out-of-fold development predictions by maximising the F1 of accepted words. A `_none` recording predicted as a sign counts as a wrong word. Active model: **0.40** (precision 0.50, recall 0.42, F1 0.46 on 1,022 out-of-fold development predictions). The slider overrides it, and "Use calibrated value" restores it.
 
 **Word confirmation:** recognised words first appear as **pending**, showing the ISL gloss, the Kannada word, the confidence and the next two alternatives. You can add, pick an alternative, choose any other word or reject. In auto mode a pending word is added after a countdown (default 4 s). Uncertain predictions are listed separately and never added unless you click them. Transcript words show their ISL gloss above the Kannada.
 
@@ -186,19 +231,28 @@ Step-by-step procedure: [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE
 - **Live isolated mode:** a sign starts when hands enter or move, and ends at a pause (800 ms, adjustable) or when the hands drop. Each segment is classified once with a confidence threshold, an "uncertain" state and duplicate suppression.
 - **Sentence mode:** one segment = one sentence (1.5 s pause or hands down) → CTC decoding → nearest corpus sentence → Kannada.
 
-## Tests (2026-10-10)
-- **Backend pytest: 137 passed** (Phase 6 adds the ensemble model type and the upload label summary). Phase 5: (Phase 5 adds: sequence-level meaning, ambiguity and unknown signs, phrase-table integrity, Unicode API round trip, reverse ISL ordering, dictionary edits do not trigger retraining, webcam threshold selection with false detections). Earlier: Adds diagnostics per frame and per stage, the OOD score, threshold calibration (F1, `_none` false alarms), browser-vs-Python comparison, snapshot API, evaluation-only storage (never mixed with training data), sequence recordings and the live evaluation report, the classifier-verified split, face-dropout augmentation, and the registry's fair comparison on an identical test set. Earlier coverage: Kannada Unicode, phrases, mapping consistency, validation, training/saving/loading, registry promote/reject/rollback, job queue, eligibility, video extraction, ZIP path traversal, GRU/CTC, sentence mode, API and WebSocket.
+## Tests (2026-10-11)
+Run everything with `.\run-tests.ps1`, or `cd backend; .\.venv\Scripts\python.exe -m pytest -q` and `cd frontend; npx vitest run; npx tsc --noEmit; npm run build`.
+- **Backend pytest: 156 passed.** Added since Phase 6:
+  - live evaluation, cause attribution and still-tail trimming (Phases 7–8);
+  - sentence partials and integrity exclusions (Phase 9);
+  - extractor version, unlisted-video opt-in and McNemar (Phase 11);
+  - avatar clips from uploaded videos;
+  - sentence-model training that never replaces the active model;
+  - refusal of sentence-video uploads.
+- History: 137 passed at Phase 6 (Phase 6 adds the ensemble model type and the upload label summary). Phase 5: (Phase 5 adds: sequence-level meaning, ambiguity and unknown signs, phrase-table integrity, Unicode API round trip, reverse ISL ordering, dictionary edits do not trigger retraining, webcam threshold selection with false detections). Earlier: Adds diagnostics per frame and per stage, the OOD score, threshold calibration (F1, `_none` false alarms), browser-vs-Python comparison, snapshot API, evaluation-only storage (never mixed with training data), sequence recordings and the live evaluation report, the classifier-verified split, face-dropout augmentation, and the registry's fair comparison on an identical test set. Earlier coverage: Kannada Unicode, phrases, mapping consistency, validation, training/saving/loading, registry promote/reject/rollback, job queue, eligibility, video extraction, ZIP path traversal, GRU/CTC, sentence mode, API and WebSocket.
 - **Frontend vitest: 25 passed** (adds Kannada speech text and expression-label stability). **TypeScript clean. Production build OK.**
 - **Browser pipeline:** verified with real dataset videos through the same in-browser MediaPipe → WebSocket path (table above).
 - **Webcam:** the development environment blocks camera access (the app correctly shows its "permission denied" message), so **live signing with a real person was not tested** and no live accuracy is claimed. Measure it with [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE.md).
 
 ## Known limitations
-- About 55–60% top-1 accuracy on unseen signers for 63 signs (80% on INCLUDE's own test split): usable for demonstrating clearly signed vocabulary, not reliable communication. Live accuracy on your camera is **unmeasured** until you run the live test procedure.
+- 72.4% top-1 accuracy on recorded videos of unseen signers for 63 signs (67.1% on Amrita SLR's unseen signers, 92.7% on INCLUDE's own test split): usable for demonstrating clearly signed vocabulary, not reliable communication. Live accuracy on your camera is **unmeasured** until you run the live test procedure.
 - **Consecutive signs without lowering the hands** merge into one segment (sign error rate ≈ 0.86 in the synthetic stress test). Pause briefly or drop your hands between signs. The experimental verified-split switch trades this against errors in normal signing.
 - Face detection flickers when the hands cover the face. Signs made at the face therefore get less reliable face-relative features. Diagnostics show this as a face-relative out-of-distribution score.
 - Public data has no `_none` (non-sign) class. Record `_none` samples so random movements are rejected; false detections are measured by the live evaluation.
 - Amrita has ~19 videos per sign. Adding your own recordings (same camera and lighting as the demo) is the fastest way to improve live accuracy.
-- Sentence mode only knows the ISL-CSLTR sentences (29% sentence accuracy on unseen recordings); recording groups there are inferred.
+- **Sentence mode is closed-set:** it only knows the 101 ISL-CSLTR sentences (29.2% sentence accuracy on unseen recording rounds; 35% of the sentences it shows are correct). The corpus has no signer IDs, so signer independence cannot be tested; recording groups are inferred from file names.
+- Signs you add yourself are learned from your own videos only and may not generalise to other signers. The held-out test set contains none of them, so their accuracy is not measured until you record *Evaluation only* samples.
 - The English meaning layer only knows the phrase table; anything else is shown word by word and marked. It cannot fix recognition errors (phrase-level output was exactly right in 60.5% of held-out streams, the same share that was recognised perfectly).
 - A hidden face costs about 7 accuracy points (robustness test); keep your face in view.
 - Kannada words are glosses in signing order, not grammatical sentences. Wording got an AI-assisted check only; native-speaker and ISL review are pending. Kannada → Sign phrase glosses and all avatar clips are unverified.

@@ -21,7 +21,7 @@ from pydantic import BaseModel, Field
 
 from .animation.library import AnimationLibrary
 from .animation.retarget import sample_to_animation
-from .config import DATA_DIR, RecognitionSettings
+from .config import DATA_DIR, PROCESSED_LANDMARKS_DIR, RecognitionSettings
 from .continuous.recognizer import ContinuousRecognizer
 from .diagnostics import compare_extractions, save_snapshot, schema_report
 from .jobs import JobQueue, training_eligibility
@@ -396,13 +396,23 @@ def upload_delete(batch_id: str, delete_landmarks: bool = False):
         raise HTTPException(404, str(exc)) from exc
 
 
+PUBLIC_DATASETS = {"amrita_slr", "include"}   # imported public corpora; every other landmark folder is a user upload
+
+
+def _uploaded_samples(label: str) -> list[Path]:
+    """Landmark files extracted from the user's own uploaded videos of one sign (newest last)."""
+    files = [f for f in PROCESSED_LANDMARKS_DIR.glob(f"*/{label}/*.json") if f.parent.parent.name not in PUBLIC_DATASETS]
+    return sorted(files, key=lambda p: p.stat().st_mtime)
+
+
 @app.get("/api/vocabulary")
 def vocabulary():
     s = S()
     trained = set(s.predictor.classes)
     items = []
     for entry in s.vocab.to_list():
-        items.append({**entry, "trained": entry["label"] in trained, "animation": s.animations.info(entry["label"])})
+        items.append({**entry, "trained": entry["label"] in trained, "animation": s.animations.info(entry["label"]),
+                      "uploaded_samples": len(_uploaded_samples(entry["label"]))})
     return {"labels": items, "kannada_entries": len(s.mapper.entries)}
 
 
@@ -497,18 +507,29 @@ def animation_get(sign_id: str):
 @app.post("/api/animations/capture")
 def animation_capture(req: CaptureRequest):
     s = S()
+    origin = "webcam recording"
     try:
-        sample = s.dataset.load(req.label, req.sample_id) if req.sample_id else s.dataset.latest(req.label)
+        if req.sample_id:
+            sample = s.dataset.load(req.label, req.sample_id)
+        else:
+            # the newest of: in-app webcam recordings and the user's own uploaded videos of this sign
+            sample = s.dataset.latest(req.label)          # also validates the label before it is used in a path
+            recorded = list((s.dataset.root / req.label).glob("*.json"))
+            uploads = _uploaded_samples(req.label)
+            rec_time = max((p.stat().st_mtime for p in recorded), default=0.0)
+            if uploads and uploads[-1].stat().st_mtime > rec_time:
+                sample = json.loads(uploads[-1].read_text(encoding="utf-8"))
+                origin = f"uploaded video '{Path(sample.get('source_file', '')).name}'"
     except DatasetError as exc:
         raise HTTPException(400, str(exc)) from exc
     if sample is None:
-        raise HTTPException(404, f"no recorded samples for '{req.label}'")
+        raise HTTPException(404, f"no recorded or uploaded samples for '{req.label}'")
     try:
         clip = sample_to_animation(sample, req.label)
         info = s.animations.save_captured(req.label, clip)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
-    return {"ok": True, "sign_id": req.label, "animation": info, "keyframes": len(clip["keyframes"])}
+    return {"ok": True, "sign_id": req.label, "animation": info, "keyframes": len(clip["keyframes"]), "source": origin}
 
 
 @app.post("/api/dataset/record")

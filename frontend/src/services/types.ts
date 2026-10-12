@@ -34,6 +34,8 @@ export interface VocabEntry {
   notes: string;
   trained?: boolean;
   animation?: AnimationInfo;
+  /** landmark files extracted from the user's own uploaded videos of this sign */
+  uploaded_samples?: number;
   kannada_review?: { status: string; note: string; by: string } | null;
 }
 

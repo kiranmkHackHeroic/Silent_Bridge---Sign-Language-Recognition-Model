@@ -134,7 +134,7 @@ export const api = {
     request<TranslationResult>("/api/translate/kannada", { method: "POST", body: JSON.stringify({ text }) }),
   animation: (signId: string) => request<AnimationClip>(`/api/animations/${encodeURIComponent(signId)}`),
   captureAnimation: (label: string) =>
-    request<{ ok: boolean; keyframes: number }>("/api/animations/capture", { method: "POST", body: JSON.stringify({ label }) }),
+    request<{ ok: boolean; keyframes: number; source: string }>("/api/animations/capture", { method: "POST", body: JSON.stringify({ label }) }),
   record: (body: { label: string; session_id: string; signer_id: string; video: { w: number; h: number }; frames: LandmarkFrame[]; purpose?: "train" | "eval"; conditions?: Record<string, string> }) =>
     request<{ sample_id: string; hand_frames: number; num_frames: number; stored_in: string }>("/api/dataset/record", {
       method: "POST",

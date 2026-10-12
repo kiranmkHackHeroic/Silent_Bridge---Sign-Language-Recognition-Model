@@ -124,6 +124,9 @@ def test_upload_batch_preview_label_rules(tmp_path, monkeypatch):
     # annotation mode without an annotation file must not guess labels from file names
     no_ann = create_batch([("help.mp4", video)], "a", "me", "s1", "annotation", "", KNOWN)
     assert no_ann["ready"] == 0 and no_ann["problems"]
+    # sentence videos would silently become isolated-sign training samples: refused
+    with pytest.raises(UploadError, match="only isolated-sign uploads"):
+        create_batch([("clip.mp4", video)], "s", "me", "s1", "single", "help", KNOWN, annotation_type="continuous")
 
 
 # ---------------------------------------------------------------- temporal model

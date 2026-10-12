@@ -265,7 +265,7 @@ export function DatasetModel() {
     setCaptureMsg("");
     try {
       const res = await api.captureAnimation(lbl);
-      setCaptureMsg(`Avatar clip for “${lbl}” captured from your latest recording (${res.keyframes} keyframes). Marked unverified until reviewed.`);
+      setCaptureMsg(`Avatar clip for “${lbl}” captured from your latest ${res.source} (${res.keyframes} keyframes). Marked unverified until reviewed.`);
       refresh();
     } catch (err) {
       setCaptureMsg(`Could not capture “${lbl}”: ${String((err as Error).message || err)}`);
@@ -560,8 +560,8 @@ export function DatasetModel() {
                         {(summary?.labels[v.label]?.count ?? 0) > 0 && (
                           <Btn size="sm" variant="ghost" icon="eye" onClick={() => { setBrowse(browse === v.label ? null : v.label); setViewing(null); }}>Samples</Btn>
                         )}
-                        {valid > 0 && v.label !== "_none" && (
-                          <Btn size="sm" variant="ghost" icon="hand" onClick={() => capture(v.label)} title="Retarget your latest recording of this sign onto the avatar">Use as avatar clip</Btn>
+                        {(valid > 0 || (v.uploaded_samples ?? 0) > 0) && v.label !== "_none" && (
+                          <Btn size="sm" variant="ghost" icon="hand" onClick={() => capture(v.label)} title="Retarget your latest webcam recording or uploaded video of this sign onto the avatar">Use as avatar clip</Btn>
                         )}
                       </td>
                     </tr>

@@ -51,3 +51,40 @@ def test_unlisted_videos_are_opt_in(tmp_path, monkeypatch):
     monkeypatch.setattr(cds, "INTEGRITY_FILE", tmp_path / "missing.json")
     assert [s["sample_id"] for s in cds.load_samples()] == ["listed"]
     assert sorted(s["sample_id"] for s in cds.load_samples(include_unlisted=True)) == ["listed", "unlisted"]
+
+
+def test_in_app_sentence_training_never_replaces_the_active_model(tmp_path, monkeypatch):
+    """The 'Train candidate sentence model' job saves a new version but must leave active.json unchanged."""
+    import json
+
+    import numpy as np
+
+    from app.continuous import train as tr
+
+    rng = np.random.default_rng(0)
+    table = {f"s{i}": {"sentence": f"sentence {i}", "kannada": "", "gloss": [f"G{i}", "X"]} for i in range(3)}
+    samples = [{"sample_id": f"{g}_{i}", "sentence_id": f"s{i % 3}", "transcript": "", "gloss": table[f"s{i % 3}"]["gloss"],
+                "group": g, "seq": rng.normal(size=(20, tr.SEQ_DIM)).astype(np.float32), "mirror": None}
+               for g in ("rec1", "rec2", "rec3", "rec4", "rec5") for i in range(6)]
+
+    class StubCTC:
+        def __init__(self, vocab, dim):
+            self.history_ = []
+
+        def fit(self, train_s, val, progress=None):
+            return self
+
+        def decode(self, seq):
+            return ["G0", "X"], 0.5
+
+    monkeypatch.setattr(tr, "CONT_DIR", tmp_path)
+    monkeypatch.setattr(tr, "load_samples", lambda: samples)
+    monkeypatch.setattr(tr, "load_mapping", lambda: {"sentences": table})
+    monkeypatch.setattr(tr, "CTCGlossRecognizer", StubCTC)
+    monkeypatch.setattr(tr.joblib, "dump", lambda obj, path: None)      # nothing to pickle from the stub
+    active = tmp_path / "active.json"
+    active.write_text(json.dumps({"version": "c-production", "previous": "c-older"}), encoding="utf-8")
+    m = tr.train(progress=lambda s, f: None)
+    assert json.loads(active.read_text(encoding="utf-8")) == {"version": "c-production", "previous": "c-older"}
+    assert m["activated"] is False
+    assert json.loads((tmp_path / m["version"] / "metrics.json").read_text(encoding="utf-8"))["activated"] is False

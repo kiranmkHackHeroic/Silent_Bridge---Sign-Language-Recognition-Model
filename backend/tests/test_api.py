@@ -152,3 +152,33 @@ def test_registry_and_dataset_endpoints(client):
     assert client.post("/api/datasets/not_a_dataset/import").status_code == 404
     assert client.post("/api/jobs/nope/cancel").status_code == 404
     assert client.get("/api/uploads/zzzz").status_code == 404
+
+
+def test_avatar_clip_from_uploaded_video(client, tmp_path, monkeypatch):
+    """'Use as avatar clip' falls back to the user's own uploaded video when there is no webcam recording."""
+    import json
+
+    from app import main
+    from app.animation.library import AnimationLibrary
+    from app.dataset.store import DatasetStore
+
+    landmarks = tmp_path / "landmarks"
+    (landmarks / "include" / "namaskara").mkdir(parents=True)          # public dataset: never used here
+    (landmarks / "my_uploads" / "namaskara").mkdir(parents=True)
+    sample = {"sample_id": "u1", "label": "namaskara", "source": "my_uploads", "source_file": "C:/videos/my_namaskara.mp4",
+              "frames": sign_frames("circle", n=40)}
+    (landmarks / "my_uploads" / "namaskara" / "u1.json").write_text(json.dumps(sample), encoding="utf-8")
+    (landmarks / "include" / "namaskara" / "p1.json").write_text(json.dumps({**sample, "sample_id": "p1"}), encoding="utf-8")
+    monkeypatch.setattr(main, "PROCESSED_LANDMARKS_DIR", landmarks)
+    monkeypatch.setattr(main.S(), "dataset", DatasetStore(tmp_path / "dataset"))
+    lib = AnimationLibrary(tmp_path / "mapping.json", tmp_path / "animations")
+    monkeypatch.setattr(main.S(), "animations", lib)
+
+    entry = next(v for v in client.get("/api/vocabulary").json()["labels"] if v["label"] == "namaskara")
+    assert entry["uploaded_samples"] == 1
+    r = client.post("/api/animations/capture", json={"label": "namaskara"})
+    assert r.status_code == 200, r.text
+    assert r.json()["source"] == "uploaded video 'my_namaskara.mp4'"
+    assert lib.info("namaskara")["type"] == "captured"
+    assert client.post("/api/animations/capture", json={"label": "no_samples_here"}).status_code == 404
+    assert client.post("/api/animations/capture", json={"label": "../x"}).status_code == 400

@@ -145,6 +145,11 @@ def create_batch(files: list[tuple[str, bytes]], dataset_name: str, signer_id: s
                  annotation_type: str = "isolated", label_context: dict | None = None) -> dict:
     if label_mode not in ("single", "annotation", "folders"):
         raise UploadError("label_mode must be single, annotation or folders")
+    if annotation_type != "isolated":
+        # uploads are imported as isolated-sign samples; the sentence model reads ISL-CSLTR only, so a sentence
+        # video would silently become a mislabelled isolated-sign training sample
+        raise UploadError("only isolated-sign uploads (one sign per video) are supported; "
+                          "sentence videos cannot be added to the ISL-CSLTR sentence model")
     dataset = SAFE.sub("_", dataset_name.strip() or "user_uploads")[:40] or "user_uploads"
     signer = SAFE.sub("_", signer_id.strip() or "signer1")[:40]
     session = SAFE.sub("_", session_id.strip() or datetime.now().strftime("up%Y%m%d_%H%M"))[:40]

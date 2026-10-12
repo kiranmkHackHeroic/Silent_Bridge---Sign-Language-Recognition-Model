@@ -225,7 +225,7 @@ class JobQueue:
             from .continuous.train import train as train_continuous
             m = train_continuous(progress=progress)
             self.on_model_change()
-            return {"version": m["version"], "selected_method": m["selected_method"], "ctc": m["ctc"],
+            return {"version": m["version"], "activated": False, "selected_method": m["selected_method"], "ctc": m["ctc"],
                     "baseline": m["baseline"], "test_videos": m["test_videos"]}
         raise ValueError(f"unknown job type {kind!r}")
 

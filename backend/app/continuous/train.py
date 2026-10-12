@@ -155,8 +155,13 @@ def train(progress=None) -> dict:
                  "resample": RESAMPLE, "seq_dim": SEQ_DIM}, folder / "continuous_model.joblib")
     (folder / "metrics.json").write_text(json.dumps(metrics, ensure_ascii=False, indent=1), encoding="utf-8")
     (folder / "history.json").write_text(json.dumps(ctc.history_), encoding="utf-8")
-    (CONT_DIR / "active.json").write_text(json.dumps({"version": version}), encoding="utf-8")
-    progress("Done", 1.0)
+    # Saved as an inactive CANDIDATE: active.json is never changed here. This bundle has no fusion decoder or
+    # acceptance threshold, and a single training run varies by ~9 points with the seed (docs/PHASE11_REPORT.md),
+    # so replacing the production model requires a gated comparison on the same held-out test videos
+    # (tools/train_continuous_candidate.py) and an explicit, manual activation.
+    metrics["activated"] = False
+    (folder / "metrics.json").write_text(json.dumps(metrics, ensure_ascii=False, indent=1), encoding="utf-8")
+    progress("Done - saved as an inactive candidate; the active sentence model is unchanged", 1.0)
     return metrics
 
 
