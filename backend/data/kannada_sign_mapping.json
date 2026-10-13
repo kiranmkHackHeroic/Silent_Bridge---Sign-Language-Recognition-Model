@@ -1341,6 +1341,470 @@
       "english": "I work.",
       "category": "Everyday responses",
       "display": "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ"
+    },
+    "ದಯವಿಟ್ಟು ಕ್ಷಮಿಸಿ": {
+      "sign_ids": [
+        "please",
+        "sorry"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, sorry",
+      "english": "Please forgive me / Sorry.",
+      "category": "Greetings",
+      "display": "ದಯವಿಟ್ಟು ಕ್ಷಮಿಸಿ"
+    },
+    "ಎಲ್ಲರಿಗೂ ಸ್ವಾಗತ": {
+      "sign_ids": [
+        "you_plural",
+        "welcome"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: you_plural, welcome",
+      "english": "Welcome to everyone.",
+      "category": "Greetings",
+      "display": "ಎಲ್ಲರಿಗೂ ಸ್ವಾಗತ"
+    },
+    "ನಾಳೆ ಭೇಟಿಯಾಗೋಣ": {
+      "sign_ids": [
+        "tomorrow",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: tomorrow, namaskara",
+      "english": "See you tomorrow.",
+      "category": "Greetings",
+      "display": "ನಾಳೆ ಭೇಟಿಯಾಗೋಣ"
+    },
+    "ಶುಭ ಸಂಜೆ ಸ್ನೇಹಿತರೇ": {
+      "sign_ids": [
+        "good_evening",
+        "friend"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: good_evening, friend",
+      "english": "Good evening friends.",
+      "category": "Greetings",
+      "display": "ಶುಭ ಸಂಜೆ ಸ್ನೇಹಿತರೇ"
+    },
+    "ನೀರು ಕುಡಿಯಿರಿ": {
+      "sign_ids": [
+        "water",
+        "drink"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: water, drink",
+      "english": "Drink water.",
+      "category": "Food and water",
+      "display": "ನೀರು ಕುಡಿಯಿರಿ"
+    },
+    "ಊಟ ಮಾಡಿ": {
+      "sign_ids": [
+        "food",
+        "eat"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: food, eat",
+      "english": "Eat food.",
+      "category": "Food and water",
+      "display": "ಊಟ ಮಾಡಿ"
+    },
+    "ದಯವಿಟ್ಟು ನೀರು ಕೊಡಿ": {
+      "sign_ids": [
+        "please",
+        "water"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, water",
+      "english": "Please give water.",
+      "category": "Food and water",
+      "display": "ದಯವಿಟ್ಟು ನೀರು ಕೊಡಿ"
+    },
+    "ದಯವಿಟ್ಟು ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "please",
+        "help"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, help",
+      "english": "Please help.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಸಹಾಯ ಮಾಡಿ"
+    },
+    "ದಯವಿಟ್ಟು ನಿಲ್ಲಿ": {
+      "sign_ids": [
+        "please",
+        "stand"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, stand",
+      "english": "Please stand up.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಲ್ಲಿ"
+    },
+    "ದಯವಿಟ್ಟು ನಿಲ್ಲಿಸಿ": {
+      "sign_ids": [
+        "please",
+        "stop"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, stop",
+      "english": "Please stop.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಲ್ಲಿಸಿ"
+    },
+    "ನನಗೆ ನಿದ್ರೆ ಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "sleep",
+        "need"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, sleep, need",
+      "english": "I need sleep.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ನಿದ್ರೆ ಬೇಕು"
+    },
+    "ದಯವಿಟ್ಟು ಬರೆಯಿರಿ": {
+      "sign_ids": [
+        "please",
+        "write"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, write",
+      "english": "Please write.",
+      "category": "Education and college",
+      "display": "ದಯವಿಟ್ಟು ಬರೆಯಿರಿ"
+    },
+    "ವಿದ್ಯಾರ್ಥಿಗಳು ಓದಿ": {
+      "sign_ids": [
+        "student",
+        "study"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: student, study",
+      "english": "Students, study.",
+      "category": "Education and college",
+      "display": "ವಿದ್ಯಾರ್ಥಿಗಳು ಓದಿ"
+    },
+    "ಶಿಕ್ಷಕರಿಗೆ ನಮಸ್ಕಾರ": {
+      "sign_ids": [
+        "teacher",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: teacher, namaskara",
+      "english": "Greetings to the teacher.",
+      "category": "Education and college",
+      "display": "ಶಿಕ್ಷಕರಿಗೆ ನಮಸ್ಕಾರ"
+    },
+    "ಇಂದು ಕೆಲಸ ಮಾಡಿ": {
+      "sign_ids": [
+        "today",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: today, work",
+      "english": "Work today.",
+      "category": "Education and college",
+      "display": "ಇಂದು ಕೆಲಸ ಮಾಡಿ"
+    },
+    "ನಾಳೆ ಕೆಲಸ ಮಾಡಿ": {
+      "sign_ids": [
+        "tomorrow",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: tomorrow, work",
+      "english": "Work tomorrow.",
+      "category": "Education and college",
+      "display": "ನಾಳೆ ಕೆಲಸ ಮಾಡಿ"
+    },
+    "ನಿನ್ನೆ ಕೆಲಸ ಮಾಡಿದೆ": {
+      "sign_ids": [
+        "yesterday",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: yesterday, work",
+      "english": "Worked yesterday.",
+      "category": "Education and college",
+      "display": "ನಿನ್ನೆ ಕೆಲಸ ಮಾಡಿದೆ"
+    },
+    "ಅವಳು ನನ್ನ ಸ್ನೇಹಿತೆ": {
+      "sign_ids": [
+        "she",
+        "i_me",
+        "friend"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: she, i_me, friend",
+      "english": "She is my friend.",
+      "category": "Introductions",
+      "display": "ಅವಳು ನನ್ನ ಸ್ನೇಹಿತೆ"
+    },
+    "ಅವರು ಶಿಕ್ಷಕರು": {
+      "sign_ids": [
+        "they",
+        "teacher"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: they, teacher",
+      "english": "They are teachers.",
+      "category": "Education and college",
+      "display": "ಅವರು ಶಿಕ್ಷಕರು"
+    },
+    "ನೀವು ಪರಿಪೂರ್ಣ": {
+      "sign_ids": [
+        "you",
+        "you_are_perfect"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: you, you_are_perfect",
+      "english": "You are perfect.",
+      "category": "Everyday responses",
+      "display": "ನೀವು ಪರಿಪೂರ್ಣ"
+    },
+    "ತುಂಬಾ ಒಳ್ಳೆಯದು": {
+      "sign_ids": [
+        "good",
+        "you_are_perfect"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: good, you_are_perfect",
+      "english": "Very good.",
+      "category": "Everyday responses",
+      "display": "ತುಂಬಾ ಒಳ್ಳೆಯದು"
+    },
+    "ಕೋಪಗೊಳ್ಳಬೇಡಿ": {
+      "sign_ids": [
+        "angry",
+        "no"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: angry, no",
+      "english": "Do not be angry.",
+      "category": "Everyday responses",
+      "display": "ಕೋಪಗೊಳ್ಳಬೇಡಿ"
+    },
+    "ಮಳೆ ಬರುತ್ತಿದೆ ಕೊಡೆ ಬೇಕು": {
+      "sign_ids": [
+        "monsoon",
+        "umbrella",
+        "need"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: monsoon, umbrella, need",
+      "english": "It is raining, umbrella needed.",
+      "category": "Travel and directions",
+      "display": "ಮಳೆ ಬರುತ್ತಿದೆ ಕೊಡೆ ಬೇಕು"
+    },
+    "ಕೊಡೆ ತೆಗೆದುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "umbrella",
+        "need"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: umbrella, need",
+      "english": "Take an umbrella.",
+      "category": "Travel and directions",
+      "display": "ಕೊಡೆ ತೆಗೆದುಕೊಳ್ಳಿ"
+    },
+    "ನಾಯಿ ಮತ್ತು ಬೆಕ್ಕು": {
+      "sign_ids": [
+        "dog",
+        "cat"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: dog, cat",
+      "english": "Dog and cat.",
+      "category": "Everyday responses",
+      "display": "ನಾಯಿ ಮತ್ತು ಬೆಕ್ಕು"
+    },
+    "ಮೀನು ಮತ್ತು ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "fish",
+        "bird"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: fish, bird",
+      "english": "Fish and bird.",
+      "category": "Everyday responses",
+      "display": "ಮೀನು ಮತ್ತು ಹಕ್ಕಿ"
+    },
+    "ಹಸು ಮತ್ತು ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "cow",
+        "bird"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: cow, bird",
+      "english": "Cow and bird.",
+      "category": "Everyday responses",
+      "display": "ಹಸು ಮತ್ತು ಹಕ್ಕಿ"
+    },
+    "ಅವನ ಹೆಸರು ಏನು": {
+      "sign_ids": [
+        "he",
+        "name",
+        "what"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: he, name, what",
+      "english": "What is his name?",
+      "category": "Common questions",
+      "display": "ಅವನ ಹೆಸರು ಏನು"
+    },
+    "ಅವಳ ಹೆಸರು ಏನು": {
+      "sign_ids": [
+        "she",
+        "name",
+        "what"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: she, name, what",
+      "english": "What is her name?",
+      "category": "Common questions",
+      "display": "ಅವಳ ಹೆಸರು ಏನು"
+    },
+    "ಇದು ಏನು": {
+      "sign_ids": [
+        "it",
+        "what"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: it, what",
+      "english": "What is this?",
+      "category": "Common questions",
+      "display": "ಇದು ಏನು"
+    },
+    "ಏನು ಕೆಲಸ": {
+      "sign_ids": [
+        "what",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: what, work",
+      "english": "What work?",
+      "category": "Common questions",
+      "display": "ಏನು ಕೆಲಸ"
+    },
+    "ನೀವು ಮತ್ತು ನಾನು": {
+      "sign_ids": [
+        "you",
+        "i_me"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: you, i_me",
+      "english": "You and I.",
+      "category": "Introductions",
+      "display": "ನೀವು ಮತ್ತು ನಾನು"
+    },
+    "ಅವರು ಮತ್ತು ನಾವು": {
+      "sign_ids": [
+        "they",
+        "we"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: they, we",
+      "english": "They and we.",
+      "category": "Introductions",
+      "display": "ಅವರು ಮತ್ತು ನಾವು"
+    },
+    "ನಾನು ಅಧ್ಯಯನ ಮಾಡುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "study"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, study",
+      "english": "I am studying.",
+      "category": "Education and college",
+      "display": "ನಾನು ಅಧ್ಯಯನ ಮಾಡುತ್ತಿದ್ದೇನೆ"
+    },
+    "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, work",
+      "english": "I am working.",
+      "category": "Education and college",
+      "display": "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ"
+    },
+    "ಅವನು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿ": {
+      "sign_ids": [
+        "he",
+        "good",
+        "student"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: he, good, student",
+      "english": "He is a good student.",
+      "category": "Education and college",
+      "display": "ಅವನು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿ"
+    },
+    "ಅವಳು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿನಿ": {
+      "sign_ids": [
+        "she",
+        "good",
+        "student"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: she, good, student",
+      "english": "She is a good student.",
+      "category": "Education and college",
+      "display": "ಅವಳು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿನಿ"
+    },
+    "ನನ್ನ ತಾಯಿ ಮತ್ತು ತಂದೆ": {
+      "sign_ids": [
+        "i_me",
+        "mother",
+        "father"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, mother, father",
+      "english": "My mother and father.",
+      "category": "Family",
+      "display": "ನನ್ನ ತಾಯಿ ಮತ್ತು ತಂದೆ"
     }
   }
 }
