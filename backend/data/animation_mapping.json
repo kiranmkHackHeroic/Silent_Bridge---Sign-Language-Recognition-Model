@@ -212,8 +212,8 @@
       }
     },
     "your": {
-      "file": "placeholder/your.json",
-      "type": "placeholder",
+      "file": "captured/your.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
