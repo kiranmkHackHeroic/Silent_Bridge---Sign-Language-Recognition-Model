@@ -9,6 +9,7 @@ import joblib
 import numpy as np
 
 from ..recognition.landmarks import FrameFeatures, HAND_DIM, POS_OFFSET
+from .model import edit_distance
 from .train import CONT_DIR, nearest_sentence, resample
 
 
@@ -103,45 +104,98 @@ class ContinuousRecognizer:
             # Alignment term: incorporate gloss sequence match to reward agreeing candidates
             gloss_term = []
             for k in ids:
-                c_gloss = table[k]["gloss"]
+                c_gloss = table.get(k, {}).get("gloss", [])
                 ed = edit_distance(glosses, c_gloss)
                 sim = 1.0 - (ed / max(len(glosses), len(c_gloss), 1))
                 gloss_term.append(np.log(max(sim, 0.001)))
             score = np.array([ll[k] + lam * logpb.get(k, float("-inf")) for k in ids]) + 1.2 * np.array(gloss_term)
             finite = np.isfinite(score)
             post = np.zeros(len(ids))
-            if finite.any():
+            if finite.any() and len(ids) > 0:
                 e = np.exp(score[finite] - score[finite].max())
-                post[finite] = e / e.sum()
-            order = np.argsort(-post)
-            chosen = ids[order[0]]
-            posterior = float(post[order[0]])
-            candidates = [{"sentence_id": ids[i], "sentence": table[ids[i]]["sentence"], "kannada": table[ids[i]]["kannada"],
-                           "posterior": round(float(post[i]), 3)} for i in order[:3]]
+                s = e.sum()
+                if s > 0:
+                    post[finite] = e / s
+                order = np.argsort(-post)
+                chosen = ids[order[0]]
+                posterior = float(post[order[0]])
+                candidates = [
+                    {
+                        "sentence_id": ids[i],
+                        "sentence": table.get(ids[i], {}).get("sentence", ids[i]),
+                        "kannada": table.get(ids[i], {}).get("kannada", ""),
+                        "posterior": round(float(post[i]), 3),
+                    }
+                    for i in order[:3]
+                ]
+            else:
+                chosen = sid
+                posterior = 0.0
+                candidates = []
         else:
             chosen = sid if decoder == "greedy_nearest" else base_sid
             if decoder == "greedy_nearest":
-                sorted_by_dist = sorted(table.items(), key=lambda kv: edit_distance(glosses, kv[1]["gloss"]))
-                candidates = [{"sentence_id": k, "sentence": v["sentence"], "kannada": v["kannada"],
-                               "posterior": round(1.0 - edit_distance(glosses, v["gloss"]) / max(len(glosses), len(v["gloss"]), 1), 3)}
-                              for k, v in sorted_by_dist[:3]]
+                sorted_by_dist = sorted(table.items(), key=lambda kv: edit_distance(glosses, kv[1].get("gloss", [])))
+                candidates = [
+                    {
+                        "sentence_id": k,
+                        "sentence": v.get("sentence", k),
+                        "kannada": v.get("kannada", ""),
+                        "posterior": round(1.0 - edit_distance(glosses, v.get("gloss", [])) / max(len(glosses), len(v.get("gloss", [])), 1), 3),
+                    }
+                    for k, v in sorted_by_dist[:3]
+                ]
                 posterior = candidates[0]["posterior"] if candidates else None
             else:
                 top_base = np.argsort(-probs)[:3]
-                candidates = [{"sentence_id": classes[i], "sentence": table[classes[i]]["sentence"], "kannada": table[classes[i]]["kannada"],
-                               "posterior": round(float(probs[i]), 3)} for i in top_base]
+                candidates = [
+                    {
+                        "sentence_id": classes[i],
+                        "sentence": table.get(classes[i], {}).get("sentence", classes[i]),
+                        "kannada": table.get(classes[i], {}).get("kannada", ""),
+                        "posterior": round(float(probs[i]), 3),
+                    }
+                    for i in top_base
+                ]
                 posterior = float(probs[top_base[0]]) if len(top_base) else None
+
         # accept when posterior meets threshold or top-margin is clear
         threshold = b.get("accept_threshold")
-        margin = (candidates[0]["posterior"] - candidates[1]["posterior"]) if len(candidates) > 1 else (posterior or 0.0)
-        accepted = posterior is None or threshold is None or posterior >= float(threshold) or (posterior >= 0.28 and margin >= 0.12)
-        entry = table[chosen]
+        if len(candidates) > 1:
+            p0 = candidates[0].get("posterior") or 0.0
+            p1 = candidates[1].get("posterior") or 0.0
+            margin = max(0.0, float(p0) - float(p1))
+        else:
+            margin = float(posterior or 0.0)
+
+        accepted = (
+            posterior is None
+            or threshold is None
+            or posterior >= float(threshold)
+            or (posterior >= 0.28 and margin >= 0.12)
+        )
+        entry = table.get(chosen) or table.get(sid) or {
+            "sentence": chosen,
+            "kannada": "",
+            "gloss": [],
+            "translation_status": "unmapped",
+        }
+        actual_dist = edit_distance(glosses, entry.get("gloss", []))
+        base_entry = table.get(base_sid) or {}
         return {
-            "accepted": accepted, "posterior": None if posterior is None else round(posterior, 3),
-            "accept_threshold": threshold, "candidates": candidates,
-            "glosses": glosses, "gloss_confidence": round(conf, 3), "method": decoder,
-            "sentence_id": chosen, "sentence": entry["sentence"], "kannada": entry["kannada"],
-            "reference_gloss": entry["gloss"], "gloss_distance": int(dist),
-            "baseline_sentence": table[base_sid]["sentence"], "baseline_confidence": round(base_p, 3),
-            "translation_status": entry["translation_status"],
+            "accepted": accepted,
+            "posterior": None if posterior is None else round(posterior, 3),
+            "accept_threshold": threshold,
+            "candidates": candidates,
+            "glosses": glosses,
+            "gloss_confidence": round(conf, 3),
+            "method": decoder,
+            "sentence_id": chosen,
+            "sentence": entry.get("sentence", chosen),
+            "kannada": entry.get("kannada", ""),
+            "reference_gloss": entry.get("gloss", []),
+            "gloss_distance": int(actual_dist),
+            "baseline_sentence": base_entry.get("sentence", base_sid),
+            "baseline_confidence": round(base_p, 3),
+            "translation_status": entry.get("translation_status", "fallback"),
         }
