@@ -12,13 +12,23 @@ from ..recognition.landmarks import FrameFeatures, HAND_DIM, POS_OFFSET
 from .train import CONT_DIR, nearest_sentence, resample
 
 
-def features_to_sequence(feats: list[FrameFeatures], stride: int = 2) -> np.ndarray | None:
-    """Same sequence features as app.continuous.dataset.frames_to_sequence, from parsed frames."""
+def features_to_sequence(feats: list[FrameFeatures], stride: int | None = None) -> np.ndarray | None:
+    """Same sequence features as app.continuous.dataset.frames_to_sequence, from parsed frames.
+    Adaptively selects stride to target the ~15 fps (66.7 ms/frame) temporal resolution the model was trained on."""
     has = [f.has_hands for f in feats]
     if sum(has) < 6:
         return None
     first, last = has.index(True), len(has) - 1 - has[::-1].index(True)
-    mat = np.stack([f.vector for f in feats[first:last + 1]])[::stride]
+    active = feats[first:last + 1]
+    if stride is None:
+        if len(active) >= 2:
+            dt_avg = (active[-1].t - active[0].t) / (len(active) - 1)
+            # If input is already ~15-20 fps (dt >= 48ms), stride 1 preserves temporal resolution
+            # If input is ~30 fps or higher (dt < 48ms), stride 2 downsamples to ~15 fps
+            stride = 1 if dt_avg >= 48.0 else max(1, int(round(66.6 / max(dt_avg, 1.0))))
+        else:
+            stride = 1
+    mat = np.stack([f.vector for f in active])[::stride]
     pos = np.concatenate([mat[:, s * HAND_DIM + POS_OFFSET: s * HAND_DIM + POS_OFFSET + 3] for s in range(2)], axis=1)
     vel = np.vstack([np.zeros((1, 6), np.float32), np.diff(pos, axis=0) * 5.0])
     return np.concatenate([mat, vel], axis=1).astype(np.float32)
@@ -75,6 +85,8 @@ class ContinuousRecognizer:
         b = self.bundle
         table = b["table"]
         glosses, conf = b["ctc"].decode(seq, beam_width=8)
+        if not glosses:
+            glosses, conf = b["ctc"].decode_greedy(seq)
         sid, dist = nearest_sentence(glosses, table, b.get("normalized_matcher", False))
         x = resample(seq, b["resample"]).reshape(1, -1)
         probs = b["baseline"].predict_proba(x)[0]
