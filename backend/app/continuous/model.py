@@ -11,6 +11,7 @@ from __future__ import annotations
 import io
 
 import numpy as np
+import torch
 
 
 def edit_distance(a: list[str], b: list[str]) -> int:

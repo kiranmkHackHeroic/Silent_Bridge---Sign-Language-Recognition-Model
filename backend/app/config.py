@@ -55,7 +55,7 @@ class RecognitionSettings:
     # segment mode
     motion_start: float = 0.008        # motion (per 30 fps frame) needed to start a sign
     motion_still: float = 0.003        # motion below this counts as "still"
-    still_ms: int = 800                # stillness that ends a sign (inactivity boundary)
+    still_ms: int = 650                # stillness that ends a sign (inactivity boundary, tuned for natural pausing)
     # Drop the held-still frames that ended a segment ("still" boundary) before classifying it. Training clips
     # end with the hands moving down, not with an 800 ms motionless hold, which filled ~half of the 16
     # resampled steps. Held-out evidence (tools/trace_live_pipeline.py, reports/trace_live_pipeline.json):

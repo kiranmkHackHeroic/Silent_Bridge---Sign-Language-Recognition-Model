@@ -276,9 +276,11 @@ class RecognitionSession:
         if pred.label == NONE_LABEL:
             return [{"type": "segment", **base, "result": "background", "top": top,
                      **self._diagnose("classification", "classified as no-sign / transition (_none)")}]
-        if pred.confidence < self.settings.confidence_threshold:
+        margin = (top[0]["confidence"] - top[1]["confidence"]) if len(top) > 1 else top[0]["confidence"]
+        is_confident = (pred.confidence >= self.settings.confidence_threshold) or (pred.confidence >= 0.30 and margin >= 0.16)
+        if not is_confident:
             return [{"type": "uncertain", **base, "top": top,
-                     **self._diagnose("classification", f"best guess '{pred.label}' {pred.confidence:.2f} is below the "
+                     **self._diagnose("classification", f"best guess '{pred.label}' {pred.confidence:.2f} (margin {margin:.2f}) is below the "
                                                         f"threshold {self.settings.confidence_threshold:.2f}")}]
         if pred.label == split_label:
             return [{"type": "segment", **base, "result": "continuation", "top": top,

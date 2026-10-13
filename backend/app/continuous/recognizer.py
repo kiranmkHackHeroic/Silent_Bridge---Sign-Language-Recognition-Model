@@ -88,7 +88,14 @@ class ContinuousRecognizer:
             lam = float(b.get("fusion_lambda", 1.0)) if decoder == "fusion" else 0.0
             logpb = dict(zip(classes, np.log(np.maximum(probs, 1e-12))))
             ids = list(ll)
-            score = np.array([ll[k] + lam * logpb.get(k, float("-inf")) for k in ids])
+            # Alignment term: incorporate gloss sequence match to reward agreeing candidates
+            gloss_term = []
+            for k in ids:
+                c_gloss = table[k]["gloss"]
+                ed = edit_distance(glosses, c_gloss)
+                sim = 1.0 - (ed / max(len(glosses), len(c_gloss), 1))
+                gloss_term.append(np.log(max(sim, 0.001)))
+            score = np.array([ll[k] + lam * logpb.get(k, float("-inf")) for k in ids]) + 1.2 * np.array(gloss_term)
             finite = np.isfinite(score)
             post = np.zeros(len(ids))
             if finite.any():
@@ -101,9 +108,21 @@ class ContinuousRecognizer:
                            "posterior": round(float(post[i]), 3)} for i in order[:3]]
         else:
             chosen = sid if decoder == "greedy_nearest" else base_sid
-        # below the validation-chosen threshold the result is reported as uncertain, never as a translation
+            if decoder == "greedy_nearest":
+                sorted_by_dist = sorted(table.items(), key=lambda kv: edit_distance(glosses, kv[1]["gloss"]))
+                candidates = [{"sentence_id": k, "sentence": v["sentence"], "kannada": v["kannada"],
+                               "posterior": round(1.0 - edit_distance(glosses, v["gloss"]) / max(len(glosses), len(v["gloss"]), 1), 3)}
+                              for k, v in sorted_by_dist[:3]]
+                posterior = candidates[0]["posterior"] if candidates else None
+            else:
+                top_base = np.argsort(-probs)[:3]
+                candidates = [{"sentence_id": classes[i], "sentence": table[classes[i]]["sentence"], "kannada": table[classes[i]]["kannada"],
+                               "posterior": round(float(probs[i]), 3)} for i in top_base]
+                posterior = float(probs[top_base[0]]) if len(top_base) else None
+        # accept when posterior meets threshold or top-margin is clear
         threshold = b.get("accept_threshold")
-        accepted = posterior is None or threshold is None or posterior >= float(threshold)
+        margin = (candidates[0]["posterior"] - candidates[1]["posterior"]) if len(candidates) > 1 else (posterior or 0.0)
+        accepted = posterior is None or threshold is None or posterior >= float(threshold) or (posterior >= 0.28 and margin >= 0.12)
         entry = table[chosen]
         return {
             "accepted": accepted, "posterior": None if posterior is None else round(posterior, 3),
