@@ -2609,6 +2609,150 @@
       "english": "Rain stopped, proceed.",
       "category": "Travel and directions",
       "display": "ಮಳೆ ನಿಂತಿದೆ ಹೊರಡಿ"
+    },
+    "ನನಗೆ ಅರ್ಥವಾಯಿತು": {
+      "sign_ids": [
+        "i_me",
+        "understand"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I understand.",
+      "category": "Everyday responses",
+      "display": "ನನಗೆ ಅರ್ಥವಾಯಿತು"
+    },
+    "ದಯವಿಟ್ಟು ನಿಧಾನವಾಗಿ ಹೇಳಿ": {
+      "sign_ids": [
+        "please",
+        "say"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please say slowly.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಧಾನವಾಗಿ ಹೇಳಿ"
+    },
+    "ಮತ್ತೆ ಹೇಳಿ": {
+      "sign_ids": [
+        "again",
+        "say"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please say again.",
+      "category": "Assistance",
+      "display": "ಮತ್ತೆ ಹೇಳಿ"
+    },
+    "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಕಾಯಿರಿ": {
+      "sign_ids": [
+        "please",
+        "wait"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please wait a bit.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಕಾಯಿರಿ"
+    },
+    "ನಾನು ಮನೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "home",
+        "go"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I am going home.",
+      "category": "Travel and directions",
+      "display": "ನಾನು ಮನೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ"
+    },
+    "ತುರ್ತು ಪರಿಸ್ಥಿತಿ ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "emergency",
+        "help"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Emergency! Please help.",
+      "category": "Health and emergencies",
+      "display": "ತುರ್ತು ಪರಿಸ್ಥಿತಿ ಸಹಾಯ ಮಾಡಿ"
+    },
+    "ನನಗೆ ಅನಾರೋಗ್ಯವಾಗಿದೆ": {
+      "sign_ids": [
+        "i_me",
+        "sick"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I am feeling sick.",
+      "category": "Health and emergencies",
+      "display": "ನನಗೆ ಅನಾರೋಗ್ಯವಾಗಿದೆ"
+    },
+    "ಅಲ್ಲಿಗೆ ಹೋಗಿ": {
+      "sign_ids": [
+        "go"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Go there.",
+      "category": "Travel and directions",
+      "display": "ಅಲ್ಲಿಗೆ ಹೋಗಿ"
+    },
+    "ಮನೆಗೆ ಬನ್ನಿ": {
+      "sign_ids": [
+        "home",
+        "welcome"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Welcome to my home.",
+      "category": "Travel and directions",
+      "display": "ಮನೆಗೆ ಬನ್ನಿ"
+    },
+    "ಇಲ್ಲಿ ಕಾಯಿರಿ": {
+      "sign_ids": [
+        "wait"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Wait here.",
+      "category": "Assistance",
+      "display": "ಇಲ್ಲಿ ಕಾಯಿರಿ"
+    },
+    "ನನಗೆ ಅರ್ಥವಾಗುವುದಿಲ್ಲ": {
+      "sign_ids": [
+        "i_me",
+        "understand",
+        "no"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I do not understand.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ಅರ್ಥವಾಗುವುದಿಲ್ಲ"
+    },
+    "ಮತ್ತೆ ಭೇಟಿಯಾಗೋಣ": {
+      "sign_ids": [
+        "again",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "See you again.",
+      "category": "Greetings",
+      "display": "ಮತ್ತೆ ಭೇಟಿಯಾಗೋಣ"
     }
   }
 }
