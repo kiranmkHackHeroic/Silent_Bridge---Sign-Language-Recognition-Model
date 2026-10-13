@@ -63,7 +63,7 @@ class ContinuousRecognizer:
         seq = features_to_sequence(feats)
         if seq is None:
             return None
-        glosses, conf = self.bundle["ctc"].decode(seq)
+        glosses, conf = self.bundle["ctc"].decode_greedy(seq)
         return {"glosses": glosses, "gloss_confidence": round(conf, 3), "tentative": True}
 
     def recognize(self, feats: list[FrameFeatures]) -> dict | None:
@@ -74,7 +74,7 @@ class ContinuousRecognizer:
             return None
         b = self.bundle
         table = b["table"]
-        glosses, conf = b["ctc"].decode(seq)
+        glosses, conf = b["ctc"].decode(seq, beam_width=8)
         sid, dist = nearest_sentence(glosses, table, b.get("normalized_matcher", False))
         x = resample(seq, b["resample"]).reshape(1, -1)
         probs = b["baseline"].predict_proba(x)[0]
