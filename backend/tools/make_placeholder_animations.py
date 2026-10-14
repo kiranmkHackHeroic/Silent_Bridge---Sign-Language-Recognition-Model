@@ -121,6 +121,70 @@ def build():
         key(t, pose([-0.10, y, 0.32], FWD, [0, -1, 0], POINT))
         for t, y in [(0.0, 1.30), (0.3, 1.22), (0.55, 1.30), (0.85, 1.22), (1.0, 1.24)]
     ])
+    clips["understand"] = clip("understand", "Index finger taps near temple and moves forward/outward.", [
+        key(0.0, pose([-0.14, 1.56, 0.22], [0, 0.2, -0.98], [1, 0, 0], POINT)),
+        key(0.35, pose([-0.14, 1.57, 0.20], [0, 0.2, -0.98], [1, 0, 0], POINT)),
+        key(0.7, pose([-0.16, 1.52, 0.32], [0, 0.3, 0.95], [1, 0, 0], POINT)),
+        key(1.0, pose([-0.16, 1.52, 0.32], [0, 0.3, 0.95], [1, 0, 0], POINT)),
+    ])
+    clips["again"] = clip("again", "Bent hand arcs over and taps the other palm.", [
+        key(0.0, pose([-0.06, 1.34, 0.26], [0, -0.5, 0.85], UP, FLAT), pose([0.08, 1.20, 0.30], FWD, UP, FLAT)),
+        key(0.4, pose([0.06, 1.22, 0.30], [0, -0.2, 0.98], UP, FLAT), pose([0.08, 1.20, 0.30], FWD, UP, FLAT)),
+        key(0.7, pose([-0.04, 1.30, 0.28], [0, -0.5, 0.85], UP, FLAT), pose([0.08, 1.20, 0.30], FWD, UP, FLAT)),
+        key(1.0, pose([0.06, 1.22, 0.30], [0, -0.2, 0.98], UP, FLAT), pose([0.08, 1.20, 0.30], FWD, UP, FLAT)),
+    ])
+    clips["say"] = clip("say", "Index finger touches chin/mouth and rolls forward.", [
+        key(0.0, pose([-0.04, 1.50, 0.20], UP, BACK, POINT)),
+        key(0.4, pose([-0.06, 1.46, 0.34], [0, 0.2, 0.98], UP, POINT)),
+        key(0.8, pose([-0.08, 1.44, 0.40], [0, 0.2, 0.98], UP, POINT)),
+    ])
+    clips["where"] = clip("where", "Both open hands face up with a gentle questioning side-to-side movement.", [
+        key(0.0, pose([-0.18, 1.22, 0.30], FWD, UP, FLAT), pose([0.18, 1.22, 0.30], FWD, UP, FLAT)),
+        key(0.3, pose([-0.22, 1.22, 0.32], FWD, UP, FLAT), pose([0.22, 1.22, 0.32], FWD, UP, FLAT)),
+        key(0.6, pose([-0.16, 1.22, 0.30], FWD, UP, FLAT), pose([0.16, 1.22, 0.30], FWD, UP, FLAT)),
+        key(0.9, pose([-0.22, 1.22, 0.32], FWD, UP, FLAT), pose([0.22, 1.22, 0.32], FWD, UP, FLAT)),
+    ])
+    clips["go"] = clip("go", "Both index fingers swing forward away from the body.", [
+        key(0.0, pose([-0.10, 1.28, 0.26], UP, FWD, POINT), pose([0.10, 1.28, 0.26], UP, FWD, POINT)),
+        key(0.4, pose([-0.12, 1.24, 0.42], FWD, UP, POINT), pose([0.12, 1.24, 0.42], FWD, UP, POINT)),
+        key(0.8, pose([-0.14, 1.22, 0.46], FWD, UP, POINT), pose([0.14, 1.22, 0.46], FWD, UP, POINT)),
+    ])
+    clips["home"] = clip("home", "Fingertips of both flat hands touch together forming a roof shape.", [
+        key(0.0, pose([-0.12, 1.34, 0.28], [0.5, 0.8, 0], [0, 0, 1], FLAT), pose([0.12, 1.34, 0.28], [-0.5, 0.8, 0], [0, 0, 1], FLAT)),
+        key(0.5, pose([-0.04, 1.38, 0.28], [0.6, 0.8, 0], [0, 0, 1], FLAT), pose([0.04, 1.38, 0.28], [-0.6, 0.8, 0], [0, 0, 1], FLAT)),
+        key(1.0, pose([-0.04, 1.38, 0.28], [0.6, 0.8, 0], [0, 0, 1], FLAT), pose([0.04, 1.38, 0.28], [-0.6, 0.8, 0], [0, 0, 1], FLAT)),
+    ])
+    clips["wait"] = clip("wait", "Both hands held open with palms facing down, moving gently down.", [
+        key(0.0, pose([-0.15, 1.26, 0.32], FWD, [0, -1, 0], FLAT), pose([0.15, 1.26, 0.32], FWD, [0, -1, 0], FLAT)),
+        key(0.3, pose([-0.15, 1.20, 0.32], FWD, [0, -1, 0], FLAT), pose([0.15, 1.20, 0.32], FWD, [0, -1, 0], FLAT)),
+        key(0.6, pose([-0.15, 1.26, 0.32], FWD, [0, -1, 0], FLAT), pose([0.15, 1.26, 0.32], FWD, [0, -1, 0], FLAT)),
+        key(0.9, pose([-0.15, 1.20, 0.32], FWD, [0, -1, 0], FLAT), pose([0.15, 1.20, 0.32], FWD, [0, -1, 0], FLAT)),
+    ])
+    clips["emergency"] = clip("emergency", "Both open hands raised with urgent waving motion.", [
+        key(0.0, pose([-0.18, 1.45, 0.30], UP, FWD, FLAT), pose([0.18, 1.45, 0.30], UP, FWD, FLAT)),
+        key(0.2, pose([-0.22, 1.48, 0.32], UP, FWD, FLAT), pose([0.22, 1.48, 0.32], UP, FWD, FLAT)),
+        key(0.4, pose([-0.16, 1.44, 0.30], UP, FWD, FLAT), pose([0.16, 1.44, 0.30], UP, FWD, FLAT)),
+        key(0.6, pose([-0.22, 1.48, 0.32], UP, FWD, FLAT), pose([0.22, 1.48, 0.32], UP, FWD, FLAT)),
+        key(0.8, pose([-0.18, 1.45, 0.30], UP, FWD, FLAT), pose([0.18, 1.45, 0.30], UP, FWD, FLAT)),
+    ])
+    clips["sick"] = clip("sick", "One hand touches forehead and one hand touches chest/stomach.", [
+        key(0.0, pose([-0.06, 1.54, 0.22], UP, BACK, FLAT), pose([0.06, 1.20, 0.26], UP, BACK, FLAT)),
+        key(0.5, pose([-0.06, 1.52, 0.20], UP, BACK, FLAT), pose([0.06, 1.18, 0.24], UP, BACK, FLAT)),
+        key(1.0, pose([-0.06, 1.52, 0.20], UP, BACK, FLAT), pose([0.06, 1.18, 0.24], UP, BACK, FLAT)),
+    ])
+    clips["how"] = clip("how", "Both hands start curved palms down, rotate outwards until palms face up.", [
+        key(0.0, pose([-0.12, 1.22, 0.28], FWD, [0, -1, 0], FLAT), pose([0.12, 1.22, 0.28], FWD, [0, -1, 0], FLAT)),
+        key(0.5, pose([-0.15, 1.22, 0.30], FWD, [1, 0, 0], FLAT), pose([0.15, 1.22, 0.30], FWD, [-1, 0, 0], FLAT)),
+        key(0.9, pose([-0.18, 1.22, 0.32], FWD, UP, FLAT), pose([0.18, 1.22, 0.32], FWD, UP, FLAT)),
+    ])
+    clips["myname"] = clip("myname", "Point to chest then tap two fingers twice (I + NAME).", [
+        key(0.0, pose([-0.06, 1.28, 0.30], [0.1, 0, -1], [1, 0, 0], POINT)),
+        key(0.4, pose([-0.06, 1.27, 0.22], [0.1, 0, -1], [1, 0, 0], POINT)),
+        key(0.7, pose([-0.04, 1.34, 0.30], [1, 0.2, 0], [0, 0, 1], TWO), pose([0.05, 1.28, 0.30], [-1, 0.2, 0], [0, 0, 1], TWO)),
+        key(1.0, pose([-0.04, 1.30, 0.30], [1, 0.2, 0], [0, 0, 1], TWO), pose([0.05, 1.28, 0.30], [-1, 0.2, 0], [0, 0, 1], TWO)),
+        key(1.3, pose([-0.04, 1.34, 0.30], [1, 0.2, 0], [0, 0, 1], TWO), pose([0.05, 1.28, 0.30], [-1, 0.2, 0], [0, 0, 1], TWO)),
+        key(1.6, pose([-0.04, 1.30, 0.30], [1, 0.2, 0], [0, 0, 1], TWO), pose([0.05, 1.28, 0.30], [-1, 0.2, 0], [0, 0, 1], TWO)),
+    ])
     return clips
 
 

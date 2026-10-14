@@ -11,6 +11,7 @@ from __future__ import annotations
 import io
 
 import numpy as np
+import torch
 
 
 def edit_distance(a: list[str], b: list[str]) -> int:
@@ -25,15 +26,43 @@ def edit_distance(a: list[str], b: list[str]) -> int:
 
 class CTCGlossRecognizer:
     def __init__(self, vocab: list[str], input_dim: int, hidden: int = 128, layers: int = 2, dropout: float = 0.3,
-                 lr: float = 1e-3, epochs: int = 120, patience: int = 20, batch_size: int = 16, seed: int = 42):
+                 lr: float = 1e-3, epochs: int = 120, patience: int = 20, batch_size: int = 16, seed: int = 42,
+                 arch: str = "gru"):
         self.vocab = list(vocab)                      # index 0 is the CTC blank
         self.input_dim, self.hidden, self.layers, self.dropout = input_dim, hidden, layers, dropout
         self.lr, self.epochs, self.patience, self.batch_size, self.seed = lr, epochs, patience, batch_size, seed
+        self.arch = arch
         self.net = None
         self.history_: list[dict] = []
 
     def _build(self):
         import torch.nn as nn
+
+        arch = getattr(self, "arch", "gru")
+        if arch == "tcn_gru":
+            # Multi-scale 1D Temporal Convolutional front-end before BiGRU
+            class TCNNet(nn.Module):
+                def __init__(s):
+                    super().__init__()
+                    s.conv1 = nn.Conv1d(self.input_dim, self.hidden // 2, kernel_size=3, padding=1)
+                    s.conv2 = nn.Conv1d(self.input_dim, self.hidden // 2, kernel_size=5, padding=2)
+                    s.bn = nn.BatchNorm1d(self.hidden)
+                    s.relu = nn.ReLU()
+                    s.drop = nn.Dropout(self.dropout)
+                    s.gru = nn.GRU(self.hidden, self.hidden, num_layers=self.layers, batch_first=True,
+                                   bidirectional=True, dropout=self.dropout if self.layers > 1 else 0.0)
+                    s.out = nn.Linear(2 * self.hidden, len(self.vocab) + 1)
+
+                def forward(s, x):
+                    # x: (N, T, C) -> transpose to (N, C, T) for 1D convolution
+                    xt = x.transpose(1, 2)
+                    c1 = s.conv1(xt)
+                    c2 = s.conv2(xt)
+                    feat = s.drop(s.relu(s.bn(torch.cat([c1, c2], dim=1)))).transpose(1, 2)
+                    h, _ = s.gru(feat)
+                    return s.out(h).log_softmax(-1)
+
+            return TCNNet()
 
         class Net(nn.Module):
             def __init__(s):
@@ -122,7 +151,17 @@ class CTCGlossRecognizer:
         self.net.eval()
         return self
 
-    def decode(self, seq: np.ndarray) -> tuple[list[str], float]:
+    def decode(self, seq: np.ndarray, beam_width: int = 8) -> tuple[list[str], float]:
+        """CTC decoding -> (glosses, confidence).
+
+        If beam_width > 1, uses prefix beam search decoding.
+        If beam_width <= 1, uses greedy decoding.
+        """
+        if beam_width <= 1:
+            return self.decode_greedy(seq)
+        return self.beam_search_decode(seq, beam_width=beam_width)
+
+    def decode_greedy(self, seq: np.ndarray) -> tuple[list[str], float]:
         """Greedy CTC decoding -> (glosses, mean max-probability of emitted tokens)."""
         import torch
         with torch.no_grad():
@@ -136,6 +175,78 @@ class CTCGlossRecognizer:
                 confs.append(float(probs[t, k]))
             prev = k
         return out, float(np.mean(confs)) if confs else 0.0
+
+    def beam_search_decode(self, seq: np.ndarray, beam_width: int = 8, prune_threshold: float = 1e-4) -> tuple[list[str], float]:
+        """Prefix beam search CTC decoding.
+
+        Tracks the top candidate gloss prefixes across time, summing probabilities
+        over all blank and non-blank alignment paths.
+        """
+        from collections import defaultdict
+        import torch
+
+        with torch.no_grad():
+            logp = self.net(torch.tensor(self._norm(seq)[None]))[0]
+        probs = logp.exp().numpy()
+        T = probs.shape[0]
+
+        # pb[prefix]: probability ending with blank
+        # pnb[prefix]: probability ending with non-blank
+        pb = {(): 1.0}
+        pnb = {(): 0.0}
+
+        for t in range(T):
+            next_pb = defaultdict(float)
+            next_pnb = defaultdict(float)
+            p_t = probs[t]
+
+            # Candidate tokens at timestamp t above prune_threshold
+            candidates = np.where(p_t > prune_threshold)[0]
+            if 0 not in candidates:
+                candidates = np.append(candidates, 0)
+
+            for prefix in pb.keys() | pnb.keys():
+                prob_b = pb.get(prefix, 0.0)
+                prob_nb = pnb.get(prefix, 0.0)
+                prob_total = prob_b + prob_nb
+
+                # 1. Blank token (0)
+                next_pb[prefix] += prob_total * p_t[0]
+
+                # 2. Non-blank tokens (c >= 1)
+                for c in candidates:
+                    if c == 0:
+                        continue
+                    p_c = p_t[c]
+                    if len(prefix) > 0 and prefix[-1] == c:
+                        # Repetition without blank -> collapsed (does not extend prefix)
+                        next_pnb[prefix] += prob_nb * p_c
+                        # Repetition after blank -> extends prefix
+                        next_pnb[prefix + (c,)] += prob_b * p_c
+                    else:
+                        # New token -> extends prefix
+                        next_pnb[prefix + (c,)] += prob_total * p_c
+
+            # Prune to top beam_width prefixes by total probability
+            all_prefixes = next_pb.keys() | next_pnb.keys()
+            sorted_prefixes = sorted(
+                all_prefixes,
+                key=lambda p: next_pb.get(p, 0.0) + next_pnb.get(p, 0.0),
+                reverse=True
+            )[:beam_width]
+
+            pb = {p: next_pb[p] for p in sorted_prefixes}
+            pnb = {p: next_pnb[p] for p in sorted_prefixes}
+
+        if not pb and not pnb:
+            return [], 0.0
+
+        best_prefix = max(pb.keys() | pnb.keys(), key=lambda p: pb.get(p, 0.0) + pnb.get(p, 0.0))
+        best_prob = pb.get(best_prefix, 0.0) + pnb.get(best_prefix, 0.0)
+        glosses = [self.vocab[k - 1] for k in best_prefix if k > 0]
+        n_tokens = max(1, len(glosses))
+        conf = float(np.clip(best_prob ** (1.0 / n_tokens), 0.0, 1.0)) if glosses else 0.0
+        return glosses, conf
 
     def sentence_log_likelihoods(self, seq: np.ndarray, candidates: dict[str, list[str]]) -> dict[str, float]:
         """log P(gloss sequence | video) under the CTC model for every candidate sentence (summed over all

@@ -212,8 +212,8 @@
       }
     },
     "your": {
-      "file": "placeholder/your.json",
-      "type": "placeholder",
+      "file": "captured/your.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -1255,6 +1255,160 @@
         "sample_id": "include_0570f3be1bdfbc",
         "signer_group": "include_train",
         "file": "MVI_0024.MOV"
+      }
+    },
+    "understand": {
+      "file": "placeholder/understand.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "again": {
+      "file": "placeholder/again.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "say": {
+      "file": "placeholder/say.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "where": {
+      "file": "placeholder/where.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "go": {
+      "file": "placeholder/go.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "home": {
+      "file": "placeholder/home.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "wait": {
+      "file": "placeholder/wait.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "emergency": {
+      "file": "placeholder/emergency.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "sick": {
+      "file": "placeholder/sick.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "how": {
+      "file": "placeholder/how.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
+      }
+    },
+    "myname": {
+      "file": "placeholder/myname.json",
+      "type": "placeholder",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked",
+        "reviewer": null,
+        "reference": null
       }
     }
   }

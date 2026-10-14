@@ -602,9 +602,9 @@
         "good_night"
       ],
       "verified": false,
-      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "source": "curated conversational dictionary",
       "notes": "",
-      "english": "Good night",
+      "english": "Good night.",
       "category": "Greetings",
       "display": "ಶುಭ ರಾತ್ರಿ"
     },
@@ -711,14 +711,13 @@
     },
     "ತುರ್ತು ಸಹಾಯ ಬೇಕು": {
       "sign_ids": [
-        "emergency",
         "help",
         "need"
       ],
       "verified": false,
-      "source": "phrase dictionary (proposed ISL gloss order)",
+      "source": "curated conversational dictionary",
       "notes": "",
-      "english": "I need emergency help.",
+      "english": "Emergency help needed!",
       "category": "Health and emergencies",
       "display": "ತುರ್ತು ಸಹಾಯ ಬೇಕು"
     },
@@ -810,9 +809,9 @@
         "good_afternoon"
       ],
       "verified": false,
-      "source": "INCLUDE class vocabulary (dedicated sign)",
+      "source": "curated conversational dictionary",
       "notes": "",
-      "english": "Good afternoon",
+      "english": "Good afternoon.",
       "category": "Greetings",
       "display": "ಶುಭ ಮಧ್ಯಾಹ್ನ"
     },
@@ -1341,6 +1340,1419 @@
       "english": "I work.",
       "category": "Everyday responses",
       "display": "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತೇನೆ"
+    },
+    "ದಯವಿಟ್ಟು ಕ್ಷಮಿಸಿ": {
+      "sign_ids": [
+        "please",
+        "sorry"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, sorry",
+      "english": "Please forgive me / Sorry.",
+      "category": "Greetings",
+      "display": "ದಯವಿಟ್ಟು ಕ್ಷಮಿಸಿ"
+    },
+    "ಎಲ್ಲರಿಗೂ ಸ್ವಾಗತ": {
+      "sign_ids": [
+        "you_plural",
+        "welcome"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: you_plural, welcome",
+      "english": "Welcome to everyone.",
+      "category": "Greetings",
+      "display": "ಎಲ್ಲರಿಗೂ ಸ್ವಾಗತ"
+    },
+    "ನಾಳೆ ಭೇಟಿಯಾಗೋಣ": {
+      "sign_ids": [
+        "tomorrow",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: tomorrow, namaskara",
+      "english": "See you tomorrow.",
+      "category": "Greetings",
+      "display": "ನಾಳೆ ಭೇಟಿಯಾಗೋಣ"
+    },
+    "ಶುಭ ಸಂಜೆ ಸ್ನೇಹಿತರೇ": {
+      "sign_ids": [
+        "good_evening",
+        "friend"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: good_evening, friend",
+      "english": "Good evening friends.",
+      "category": "Greetings",
+      "display": "ಶುಭ ಸಂಜೆ ಸ್ನೇಹಿತರೇ"
+    },
+    "ನೀರು ಕುಡಿಯಿರಿ": {
+      "sign_ids": [
+        "water",
+        "drink"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: water, drink",
+      "english": "Drink water.",
+      "category": "Food and water",
+      "display": "ನೀರು ಕುಡಿಯಿರಿ"
+    },
+    "ಊಟ ಮಾಡಿ": {
+      "sign_ids": [
+        "food",
+        "eat"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: food, eat",
+      "english": "Eat food.",
+      "category": "Food and water",
+      "display": "ಊಟ ಮಾಡಿ"
+    },
+    "ದಯವಿಟ್ಟು ನೀರು ಕೊಡಿ": {
+      "sign_ids": [
+        "please",
+        "water"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, water",
+      "english": "Please give water.",
+      "category": "Food and water",
+      "display": "ದಯವಿಟ್ಟು ನೀರು ಕೊಡಿ"
+    },
+    "ದಯವಿಟ್ಟು ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "please",
+        "help"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, help",
+      "english": "Please help.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಸಹಾಯ ಮಾಡಿ"
+    },
+    "ದಯವಿಟ್ಟು ನಿಲ್ಲಿ": {
+      "sign_ids": [
+        "please",
+        "stand"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, stand",
+      "english": "Please stand up.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಲ್ಲಿ"
+    },
+    "ದಯವಿಟ್ಟು ನಿಲ್ಲಿಸಿ": {
+      "sign_ids": [
+        "please",
+        "stop"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, stop",
+      "english": "Please stop.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಲ್ಲಿಸಿ"
+    },
+    "ನನಗೆ ನಿದ್ರೆ ಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "sleep",
+        "need"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, sleep, need",
+      "english": "I need sleep.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ನಿದ್ರೆ ಬೇಕು"
+    },
+    "ದಯವಿಟ್ಟು ಬರೆಯಿರಿ": {
+      "sign_ids": [
+        "please",
+        "write"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: please, write",
+      "english": "Please write.",
+      "category": "Education and college",
+      "display": "ದಯವಿಟ್ಟು ಬರೆಯಿರಿ"
+    },
+    "ವಿದ್ಯಾರ್ಥಿಗಳು ಓದಿ": {
+      "sign_ids": [
+        "student",
+        "study"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: student, study",
+      "english": "Students, study.",
+      "category": "Education and college",
+      "display": "ವಿದ್ಯಾರ್ಥಿಗಳು ಓದಿ"
+    },
+    "ಶಿಕ್ಷಕರಿಗೆ ನಮಸ್ಕಾರ": {
+      "sign_ids": [
+        "teacher",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: teacher, namaskara",
+      "english": "Greetings to the teacher.",
+      "category": "Education and college",
+      "display": "ಶಿಕ್ಷಕರಿಗೆ ನಮಸ್ಕಾರ"
+    },
+    "ಇಂದು ಕೆಲಸ ಮಾಡಿ": {
+      "sign_ids": [
+        "today",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: today, work",
+      "english": "Work today.",
+      "category": "Education and college",
+      "display": "ಇಂದು ಕೆಲಸ ಮಾಡಿ"
+    },
+    "ನಾಳೆ ಕೆಲಸ ಮಾಡಿ": {
+      "sign_ids": [
+        "tomorrow",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: tomorrow, work",
+      "english": "Work tomorrow.",
+      "category": "Education and college",
+      "display": "ನಾಳೆ ಕೆಲಸ ಮಾಡಿ"
+    },
+    "ನಿನ್ನೆ ಕೆಲಸ ಮಾಡಿದೆ": {
+      "sign_ids": [
+        "yesterday",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: yesterday, work",
+      "english": "Worked yesterday.",
+      "category": "Education and college",
+      "display": "ನಿನ್ನೆ ಕೆಲಸ ಮಾಡಿದೆ"
+    },
+    "ಅವಳು ನನ್ನ ಸ್ನೇಹಿತೆ": {
+      "sign_ids": [
+        "she",
+        "i_me",
+        "friend"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: she, i_me, friend",
+      "english": "She is my friend.",
+      "category": "Introductions",
+      "display": "ಅವಳು ನನ್ನ ಸ್ನೇಹಿತೆ"
+    },
+    "ಅವರು ಶಿಕ್ಷಕರು": {
+      "sign_ids": [
+        "they",
+        "teacher"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: they, teacher",
+      "english": "They are teachers.",
+      "category": "Education and college",
+      "display": "ಅವರು ಶಿಕ್ಷಕರು"
+    },
+    "ನೀವು ಪರಿಪೂರ್ಣ": {
+      "sign_ids": [
+        "you",
+        "you_are_perfect"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: you, you_are_perfect",
+      "english": "You are perfect.",
+      "category": "Everyday responses",
+      "display": "ನೀವು ಪರಿಪೂರ್ಣ"
+    },
+    "ತುಂಬಾ ಒಳ್ಳೆಯದು": {
+      "sign_ids": [
+        "good",
+        "you_are_perfect"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: good, you_are_perfect",
+      "english": "Very good.",
+      "category": "Everyday responses",
+      "display": "ತುಂಬಾ ಒಳ್ಳೆಯದು"
+    },
+    "ಕೋಪಗೊಳ್ಳಬೇಡಿ": {
+      "sign_ids": [
+        "angry",
+        "no"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: angry, no",
+      "english": "Do not be angry.",
+      "category": "Everyday responses",
+      "display": "ಕೋಪಗೊಳ್ಳಬೇಡಿ"
+    },
+    "ಮಳೆ ಬರುತ್ತಿದೆ ಕೊಡೆ ಬೇಕು": {
+      "sign_ids": [
+        "monsoon",
+        "umbrella",
+        "need"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: monsoon, umbrella, need",
+      "english": "It is raining, umbrella needed.",
+      "category": "Travel and directions",
+      "display": "ಮಳೆ ಬರುತ್ತಿದೆ ಕೊಡೆ ಬೇಕು"
+    },
+    "ಕೊಡೆ ತೆಗೆದುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "umbrella",
+        "need"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: umbrella, need",
+      "english": "Take an umbrella.",
+      "category": "Travel and directions",
+      "display": "ಕೊಡೆ ತೆಗೆದುಕೊಳ್ಳಿ"
+    },
+    "ನಾಯಿ ಮತ್ತು ಬೆಕ್ಕು": {
+      "sign_ids": [
+        "dog",
+        "cat"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: dog, cat",
+      "english": "Dog and cat.",
+      "category": "Everyday responses",
+      "display": "ನಾಯಿ ಮತ್ತು ಬೆಕ್ಕು"
+    },
+    "ಮೀನು ಮತ್ತು ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "fish",
+        "bird"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: fish, bird",
+      "english": "Fish and bird.",
+      "category": "Everyday responses",
+      "display": "ಮೀನು ಮತ್ತು ಹಕ್ಕಿ"
+    },
+    "ಹಸು ಮತ್ತು ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "cow",
+        "bird"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: cow, bird",
+      "english": "Cow and bird.",
+      "category": "Everyday responses",
+      "display": "ಹಸು ಮತ್ತು ಹಕ್ಕಿ"
+    },
+    "ಅವನ ಹೆಸರು ಏನು": {
+      "sign_ids": [
+        "he",
+        "name",
+        "what"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: he, name, what",
+      "english": "What is his name?",
+      "category": "Common questions",
+      "display": "ಅವನ ಹೆಸರು ಏನು"
+    },
+    "ಅವಳ ಹೆಸರು ಏನು": {
+      "sign_ids": [
+        "she",
+        "name",
+        "what"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: she, name, what",
+      "english": "What is her name?",
+      "category": "Common questions",
+      "display": "ಅವಳ ಹೆಸರು ಏನು"
+    },
+    "ಇದು ಏನು": {
+      "sign_ids": [
+        "it",
+        "what"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: it, what",
+      "english": "What is this?",
+      "category": "Common questions",
+      "display": "ಇದು ಏನು"
+    },
+    "ಏನು ಕೆಲಸ": {
+      "sign_ids": [
+        "what",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: what, work",
+      "english": "What work?",
+      "category": "Common questions",
+      "display": "ಏನು ಕೆಲಸ"
+    },
+    "ನೀವು ಮತ್ತು ನಾನು": {
+      "sign_ids": [
+        "you",
+        "i_me"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: you, i_me",
+      "english": "You and I.",
+      "category": "Introductions",
+      "display": "ನೀವು ಮತ್ತು ನಾನು"
+    },
+    "ಅವರು ಮತ್ತು ನಾವು": {
+      "sign_ids": [
+        "they",
+        "we"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: they, we",
+      "english": "They and we.",
+      "category": "Introductions",
+      "display": "ಅವರು ಮತ್ತು ನಾವು"
+    },
+    "ನಾನು ಅಧ್ಯಯನ ಮಾಡುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "study"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, study",
+      "english": "I am studying.",
+      "category": "Education and college",
+      "display": "ನಾನು ಅಧ್ಯಯನ ಮಾಡುತ್ತಿದ್ದೇನೆ"
+    },
+    "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "work"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, work",
+      "english": "I am working.",
+      "category": "Education and college",
+      "display": "ನಾನು ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೇನೆ"
+    },
+    "ಅವನು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿ": {
+      "sign_ids": [
+        "he",
+        "good",
+        "student"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: he, good, student",
+      "english": "He is a good student.",
+      "category": "Education and college",
+      "display": "ಅವನು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿ"
+    },
+    "ಅವಳು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿನಿ": {
+      "sign_ids": [
+        "she",
+        "good",
+        "student"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: she, good, student",
+      "english": "She is a good student.",
+      "category": "Education and college",
+      "display": "ಅವಳು ಒಳ್ಳೆಯ ವಿದ್ಯಾರ್ಥಿನಿ"
+    },
+    "ನನ್ನ ತಾಯಿ ಮತ್ತು ತಂದೆ": {
+      "sign_ids": [
+        "i_me",
+        "mother",
+        "father"
+      ],
+      "verified": false,
+      "source": "expanded avatar phrase dictionary",
+      "notes": "Composed from active ISL animation clips: i_me, mother, father",
+      "english": "My mother and father.",
+      "category": "Family",
+      "display": "ನನ್ನ ತಾಯಿ ಮತ್ತು ತಂದೆ"
+    },
+    "ನಾಯಿ ಆಹಾರ ತಿನ್ನುತ್ತಿದೆ": {
+      "sign_ids": [
+        "dog",
+        "food",
+        "eat"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "The dog is eating food.",
+      "category": "Animals and nature",
+      "display": "ನಾಯಿ ಆಹಾರ ತಿನ್ನುತ್ತಿದೆ"
+    },
+    "ಬೆಕ್ಕು ನೀರು ಕುಡಿಯುತ್ತಿದೆ": {
+      "sign_ids": [
+        "cat",
+        "water",
+        "drink"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "The cat is drinking water.",
+      "category": "Animals and nature",
+      "display": "ಬೆಕ್ಕು ನೀರು ಕುಡಿಯುತ್ತಿದೆ"
+    },
+    "ಆಕಳು ಮತ್ತು ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "cow",
+        "bird"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Cow and bird.",
+      "category": "Animals and nature",
+      "display": "ಆಕಳು ಮತ್ತು ಹಕ್ಕಿ"
+    },
+    "ಮೀನು ನೀರಿನಲ್ಲಿದೆ": {
+      "sign_ids": [
+        "fish",
+        "water"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Fish in water.",
+      "category": "Animals and nature",
+      "display": "ಮೀನು ನೀರಿನಲ್ಲಿದೆ"
+    },
+    "ಕಪ್ಪು ಬೆಕ್ಕು": {
+      "sign_ids": [
+        "black",
+        "cat"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Black cat.",
+      "category": "Animals and nature",
+      "display": "ಕಪ್ಪು ಬೆಕ್ಕು"
+    },
+    "ಬೆಕ್ಕು ಮಲಗಿದೆ": {
+      "sign_ids": [
+        "cat",
+        "sleep"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "The cat is sleeping.",
+      "category": "Animals and nature",
+      "display": "ಬೆಕ್ಕು ಮಲಗಿದೆ"
+    },
+    "ಹಕ್ಕಿ ಮತ್ತು ಸಂಗೀತ": {
+      "sign_ids": [
+        "bird",
+        "music"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Bird and music.",
+      "category": "Animals and nature",
+      "display": "ಹಕ್ಕಿ ಮತ್ತು ಸಂಗೀತ"
+    },
+    "ನಾಯಿ ನಿಂತಿದೆ": {
+      "sign_ids": [
+        "dog",
+        "stand"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "The dog is standing.",
+      "category": "Animals and nature",
+      "display": "ನಾಯಿ ನಿಂತಿದೆ"
+    },
+    "ಹಸು ನಿಂತಿದೆ": {
+      "sign_ids": [
+        "cow",
+        "stand"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "The cow is standing.",
+      "category": "Animals and nature",
+      "display": "ಹಸು ನಿಂತಿದೆ"
+    },
+    "ಸುಂದರ ಹಕ್ಕಿ": {
+      "sign_ids": [
+        "bird",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Beautiful bird.",
+      "category": "Animals and nature",
+      "display": "ಸುಂದರ ಹಕ್ಕಿ"
+    },
+    "ಕೆಲಸ ಮುಗಿಸಿ ಬನ್ನಿ": {
+      "sign_ids": [
+        "work",
+        "stop"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Finish work and come.",
+      "category": "Work and workplace",
+      "display": "ಕೆಲಸ ಮುಗಿಸಿ ಬನ್ನಿ"
+    },
+    "ಇವತ್ತು ತುಂಬಾ ಕೆಲಸವಿದೆ": {
+      "sign_ids": [
+        "today",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "A lot of work today.",
+      "category": "Work and workplace",
+      "display": "ಇವತ್ತು ತುಂಬಾ ಕೆಲಸವಿದೆ"
+    },
+    "ನಾಳೆ ಕೆಲಸಕ್ಕೆ ಬನ್ನಿ": {
+      "sign_ids": [
+        "tomorrow",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Come to work tomorrow.",
+      "category": "Work and workplace",
+      "display": "ನಾಳೆ ಕೆಲಸಕ್ಕೆ ಬನ್ನಿ"
+    },
+    "ದಯವಿಟ್ಟು ಕೆಲಸ ನಿಲ್ಲಿಸಿ": {
+      "sign_ids": [
+        "please",
+        "work",
+        "stop"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please stop work.",
+      "category": "Work and workplace",
+      "display": "ದಯವಿಟ್ಟು ಕೆಲಸ ನಿಲ್ಲಿಸಿ"
+    },
+    "ನಾವು ಒಟ್ಟಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತೇವೆ": {
+      "sign_ids": [
+        "we",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "We work together.",
+      "category": "Work and workplace",
+      "display": "ನಾವು ಒಟ್ಟಿಗೆ ಕೆಲಸ ಮಾಡುತ್ತೇವೆ"
+    },
+    "ಅವರು ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದಾರೆ": {
+      "sign_ids": [
+        "they",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "They are working.",
+      "category": "Work and workplace",
+      "display": "ಅವರು ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದಾರೆ"
+    },
+    "ಉತ್ತಮ ಕೆಲಸ": {
+      "sign_ids": [
+        "good",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Good job / Good work.",
+      "category": "Work and workplace",
+      "display": "ಉತ್ತಮ ಕೆಲಸ"
+    },
+    "ನಿಮ್ಮ ಕೆಲಸ ಪರಿಪೂರ್ಣವಾಗಿದೆ": {
+      "sign_ids": [
+        "your",
+        "work",
+        "you_are_perfect"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Your work is perfect.",
+      "category": "Work and workplace",
+      "display": "ನಿಮ್ಮ ಕೆಲಸ ಪರಿಪೂರ್ಣವಾಗಿದೆ"
+    },
+    "ಕಷ್ಟಪಟ್ಟು ಕೆಲಸ ಮಾಡಿ": {
+      "sign_ids": [
+        "power",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Work hard / with dedication.",
+      "category": "Work and workplace",
+      "display": "ಕಷ್ಟಪಟ್ಟು ಕೆಲಸ ಮಾಡಿ"
+    },
+    "ಇಲ್ಲಿ ಕೆಲಸ ನಿಲ್ಲಿಸಿ": {
+      "sign_ids": [
+        "stop",
+        "work"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Stop work here.",
+      "category": "Work and workplace",
+      "display": "ಇಲ್ಲಿ ಕೆಲಸ ನಿಲ್ಲಿಸಿ"
+    },
+    "ನನಗೆ ವಿಶ್ರಾಂತಿ ಬೇಕು": {
+      "sign_ids": [
+        "i_me",
+        "sleep",
+        "need"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I need rest / sleep.",
+      "category": "Health and emergencies",
+      "display": "ನನಗೆ ವಿಶ್ರಾಂತಿ ಬೇಕು"
+    },
+    "ಹಲ್ಲು ನೋವು ಸಹಾಯ ಬೇಕು": {
+      "sign_ids": [
+        "teeth",
+        "help",
+        "need"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Tooth problem, need help.",
+      "category": "Health and emergencies",
+      "display": "ಹಲ್ಲು ನೋವು ಸಹಾಯ ಬೇಕು"
+    },
+    "ದಯವಿಟ್ಟು ಕುಳಿತು ವಿಶ್ರಾಂತಿ ಪಡೆಯಿರಿ": {
+      "sign_ids": [
+        "please",
+        "sit"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please sit and rest.",
+      "category": "Health and emergencies",
+      "display": "ದಯವಿಟ್ಟು ಕುಳಿತು ವಿಶ್ರಾಂತಿ ಪಡೆಯಿರಿ"
+    },
+    "ನನಗೆ ಹುಷಾರಿಲ್ಲ ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "bad",
+        "please",
+        "help"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Feeling unwell, please help.",
+      "category": "Health and emergencies",
+      "display": "ನನಗೆ ಹುಷಾರಿಲ್ಲ ಸಹಾಯ ಮಾಡಿ"
+    },
+    "ಕೈ ನೋವು ತೋರಿಸಿ": {
+      "sign_ids": [
+        "hand",
+        "please"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please show your hand.",
+      "category": "Health and emergencies",
+      "display": "ಕೈ ನೋವು ತೋರಿಸಿ"
+    },
+    "ಮೂಗು ಮತ್ತು ಬಾಯಿ ಮುಚ್ಚಿಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "nose",
+        "hand"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Cover your nose and face.",
+      "category": "Health and emergencies",
+      "display": "ಮೂಗು ಮತ್ತು ಬಾಯಿ ಮುಚ್ಚಿಕೊಳ್ಳಿ"
+    },
+    "ನಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ ನಿಲ್ಲಿ": {
+      "sign_ids": [
+        "stop",
+        "stand"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Cannot walk, please stop.",
+      "category": "Health and emergencies",
+      "display": "ನಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ ನಿಲ್ಲಿ"
+    },
+    "ಖಂಡಿತವಾಗಿ ಸರಿ": {
+      "sign_ids": [
+        "yes",
+        "alright"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Definitely alright.",
+      "category": "Everyday responses",
+      "display": "ಖಂಡಿತವಾಗಿ ಸರಿ"
+    },
+    "ಇಲ್ಲ ಧನ್ಯವಾದಗಳು": {
+      "sign_ids": [
+        "no",
+        "thank_you"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "No, thank you.",
+      "category": "Everyday responses",
+      "display": "ಇಲ್ಲ ಧನ್ಯವಾದಗಳು"
+    },
+    "ದಯವಿಟ್ಟು ಬೇಡ": {
+      "sign_ids": [
+        "please",
+        "no"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please no.",
+      "category": "Everyday responses",
+      "display": "ದಯವಿಟ್ಟು ಬೇಡ"
+    },
+    "ಎಲ್ಲವೂ ಒಳ್ಳೆಯದಾಗಿದೆ": {
+      "sign_ids": [
+        "alright",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Everything is good.",
+      "category": "Everyday responses",
+      "display": "ಎಲ್ಲವೂ ಒಳ್ಳೆಯದಾಗಿದೆ"
+    },
+    "ನನಗೆ ತುಂಬಾ ಸಂತೋಷವಾಗಿದೆ": {
+      "sign_ids": [
+        "i_me",
+        "pleased"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I am very pleased / happy.",
+      "category": "Everyday responses",
+      "display": "ನನಗೆ ತುಂಬಾ ಸಂತೋಷವಾಗಿದೆ"
+    },
+    "ನೀವು ತುಂಬಾ ಒಳ್ಳೆಯವರು": {
+      "sign_ids": [
+        "you",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "You are very good / kind.",
+      "category": "Everyday responses",
+      "display": "ನೀವು ತುಂಬಾ ಒಳ್ಳೆಯವರು"
+    },
+    "ಅದು ನನ್ನದಲ್ಲ": {
+      "sign_ids": [
+        "it",
+        "no"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "It is not mine.",
+      "category": "Everyday responses",
+      "display": "ಅದು ನನ್ನದಲ್ಲ"
+    },
+    "ಇದು ನಿಮ್ಮ ಉಂಗುರ": {
+      "sign_ids": [
+        "it",
+        "your",
+        "ring"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "This is your ring.",
+      "category": "Everyday responses",
+      "display": "ಇದು ನಿಮ್ಮ ಉಂಗುರ"
+    },
+    "ಉಂಗುರ ಸುಂದರವಾಗಿದೆ": {
+      "sign_ids": [
+        "ring",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "The ring is nice.",
+      "category": "Everyday responses",
+      "display": "ಉಂಗುರ ಸುಂದರವಾಗಿದೆ"
+    },
+    "ಸಂಗೀತ ಆಲಿಸಿ": {
+      "sign_ids": [
+        "music",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Listen to music.",
+      "category": "Everyday responses",
+      "display": "ಸಂಗೀತ ಆಲಿಸಿ"
+    },
+    "ಶಕ್ತಿ ಮತ್ತು ವಿಶ್ವಾಸ": {
+      "sign_ids": [
+        "power",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Power and strength.",
+      "category": "Everyday responses",
+      "display": "ಶಕ್ತಿ ಮತ್ತು ವಿಶ್ವಾಸ"
+    },
+    "ಎಲ್ಲರೂ ಸರಿ": {
+      "sign_ids": [
+        "you_plural",
+        "alright"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "All of you are alright.",
+      "category": "Everyday responses",
+      "display": "ಎಲ್ಲರೂ ಸರಿ"
+    },
+    "ಶುಭ ಅಪರಾಹ್ನ ಸ್ನೇಹಿತರೇ": {
+      "sign_ids": [
+        "good_afternoon",
+        "friend"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Good afternoon, friends.",
+      "category": "Greetings",
+      "display": "ಶುಭ ಅಪರಾಹ್ನ ಸ್ನೇಹಿತರೇ"
+    },
+    "ಶುಭ ರಾತ್ರಿ ನಿದ್ರಿಸಿ": {
+      "sign_ids": [
+        "good_night",
+        "sleep"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Good night, have a good sleep.",
+      "category": "Greetings",
+      "display": "ಶುಭ ರಾತ್ರಿ ನಿದ್ರಿಸಿ"
+    },
+    "ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿ ಸಂತೋಷವಾಯಿತು": {
+      "sign_ids": [
+        "pleased",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Pleased to meet you.",
+      "category": "Greetings",
+      "display": "ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿ ಸಂತೋಷವಾಯಿತು"
+    },
+    "ನನ್ನ ಸಹೋದರ ಒಳ್ಳೆಯವನು": {
+      "sign_ids": [
+        "i_me",
+        "brother",
+        "good"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "My brother is a good person.",
+      "category": "Family",
+      "display": "ನನ್ನ ಸಹೋದರ ಒಳ್ಳೆಯವನು"
+    },
+    "ತಾಯಿ ಮತ್ತು ತಂದೆಗೆ ನಮಸ್ಕಾರ": {
+      "sign_ids": [
+        "mother",
+        "father",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Greetings to mother and father.",
+      "category": "Family",
+      "display": "ತಾಯಿ ಮತ್ತು ತಂದೆಗೆ ನಮಸ್ಕಾರ"
+    },
+    "ನನ್ನ ಸ್ನೇಹಿತೆ ವಿದ್ಯಾರ್ಥಿನಿ": {
+      "sign_ids": [
+        "i_me",
+        "friend",
+        "student"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "My friend is a student.",
+      "category": "Family",
+      "display": "ನನ್ನ ಸ್ನೇಹಿತೆ ವಿದ್ಯಾರ್ಥಿನಿ"
+    },
+    "ಹುಡುಗ ಮತ್ತು ಹುಡುಗಿ": {
+      "sign_ids": [
+        "boy",
+        "girl"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Boy and girl.",
+      "category": "Family",
+      "display": "ಹುಡುಗ ಮತ್ತು ಹುಡುಗಿ"
+    },
+    "ಅವನು ಒಳ್ಳೆಯ ಹುಡುಗ": {
+      "sign_ids": [
+        "he",
+        "good",
+        "boy"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "He is a good boy.",
+      "category": "Family",
+      "display": "ಅವನು ಒಳ್ಳೆಯ ಹುಡುಗ"
+    },
+    "ಅವಳು ಒಳ್ಳೆಯ ಹುಡುಗಿ": {
+      "sign_ids": [
+        "she",
+        "good",
+        "girl"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "She is a good girl.",
+      "category": "Family",
+      "display": "ಅವಳು ಒಳ್ಳೆಯ ಹುಡುಗಿ"
+    },
+    "ನಿಮ್ಮ ಸಹೋದರ ಎಲ್ಲಿದ್ದಾರೆ": {
+      "sign_ids": [
+        "your",
+        "brother",
+        "what"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Where / how is your brother?",
+      "category": "Common questions",
+      "display": "ನಿಮ್ಮ ಸಹೋದರ ಎಲ್ಲಿದ್ದಾರೆ"
+    },
+    "ಅದು ಏನು": {
+      "sign_ids": [
+        "it",
+        "what"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "What is that?",
+      "category": "Common questions",
+      "display": "ಅದು ಏನು"
+    },
+    "ನೀವು ಏನು ಓದುತ್ತಿದ್ದೀರಿ": {
+      "sign_ids": [
+        "you",
+        "study",
+        "what"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "What are you studying?",
+      "category": "Common questions",
+      "display": "ನೀವು ಏನು ಓದುತ್ತಿದ್ದೀರಿ"
+    },
+    "ನೀವು ಏನು ಬರೆಯುತ್ತಿದ್ದೀರಿ": {
+      "sign_ids": [
+        "you",
+        "write",
+        "what"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "What are you writing?",
+      "category": "Common questions",
+      "display": "ನೀವು ಏನು ಬರೆಯುತ್ತಿದ್ದೀರಿ"
+    },
+    "ನಿಮಗೆ ನೀರು ಬೇಕೇ": {
+      "sign_ids": [
+        "you",
+        "water",
+        "need"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Do you need water?",
+      "category": "Common questions",
+      "display": "ನಿಮಗೆ ನೀರು ಬೇಕೇ"
+    },
+    "ನಿಮಗೆ ಊಟ ಬೇಕೇ": {
+      "sign_ids": [
+        "you",
+        "food",
+        "need"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Do you need food?",
+      "category": "Common questions",
+      "display": "ನಿಮಗೆ ಊಟ ಬೇಕೇ"
+    },
+    "ನಿಮಗೆ ಸಹಾಯ ಬೇಕೇ": {
+      "sign_ids": [
+        "you",
+        "help",
+        "need"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Do you need help?",
+      "category": "Common questions",
+      "display": "ನಿಮಗೆ ಸಹಾಯ ಬೇಕೇ"
+    },
+    "ಬಾಯಾರಿಕೆಯಾಗಿದೆ ನೀರು ಕೊಡಿ": {
+      "sign_ids": [
+        "water",
+        "need",
+        "drink"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Thirsty, please give water.",
+      "category": "Food and water",
+      "display": "ಬಾಯಾರಿಕೆಯಾಗಿದೆ ನೀರು ಕೊಡಿ"
+    },
+    "ಹಸಿದಿದೆ ಊಟ ಕೊಡಿ": {
+      "sign_ids": [
+        "food",
+        "need",
+        "eat"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Hungry, please give food.",
+      "category": "Food and water",
+      "display": "ಹಸಿದಿದೆ ಊಟ ಕೊಡಿ"
+    },
+    "ಬೆಳಗಿನ ಉಪಹಾರ ಮುಗಿಯಿತು": {
+      "sign_ids": [
+        "good_morning",
+        "food",
+        "eat"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Finished morning breakfast.",
+      "category": "Food and water",
+      "display": "ಬೆಳಗಿನ ಉಪಹಾರ ಮುಗಿಯಿತು"
+    },
+    "ಮಧ್ಯಾಹ್ನದ ಊಟ ಮಾಡಿ": {
+      "sign_ids": [
+        "afternoon",
+        "food",
+        "eat"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Have afternoon lunch.",
+      "category": "Food and water",
+      "display": "ಮಧ್ಯಾಹ್ನದ ಊಟ ಮಾಡಿ"
+    },
+    "ರಾತ್ರಿಯ ಊಟ ಮುಗಿಯಿತು": {
+      "sign_ids": [
+        "night",
+        "food",
+        "eat"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Finished dinner.",
+      "category": "Food and water",
+      "display": "ರಾತ್ರಿಯ ಊಟ ಮುಗಿಯಿತು"
+    },
+    "ಇಂದು ಮಳೆಗಾಲ ಪ್ರಾರಂಭ": {
+      "sign_ids": [
+        "today",
+        "monsoon"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Monsoon starts today.",
+      "category": "Travel and directions",
+      "display": "ಇಂದು ಮಳೆಗಾಲ ಪ್ರಾರಂಭ"
+    },
+    "ನಾಳೆ ಮಳೆ ಬರಬಹುದು ಕೊಡೆ ಇಟ್ಟುಕೊಳ್ಳಿ": {
+      "sign_ids": [
+        "tomorrow",
+        "monsoon",
+        "umbrella"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "It may rain tomorrow, keep an umbrella.",
+      "category": "Travel and directions",
+      "display": "ನಾಳೆ ಮಳೆ ಬರಬಹುದು ಕೊಡೆ ಇಟ್ಟುಕೊಳ್ಳಿ"
+    },
+    "ಕಪ್ಪು ಮೋಡ ಮಳೆಗಾಲ": {
+      "sign_ids": [
+        "black",
+        "monsoon"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Dark clouds, monsoon.",
+      "category": "Travel and directions",
+      "display": "ಕಪ್ಪು ಮೋಡ ಮಳೆಗಾಲ"
+    },
+    "ಬೂದು ಬಣ್ಣದ ಕೊಡೆ": {
+      "sign_ids": [
+        "grey",
+        "umbrella"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Grey umbrella.",
+      "category": "Travel and directions",
+      "display": "ಬೂದು ಬಣ್ಣದ ಕೊಡೆ"
+    },
+    "ಮಳೆ ನಿಂತಿದೆ ಹೊರಡಿ": {
+      "sign_ids": [
+        "monsoon",
+        "stop"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Rain stopped, proceed.",
+      "category": "Travel and directions",
+      "display": "ಮಳೆ ನಿಂತಿದೆ ಹೊರಡಿ"
+    },
+    "ನನಗೆ ಅರ್ಥವಾಯಿತು": {
+      "sign_ids": [
+        "i_me",
+        "understand"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I understand.",
+      "category": "Everyday responses",
+      "display": "ನನಗೆ ಅರ್ಥವಾಯಿತು"
+    },
+    "ದಯವಿಟ್ಟು ನಿಧಾನವಾಗಿ ಹೇಳಿ": {
+      "sign_ids": [
+        "please",
+        "say"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please say slowly.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ನಿಧಾನವಾಗಿ ಹೇಳಿ"
+    },
+    "ಮತ್ತೆ ಹೇಳಿ": {
+      "sign_ids": [
+        "again",
+        "say"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please say again.",
+      "category": "Assistance",
+      "display": "ಮತ್ತೆ ಹೇಳಿ"
+    },
+    "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಕಾಯಿರಿ": {
+      "sign_ids": [
+        "please",
+        "wait"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Please wait a bit.",
+      "category": "Assistance",
+      "display": "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಕಾಯಿರಿ"
+    },
+    "ನಾನು ಮನೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ": {
+      "sign_ids": [
+        "i_me",
+        "home",
+        "go"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I am going home.",
+      "category": "Travel and directions",
+      "display": "ನಾನು ಮನೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ"
+    },
+    "ತುರ್ತು ಪರಿಸ್ಥಿತಿ ಸಹಾಯ ಮಾಡಿ": {
+      "sign_ids": [
+        "emergency",
+        "help"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Emergency! Please help.",
+      "category": "Health and emergencies",
+      "display": "ತುರ್ತು ಪರಿಸ್ಥಿತಿ ಸಹಾಯ ಮಾಡಿ"
+    },
+    "ನನಗೆ ಅನಾರೋಗ್ಯವಾಗಿದೆ": {
+      "sign_ids": [
+        "i_me",
+        "sick"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I am feeling sick.",
+      "category": "Health and emergencies",
+      "display": "ನನಗೆ ಅನಾರೋಗ್ಯವಾಗಿದೆ"
+    },
+    "ಅಲ್ಲಿಗೆ ಹೋಗಿ": {
+      "sign_ids": [
+        "go"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Go there.",
+      "category": "Travel and directions",
+      "display": "ಅಲ್ಲಿಗೆ ಹೋಗಿ"
+    },
+    "ಮನೆಗೆ ಬನ್ನಿ": {
+      "sign_ids": [
+        "home",
+        "welcome"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Welcome to my home.",
+      "category": "Travel and directions",
+      "display": "ಮನೆಗೆ ಬನ್ನಿ"
+    },
+    "ಇಲ್ಲಿ ಕಾಯಿರಿ": {
+      "sign_ids": [
+        "wait"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "Wait here.",
+      "category": "Assistance",
+      "display": "ಇಲ್ಲಿ ಕಾಯಿರಿ"
+    },
+    "ನನಗೆ ಅರ್ಥವಾಗುವುದಿಲ್ಲ": {
+      "sign_ids": [
+        "i_me",
+        "understand",
+        "no"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "I do not understand.",
+      "category": "Assistance",
+      "display": "ನನಗೆ ಅರ್ಥವಾಗುವುದಿಲ್ಲ"
+    },
+    "ಮತ್ತೆ ಭೇಟಿಯಾಗೋಣ": {
+      "sign_ids": [
+        "again",
+        "namaskara"
+      ],
+      "verified": false,
+      "source": "curated conversational dictionary",
+      "notes": "",
+      "english": "See you again.",
+      "category": "Greetings",
+      "display": "ಮತ್ತೆ ಭೇಟಿಯಾಗೋಣ"
     }
   }
 }

@@ -96,5 +96,46 @@ def test_live_features_match_dataset_features():
     from app.continuous.recognizer import features_to_sequence
     frames = sign_frames("circle", n=20)
     a = frames_to_sequence(frames)
-    b = features_to_sequence([parse_frame(f) for f in frames])
+    b = features_to_sequence([parse_frame(f) for f in frames], stride=2)
     np.testing.assert_allclose(a, b)
+
+
+def test_continuous_recognizer_edge_cases():
+    from unittest.mock import MagicMock
+    from app.continuous.recognizer import ContinuousRecognizer
+
+    rec = ContinuousRecognizer()
+    rec.bundle = {
+        "table": {
+            "s1": {"sentence": "hello world", "kannada": "ನಮಸ್ಕಾರ ವಿಶ್ವ", "gloss": ["HELLO", "WORLD"], "translation_status": "verified"},
+            "s2": {"sentence": "good morning", "kannada": "ಶುಭೋದಯ", "gloss": ["GOOD", "MORNING"], "translation_status": "verified"},
+        },
+        "ctc": MagicMock(),
+        "baseline": MagicMock(),
+        "resample": 32,
+        "selected": "ctc",
+        "decoder": "fusion",
+        "fusion_lambda": 1.0,
+        "accept_threshold": 0.5,
+    }
+    rec.bundle["ctc"].decode.return_value = (["HELLO"], 0.9)
+    rec.bundle["ctc"].sentence_log_likelihoods.return_value = {"s1": -1.0, "s2": -3.0}
+    rec.bundle["baseline"].classes_ = ["s1", "s2"]
+    rec.bundle["baseline"].predict_proba.return_value = np.array([[0.8, 0.2]])
+
+    feats = [parse_frame(f) for f in sign_frames("circle", n=20)]
+    res = rec.recognize(feats)
+    assert res is not None
+    assert res["sentence_id"] == "s1"
+    assert res["gloss_distance"] == 1  # ["HELLO"] vs ["HELLO", "WORLD"]
+    assert res["accepted"] is True
+    assert len(res["candidates"]) == 2
+
+    # Edge case: unmapped base_sid & candidate keys
+    rec.bundle["baseline"].classes_ = ["s_missing"]
+    rec.bundle["baseline"].predict_proba.return_value = np.array([[1.0]])
+    rec.bundle["ctc"].sentence_log_likelihoods.return_value = {"s_unknown": float("-inf")}
+    res2 = rec.recognize(feats)
+    assert res2 is not None
+    assert "sentence" in res2
+    assert "baseline_sentence" in res2
