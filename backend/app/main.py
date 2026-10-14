@@ -825,10 +825,11 @@ def diagnostics_dataset_samples(source: str = "amrita_slr", limit: int = 60):
         except (OSError, json.JSONDecodeError):
             continue
         src = Path(d.get("source_file", ""))
-        if not src.exists():
-            continue
+        has_video = src.exists() and bool(d.get("source_file"))
+        file_name = src.name if has_video else f"{d['label']} ({d['sample_id'][:8]})"
         out.append({"source": source, "sample_id": d["sample_id"], "label": d["label"], "group": d.get("session_id"),
-                    "file": src.name, "frames": d.get("num_frames"), "fps": (d.get("video") or {}).get("fps"),
+                    "file": file_name, "frames": d.get("num_frames"), "fps": (d.get("video") or {}).get("fps") or 30,
+                    "has_video": has_video,
                     "used_to_train_active_model": (d["sample_id"] in trained) if trained else None})
     return {"samples": out}
 
