@@ -10,28 +10,6 @@
 | Kannada → Sign | Kannada text → NFC normalisation → phrase dictionary (longest match) → English meaning + ISL gloss plan → avatar clips |
 | Face | Separate rule-based estimate of the *visible* expression; never changes a recognised sign |
 
-## Current status (2026-10-11)
-
-| Component | Active version | Measured on recorded videos (held out) | Real webcam |
-|---|---|---|---|
-| Isolated signs (63) | `v20261010-101617`: logistic regression + GRU ensemble, face-crop landmarks (bit-identical retrain of `v20261010-081537`) | **72.4% accuracy / macro-F1 0.708** on 268 videos of unseen signers (Amrita SLR unseen signers 67.1%, INCLUDE official test split 92.7%) | **not measured yet** |
-| Confidence threshold | **0.40**, calibrated on out-of-fold development data (precision 0.50, recall 0.42) | | |
-| Sentences (101, closed set) | `c20261010-051510`: BiGRU + CTC likelihood fused with a sentence classifier; posterior < 0.5 is shown as "uncertain" | **29.2%** (45/154) on unseen recording rounds; 43 of the 122 shown sentences correct | **not measured yet** |
-| Avatar | 63 clips retargeted from dataset recordings + 8 hand-written placeholders | **none verified as ISL** | |
-
-- **Recorded-video accuracy is not webcam accuracy.** All numbers above come from dataset videos. Webcam accuracy must be measured with [`docs/LIVE_TEST_PROCEDURE.md`](docs/LIVE_TEST_PROCEDURE.md) (two *Evaluation only* sessions).
-- **Sentence mode is a closed set:** it can only output one of the ISL-CSLTR corpus' 101 sentences. It is not open sign-language translation.
-- A Phase 11 attempt to improve the sentence model was **rejected** (22.1% vs 29.2% on the same test videos): [`docs/PHASE11_REPORT.md`](docs/PHASE11_REPORT.md).
-- Kannada wording, ISL phrase orders and all avatar clips still need review by native Kannada speakers and ISL users.
-
-## Demo workflow (5 minutes)
-1. Start both servers (see [Start the application](#start-the-application)) and open **http://127.0.0.1:5173** in Chrome or Edge.
-2. **Live Recognition → Start camera.** Allow camera access. Sit 1–1.5 m away with face and both hands visible, in front lighting.
-3. Sign a trained word (e.g. HELLO/namaskara, THANK YOU, GOOD), then lower your hands. The word appears as *pending* with its confidence and alternatives, then joins the Kannada transcript. Low-confidence signs are listed as *uncertain* and never added automatically.
-4. Sign two or three words with a short pause between them. The **Meaning** panel shows the ISL gloss sequence, an English meaning and a Kannada sentence when the sequence is in the phrase table; otherwise it is marked "word-by-word". Press **Speak** to hear the Kannada (needs a Kannada voice, see limitations).
-5. **Kannada to Sign:** type or pick ನಮಸ್ಕಾರ or ನಿಮ್ಮ ಹೆಸರು ಏನು? and the avatar plays the sign sequence. Unsupported words are listed as skipped, never guessed.
-6. **About & Testing:** measured results, the browser-vs-Python pipeline check, and the model and data audit.
-
 ---
 
 ## Datasets (all CC BY 4.0, downloaded only from public files, checksums verified)
@@ -50,16 +28,9 @@ Annotation facts we found and handle (not hidden):
 - **ISL-CSLTR** gloss annotations contain typos and variants (`CONGRATULATIIONS`, `DONOT`/`DONT`/`DO NOT`, punctuation inside glosses). A documented normalisation map is applied for training; the original annotation is kept with every sample. There are no signer IDs (recording index from the file name), and 116 of 168 gloss types occur in only one sentence.
 - **INCLUDE** was recorded in Chennai, and ISL varies regionally. Merged labels (e.g. HELLO from Amrita and INCLUDE) may combine regional variants.
 
-## Results history (measured on this laptop)
+## Results (measured on this laptop, 2026-10-10)
 
-**Project reports:**
-- **Phase 5:** audit, English meaning layer, phrases: [`PHASE5_REPORT.md`](docs/PHASE5_REPORT.md).
-- **Phase 6:** accuracy, ensemble: [`PHASE6_REPORT.md`](docs/PHASE6_REPORT.md).
-- **Phases 7–8:** live evaluation tooling: [`PHASE7_REPORT.md`](docs/PHASE7_REPORT.md), [`PHASE8_REPORT.md`](docs/PHASE8_REPORT.md).
-- **Phases 9–10:** ISL-only data audit, sentence partials: [`PHASE9_REPORT.md`](docs/PHASE9_REPORT.md), [`PHASE10_REPORT.md`](docs/PHASE10_REPORT.md).
-- **Phase 11:** sentence-model candidate, rejected: [`PHASE11_REPORT.md`](docs/PHASE11_REPORT.md).
-
-**Phase 6 (accuracy):** the logreg + GRU ensemble on face-crop landmarks (`v20261010-081537`, retrained bit-identically as the active `v20261010-101617`) reaches **72.4% accuracy / macro-F1 0.708** on the same 268 held-out videos where the previous model scored 59.7% / 0.591. Sentence mode marks low-confidence sentences as uncertain (`c20261010-051510`). What to record next: [`docs/DATA_COLLECTION_PLAN.md`](docs/DATA_COLLECTION_PLAN.md).
+**Phase 6 (accuracy): see [`docs/PHASE6_REPORT.md`](docs/PHASE6_REPORT.md).** The active isolated model is now `v20261010-081537` (logreg + GRU ensemble on face-crop landmarks): **72.4% accuracy / macro-F1 0.708** on the same 268 held-out videos where the previous model scored 59.7% / 0.591. Sentence mode now marks low-confidence sentences as uncertain (`c20261010-051510`). What to record next: [`docs/DATA_COLLECTION_PLAN.md`](docs/DATA_COLLECTION_PLAN.md).
 
 **Phase 5 (audit, English intermediate layer, continuous decoder, phrases, avatar): see [`docs/PHASE5_REPORT.md`](docs/PHASE5_REPORT.md).** Supported phrases: [`docs/PHRASES.md`](docs/PHRASES.md).
 
@@ -158,7 +129,16 @@ Installs the backend venv (FastAPI, scikit-learn, MediaPipe 0.10.21, OpenCV, CPU
 
 **Trained models are included** in `backend/models/` (44 MB): the active isolated model `v20261010-101617`, the active sentence model `c20261010-051510`, and all earlier and rejected versions for rollback. The app runs right after setup, without downloading datasets or training. Dataset videos (15 GB) and extracted landmarks are not in the repository; download and import them only to retrain.
 
-**Requirements:** Python 3.12, Node.js 18+, Chrome or Edge (camera access needs `http://127.0.0.1` or `localhost`). **macOS/Linux:** equivalent shell scripts exist: `start-backend.sh`, `start-frontend.sh`, `download-datasets.sh`, `import-datasets.sh`, `train-model.sh`. They expect the venv at `backend/.venv` (`python3 -m venv backend/.venv && backend/.venv/bin/pip install -r backend/requirements.txt`, then `npm install` in `frontend/`).
+**Requirements:** Python 3.12, Node.js 18+, Chrome or Edge (camera access needs `http://127.0.0.1` or `localhost`). **macOS/Linux:** equivalent shell scripts exist: `start-backend.sh`, `start-frontend.sh`, `download-datasets.sh`, `import-datasets.sh`, `train-model.sh`. They expect the venv at `backend/.venv`:
+1. `python3 -m venv backend/.venv`
+2. `backend/.venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu` (**required**: the active model contains a PyTorch GRU)
+3. `backend/.venv/bin/pip install -r backend/requirements.txt`
+4. `npm install` in `frontend/`
+
+**Another laptop:**
+- `git clone` (or `git pull`), then run `setup.ps1`, or the four steps above on macOS/Linux.
+- Check http://127.0.0.1:8000/api/model/status: it must show `"loaded": true` and `"model_version": "v20261010-101617"`.
+- The Dataset & Model page will show no samples, because datasets are not in git. That is expected: recognition uses the trained model only.
 
 ## Data and training workflow
 
@@ -258,4 +238,5 @@ Run everything with `.\run-tests.ps1`, or `cd backend; .\.venv\Scripts\python.ex
 - The English meaning layer only knows the phrase table; anything else is shown word by word and marked. It cannot fix recognition errors (phrase-level output was exactly right in 60.5% of held-out streams, the same share that was recognised perfectly).
 - A hidden face costs about 7 accuracy points (robustness test); keep your face in view.
 - Kannada words are glosses in signing order, not grammatical sentences. Wording got an AI-assisted check only; native-speaker and ISL review are pending. Kannada → Sign phrase glosses and all avatar clips are unverified.
-- Windows usually has no Kannada TTS voice; the optional online fallback sends text to Google.
+- Windows usually has no Kannada TTS voice. For Kannada speech, open the app in **Microsoft Edge** (its online Kannada voices appear automatically) or switch on **Online TTS fallback** on Live Recognition. That fallback needs `pip install -r backend/requirements-optional.txt` (gTTS) and sends the text to Google.
+- **Sign Reference** (new page) plays real dataset recordings of each sign, the versions the model was trained on, so users can sign them the same way. It needs the original dataset videos on the computer; otherwise it falls back to the avatar clip.

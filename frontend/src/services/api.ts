@@ -1,6 +1,6 @@
 import type {
   AnimationClip, ContinuousStatus, DatasetSummary, Eligibility, ExternalDataset, Job, LandmarkFrame, Metrics, ModelStatus, ModelVersion,
-  RecordedSample, TrainJob, TranslationResult, UploadBatch, ValidationSummary, VocabEntry,
+  RecordedSample, SignReference, TrainJob, TranslationResult, UploadBatch, ValidationSummary, VocabEntry,
 } from "./types";
 
 export interface CompareResult {
@@ -132,6 +132,7 @@ export const api = {
     request<VocabEntry>("/api/vocabulary", { method: "POST", body: JSON.stringify({ label, english, kannada, isl_gloss }) }),
   translate: (text: string) =>
     request<TranslationResult>("/api/translate/kannada", { method: "POST", body: JSON.stringify({ text }) }),
+  reference: (label: string) => request<SignReference>(`/api/reference/${encodeURIComponent(label)}`),
   animation: (signId: string) => request<AnimationClip>(`/api/animations/${encodeURIComponent(signId)}`),
   captureAnimation: (label: string) =>
     request<{ ok: boolean; keyframes: number; source: string }>("/api/animations/capture", { method: "POST", body: JSON.stringify({ label }) }),

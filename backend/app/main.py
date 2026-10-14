@@ -399,9 +399,16 @@ def upload_delete(batch_id: str, delete_landmarks: bool = False):
 PUBLIC_DATASETS = {"amrita_slr", "include"}   # imported public corpora; every other landmark folder is a user upload
 
 
+def _upload_dirs() -> list[Path]:
+    """Landmark folders of the user's own uploads (never the public datasets, which hold thousands of files)."""
+    if not PROCESSED_LANDMARKS_DIR.exists():
+        return []
+    return [d for d in PROCESSED_LANDMARKS_DIR.iterdir() if d.is_dir() and d.name not in PUBLIC_DATASETS]
+
+
 def _uploaded_samples(label: str) -> list[Path]:
     """Landmark files extracted from the user's own uploaded videos of one sign (newest last)."""
-    files = [f for f in PROCESSED_LANDMARKS_DIR.glob(f"*/{label}/*.json") if f.parent.parent.name not in PUBLIC_DATASETS]
+    files = [f for d in _upload_dirs() for f in (d / label).glob("*.json")]
     return sorted(files, key=lambda p: p.stat().st_mtime)
 
 
@@ -409,10 +416,15 @@ def _uploaded_samples(label: str) -> list[Path]:
 def vocabulary():
     s = S()
     trained = set(s.predictor.classes)
+    uploaded: dict[str, int] = {}
+    for d in _upload_dirs():
+        for sub in d.iterdir():
+            if sub.is_dir():
+                uploaded[sub.name] = uploaded.get(sub.name, 0) + sum(1 for _ in sub.glob("*.json"))
     items = []
     for entry in s.vocab.to_list():
         items.append({**entry, "trained": entry["label"] in trained, "animation": s.animations.info(entry["label"]),
-                      "uploaded_samples": len(_uploaded_samples(entry["label"]))})
+                      "uploaded_samples": uploaded.get(entry["label"], 0)})
     return {"labels": items, "kannada_entries": len(s.mapper.entries)}
 
 
@@ -489,6 +501,60 @@ def phrases():
         untrained = [sid for sid in ph["sign_ids"] if sid not in s.predictor.classes]
         out.append({**ph, "missing_animations": missing, "unrecognisable_signs": untrained})
     return {"phrases": out}
+
+
+REFERENCE_CITATIONS = {
+    "amrita_slr": "Amrita SLR – Real Time ISL Dataset (Mendeley Data, doi:10.17632/dtg9s785v8.1, CC BY 4.0)",
+    "include": "INCLUDE (Sridhar et al., ACM MM 2020, doi:10.1145/3394171.3413528, CC BY 4.0)",
+}
+
+
+@app.get("/api/reference/{label}")
+def sign_reference(label: str, limit: int = 3):
+    """Real ISL dataset recordings of one sign: how the trained model expects it to be signed. Best hand
+    coverage first, at most one recording per signer group (different people). Videos are streamed by
+    /api/diagnostics/video; on a computer without the original dataset videos only the avatar clip remains."""
+    import csv
+    from .video.importer import output_root
+    s = S()
+    entry = s.vocab.get(label)
+    if entry is None or label == "_none":
+        raise HTTPException(404, f"unknown sign '{label}'")
+    found, total = [], 0
+    for source in REFERENCE_CITATIONS:
+        root = output_root(source)
+        manifest = root.parent / f"{root.name}_manifest.csv"
+        if not manifest.exists():
+            continue
+        with manifest.open(encoding="utf-8") as fh:
+            rows = [r for r in csv.DictReader(fh) if r.get("label") == label and r.get("status") == "valid"]
+        total += len(rows)
+        for r in rows:
+            frames = max(1, int(float(r.get("num_frames") or 0) or 1))
+            found.append((float(r.get("hand_frames") or 0) / frames, source, r))
+    found.sort(key=lambda x: -x[0])
+    samples, groups = [], set()
+    for _, source, r in found:
+        if len(samples) >= max(1, min(limit, 6)):
+            break
+        group = f"{source}:{r.get('session_id')}"
+        if group in groups:
+            continue
+        try:
+            d = json.loads((output_root(source) / r["file"]).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, KeyError):
+            continue
+        src = Path(d.get("source_file", ""))
+        if not src.exists():
+            continue
+        groups.add(group)
+        samples.append({"source": source, "sample_id": d["sample_id"], "signer_group": r.get("session_id"),
+                        "file": src.name, "duration_s": round(float(r.get("duration_ms") or 0) / 1000, 1),
+                        "video_url": f"/api/diagnostics/video/{source}/{d['sample_id']}",
+                        "citation": REFERENCE_CITATIONS[source]})
+    return {"label": label, "english": entry.english, "kannada": entry.kannada, "isl_gloss": entry.isl_gloss,
+            "trained": label in set(s.predictor.classes), "dataset_recordings": total, "samples": samples,
+            "animation": s.animations.info(label)}
 
 
 @app.get("/api/animations")

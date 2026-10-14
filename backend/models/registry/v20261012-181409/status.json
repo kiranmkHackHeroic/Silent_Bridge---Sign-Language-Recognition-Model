@@ -1,0 +1,14 @@
+{
+  "state": "active",
+  "decision": "promoted: reload + prediction + live-pipeline smoke test passed",
+  "comparison": {
+    "previous_version": "v20261010-101617",
+    "fair_test_samples": 268,
+    "candidate_accuracy": 0.7201,
+    "candidate_macro_f1": 0.7072,
+    "previous_accuracy": 0.7239,
+    "previous_macro_f1": 0.7075,
+    "note": "recorded held-out scores of both development-only models on the identical test set"
+  },
+  "decided_at": "2026-10-12T18:14:14+00:00"
+}

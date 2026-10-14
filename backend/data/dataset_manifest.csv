@@ -1,2 +1,1 @@
 sample_id,label,session_id,signer_id,num_frames,hand_frames,face_frames,duration_ms,status,reasons,file
-s20261012_0011_1791744144145_0c7b,we,s20261012_0011,signer1,83,83,83,2003.0,valid,,we/s20261012_0011_1791744144145_0c7b.json

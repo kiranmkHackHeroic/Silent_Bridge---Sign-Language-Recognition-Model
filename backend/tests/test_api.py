@@ -182,3 +182,36 @@ def test_avatar_clip_from_uploaded_video(client, tmp_path, monkeypatch):
     assert lib.info("namaskara")["type"] == "captured"
     assert client.post("/api/animations/capture", json={"label": "no_samples_here"}).status_code == 404
     assert client.post("/api/animations/capture", json={"label": "../x"}).status_code == 400
+
+
+def test_sign_reference_lists_real_recordings_one_per_signer(client, tmp_path, monkeypatch):
+    """Sign Reference shows dataset recordings of a sign: best hand coverage first, one per signer group, and only
+    recordings whose original video exists on this computer."""
+    import json
+
+    from app.video import importer
+
+    roots = {}
+    for source in ("amrita_slr", "include"):
+        roots[source] = tmp_path / "landmarks" / source
+        (roots[source] / "namaskara").mkdir(parents=True)
+    video = tmp_path / "hello.mp4"
+    video.write_bytes(b"x")
+    rows = [("amrita_slr", "a1", "signer_a", 30, 30, str(video)), ("amrita_slr", "a2", "signer_a", 30, 29, str(video)),
+            ("amrita_slr", "a3", "signer_b", 30, 20, str(video)), ("amrita_slr", "a4", "signer_c", 30, 30, str(tmp_path / "gone.mp4"))]
+    manifests = {s: ["sample_id,label,session_id,signer_id,num_frames,hand_frames,face_frames,duration_ms,status,reasons,file"] for s in roots}
+    for source, sid, group, n, hands, src in rows:
+        (roots[source] / "namaskara" / f"{sid}.json").write_text(json.dumps({"sample_id": sid, "source_file": src}), encoding="utf-8")
+        manifests[source].append(f"{sid},namaskara,{group},{group},{n},{hands},{n},2000,valid,,namaskara/{sid}.json")
+    for source, lines in manifests.items():
+        (roots[source].parent / f"{source}_manifest.csv").write_text(chr(10).join(lines) + chr(10), encoding="utf-8")
+    monkeypatch.setattr(importer, "output_root", lambda source: roots.get(source, tmp_path / "none" / source))
+
+    r = client.get("/api/reference/namaskara")
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["dataset_recordings"] == 4 and body["kannada"]
+    assert [s["sample_id"] for s in body["samples"]] == ["a1", "a3"]      # one per signer; missing video skipped
+    assert body["samples"][0]["video_url"] == "/api/diagnostics/video/amrita_slr/a1" and "CC BY 4.0" in body["samples"][0]["citation"]
+    assert client.get("/api/reference/not_a_sign").status_code == 404
+    assert client.get("/api/reference/_none").status_code == 404

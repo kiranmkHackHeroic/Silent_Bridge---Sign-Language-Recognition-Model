@@ -382,3 +382,33 @@ details > summary { cursor: pointer; }
 .linkish.strong { font-weight: 700; text-decoration: none; }
 .plan-preview { display: grid; gap: 6px; padding: 10px 12px; margin-bottom: 10px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--border); }
 .row-hl td { background: var(--accent-soft); font-weight: 650; }
+
+/* ---------------------------------------------------------------- sign reference */
+.ref-layout { display: grid; grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); gap: var(--s4); align-items: start; }
+.ref-layout > .card:first-child { position: sticky; top: 84px; }
+.ref-search { width: 100%; margin-bottom: var(--s2); }
+.ref-list { list-style: none; margin: 0; padding: 0; max-height: calc(100vh - 260px); overflow-y: auto; display: grid; gap: 2px; }
+.ref-item { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "kn chip" "en chip"; align-items: center; column-gap: var(--s2);
+  text-align: left; border: 1px solid transparent; background: transparent; border-radius: var(--r-md); padding: 6px 10px; cursor: pointer; color: var(--text); }
+.ref-item .kn { grid-area: kn; font-size: 1.02rem; line-height: 1.35; }
+.ref-item .ref-en { grid-area: en; font-size: 0.8rem; color: var(--muted); }
+.ref-item .chip { grid-area: chip; }
+.ref-item:hover { background: var(--surface-2); }
+.ref-item.on { background: var(--accent-soft); border-color: var(--accent); }
+.ref-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.ref-meta { display: flex; flex-wrap: wrap; gap: var(--s3); font-size: 0.86rem; color: var(--text-2); margin-bottom: var(--s2); }
+.ref-video { display: block; width: 100%; max-height: 460px; background: #000; border-radius: var(--r-md); margin: var(--s2) 0; }
+.ref-tips { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; font-size: 0.92rem; }
+.ref-avatar { height: 320px; }
+@media (max-width: 900px) {
+  .ref-layout { grid-template-columns: 1fr; }
+  .ref-layout > .card:first-child { position: static; }
+  .ref-list { max-height: 260px; }
+}
+@media (max-width: 1100px) {
+  .nav-btn { padding: 7px 9px; font-size: 0.82rem; }
+}
+@media (max-width: 820px) and (min-width: 521px) {
+  .nav-btn svg { display: none; }
+  .nav-btn { padding: 6px 7px; }
+}

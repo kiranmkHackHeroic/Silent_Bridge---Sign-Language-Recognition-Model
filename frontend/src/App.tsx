@@ -4,14 +4,16 @@ import { AboutTesting } from "./pages/AboutTesting";
 import { DatasetModel } from "./pages/DatasetModel";
 import { KannadaToSign } from "./pages/KannadaToSign";
 import { LiveRecognition } from "./pages/LiveRecognition";
+import { SignReference } from "./pages/SignReference";
 
 const PAGES: { id: PageId; label: string; icon: IconName }[] = [
   { id: "live", label: "Live Recognition", icon: "hand" },
   { id: "k2s", label: "Kannada to Sign", icon: "text" },
+  { id: "reference", label: "Sign Reference", icon: "eye" },
   { id: "dataset", label: "Dataset & Model", icon: "database" },
   { id: "about", label: "About & Testing", icon: "flask" },
 ];
-type PageId = "live" | "k2s" | "dataset" | "about";
+type PageId = "live" | "k2s" | "reference" | "dataset" | "about";
 
 function pageFromHash(): PageId {
   const h = location.hash.replace("#", "");
@@ -79,6 +81,7 @@ export default function App() {
       <main className="content">
         {page === "live" && <LiveRecognition />}
         {page === "k2s" && <KannadaToSign />}
+        {page === "reference" && <SignReference />}
         {page === "dataset" && <DatasetModel />}
         {page === "about" && <AboutTesting />}
       </main>

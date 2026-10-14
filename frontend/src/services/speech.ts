@@ -22,24 +22,52 @@ export function onVoicesChanged(cb: () => void): () => void {
   return () => window.speechSynthesis.removeEventListener("voiceschanged", cb);
 }
 
-export async function speakKannada(text: string, allowOnline: boolean): Promise<"local" | "online"> {
+/** The browser loads its voice list asynchronously (Chrome/Edge): wait briefly for it before deciding that no
+ * Kannada voice exists. */
+export async function voicesReady(timeoutMs = 1500): Promise<SpeechSynthesisVoice[]> {
+  if (!("speechSynthesis" in window)) return [];
+  const synth = window.speechSynthesis;
+  const now = synth.getVoices();
+  if (now.length || typeof synth.addEventListener !== "function") return now;
+  return new Promise((resolve) => {
+    const done = () => {
+      synth.removeEventListener("voiceschanged", done);
+      clearTimeout(timer);
+      resolve(synth.getVoices());
+    };
+    const timer = setTimeout(done, timeoutMs);
+    synth.addEventListener("voiceschanged", done);
+  });
+}
+
+export const NO_KANNADA_VOICE =
+  "No Kannada voice is available in this browser. Open the app in Microsoft Edge (it offers online Kannada voices), " +
+  "or switch on \"Online TTS fallback\" (the text is sent to Google).";
+
+/**
+ * Speaks Kannada text. Resolves with how it is spoken; `onPlaybackError` reports a failure that happens after
+ * speaking started (e.g. an online browser voice that cannot be reached), so it is never silently lost.
+ */
+export async function speakKannada(text: string, allowOnline: boolean,
+                                   onPlaybackError?: (message: string) => void): Promise<"local" | "online"> {
   const clean = text.trim();
   if (!clean) throw new Error("Nothing to speak.");
-  const voice = kannadaVoice();
+  const voices = await voicesReady();
+  const voice = voices.find((v) => v.lang?.toLowerCase().startsWith("kn")) ?? null;
   if (voice) {
-    window.speechSynthesis.cancel();
+    const synth = window.speechSynthesis;
+    synth.cancel();
     const u = new SpeechSynthesisUtterance(clean);
     u.voice = voice;
     u.lang = voice.lang;
     u.rate = 0.9;
-    window.speechSynthesis.speak(u);
+    u.onerror = (ev: { error?: string }) => {
+      if (ev?.error !== "canceled" && ev?.error !== "interrupted") onPlaybackError?.(`The Kannada voice could not speak (${ev?.error ?? "error"}).`);
+    };
+    synth.speak(u);
     return "local";
   }
-  if (!allowOnline) {
-    throw new Error(
-      "No Kannada voice is installed on this computer. Install one (Windows Settings → Time & language → Speech → Add voices → Kannada) or enable the online TTS option.",
-    );
-  }
+  if (!allowOnline) throw new Error(NO_KANNADA_VOICE);
   const res = await fetch("/api/tts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

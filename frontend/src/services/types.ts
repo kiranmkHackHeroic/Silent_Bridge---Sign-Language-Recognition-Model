@@ -59,6 +59,28 @@ export interface AnimationInfo {
   dataset_source?: DatasetSource | null;
 }
 
+/** A real ISL dataset recording of one sign, shown as "how the model expects this sign". */
+export interface ReferenceSample {
+  source: string;
+  sample_id: string;
+  signer_group: string;
+  file: string;
+  duration_s: number;
+  video_url: string;
+  citation: string;
+}
+
+export interface SignReference {
+  label: string;
+  english: string;
+  kannada: string;
+  isl_gloss: string;
+  trained: boolean;
+  dataset_recordings: number;
+  samples: ReferenceSample[];
+  animation: AnimationInfo;
+}
+
 /** Recording an avatar clip was retargeted from. Being extracted from a video does NOT make it verified ISL. */
 export interface DatasetSource {
   dataset: string;

@@ -24,6 +24,7 @@ class AnimationLibrary:
             self.load()
 
     def load(self) -> None:
+        self._exists: dict[str, bool] = {}     # clip file existence, valid until the mapping changes
         self._mtime = self.mapping_file.stat().st_mtime if self.mapping_file.exists() else 0.0
         if self.mapping_file.exists():
             data = json.loads(self.mapping_file.read_text(encoding="utf-8"))
@@ -41,8 +42,10 @@ class AnimationLibrary:
         entry = self.mapping.get(sign_id)
         if not entry:
             return {"available": False, "type": None, "verified": False}
-        file = self.animations_dir / entry["file"]
-        return {"available": file.exists(), "type": entry.get("type"), "verified": bool(entry.get("verified")),
+        rel = entry["file"]
+        if rel not in self._exists:
+            self._exists[rel] = (self.animations_dir / rel).exists()
+        return {"available": self._exists[rel], "type": entry.get("type"), "verified": bool(entry.get("verified")),
                 "file": entry["file"], "review": entry.get("review"), "dataset_source": entry.get("dataset_source")}
 
     def get(self, sign_id: str) -> dict | None:
@@ -75,6 +78,7 @@ class AnimationLibrary:
             self.mapping[sign_id] = {"file": rel, "type": "captured", "verified": False, "review": review}
             self._save()
             self._mtime = self.mapping_file.stat().st_mtime
+            self._exists[rel] = True
         return self.info(sign_id)
 
     def index(self) -> dict:

@@ -335,8 +335,9 @@ export function LiveRecognition() {
   const speak = async () => {
     setSpeakMsg(null);
     try {
-      const how = await speakKannada(exportText(displayText), allowOnlineTts);
-      setSpeakMsg({ tone: "info", text: how === "local" ? "Speaking with the installed Kannada voice." : "Speaking via online TTS (text sent to Google)." });
+      const how = await speakKannada(exportText(displayText), allowOnlineTts,
+        (message) => setSpeakMsg({ tone: "warn", text: message }));
+      setSpeakMsg({ tone: "info", text: how === "local" ? "Speaking with the browser's Kannada voice." : "Speaking via online TTS (text sent to Google)." });
     } catch (err) {
       setSpeakMsg({ tone: "warn", text: String((err as Error).message || err) });
     }
