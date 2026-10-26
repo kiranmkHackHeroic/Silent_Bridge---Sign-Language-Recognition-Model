@@ -1070,6 +1070,1033 @@
       "isl_gloss": "MY NAME",
       "verified": false,
       "notes": "added from the Dataset & Model page"
+    },
+    {
+      "label": "son",
+      "english": "Son",
+      "kannada": "ಮಗ",
+      "isl_gloss": "SON",
+      "verified": false,
+      "notes": "Class '58. Son' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "daughter",
+      "english": "Daughter",
+      "kannada": "ಮಗಳು",
+      "isl_gloss": "DAUGHTER",
+      "verified": false,
+      "notes": "Class '59. Daughter' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "sister",
+      "english": "Sister",
+      "kannada": "ಸಹೋದರಿ",
+      "isl_gloss": "SISTER",
+      "verified": false,
+      "notes": "Class '67. Sister' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "baby",
+      "english": "Baby",
+      "kannada": "ಶಿಶು",
+      "isl_gloss": "BABY",
+      "verified": false,
+      "notes": "Class '63. Baby' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "child",
+      "english": "Child",
+      "kannada": "ಮಗು",
+      "isl_gloss": "CHILD",
+      "verified": false,
+      "notes": "Class '79. Child' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "man",
+      "english": "Man",
+      "kannada": "ಗಂಡಸು",
+      "isl_gloss": "MAN",
+      "verified": false,
+      "notes": "Class '64. Man' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "woman",
+      "english": "Woman",
+      "kannada": "ಹೆಂಗಸು",
+      "isl_gloss": "WOMAN",
+      "verified": false,
+      "notes": "Class '65. Woman' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "family",
+      "english": "Family",
+      "kannada": "ಕುಟುಂಬ",
+      "isl_gloss": "FAMILY",
+      "verified": false,
+      "notes": "Class '68. Family' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "grandfather",
+      "english": "Grandfather",
+      "kannada": "ಅಜ್ಜ",
+      "isl_gloss": "GRANDFATHER",
+      "verified": false,
+      "notes": "Class '69. Grandfather' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "grandmother",
+      "english": "Grandmother",
+      "kannada": "ಅಜ್ಜಿ",
+      "isl_gloss": "GRANDMOTHER",
+      "verified": false,
+      "notes": "Class '70. Grandmother' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "husband",
+      "english": "Husband",
+      "kannada": "ಗಂಡ",
+      "isl_gloss": "HUSBAND",
+      "verified": false,
+      "notes": "Class '71. Husband' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "wife",
+      "english": "Wife",
+      "kannada": "ಹೆಂಡತಿ",
+      "isl_gloss": "WIFE",
+      "verified": false,
+      "notes": "Class '72. Wife' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "school",
+      "english": "School",
+      "kannada": "ಶಾಲೆ",
+      "isl_gloss": "SCHOOL",
+      "verified": false,
+      "notes": "Class '24. School' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "hospital",
+      "english": "Hospital",
+      "kannada": "ಆಸ್ಪತ್ರೆ",
+      "isl_gloss": "HOSPITAL",
+      "verified": false,
+      "notes": "Class '30. Hospital' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "market",
+      "english": "Market",
+      "kannada": "ಮಾರುಕಟ್ಟೆ",
+      "isl_gloss": "MARKET",
+      "verified": false,
+      "notes": "Class '32. Market' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "temple",
+      "english": "Temple",
+      "kannada": "ದೇವಸ್ಥಾನ",
+      "isl_gloss": "TEMPLE",
+      "verified": false,
+      "notes": "Class '31. Temple' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "bank",
+      "english": "Bank",
+      "kannada": "ಬ್ಯಾಂಕ್",
+      "isl_gloss": "BANK",
+      "verified": false,
+      "notes": "Class '35. Bank' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "office",
+      "english": "Office",
+      "kannada": "ಕಚೇರಿ",
+      "isl_gloss": "OFFICE",
+      "verified": false,
+      "notes": "Class '25. Office' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "shop",
+      "english": "Shop / store",
+      "kannada": "ಅಂಗಡಿ",
+      "isl_gloss": "SHOP",
+      "verified": false,
+      "notes": "Class '28. Store or Shop' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "road",
+      "english": "Road / street",
+      "kannada": "ರಸ್ತೆ",
+      "isl_gloss": "ROAD",
+      "verified": false,
+      "notes": "Class '20. Street or Road' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "railway_station",
+      "english": "Railway station",
+      "kannada": "ರೈಲು ನಿಲ್ದಾಣ",
+      "isl_gloss": "TRAIN-STATION",
+      "verified": false,
+      "notes": "Class '21. Train Station' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "restaurant",
+      "english": "Restaurant",
+      "kannada": "ಉಪಾಹಾರ ಗೃಹ",
+      "isl_gloss": "RESTAURANT",
+      "verified": false,
+      "notes": "Class '22. Restaurant' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "city",
+      "english": "City",
+      "kannada": "ನಗರ",
+      "isl_gloss": "CITY",
+      "verified": false,
+      "notes": "Class '18. City' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "sunday",
+      "english": "Sunday",
+      "kannada": "ಭಾನುವಾರ",
+      "isl_gloss": "SUNDAY",
+      "verified": false,
+      "notes": "Class '66. Sunday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "monday",
+      "english": "Monday",
+      "kannada": "ಸೋಮವಾರ",
+      "isl_gloss": "MONDAY",
+      "verified": false,
+      "notes": "Class '67. Monday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "tuesday",
+      "english": "Tuesday",
+      "kannada": "ಮಂಗಳವಾರ",
+      "isl_gloss": "TUESDAY",
+      "verified": false,
+      "notes": "Class '68. Tuesday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "wednesday",
+      "english": "Wednesday",
+      "kannada": "ಬುಧವಾರ",
+      "isl_gloss": "WEDNESDAY",
+      "verified": false,
+      "notes": "Class '69. Wednesday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "thursday",
+      "english": "Thursday",
+      "kannada": "ಗುರುವಾರ",
+      "isl_gloss": "THURSDAY",
+      "verified": false,
+      "notes": "Class '70. Thursday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "friday",
+      "english": "Friday",
+      "kannada": "ಶುಕ್ರವಾರ",
+      "isl_gloss": "FRIDAY",
+      "verified": false,
+      "notes": "Class '71. Friday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "saturday",
+      "english": "Saturday",
+      "kannada": "ಶನಿವಾರ",
+      "isl_gloss": "SATURDAY",
+      "verified": false,
+      "notes": "Class '72. Saturday' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "week",
+      "english": "Week",
+      "kannada": "ವಾರ",
+      "isl_gloss": "WEEK",
+      "verified": false,
+      "notes": "Class '76. Week' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "month",
+      "english": "Month",
+      "kannada": "ತಿಂಗಳು",
+      "isl_gloss": "MONTH",
+      "verified": false,
+      "notes": "Class '77. Month' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "year",
+      "english": "Year",
+      "kannada": "ವರ್ಷ",
+      "isl_gloss": "YEAR",
+      "verified": false,
+      "notes": "Class '78. Year' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "morning",
+      "english": "Morning",
+      "kannada": "ಬೆಳಿಗ್ಗೆ",
+      "isl_gloss": "MORNING",
+      "verified": false,
+      "notes": "Class '82. Morning' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "time",
+      "english": "Time",
+      "kannada": "ಸಮಯ",
+      "isl_gloss": "TIME",
+      "verified": false,
+      "notes": "Class '86. Time' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "red",
+      "english": "Red",
+      "kannada": "ಕೆಂಪು",
+      "isl_gloss": "RED",
+      "verified": false,
+      "notes": "Class '47. Red' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "green",
+      "english": "Green",
+      "kannada": "ಹಸಿರು",
+      "isl_gloss": "GREEN",
+      "verified": false,
+      "notes": "Class '48. Green' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "blue",
+      "english": "Blue",
+      "kannada": "ನೀಲಿ",
+      "isl_gloss": "BLUE",
+      "verified": false,
+      "notes": "Class '49. Blue' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "yellow",
+      "english": "Yellow",
+      "kannada": "ಹಳದಿ",
+      "isl_gloss": "YELLOW",
+      "verified": false,
+      "notes": "Class '50. Yellow' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "white",
+      "english": "White",
+      "kannada": "ಬಿಳಿ",
+      "isl_gloss": "WHITE",
+      "verified": false,
+      "notes": "Class '55. White' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "brown",
+      "english": "Brown",
+      "kannada": "ಕಂದು",
+      "isl_gloss": "BROWN",
+      "verified": false,
+      "notes": "Class '51. Brown' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "pink",
+      "english": "Pink",
+      "kannada": "ಗುಲಾಬಿ ಬಣ್ಣ",
+      "isl_gloss": "PINK",
+      "verified": false,
+      "notes": "Class '52. Pink' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "orange",
+      "english": "Orange (colour)",
+      "kannada": "ಕಿತ್ತಳೆ ಬಣ್ಣ",
+      "isl_gloss": "ORANGE",
+      "verified": false,
+      "notes": "Class '53. Orange' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "bus",
+      "english": "Bus",
+      "kannada": "ಬಸ್",
+      "isl_gloss": "BUS",
+      "verified": false,
+      "notes": "Class '14. Bus' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "car",
+      "english": "Car",
+      "kannada": "ಕಾರು",
+      "isl_gloss": "CAR",
+      "verified": false,
+      "notes": "Class '11. Car' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "train",
+      "english": "Train",
+      "kannada": "ರೈಲು",
+      "isl_gloss": "TRAIN",
+      "verified": false,
+      "notes": "Class '9. Train' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "bicycle",
+      "english": "Bicycle",
+      "kannada": "ಸೈಕಲ್",
+      "isl_gloss": "BICYCLE",
+      "verified": false,
+      "notes": "Class '13. Bicycle' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "plane",
+      "english": "Aeroplane",
+      "kannada": "ವಿಮಾನ",
+      "isl_gloss": "PLANE",
+      "verified": false,
+      "notes": "Class '10. Plane' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "boat",
+      "english": "Boat",
+      "kannada": "ದೋಣಿ",
+      "isl_gloss": "BOAT",
+      "verified": false,
+      "notes": "Class '15. Boat' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "phone",
+      "english": "Mobile phone",
+      "kannada": "ಮೊಬೈಲ್ ಫೋನ್",
+      "isl_gloss": "PHONE",
+      "verified": false,
+      "notes": "Class '54. Cell phone' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "computer",
+      "english": "Computer",
+      "kannada": "ಕಂಪ್ಯೂಟರ್",
+      "isl_gloss": "COMPUTER",
+      "verified": false,
+      "notes": "Class '55. Computer' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "television",
+      "english": "Television",
+      "kannada": "ದೂರದರ್ಶನ",
+      "isl_gloss": "TELEVISION",
+      "verified": false,
+      "notes": "Class '59. Television' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "clock",
+      "english": "Clock",
+      "kannada": "ಗಡಿಯಾರ",
+      "isl_gloss": "CLOCK",
+      "verified": false,
+      "notes": "Class '51. Clock' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "fan",
+      "english": "Fan",
+      "kannada": "ಫ್ಯಾನ್",
+      "isl_gloss": "FAN",
+      "verified": false,
+      "notes": "Class '53. Fan' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "book",
+      "english": "Book",
+      "kannada": "ಪುಸ್ತಕ",
+      "isl_gloss": "BOOK",
+      "verified": false,
+      "notes": "Class '37. Book' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "pen",
+      "english": "Pen",
+      "kannada": "ಲೇಖನಿ",
+      "isl_gloss": "PEN",
+      "verified": false,
+      "notes": "Class '34. Pen' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "key",
+      "english": "Key",
+      "kannada": "ಬೀಗದ ಕೈ",
+      "isl_gloss": "KEY",
+      "verified": false,
+      "notes": "Class '39. Key' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "bag",
+      "english": "Bag",
+      "kannada": "ಚೀಲ",
+      "isl_gloss": "BAG",
+      "verified": false,
+      "notes": "Class '45. Bag' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "bathroom",
+      "english": "Bathroom",
+      "kannada": "ಸ್ನಾನಗೃಹ",
+      "isl_gloss": "BATHROOM",
+      "verified": false,
+      "notes": "Class '32. Bathroom' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "shirt",
+      "english": "Shirt",
+      "kannada": "ಅಂಗಿ",
+      "isl_gloss": "SHIRT",
+      "verified": false,
+      "notes": "Class '41. Shirt' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "shoes",
+      "english": "Shoes",
+      "kannada": "ಬೂಟು",
+      "isl_gloss": "SHOES",
+      "verified": false,
+      "notes": "Class '44. Shoes' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "money",
+      "english": "Money",
+      "kannada": "ಹಣ",
+      "isl_gloss": "MONEY",
+      "verified": false,
+      "notes": "Class '4. Money' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "medicine",
+      "english": "Medicine",
+      "kannada": "ಔಷಧಿ",
+      "isl_gloss": "MEDICINE",
+      "verified": false,
+      "notes": "Class '3. Medicine' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "god",
+      "english": "God",
+      "kannada": "ದೇವರು",
+      "isl_gloss": "GOD",
+      "verified": false,
+      "notes": "Class '23. God' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "marriage",
+      "english": "Marriage",
+      "kannada": "ಮದುವೆ",
+      "isl_gloss": "MARRIAGE",
+      "verified": false,
+      "notes": "Class '6. Marriage' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "sport",
+      "english": "Sport",
+      "kannada": "ಕ್ರೀಡೆ",
+      "isl_gloss": "SPORT",
+      "verified": false,
+      "notes": "Class '17. Sport' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "doctor",
+      "english": "Doctor",
+      "kannada": "ವೈದ್ಯ",
+      "isl_gloss": "DOCTOR",
+      "verified": false,
+      "notes": "Class '87. Doctor' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "police",
+      "english": "Police",
+      "kannada": "ಪೊಲೀಸ್",
+      "isl_gloss": "POLICE",
+      "verified": false,
+      "notes": "Class '92. Police' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "patient",
+      "english": "Patient",
+      "kannada": "ರೋಗಿ",
+      "isl_gloss": "PATIENT",
+      "verified": false,
+      "notes": "Class '88. Patient' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "happy",
+      "english": "Happy",
+      "kannada": "ಖುಷಿ",
+      "isl_gloss": "HAPPY",
+      "verified": false,
+      "notes": "Class '3. happy' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "hot",
+      "english": "Hot",
+      "kannada": "ಬಿಸಿ",
+      "isl_gloss": "HOT",
+      "verified": false,
+      "notes": "Class '87. hot' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "cold",
+      "english": "Cold",
+      "kannada": "ತಣ್ಣಗೆ",
+      "isl_gloss": "COLD",
+      "verified": false,
+      "notes": "Class '88. cold' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "big",
+      "english": "Big / large",
+      "kannada": "ದೊಡ್ಡ",
+      "isl_gloss": "BIG",
+      "verified": false,
+      "notes": "Class '83. big large' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "small",
+      "english": "Small / little",
+      "kannada": "ಚಿಕ್ಕ",
+      "isl_gloss": "SMALL",
+      "verified": false,
+      "notes": "Class '84. small little' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "fast",
+      "english": "Fast",
+      "kannada": "ವೇಗ",
+      "isl_gloss": "FAST",
+      "verified": false,
+      "notes": "Class '86. fast' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "slow",
+      "english": "Slow",
+      "kannada": "ನಿಧಾನ",
+      "isl_gloss": "SLOW",
+      "verified": false,
+      "notes": "Class '85. slow' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "new",
+      "english": "New",
+      "kannada": "ಹೊಸ",
+      "isl_gloss": "NEW",
+      "verified": false,
+      "notes": "Class '91. new' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "old",
+      "english": "Old",
+      "kannada": "ಹಳೆಯ",
+      "isl_gloss": "OLD",
+      "verified": false,
+      "notes": "Class '92. old' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
+    },
+    {
+      "label": "healthy",
+      "english": "Healthy",
+      "kannada": "ಆರೋಗ್ಯಕರ",
+      "isl_gloss": "HEALTHY",
+      "verified": false,
+      "notes": "Class '99. healthy' of the INCLUDE dataset (CC BY 4.0).",
+      "kannada_review": {
+        "status": "word choice checked",
+        "note": "",
+        "by": "AI-assisted word choice (2026-10-25); native-speaker and ISL review pending"
+      }
     }
   ]
 }

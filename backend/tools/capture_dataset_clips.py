@@ -7,7 +7,7 @@ description cites the dataset and recording. Clips stay verified=false: the
 retargeting is approximate (depth from apparent hand size, no elbow tracking) and
 must be reviewed against the original video before being called correct ISL.
 
-Usage (from backend/):  python tools/capture_dataset_clips.py [--overwrite-captured]
+Usage (from backend/):  python tools/capture_dataset_clips.py [--overwrite-captured] [--only-missing]
 """
 import argparse
 import json
@@ -31,6 +31,7 @@ def score(sample: dict) -> float:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--overwrite-captured", action="store_true", help="replace clips captured from your own recordings")
+    ap.add_argument("--only-missing", action="store_true", help="only signs that have no captured clip yet")
     a = ap.parse_args()
     lib = AnimationLibrary()
     best: dict[str, tuple[float, Path]] = {}
@@ -42,6 +43,8 @@ def main():
     made, skipped = 0, []
     for label, (_, f) in sorted(best.items()):
         current = lib.mapping.get(label, {})
+        if a.only_missing and current.get("type") == "captured" and lib.info(label)["available"]:
+            continue
         if current.get("type") == "captured" and not current.get("dataset_source") and not a.overwrite_captured:
             skipped.append(f"{label}: keeps your own captured clip")
             continue

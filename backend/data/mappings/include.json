@@ -2,22 +2,767 @@
   "_comment": "INCLUDE class -> app sign label (class from the dataset's official metadata, never from file names). INCLUDE was recorded in Chennai; merged labels may combine regional variants of a sign with other datasets. Kannada text is standard vocabulary, unverified as an ISL correspondence.",
   "dataset": "include",
   "classes": {
-    "48. Hello": {"label": "namaskara", "english": "Hello / Namaste", "kannada": "ನಮಸ್ಕಾರ", "isl_gloss": "HELLO", "existing": true},
-    "49. How are you": {"label": "how_are_you", "english": "How are you?", "kannada": "ನೀವು ಹೇಗಿದ್ದೀರಿ", "isl_gloss": "HOW-ARE-YOU"},
-    "50. Alright": {"label": "alright", "english": "Alright / OK", "kannada": "ಸರಿ", "isl_gloss": "ALRIGHT"},
-    "51. Good Morning": {"label": "good_morning", "english": "Good morning", "kannada": "ಶುಭೋದಯ", "isl_gloss": "GOOD-MORNING", "existing": true},
-    "52. Good afternoon": {"label": "good_afternoon", "english": "Good afternoon", "kannada": "ಶುಭ ಮಧ್ಯಾಹ್ನ", "isl_gloss": "GOOD-AFTERNOON"},
-    "53. Good evening": {"label": "good_evening", "english": "Good evening", "kannada": "ಶುಭ ಸಂಜೆ", "isl_gloss": "GOOD-EVENING"},
-    "54. Good night": {"label": "good_night", "english": "Good night", "kannada": "ಶುಭ ರಾತ್ರಿ", "isl_gloss": "GOOD-NIGHT"},
-    "55. Thank you": {"label": "thank_you", "english": "Thank you", "kannada": "ಧನ್ಯವಾದಗಳು", "isl_gloss": "THANK-YOU", "existing": true},
-    "56. Pleased": {"label": "pleased", "english": "Pleased", "kannada": "ಸಂತೋಷ", "isl_gloss": "PLEASED"},
-    "40. I": {"label": "i_me", "english": "I / Me", "kannada": "ನಾನು", "isl_gloss": "I/ME", "existing": true},
-    "41. you": {"label": "you", "english": "You", "kannada": "ನೀವು", "isl_gloss": "YOU", "existing": true},
-    "42. he": {"label": "he", "english": "He", "kannada": "ಅವನು", "isl_gloss": "HE"},
-    "43. she": {"label": "she", "english": "She", "kannada": "ಅವಳು", "isl_gloss": "SHE"},
-    "44. it": {"label": "it", "english": "It", "kannada": "ಅದು", "isl_gloss": "IT"},
-    "45. we": {"label": "we", "english": "We", "kannada": "ನಾವು", "isl_gloss": "WE"},
-    "46. you (plural)": {"label": "you_plural", "english": "You (plural)", "kannada": "ನೀವೆಲ್ಲರೂ", "isl_gloss": "YOU-PLURAL"},
-    "47. they": {"label": "they", "english": "They", "kannada": "ಅವರು", "isl_gloss": "THEY"}
+    "48. Hello": {
+      "label": "namaskara",
+      "english": "Hello / Namaste",
+      "kannada": "ನಮಸ್ಕಾರ",
+      "isl_gloss": "HELLO",
+      "existing": true
+    },
+    "49. How are you": {
+      "label": "how_are_you",
+      "english": "How are you?",
+      "kannada": "ನೀವು ಹೇಗಿದ್ದೀರಿ",
+      "isl_gloss": "HOW-ARE-YOU"
+    },
+    "50. Alright": {
+      "label": "alright",
+      "english": "Alright / OK",
+      "kannada": "ಸರಿ",
+      "isl_gloss": "ALRIGHT"
+    },
+    "51. Good Morning": {
+      "label": "good_morning",
+      "english": "Good morning",
+      "kannada": "ಶುಭೋದಯ",
+      "isl_gloss": "GOOD-MORNING",
+      "existing": true
+    },
+    "52. Good afternoon": {
+      "label": "good_afternoon",
+      "english": "Good afternoon",
+      "kannada": "ಶುಭ ಮಧ್ಯಾಹ್ನ",
+      "isl_gloss": "GOOD-AFTERNOON"
+    },
+    "53. Good evening": {
+      "label": "good_evening",
+      "english": "Good evening",
+      "kannada": "ಶುಭ ಸಂಜೆ",
+      "isl_gloss": "GOOD-EVENING"
+    },
+    "54. Good night": {
+      "label": "good_night",
+      "english": "Good night",
+      "kannada": "ಶುಭ ರಾತ್ರಿ",
+      "isl_gloss": "GOOD-NIGHT"
+    },
+    "55. Thank you": {
+      "label": "thank_you",
+      "english": "Thank you",
+      "kannada": "ಧನ್ಯವಾದಗಳು",
+      "isl_gloss": "THANK-YOU",
+      "existing": true
+    },
+    "56. Pleased": {
+      "label": "pleased",
+      "english": "Pleased",
+      "kannada": "ಸಂತೋಷ",
+      "isl_gloss": "PLEASED"
+    },
+    "40. I": {
+      "label": "i_me",
+      "english": "I / Me",
+      "kannada": "ನಾನು",
+      "isl_gloss": "I/ME",
+      "existing": true
+    },
+    "41. you": {
+      "label": "you",
+      "english": "You",
+      "kannada": "ನೀವು",
+      "isl_gloss": "YOU",
+      "existing": true
+    },
+    "42. he": {
+      "label": "he",
+      "english": "He",
+      "kannada": "ಅವನು",
+      "isl_gloss": "HE"
+    },
+    "43. she": {
+      "label": "she",
+      "english": "She",
+      "kannada": "ಅವಳು",
+      "isl_gloss": "SHE"
+    },
+    "44. it": {
+      "label": "it",
+      "english": "It",
+      "kannada": "ಅದು",
+      "isl_gloss": "IT"
+    },
+    "45. we": {
+      "label": "we",
+      "english": "We",
+      "kannada": "ನಾವು",
+      "isl_gloss": "WE"
+    },
+    "46. you (plural)": {
+      "label": "you_plural",
+      "english": "You (plural)",
+      "kannada": "ನೀವೆಲ್ಲರೂ",
+      "isl_gloss": "YOU-PLURAL"
+    },
+    "47. they": {
+      "label": "they",
+      "english": "They",
+      "kannada": "ಅವರು",
+      "isl_gloss": "THEY"
+    },
+    "1. Dog": {
+      "label": "dog",
+      "english": "Dog",
+      "kannada": "ನಾಯಿ",
+      "isl_gloss": "DOG",
+      "existing": true
+    },
+    "2. Cat": {
+      "label": "cat",
+      "english": "Cat",
+      "kannada": "ಬೆಕ್ಕು",
+      "isl_gloss": "CAT",
+      "existing": true
+    },
+    "3. Fish": {
+      "label": "fish",
+      "english": "Fish",
+      "kannada": "ಮೀನು",
+      "isl_gloss": "FISH",
+      "existing": true
+    },
+    "4. Bird": {
+      "label": "bird",
+      "english": "Bird",
+      "kannada": "ಹಕ್ಕಿ",
+      "isl_gloss": "BIRD",
+      "existing": true
+    },
+    "49. Ring": {
+      "label": "ring",
+      "english": "Ring",
+      "kannada": "ಉಂಗುರ",
+      "isl_gloss": "RING",
+      "existing": true
+    },
+    "5. Cow": {
+      "label": "cow",
+      "english": "Cow",
+      "kannada": "ಹಸು",
+      "isl_gloss": "COW",
+      "existing": true
+    },
+    "54. Black": {
+      "label": "black",
+      "english": "Black",
+      "kannada": "ಕಪ್ಪು",
+      "isl_gloss": "BLACK",
+      "existing": true
+    },
+    "56. Grey": {
+      "label": "grey",
+      "english": "Grey",
+      "kannada": "ಬೂದು ಬಣ್ಣ",
+      "isl_gloss": "GREY",
+      "existing": true
+    },
+    "60. Mother": {
+      "label": "mother",
+      "english": "Mother",
+      "kannada": "ತಾಯಿ",
+      "isl_gloss": "MOTHER",
+      "existing": true
+    },
+    "61. Father": {
+      "label": "father",
+      "english": "Father",
+      "kannada": "ತಂದೆ",
+      "isl_gloss": "FATHER",
+      "existing": true
+    },
+    "66. Brother": {
+      "label": "brother",
+      "english": "Brother",
+      "kannada": "ಸಹೋದರ",
+      "isl_gloss": "BROTHER",
+      "existing": true
+    },
+    "73. Today": {
+      "label": "today",
+      "english": "Today",
+      "kannada": "ಇಂದು",
+      "isl_gloss": "TODAY",
+      "existing": true
+    },
+    "74. Tomorrow": {
+      "label": "tomorrow",
+      "english": "Tomorrow",
+      "kannada": "ನಾಳೆ",
+      "isl_gloss": "TOMORROW",
+      "existing": true
+    },
+    "75. Yesterday": {
+      "label": "yesterday",
+      "english": "Yesterday",
+      "kannada": "ನಿನ್ನೆ",
+      "isl_gloss": "YESTERDAY",
+      "existing": true
+    },
+    "77. Boy": {
+      "label": "boy",
+      "english": "Boy",
+      "kannada": "ಹುಡುಗ",
+      "isl_gloss": "BOY",
+      "existing": true
+    },
+    "78. Girl": {
+      "label": "girl",
+      "english": "Girl",
+      "kannada": "ಹುಡುಗಿ",
+      "isl_gloss": "GIRL",
+      "existing": true
+    },
+    "81. Friend": {
+      "label": "friend",
+      "english": "Friend",
+      "kannada": "ಸ್ನೇಹಿತ",
+      "isl_gloss": "FRIEND",
+      "existing": true
+    },
+    "83. Afternoon": {
+      "label": "afternoon",
+      "english": "Afternoon",
+      "kannada": "ಮಧ್ಯಾಹ್ನ",
+      "isl_gloss": "AFTERNOON",
+      "existing": true
+    },
+    "84. Evening": {
+      "label": "evening",
+      "english": "Evening",
+      "kannada": "ಸಂಜೆ",
+      "isl_gloss": "EVENING",
+      "existing": true
+    },
+    "84. Teacher": {
+      "label": "teacher",
+      "english": "Teacher",
+      "kannada": "ಶಿಕ್ಷಕ",
+      "isl_gloss": "TEACHER",
+      "existing": true
+    },
+    "85. Night": {
+      "label": "night",
+      "english": "Night",
+      "kannada": "ರಾತ್ರಿ",
+      "isl_gloss": "NIGHT",
+      "existing": true
+    },
+    "85. Student": {
+      "label": "student",
+      "english": "Student",
+      "kannada": "ವಿದ್ಯಾರ್ಥಿ",
+      "isl_gloss": "STUDENT",
+      "existing": true
+    },
+    "94. good": {
+      "label": "good",
+      "english": "Good",
+      "kannada": "ಒಳ್ಳೆಯದು",
+      "isl_gloss": "GOOD",
+      "existing": true
+    },
+    "95. bad": {
+      "label": "bad",
+      "english": "Bad",
+      "kannada": "ಕೆಟ್ಟದು",
+      "isl_gloss": "BAD",
+      "existing": true
+    },
+    "98. sick": {
+      "label": "sick",
+      "english": "Sick / unwell",
+      "kannada": "ಅನಾರೋಗ್ಯ",
+      "isl_gloss": "SICK",
+      "existing": true
+    },
+    "58. Son": {
+      "label": "son",
+      "english": "Son",
+      "kannada": "ಮಗ",
+      "isl_gloss": "SON"
+    },
+    "59. Daughter": {
+      "label": "daughter",
+      "english": "Daughter",
+      "kannada": "ಮಗಳು",
+      "isl_gloss": "DAUGHTER"
+    },
+    "67. Sister": {
+      "label": "sister",
+      "english": "Sister",
+      "kannada": "ಸಹೋದರಿ",
+      "isl_gloss": "SISTER"
+    },
+    "63. Baby": {
+      "label": "baby",
+      "english": "Baby",
+      "kannada": "ಶಿಶು",
+      "isl_gloss": "BABY"
+    },
+    "79. Child": {
+      "label": "child",
+      "english": "Child",
+      "kannada": "ಮಗು",
+      "isl_gloss": "CHILD"
+    },
+    "64. Man": {
+      "label": "man",
+      "english": "Man",
+      "kannada": "ಗಂಡಸು",
+      "isl_gloss": "MAN"
+    },
+    "65. Woman": {
+      "label": "woman",
+      "english": "Woman",
+      "kannada": "ಹೆಂಗಸು",
+      "isl_gloss": "WOMAN"
+    },
+    "68. Family": {
+      "label": "family",
+      "english": "Family",
+      "kannada": "ಕುಟುಂಬ",
+      "isl_gloss": "FAMILY"
+    },
+    "69. Grandfather": {
+      "label": "grandfather",
+      "english": "Grandfather",
+      "kannada": "ಅಜ್ಜ",
+      "isl_gloss": "GRANDFATHER"
+    },
+    "70. Grandmother": {
+      "label": "grandmother",
+      "english": "Grandmother",
+      "kannada": "ಅಜ್ಜಿ",
+      "isl_gloss": "GRANDMOTHER"
+    },
+    "71. Husband": {
+      "label": "husband",
+      "english": "Husband",
+      "kannada": "ಗಂಡ",
+      "isl_gloss": "HUSBAND"
+    },
+    "72. Wife": {
+      "label": "wife",
+      "english": "Wife",
+      "kannada": "ಹೆಂಡತಿ",
+      "isl_gloss": "WIFE"
+    },
+    "19. House": {
+      "label": "home",
+      "english": "Home / house",
+      "kannada": "ಮನೆ",
+      "isl_gloss": "HOME"
+    },
+    "24. School": {
+      "label": "school",
+      "english": "School",
+      "kannada": "ಶಾಲೆ",
+      "isl_gloss": "SCHOOL"
+    },
+    "30. Hospital": {
+      "label": "hospital",
+      "english": "Hospital",
+      "kannada": "ಆಸ್ಪತ್ರೆ",
+      "isl_gloss": "HOSPITAL"
+    },
+    "32. Market": {
+      "label": "market",
+      "english": "Market",
+      "kannada": "ಮಾರುಕಟ್ಟೆ",
+      "isl_gloss": "MARKET"
+    },
+    "31. Temple": {
+      "label": "temple",
+      "english": "Temple",
+      "kannada": "ದೇವಸ್ಥಾನ",
+      "isl_gloss": "TEMPLE"
+    },
+    "35. Bank": {
+      "label": "bank",
+      "english": "Bank",
+      "kannada": "ಬ್ಯಾಂಕ್",
+      "isl_gloss": "BANK"
+    },
+    "25. Office": {
+      "label": "office",
+      "english": "Office",
+      "kannada": "ಕಚೇರಿ",
+      "isl_gloss": "OFFICE"
+    },
+    "28. Store or Shop": {
+      "label": "shop",
+      "english": "Shop / store",
+      "kannada": "ಅಂಗಡಿ",
+      "isl_gloss": "SHOP"
+    },
+    "20. Street or Road": {
+      "label": "road",
+      "english": "Road / street",
+      "kannada": "ರಸ್ತೆ",
+      "isl_gloss": "ROAD"
+    },
+    "21. Train Station": {
+      "label": "railway_station",
+      "english": "Railway station",
+      "kannada": "ರೈಲು ನಿಲ್ದಾಣ",
+      "isl_gloss": "TRAIN-STATION"
+    },
+    "22. Restaurant": {
+      "label": "restaurant",
+      "english": "Restaurant",
+      "kannada": "ಉಪಾಹಾರ ಗೃಹ",
+      "isl_gloss": "RESTAURANT"
+    },
+    "18. City": {
+      "label": "city",
+      "english": "City",
+      "kannada": "ನಗರ",
+      "isl_gloss": "CITY"
+    },
+    "66. Sunday": {
+      "label": "sunday",
+      "english": "Sunday",
+      "kannada": "ಭಾನುವಾರ",
+      "isl_gloss": "SUNDAY"
+    },
+    "67. Monday": {
+      "label": "monday",
+      "english": "Monday",
+      "kannada": "ಸೋಮವಾರ",
+      "isl_gloss": "MONDAY"
+    },
+    "68. Tuesday": {
+      "label": "tuesday",
+      "english": "Tuesday",
+      "kannada": "ಮಂಗಳವಾರ",
+      "isl_gloss": "TUESDAY"
+    },
+    "69. Wednesday": {
+      "label": "wednesday",
+      "english": "Wednesday",
+      "kannada": "ಬುಧವಾರ",
+      "isl_gloss": "WEDNESDAY"
+    },
+    "70. Thursday": {
+      "label": "thursday",
+      "english": "Thursday",
+      "kannada": "ಗುರುವಾರ",
+      "isl_gloss": "THURSDAY"
+    },
+    "71. Friday": {
+      "label": "friday",
+      "english": "Friday",
+      "kannada": "ಶುಕ್ರವಾರ",
+      "isl_gloss": "FRIDAY"
+    },
+    "72. Saturday": {
+      "label": "saturday",
+      "english": "Saturday",
+      "kannada": "ಶನಿವಾರ",
+      "isl_gloss": "SATURDAY"
+    },
+    "76. Week": {
+      "label": "week",
+      "english": "Week",
+      "kannada": "ವಾರ",
+      "isl_gloss": "WEEK"
+    },
+    "77. Month": {
+      "label": "month",
+      "english": "Month",
+      "kannada": "ತಿಂಗಳು",
+      "isl_gloss": "MONTH"
+    },
+    "78. Year": {
+      "label": "year",
+      "english": "Year",
+      "kannada": "ವರ್ಷ",
+      "isl_gloss": "YEAR"
+    },
+    "82. Morning": {
+      "label": "morning",
+      "english": "Morning",
+      "kannada": "ಬೆಳಿಗ್ಗೆ",
+      "isl_gloss": "MORNING"
+    },
+    "86. Time": {
+      "label": "time",
+      "english": "Time",
+      "kannada": "ಸಮಯ",
+      "isl_gloss": "TIME"
+    },
+    "47. Red": {
+      "label": "red",
+      "english": "Red",
+      "kannada": "ಕೆಂಪು",
+      "isl_gloss": "RED"
+    },
+    "48. Green": {
+      "label": "green",
+      "english": "Green",
+      "kannada": "ಹಸಿರು",
+      "isl_gloss": "GREEN"
+    },
+    "49. Blue": {
+      "label": "blue",
+      "english": "Blue",
+      "kannada": "ನೀಲಿ",
+      "isl_gloss": "BLUE"
+    },
+    "50. Yellow": {
+      "label": "yellow",
+      "english": "Yellow",
+      "kannada": "ಹಳದಿ",
+      "isl_gloss": "YELLOW"
+    },
+    "55. White": {
+      "label": "white",
+      "english": "White",
+      "kannada": "ಬಿಳಿ",
+      "isl_gloss": "WHITE"
+    },
+    "51. Brown": {
+      "label": "brown",
+      "english": "Brown",
+      "kannada": "ಕಂದು",
+      "isl_gloss": "BROWN"
+    },
+    "52. Pink": {
+      "label": "pink",
+      "english": "Pink",
+      "kannada": "ಗುಲಾಬಿ ಬಣ್ಣ",
+      "isl_gloss": "PINK"
+    },
+    "53. Orange": {
+      "label": "orange",
+      "english": "Orange (colour)",
+      "kannada": "ಕಿತ್ತಳೆ ಬಣ್ಣ",
+      "isl_gloss": "ORANGE"
+    },
+    "14. Bus": {
+      "label": "bus",
+      "english": "Bus",
+      "kannada": "ಬಸ್",
+      "isl_gloss": "BUS"
+    },
+    "11. Car": {
+      "label": "car",
+      "english": "Car",
+      "kannada": "ಕಾರು",
+      "isl_gloss": "CAR"
+    },
+    "9. Train": {
+      "label": "train",
+      "english": "Train",
+      "kannada": "ರೈಲು",
+      "isl_gloss": "TRAIN"
+    },
+    "13. Bicycle": {
+      "label": "bicycle",
+      "english": "Bicycle",
+      "kannada": "ಸೈಕಲ್",
+      "isl_gloss": "BICYCLE"
+    },
+    "10. Plane": {
+      "label": "plane",
+      "english": "Aeroplane",
+      "kannada": "ವಿಮಾನ",
+      "isl_gloss": "PLANE"
+    },
+    "15. Boat": {
+      "label": "boat",
+      "english": "Boat",
+      "kannada": "ದೋಣಿ",
+      "isl_gloss": "BOAT"
+    },
+    "54. Cell phone": {
+      "label": "phone",
+      "english": "Mobile phone",
+      "kannada": "ಮೊಬೈಲ್ ಫೋನ್",
+      "isl_gloss": "PHONE"
+    },
+    "55. Computer": {
+      "label": "computer",
+      "english": "Computer",
+      "kannada": "ಕಂಪ್ಯೂಟರ್",
+      "isl_gloss": "COMPUTER"
+    },
+    "59. Television": {
+      "label": "television",
+      "english": "Television",
+      "kannada": "ದೂರದರ್ಶನ",
+      "isl_gloss": "TELEVISION"
+    },
+    "51. Clock": {
+      "label": "clock",
+      "english": "Clock",
+      "kannada": "ಗಡಿಯಾರ",
+      "isl_gloss": "CLOCK"
+    },
+    "53. Fan": {
+      "label": "fan",
+      "english": "Fan",
+      "kannada": "ಫ್ಯಾನ್",
+      "isl_gloss": "FAN"
+    },
+    "37. Book": {
+      "label": "book",
+      "english": "Book",
+      "kannada": "ಪುಸ್ತಕ",
+      "isl_gloss": "BOOK"
+    },
+    "34. Pen": {
+      "label": "pen",
+      "english": "Pen",
+      "kannada": "ಲೇಖನಿ",
+      "isl_gloss": "PEN"
+    },
+    "39. Key": {
+      "label": "key",
+      "english": "Key",
+      "kannada": "ಬೀಗದ ಕೈ",
+      "isl_gloss": "KEY"
+    },
+    "45. Bag": {
+      "label": "bag",
+      "english": "Bag",
+      "kannada": "ಚೀಲ",
+      "isl_gloss": "BAG"
+    },
+    "32. Bathroom": {
+      "label": "bathroom",
+      "english": "Bathroom",
+      "kannada": "ಸ್ನಾನಗೃಹ",
+      "isl_gloss": "BATHROOM"
+    },
+    "41. Shirt": {
+      "label": "shirt",
+      "english": "Shirt",
+      "kannada": "ಅಂಗಿ",
+      "isl_gloss": "SHIRT"
+    },
+    "44. Shoes": {
+      "label": "shoes",
+      "english": "Shoes",
+      "kannada": "ಬೂಟು",
+      "isl_gloss": "SHOES"
+    },
+    "4. Money": {
+      "label": "money",
+      "english": "Money",
+      "kannada": "ಹಣ",
+      "isl_gloss": "MONEY"
+    },
+    "3. Medicine": {
+      "label": "medicine",
+      "english": "Medicine",
+      "kannada": "ಔಷಧಿ",
+      "isl_gloss": "MEDICINE"
+    },
+    "23. God": {
+      "label": "god",
+      "english": "God",
+      "kannada": "ದೇವರು",
+      "isl_gloss": "GOD"
+    },
+    "6. Marriage": {
+      "label": "marriage",
+      "english": "Marriage",
+      "kannada": "ಮದುವೆ",
+      "isl_gloss": "MARRIAGE"
+    },
+    "17. Sport": {
+      "label": "sport",
+      "english": "Sport",
+      "kannada": "ಕ್ರೀಡೆ",
+      "isl_gloss": "SPORT"
+    },
+    "87. Doctor": {
+      "label": "doctor",
+      "english": "Doctor",
+      "kannada": "ವೈದ್ಯ",
+      "isl_gloss": "DOCTOR"
+    },
+    "92. Police": {
+      "label": "police",
+      "english": "Police",
+      "kannada": "ಪೊಲೀಸ್",
+      "isl_gloss": "POLICE"
+    },
+    "88. Patient": {
+      "label": "patient",
+      "english": "Patient",
+      "kannada": "ರೋಗಿ",
+      "isl_gloss": "PATIENT"
+    },
+    "3. happy": {
+      "label": "happy",
+      "english": "Happy",
+      "kannada": "ಖುಷಿ",
+      "isl_gloss": "HAPPY"
+    },
+    "87. hot": {
+      "label": "hot",
+      "english": "Hot",
+      "kannada": "ಬಿಸಿ",
+      "isl_gloss": "HOT"
+    },
+    "88. cold": {
+      "label": "cold",
+      "english": "Cold",
+      "kannada": "ತಣ್ಣಗೆ",
+      "isl_gloss": "COLD"
+    },
+    "83. big large": {
+      "label": "big",
+      "english": "Big / large",
+      "kannada": "ದೊಡ್ಡ",
+      "isl_gloss": "BIG"
+    },
+    "84. small little": {
+      "label": "small",
+      "english": "Small / little",
+      "kannada": "ಚಿಕ್ಕ",
+      "isl_gloss": "SMALL"
+    },
+    "86. fast": {
+      "label": "fast",
+      "english": "Fast",
+      "kannada": "ವೇಗ",
+      "isl_gloss": "FAST"
+    },
+    "85. slow": {
+      "label": "slow",
+      "english": "Slow",
+      "kannada": "ನಿಧಾನ",
+      "isl_gloss": "SLOW"
+    },
+    "91. new": {
+      "label": "new",
+      "english": "New",
+      "kannada": "ಹೊಸ",
+      "isl_gloss": "NEW"
+    },
+    "92. old": {
+      "label": "old",
+      "english": "Old",
+      "kannada": "ಹಳೆಯ",
+      "isl_gloss": "OLD"
+    },
+    "99. healthy": {
+      "label": "healthy",
+      "english": "Healthy",
+      "kannada": "ಆರೋಗ್ಯಕರ",
+      "isl_gloss": "HEALTHY"
+    }
   }
 }

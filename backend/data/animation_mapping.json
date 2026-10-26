@@ -1328,8 +1328,8 @@
       }
     },
     "home": {
-      "file": "placeholder/home.json",
-      "type": "placeholder",
+      "file": "captured/home.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -1339,6 +1339,12 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_804cd9ef5d598f",
+        "signer_group": "include_train",
+        "file": "MVI_3576.MOV"
       }
     },
     "wait": {
@@ -1370,8 +1376,8 @@
       }
     },
     "sick": {
-      "file": "placeholder/sick.json",
-      "type": "placeholder",
+      "file": "captured/sick.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -1381,6 +1387,12 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0c937bed748b1d",
+        "signer_group": "include_train",
+        "file": "MVI_9529.MOV"
       }
     },
     "how": {
@@ -1398,8 +1410,8 @@
       }
     },
     "myname": {
-      "file": "placeholder/myname.json",
-      "type": "placeholder",
+      "file": "captured/myname.json",
+      "type": "captured",
       "verified": false,
       "review": {
         "handshape": "unchecked",
@@ -1409,6 +1421,1434 @@
         "non_manual": "unchecked",
         "reviewer": null,
         "reference": null
+      },
+      "dataset_source": {
+        "dataset": "my_uploads",
+        "sample_id": "my_uploads_14a5c507db06e6",
+        "signer_group": "signer1_up20261011_2301",
+        "file": "WIN_20261011_18_54_20_Pro.mp4"
+      }
+    },
+    "baby": {
+      "file": "captured/baby.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_267688e3904b32",
+        "signer_group": "include_train",
+        "file": "MVI_5234.MOV"
+      }
+    },
+    "bag": {
+      "file": "captured/bag.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_b571788553fb95",
+        "signer_group": "include_train",
+        "file": "MVI_4432.MOV"
+      }
+    },
+    "bank": {
+      "file": "captured/bank.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_89a9278a79b7c0",
+        "signer_group": "include_train",
+        "file": "MVI_3376.MOV"
+      }
+    },
+    "bathroom": {
+      "file": "captured/bathroom.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_1eadbf886f21cb",
+        "signer_group": "include_train",
+        "file": "MVI_4902.MOV"
+      }
+    },
+    "bicycle": {
+      "file": "captured/bicycle.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_d150941ca5ffcd",
+        "signer_group": "include_train",
+        "file": "MVI_3245.MOV"
+      }
+    },
+    "big": {
+      "file": "captured/big.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_8945b5a3cc981d",
+        "signer_group": "include_train",
+        "file": "MVI_5125.MOV"
+      }
+    },
+    "blue": {
+      "file": "captured/blue.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_1bae19c4a52db7",
+        "signer_group": "include_test",
+        "file": "MVI_3874.MOV"
+      }
+    },
+    "boat": {
+      "file": "captured/boat.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_b3924057e2baf5",
+        "signer_group": "include_train",
+        "file": "MVI_3189.MOV"
+      }
+    },
+    "book": {
+      "file": "captured/book.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_dc613c96849138",
+        "signer_group": "include_train",
+        "file": "MVI_4400.MOV"
+      }
+    },
+    "brown": {
+      "file": "captured/brown.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_4fa249b012bcb1",
+        "signer_group": "include_train",
+        "file": "MVI_4910.MOV"
+      }
+    },
+    "bus": {
+      "file": "captured/bus.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_835e7790c3dc8c",
+        "signer_group": "include_test",
+        "file": "MVI_3186.MOV"
+      }
+    },
+    "car": {
+      "file": "captured/car.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_2a480306c3b66e",
+        "signer_group": "include_train",
+        "file": "MVI_3209.MOV"
+      }
+    },
+    "child": {
+      "file": "captured/child.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0e503307ffef5d",
+        "signer_group": "include_train",
+        "file": "MVI_5294.MOV"
+      }
+    },
+    "city": {
+      "file": "captured/city.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_443fb8ae79b5b7",
+        "signer_group": "include_train",
+        "file": "MVI_3434.MOV"
+      }
+    },
+    "clock": {
+      "file": "captured/clock.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_466ab2d2151419",
+        "signer_group": "include_test",
+        "file": "MVI_9093.MP4"
+      }
+    },
+    "cold": {
+      "file": "captured/cold.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_e03c7bc24e9b7e",
+        "signer_group": "include_test",
+        "file": "MVI_9252.MOV"
+      }
+    },
+    "computer": {
+      "file": "captured/computer.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_bd44683dd2a2d2",
+        "signer_group": "include_train",
+        "file": "MVI_5398.MOV"
+      }
+    },
+    "daughter": {
+      "file": "captured/daughter.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_42961e69d09903",
+        "signer_group": "include_train",
+        "file": "MVI_3758.MOV"
+      }
+    },
+    "doctor": {
+      "file": "captured/doctor.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_34abe25291bb0d",
+        "signer_group": "include_train",
+        "file": "MVI_8874.MP4"
+      }
+    },
+    "family": {
+      "file": "captured/family.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_a1f6ccc5a98b12",
+        "signer_group": "include_train",
+        "file": "MVI_5251.MOV"
+      }
+    },
+    "fan": {
+      "file": "captured/fan.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_496b779fc0a222",
+        "signer_group": "include_train",
+        "file": "MVI_5388.MOV"
+      }
+    },
+    "fast": {
+      "file": "captured/fast.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0d7c6b51d38a3c",
+        "signer_group": "include_train",
+        "file": "MVI_5214.MOV"
+      }
+    },
+    "friday": {
+      "file": "captured/friday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_3115b432f5ecbb",
+        "signer_group": "include_train",
+        "file": "MVI_5022.MOV"
+      }
+    },
+    "god": {
+      "file": "captured/god.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_82d56d460460e2",
+        "signer_group": "include_test",
+        "file": "MVI_8995.MP4"
+      }
+    },
+    "grandfather": {
+      "file": "captured/grandfather.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_2b0714c7890094",
+        "signer_group": "include_test",
+        "file": "MVI_4234.MOV"
+      }
+    },
+    "grandmother": {
+      "file": "captured/grandmother.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_39509c760ac87a",
+        "signer_group": "include_train",
+        "file": "MVI_3795.MOV"
+      }
+    },
+    "green": {
+      "file": "captured/green.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_27bc8221d3938b",
+        "signer_group": "include_train",
+        "file": "MVI_4021.MOV"
+      }
+    },
+    "happy": {
+      "file": "captured/happy.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_5f6f7b083e458f",
+        "signer_group": "include_train",
+        "file": "MVI_5185.MOV"
+      }
+    },
+    "healthy": {
+      "file": "captured/healthy.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_ac3a9e662717a5",
+        "signer_group": "include_train",
+        "file": "MVI_9532.MOV"
+      }
+    },
+    "hospital": {
+      "file": "captured/hospital.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_238b4a0704c411",
+        "signer_group": "include_test",
+        "file": "MVI_3481.MOV"
+      }
+    },
+    "hot": {
+      "file": "captured/hot.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_eb88484152f921",
+        "signer_group": "include_test",
+        "file": "MVI_9487.MOV"
+      }
+    },
+    "husband": {
+      "file": "captured/husband.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_ee32c416769f4f",
+        "signer_group": "include_train",
+        "file": "MVI_4961.MOV"
+      }
+    },
+    "key": {
+      "file": "captured/key.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_13451c289f450a",
+        "signer_group": "include_test",
+        "file": "MVI_4409.MOV"
+      }
+    },
+    "man": {
+      "file": "captured/man.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_059266809c1a72",
+        "signer_group": "include_train",
+        "file": "MVI_3921.MOV"
+      }
+    },
+    "market": {
+      "file": "captured/market.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_cf31aec4ec4ef3",
+        "signer_group": "include_train",
+        "file": "MVI_8707.MP4"
+      }
+    },
+    "marriage": {
+      "file": "captured/marriage.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_1e8bf9c38eb9c1",
+        "signer_group": "include_test",
+        "file": "MVI_8942.MP4"
+      }
+    },
+    "medicine": {
+      "file": "captured/medicine.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_a3c00dca991d7e",
+        "signer_group": "include_test",
+        "file": "MVI_4261.MOV"
+      }
+    },
+    "monday": {
+      "file": "captured/monday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_27d6f15a24da92",
+        "signer_group": "include_train",
+        "file": "MVI_5446.MOV"
+      }
+    },
+    "money": {
+      "file": "captured/money.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_54ab604068a4e4",
+        "signer_group": "include_test",
+        "file": "MVI_4265.MOV"
+      }
+    },
+    "month": {
+      "file": "captured/month.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_49e2c6a79f8b7c",
+        "signer_group": "include_train",
+        "file": "MVI_4634.MOV"
+      }
+    },
+    "morning": {
+      "file": "captured/morning.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_09572c8b18c2f8",
+        "signer_group": "include_train",
+        "file": "MVI_9189.MP4"
+      }
+    },
+    "new": {
+      "file": "captured/new.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_033ae23131709d",
+        "signer_group": "include_train",
+        "file": "MVI_9423.MOV"
+      }
+    },
+    "office": {
+      "file": "captured/office.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_023e8a743af133",
+        "signer_group": "include_train",
+        "file": "MVI_3295.MOV"
+      }
+    },
+    "old": {
+      "file": "captured/old.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0de308b65f5187",
+        "signer_group": "include_train",
+        "file": "MVI_5154.MOV"
+      }
+    },
+    "orange": {
+      "file": "captured/orange.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_2b3753ce3732dd",
+        "signer_group": "include_train",
+        "file": "MVI_5204.MOV"
+      }
+    },
+    "patient": {
+      "file": "captured/patient.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_11e479858f2105",
+        "signer_group": "include_train",
+        "file": "MVI_4760.MOV"
+      }
+    },
+    "pen": {
+      "file": "captured/pen.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_562281d35e913c",
+        "signer_group": "include_train",
+        "file": "MVI_9032.MP4"
+      }
+    },
+    "phone": {
+      "file": "captured/phone.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_203ed36deb9938",
+        "signer_group": "include_train",
+        "file": "MVI_9101.MP4"
+      }
+    },
+    "pink": {
+      "file": "captured/pink.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0181c30de0e00d",
+        "signer_group": "include_train",
+        "file": "MVI_3883.MOV"
+      }
+    },
+    "plane": {
+      "file": "captured/plane.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_32b4a2623f3c2e",
+        "signer_group": "include_test",
+        "file": "MVI_3206.MOV"
+      }
+    },
+    "police": {
+      "file": "captured/police.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_72230645485ac2",
+        "signer_group": "include_train",
+        "file": "MVI_5347.MOV"
+      }
+    },
+    "railway_station": {
+      "file": "captured/railway_station.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_058678fbdce43c",
+        "signer_group": "include_train",
+        "file": "MVI_3447.MOV"
+      }
+    },
+    "red": {
+      "file": "captured/red.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0b4407b2152cb5",
+        "signer_group": "include_train",
+        "file": "MVI_5186.MOV"
+      }
+    },
+    "restaurant": {
+      "file": "captured/restaurant.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_13f1b352f6e053",
+        "signer_group": "include_train",
+        "file": "MVI_3528.MOV"
+      }
+    },
+    "road": {
+      "file": "captured/road.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_881e002f1d6b7a",
+        "signer_group": "include_train",
+        "file": "MVI_3273.MOV"
+      }
+    },
+    "saturday": {
+      "file": "captured/saturday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_23957dae0f68a4",
+        "signer_group": "include_train",
+        "file": "MVI_5466.MOV"
+      }
+    },
+    "school": {
+      "file": "captured/school.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_2be81a570f8ce7",
+        "signer_group": "include_train",
+        "file": "MVI_3459.MOV"
+      }
+    },
+    "shirt": {
+      "file": "captured/shirt.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_439b39d61b0b86",
+        "signer_group": "include_train",
+        "file": "MVI_3847.MOV"
+      }
+    },
+    "shoes": {
+      "file": "captured/shoes.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_3727957e379723",
+        "signer_group": "include_train",
+        "file": "MVI_4888.MOV"
+      }
+    },
+    "shop": {
+      "file": "captured/shop.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_761e5963f03341",
+        "signer_group": "include_train",
+        "file": "MVI_4532.MOV"
+      }
+    },
+    "sister": {
+      "file": "captured/sister.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0916fe29da7b56",
+        "signer_group": "include_test",
+        "file": "MVI_5099.MOV"
+      }
+    },
+    "slow": {
+      "file": "captured/slow.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_14fabf9dee044a",
+        "signer_group": "include_train",
+        "file": "MVI_9482.MOV"
+      }
+    },
+    "small": {
+      "file": "captured/small.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_e96bf00fd280b3",
+        "signer_group": "include_train",
+        "file": "MVI_5307.MOV"
+      }
+    },
+    "son": {
+      "file": "captured/son.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_3ab61e95ab87fe",
+        "signer_group": "include_train",
+        "file": "MVI_5218.MOV"
+      }
+    },
+    "sport": {
+      "file": "captured/sport.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_6d488ccc892b51",
+        "signer_group": "include_train",
+        "file": "MVI_4316.MOV"
+      }
+    },
+    "sunday": {
+      "file": "captured/sunday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_242485fd9a218d",
+        "signer_group": "include_train",
+        "file": "MVI_9139.MP4"
+      }
+    },
+    "television": {
+      "file": "captured/television.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_30db9c8ae7903c",
+        "signer_group": "include_train",
+        "file": "MVI_5415.MOV"
+      }
+    },
+    "temple": {
+      "file": "captured/temple.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_162d230d83ca30",
+        "signer_group": "include_train",
+        "file": "MVI_3322.MOV"
+      }
+    },
+    "thursday": {
+      "file": "captured/thursday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_0283a474577605",
+        "signer_group": "include_train",
+        "file": "MVI_5019.MOV"
+      }
+    },
+    "time": {
+      "file": "captured/time.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_f9cda100dd6e1d",
+        "signer_group": "include_train",
+        "file": "MVI_4668.MOV"
+      }
+    },
+    "train": {
+      "file": "captured/train.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_1352d1e470b996",
+        "signer_group": "include_train",
+        "file": "MVI_4171.MOV"
+      }
+    },
+    "tuesday": {
+      "file": "captured/tuesday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_6c23f98eb02da2",
+        "signer_group": "include_train",
+        "file": "MVI_9145.MP4"
+      }
+    },
+    "wednesday": {
+      "file": "captured/wednesday.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_e2b8a913649cf3",
+        "signer_group": "include_train",
+        "file": "MVI_5455.MOV"
+      }
+    },
+    "week": {
+      "file": "captured/week.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_45044abb5c2a4e",
+        "signer_group": "include_train",
+        "file": "MVI_9169.MP4"
+      }
+    },
+    "white": {
+      "file": "captured/white.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_06e73e82e10b84",
+        "signer_group": "include_train",
+        "file": "MVI_4044.MOV"
+      }
+    },
+    "wife": {
+      "file": "captured/wife.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_9e99fa72310323",
+        "signer_group": "include_train",
+        "file": "MVI_5266.MOV"
+      }
+    },
+    "woman": {
+      "file": "captured/woman.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_3309ae0e746430",
+        "signer_group": "include_train",
+        "file": "MVI_5094.MOV"
+      }
+    },
+    "year": {
+      "file": "captured/year.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_d2cc914ba7b0db",
+        "signer_group": "include_train",
+        "file": "MVI_5491.MOV"
+      }
+    },
+    "yellow": {
+      "file": "captured/yellow.json",
+      "type": "captured",
+      "verified": false,
+      "review": {
+        "handshape": "unchecked",
+        "orientation": "unchecked",
+        "movement": "unchecked",
+        "location": "unchecked",
+        "non_manual": "unchecked"
+      },
+      "dataset_source": {
+        "dataset": "include",
+        "sample_id": "include_8f94f8ecf8777f",
+        "signer_group": "include_test",
+        "file": "MVI_4908.MOV"
       }
     }
   }

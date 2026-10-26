@@ -1,0 +1,14 @@
+{
+  "state": "rejected",
+  "decision": "rejected: worse than active v20261025-153602 on 314 shared held-out test samples (0.763 < 0.800 - 0.02)",
+  "comparison": {
+    "previous_version": "v20261025-153602",
+    "fair_test_samples": 314,
+    "candidate_accuracy": 0.7611,
+    "candidate_macro_f1": 0.7635,
+    "previous_accuracy": 0.8153,
+    "previous_macro_f1": 0.7998,
+    "note": "development-only predictions of both versions on the held-out test samples they share"
+  },
+  "decided_at": "2026-10-25T20:04:45+00:00"
+}

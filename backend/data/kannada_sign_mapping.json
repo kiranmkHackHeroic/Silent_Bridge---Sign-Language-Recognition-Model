@@ -2753,6 +2753,638 @@
       "english": "See you again.",
       "category": "Greetings",
       "display": "ಮತ್ತೆ ಭೇಟಿಯಾಗೋಣ"
+    },
+    "ಮಗ": {
+      "sign_ids": [
+        "son"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಮಗಳು": {
+      "sign_ids": [
+        "daughter"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಸಹೋದರಿ": {
+      "sign_ids": [
+        "sister"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಶಿಶು": {
+      "sign_ids": [
+        "baby"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಮಗು": {
+      "sign_ids": [
+        "child"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಗಂಡಸು": {
+      "sign_ids": [
+        "man"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹೆಂಗಸು": {
+      "sign_ids": [
+        "woman"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕುಟುಂಬ": {
+      "sign_ids": [
+        "family"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಅಜ್ಜ": {
+      "sign_ids": [
+        "grandfather"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಅಜ್ಜಿ": {
+      "sign_ids": [
+        "grandmother"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಗಂಡ": {
+      "sign_ids": [
+        "husband"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹೆಂಡತಿ": {
+      "sign_ids": [
+        "wife"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಶಾಲೆ": {
+      "sign_ids": [
+        "school"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಆಸ್ಪತ್ರೆ": {
+      "sign_ids": [
+        "hospital"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಮಾರುಕಟ್ಟೆ": {
+      "sign_ids": [
+        "market"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ದೇವಸ್ಥಾನ": {
+      "sign_ids": [
+        "temple"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬ್ಯಾಂಕ್": {
+      "sign_ids": [
+        "bank"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕಚೇರಿ": {
+      "sign_ids": [
+        "office"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಅಂಗಡಿ": {
+      "sign_ids": [
+        "shop"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ರಸ್ತೆ": {
+      "sign_ids": [
+        "road"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ರೈಲು ನಿಲ್ದಾಣ": {
+      "sign_ids": [
+        "railway_station"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಉಪಾಹಾರ ಗೃಹ": {
+      "sign_ids": [
+        "restaurant"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ನಗರ": {
+      "sign_ids": [
+        "city"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಭಾನುವಾರ": {
+      "sign_ids": [
+        "sunday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಸೋಮವಾರ": {
+      "sign_ids": [
+        "monday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಮಂಗಳವಾರ": {
+      "sign_ids": [
+        "tuesday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬುಧವಾರ": {
+      "sign_ids": [
+        "wednesday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಗುರುವಾರ": {
+      "sign_ids": [
+        "thursday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಶುಕ್ರವಾರ": {
+      "sign_ids": [
+        "friday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಶನಿವಾರ": {
+      "sign_ids": [
+        "saturday"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ವಾರ": {
+      "sign_ids": [
+        "week"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ತಿಂಗಳು": {
+      "sign_ids": [
+        "month"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ವರ್ಷ": {
+      "sign_ids": [
+        "year"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬೆಳಿಗ್ಗೆ": {
+      "sign_ids": [
+        "morning"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಸಮಯ": {
+      "sign_ids": [
+        "time"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕೆಂಪು": {
+      "sign_ids": [
+        "red"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹಸಿರು": {
+      "sign_ids": [
+        "green"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ನೀಲಿ": {
+      "sign_ids": [
+        "blue"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹಳದಿ": {
+      "sign_ids": [
+        "yellow"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬಿಳಿ": {
+      "sign_ids": [
+        "white"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕಂದು": {
+      "sign_ids": [
+        "brown"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಗುಲಾಬಿ ಬಣ್ಣ": {
+      "sign_ids": [
+        "pink"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕಿತ್ತಳೆ ಬಣ್ಣ": {
+      "sign_ids": [
+        "orange"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬಸ್": {
+      "sign_ids": [
+        "bus"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕಾರು": {
+      "sign_ids": [
+        "car"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ರೈಲು": {
+      "sign_ids": [
+        "train"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಸೈಕಲ್": {
+      "sign_ids": [
+        "bicycle"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ವಿಮಾನ": {
+      "sign_ids": [
+        "plane"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ದೋಣಿ": {
+      "sign_ids": [
+        "boat"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಮೊಬೈಲ್ ಫೋನ್": {
+      "sign_ids": [
+        "phone"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕಂಪ್ಯೂಟರ್": {
+      "sign_ids": [
+        "computer"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ದೂರದರ್ಶನ": {
+      "sign_ids": [
+        "television"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಗಡಿಯಾರ": {
+      "sign_ids": [
+        "clock"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಫ್ಯಾನ್": {
+      "sign_ids": [
+        "fan"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಪುಸ್ತಕ": {
+      "sign_ids": [
+        "book"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಲೇಖನಿ": {
+      "sign_ids": [
+        "pen"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬೀಗದ ಕೈ": {
+      "sign_ids": [
+        "key"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಚೀಲ": {
+      "sign_ids": [
+        "bag"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಸ್ನಾನಗೃಹ": {
+      "sign_ids": [
+        "bathroom"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಅಂಗಿ": {
+      "sign_ids": [
+        "shirt"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬೂಟು": {
+      "sign_ids": [
+        "shoes"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹಣ": {
+      "sign_ids": [
+        "money"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಔಷಧಿ": {
+      "sign_ids": [
+        "medicine"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ದೇವರು": {
+      "sign_ids": [
+        "god"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಮದುವೆ": {
+      "sign_ids": [
+        "marriage"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಕ್ರೀಡೆ": {
+      "sign_ids": [
+        "sport"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ವೈದ್ಯ": {
+      "sign_ids": [
+        "doctor"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಪೊಲೀಸ್": {
+      "sign_ids": [
+        "police"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ರೋಗಿ": {
+      "sign_ids": [
+        "patient"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಖುಷಿ": {
+      "sign_ids": [
+        "happy"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಬಿಸಿ": {
+      "sign_ids": [
+        "hot"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ತಣ್ಣಗೆ": {
+      "sign_ids": [
+        "cold"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ದೊಡ್ಡ": {
+      "sign_ids": [
+        "big"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಚಿಕ್ಕ": {
+      "sign_ids": [
+        "small"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ವೇಗ": {
+      "sign_ids": [
+        "fast"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ನಿಧಾನ": {
+      "sign_ids": [
+        "slow"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹೊಸ": {
+      "sign_ids": [
+        "new"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಹಳೆಯ": {
+      "sign_ids": [
+        "old"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
+    },
+    "ಆರೋಗ್ಯಕರ": {
+      "sign_ids": [
+        "healthy"
+      ],
+      "verified": false,
+      "source": "INCLUDE sign added 2026-10-25 (AI-assisted Kannada, unverified)",
+      "notes": ""
     }
   }
 }
