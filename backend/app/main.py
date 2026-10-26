@@ -606,9 +606,11 @@ def dataset_record(req: RecordRequest):
     from .evaluation.live_eval import clean_conditions, eval_store
     store = eval_store() if req.purpose == "eval" else s.dataset
     try:
-        return {**store.save(req.label, req.frames, req.session_id, req.signer_id, req.video,
-                             extra={"purpose": req.purpose, "conditions": clean_conditions(req.conditions)}),
-                "stored_in": "evaluation set (never used for training)" if req.purpose == "eval" else "training data"}
+        res = {**store.save(req.label, req.frames, req.session_id, req.signer_id, req.video,
+                            extra={"purpose": req.purpose, "conditions": clean_conditions(req.conditions)}),
+               "stored_in": "evaluation set (never used for training)" if req.purpose == "eval" else "training data"}
+        _DATASET_SUMMARY_CACHE["data"] = None
+        return res
     except DatasetError as exc:
         raise HTTPException(400, str(exc)) from exc
 
@@ -670,9 +672,38 @@ async def evaluation_live():
     return rep
 
 
+_DATASET_SUMMARY_CACHE: dict = {"ts": 0.0, "data": None}
+
+
 @app.get("/api/dataset/summary")
 def dataset_summary():
-    return S().dataset.summary()
+    import time
+    now = time.time()
+    if _DATASET_SUMMARY_CACHE["data"] is not None and (now - _DATASET_SUMMARY_CACHE["ts"]) < 15.0:
+        return _DATASET_SUMMARY_CACHE["data"]
+
+    from .training.train_model import default_stores
+    total = 0
+    sessions = set()
+    labels: dict[str, dict] = {}
+    for source, store in default_stores():
+        s = store.summary()
+        total += s["total_samples"]
+        for sess in s.get("labels", {}).values():
+            for sid in sess.get("sessions", []):
+                sessions.add(f"{source}:{sid}" if sid else source)
+        for lbl, data in s.get("labels", {}).items():
+            if lbl not in labels:
+                labels[lbl] = {"count": 0, "sessions": [], "samples": []}
+            labels[lbl]["count"] += data["count"]
+            labels[lbl]["sessions"].extend([f"{source}:{x}" if x else source for x in data["sessions"]])
+            labels[lbl]["samples"].extend([{**e, "source": source} for e in data["samples"]])
+            labels[lbl]["samples"] = labels[lbl]["samples"][-20:]
+
+    res = {"total_samples": total, "num_sessions": len(sessions), "labels": labels}
+    _DATASET_SUMMARY_CACHE["ts"] = now
+    _DATASET_SUMMARY_CACHE["data"] = res
+    return res
 
 
 @app.get("/api/dataset/validation")
@@ -688,10 +719,13 @@ def dataset_validation():
 
 @app.get("/api/dataset/samples/{label}/{sample_id}")
 def dataset_sample(label: str, sample_id: str):
-    try:
-        return S().dataset.load(label, sample_id)
-    except DatasetError as exc:
-        raise HTTPException(404 if "not found" in str(exc) else 400, str(exc)) from exc
+    from .training.train_model import default_stores
+    for _, store in default_stores():
+        try:
+            return store.load(label, sample_id)
+        except DatasetError:
+            continue
+    raise HTTPException(404, "sample not found")
 
 
 @app.delete("/api/dataset/samples/{label}/{sample_id}")
@@ -702,6 +736,7 @@ def dataset_delete(label: str, sample_id: str):
         raise HTTPException(400, str(exc)) from exc
     if not deleted:
         raise HTTPException(404, "sample not found")
+    _DATASET_SUMMARY_CACHE["data"] = None
     return {"ok": True}
 
 
@@ -790,10 +825,11 @@ def diagnostics_dataset_samples(source: str = "amrita_slr", limit: int = 60):
         except (OSError, json.JSONDecodeError):
             continue
         src = Path(d.get("source_file", ""))
-        if not src.exists():
-            continue
+        has_video = src.exists() and bool(d.get("source_file"))
+        file_name = src.name if has_video else f"{d['label']} ({d['sample_id'][:8]})"
         out.append({"source": source, "sample_id": d["sample_id"], "label": d["label"], "group": d.get("session_id"),
-                    "file": src.name, "frames": d.get("num_frames"), "fps": (d.get("video") or {}).get("fps"),
+                    "file": file_name, "frames": d.get("num_frames"), "fps": (d.get("video") or {}).get("fps") or 30,
+                    "has_video": has_video,
                     "used_to_train_active_model": (d["sample_id"] in trained) if trained else None})
     return {"samples": out}
 

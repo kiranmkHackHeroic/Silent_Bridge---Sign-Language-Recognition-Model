@@ -161,7 +161,7 @@ export const api = {
   diagnosticsSnapshot: (body: { frames: LandmarkFrame[]; events: object[]; note: string }) =>
     request<{ file: string; summary: Record<string, unknown>; event_stages: Record<string, number> }>("/api/diagnostics/snapshot", { method: "POST", body: JSON.stringify(body) }),
   diagnosticsSamples: (source: string, limit = 40) =>
-    request<{ samples: { source: string; sample_id: string; label: string; group: string | null; file: string; frames: number; fps: number | null; used_to_train_active_model: boolean | null }[] }>(`/api/diagnostics/dataset-samples?source=${encodeURIComponent(source)}&limit=${limit}`),
+    request<{ samples: { source: string; sample_id: string; label: string; group: string | null; file: string; frames: number; fps: number | null; has_video?: boolean; used_to_train_active_model: boolean | null }[] }>(`/api/diagnostics/dataset-samples?source=${encodeURIComponent(source)}&limit=${limit}`),
   diagnosticsCompare: (body: { source: string; sample_id: string; frames: LandmarkFrame[] }) =>
     request<CompareResult>("/api/diagnostics/compare", { method: "POST", body: JSON.stringify(body) }),
   recordSequence: (body: { glosses: string[]; session_id: string; signer_id: string; conditions: Record<string, string>; frames: LandmarkFrame[] }) =>
