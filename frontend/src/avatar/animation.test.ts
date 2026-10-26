@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AnimationClip } from "../services/types";
-import { BLEND_IN, BLEND_OUT, HOLD, NEUTRAL, buildTimeline, lerpPose, poseAt, sampleClip } from "./animation";
+import { BLEND_IN, BLEND_OUT, HOLD, NEUTRAL, TRANSITION, buildTimeline, lerpPose, poseAt, sampleClip } from "./animation";
 
 const pose = (x: number) => ({
   pos: [x, 1.2, 0.3] as [number, number, number],
@@ -43,13 +43,17 @@ describe("animation sampling", () => {
 });
 
 describe("sequence timeline", () => {
-  it("plays clips in order and returns to neutral", () => {
+  it("plays clips in order as continuous signing and returns to neutral once at the end", () => {
     const tl = buildTimeline([clip, { ...clip, sign_id: "second" }]);
-    const per = BLEND_IN + 1 + HOLD;
-    expect(tl.duration).toBeCloseTo(2 * per + BLEND_OUT);
+    const secondStart = BLEND_IN + 1 + TRANSITION;
+    expect(tl.duration).toBeCloseTo(secondStart + 1 + HOLD + BLEND_OUT);
     expect(poseAt(tl, BLEND_IN + 0.5).index).toBe(0);
-    expect(poseAt(tl, per + BLEND_IN + 0.5).index).toBe(1);
-    expect(poseAt(tl, 2 * per + 0.1).index).toBe(-1);
+    expect(poseAt(tl, secondStart + 0.5).index).toBe(1);
+    expect(poseAt(tl, secondStart + 1 + HOLD + 0.1).index).toBe(-1);
+    // between the two signs the hands go straight from the end of sign 1 to the start of sign 2, never to rest
+    const mid = poseAt(tl, BLEND_IN + 1 + TRANSITION / 2).pose;
+    expect(mid.right.pos).not.toEqual(NEUTRAL.right.pos);
+    expect(tl.segments.filter((s) => s.kind === "blend" && s.to === NEUTRAL)).toHaveLength(1);
     const end = poseAt(tl, tl.duration + 1);
     expect(end.done).toBe(true);
     expect(end.pose).toEqual(NEUTRAL);

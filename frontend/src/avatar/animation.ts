@@ -86,26 +86,30 @@ export interface Timeline {
 }
 
 export const BLEND_IN = 0.35;
+/** Sign-to-sign transition inside a sentence: the hands move directly to the next sign (continuous signing). */
+export const TRANSITION = 0.2;
 export const HOLD = 0.2;
 export const BLEND_OUT = 0.5;
 
-/** Builds blend -> clip -> hold for each sign, then a final blend back to neutral. */
+/** Continuous signing: blend in, then each sign flows into the next with a short transition (no return to rest
+ * between signs), then one final hold and blend back to neutral. */
 export function buildTimeline(clips: AnimationClip[], startPose: PosePair = NEUTRAL): Timeline {
   const segments: TimelineSegment[] = [];
   let t = 0;
   let prev = startPose;
   clips.forEach((clip, index) => {
     const first = sampleClip(clip, 0);
-    segments.push({ kind: "blend", index, start: t, duration: BLEND_IN, from: prev, to: first });
-    t += BLEND_IN;
+    const blend = index === 0 ? BLEND_IN : TRANSITION;
+    segments.push({ kind: "blend", index, start: t, duration: blend, from: prev, to: first });
+    t += blend;
     const dur = Math.max(0.05, clip.duration);
     segments.push({ kind: "clip", index, start: t, duration: dur, clip });
     t += dur;
     prev = sampleClip(clip, dur);
-    segments.push({ kind: "hold", index, start: t, duration: HOLD, from: prev, to: prev });
-    t += HOLD;
   });
   if (clips.length) {
+    segments.push({ kind: "hold", index: clips.length - 1, start: t, duration: HOLD, from: prev, to: prev });
+    t += HOLD;
     segments.push({ kind: "blend", index: -1, start: t, duration: BLEND_OUT, from: prev, to: NEUTRAL });
     t += BLEND_OUT;
   }

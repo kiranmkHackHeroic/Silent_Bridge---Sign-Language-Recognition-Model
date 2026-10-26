@@ -1,0 +1,1034 @@
+{
+ "summary": {
+  "clips": 146,
+  "clips_with_dropouts": 0,
+  "dropouts_total": 0,
+  "mean_jitter_cm": 2.822,
+  "mean_idle_share": 0.162,
+  "mean_duration_s": 2.22
+ },
+ "clips": {
+  "afternoon": {
+   "frames": 16,
+   "duration": 1.467,
+   "dropouts": 0,
+   "jitter_cm": 3.654,
+   "idle_share": 0.0
+  },
+  "alright": {
+   "frames": 38,
+   "duration": 2.92,
+   "dropouts": 0,
+   "jitter_cm": 1.664,
+   "idle_share": 0.27
+  },
+  "angry": {
+   "frames": 13,
+   "duration": 1.167,
+   "dropouts": 0,
+   "jitter_cm": 3.081,
+   "idle_share": 0.0
+  },
+  "baby": {
+   "frames": 33,
+   "duration": 2.56,
+   "dropouts": 0,
+   "jitter_cm": 2.984,
+   "idle_share": 0.033
+  },
+  "bad": {
+   "frames": 12,
+   "duration": 1.034,
+   "dropouts": 0,
+   "jitter_cm": 5.071,
+   "idle_share": 0.0
+  },
+  "bag": {
+   "frames": 26,
+   "duration": 1.96,
+   "dropouts": 0,
+   "jitter_cm": 4.633,
+   "idle_share": 0.071
+  },
+  "bank": {
+   "frames": 27,
+   "duration": 2.08,
+   "dropouts": 0,
+   "jitter_cm": 1.049,
+   "idle_share": 0.275
+  },
+  "bathroom": {
+   "frames": 26,
+   "duration": 2.0,
+   "dropouts": 0,
+   "jitter_cm": 1.259,
+   "idle_share": 0.265
+  },
+  "bicycle": {
+   "frames": 33,
+   "duration": 2.52,
+   "dropouts": 0,
+   "jitter_cm": 4.197,
+   "idle_share": 0.048
+  },
+  "big": {
+   "frames": 34,
+   "duration": 2.6,
+   "dropouts": 0,
+   "jitter_cm": 3.014,
+   "idle_share": 0.045
+  },
+  "bird": {
+   "frames": 24,
+   "duration": 2.267,
+   "dropouts": 0,
+   "jitter_cm": 12.909,
+   "idle_share": 0.0
+  },
+  "black": {
+   "frames": 30,
+   "duration": 2.167,
+   "dropouts": 0,
+   "jitter_cm": 2.023,
+   "idle_share": 0.397
+  },
+  "blue": {
+   "frames": 38,
+   "duration": 2.92,
+   "dropouts": 0,
+   "jitter_cm": 0.978,
+   "idle_share": 0.562
+  },
+  "boat": {
+   "frames": 45,
+   "duration": 3.48,
+   "dropouts": 0,
+   "jitter_cm": 3.62,
+   "idle_share": 0.067
+  },
+  "book": {
+   "frames": 33,
+   "duration": 2.56,
+   "dropouts": 0,
+   "jitter_cm": 2.761,
+   "idle_share": 0.032
+  },
+  "boy": {
+   "frames": 18,
+   "duration": 1.667,
+   "dropouts": 0,
+   "jitter_cm": 2.454,
+   "idle_share": 0.0
+  },
+  "brother": {
+   "frames": 45,
+   "duration": 2.94,
+   "dropouts": 0,
+   "jitter_cm": 0.994,
+   "idle_share": 0.0
+  },
+  "brown": {
+   "frames": 27,
+   "duration": 2.04,
+   "dropouts": 0,
+   "jitter_cm": 2.812,
+   "idle_share": 0.067
+  },
+  "bus": {
+   "frames": 37,
+   "duration": 2.84,
+   "dropouts": 0,
+   "jitter_cm": 3.477,
+   "idle_share": 0.016
+  },
+  "car": {
+   "frames": 54,
+   "duration": 4.24,
+   "dropouts": 0,
+   "jitter_cm": 2.668,
+   "idle_share": 0.047
+  },
+  "cat": {
+   "frames": 33,
+   "duration": 2.401,
+   "dropouts": 0,
+   "jitter_cm": 4.234,
+   "idle_share": 0.016
+  },
+  "child": {
+   "frames": 27,
+   "duration": 2.08,
+   "dropouts": 0,
+   "jitter_cm": 1.555,
+   "idle_share": 0.192
+  },
+  "city": {
+   "frames": 33,
+   "duration": 2.56,
+   "dropouts": 0,
+   "jitter_cm": 4.137,
+   "idle_share": 0.129
+  },
+  "clock": {
+   "frames": 38,
+   "duration": 2.96,
+   "dropouts": 0,
+   "jitter_cm": 1.987,
+   "idle_share": 0.09
+  },
+  "cold": {
+   "frames": 25,
+   "duration": 1.88,
+   "dropouts": 0,
+   "jitter_cm": 3.691,
+   "idle_share": 0.104
+  },
+  "computer": {
+   "frames": 34,
+   "duration": 2.64,
+   "dropouts": 0,
+   "jitter_cm": 5.263,
+   "idle_share": 0.0
+  },
+  "cow": {
+   "frames": 29,
+   "duration": 2.733,
+   "dropouts": 0,
+   "jitter_cm": 7.422,
+   "idle_share": 0.022
+  },
+  "daughter": {
+   "frames": 22,
+   "duration": 1.68,
+   "dropouts": 0,
+   "jitter_cm": 1.745,
+   "idle_share": 0.033
+  },
+  "doctor": {
+   "frames": 27,
+   "duration": 2.08,
+   "dropouts": 0,
+   "jitter_cm": 2.732,
+   "idle_share": 0.143
+  },
+  "dog": {
+   "frames": 35,
+   "duration": 3.367,
+   "dropouts": 0,
+   "jitter_cm": 5.494,
+   "idle_share": 0.063
+  },
+  "drink": {
+   "frames": 17,
+   "duration": 1.596,
+   "dropouts": 0,
+   "jitter_cm": 3.707,
+   "idle_share": 0.0
+  },
+  "eat": {
+   "frames": 23,
+   "duration": 2.196,
+   "dropouts": 0,
+   "jitter_cm": 1.623,
+   "idle_share": 0.0
+  },
+  "evening": {
+   "frames": 22,
+   "duration": 1.403,
+   "dropouts": 0,
+   "jitter_cm": 2.364,
+   "idle_share": 0.0
+  },
+  "family": {
+   "frames": 27,
+   "duration": 2.08,
+   "dropouts": 0,
+   "jitter_cm": 3.045,
+   "idle_share": 0.0
+  },
+  "fan": {
+   "frames": 26,
+   "duration": 2.0,
+   "dropouts": 0,
+   "jitter_cm": 2.089,
+   "idle_share": 0.36
+  },
+  "fast": {
+   "frames": 26,
+   "duration": 1.96,
+   "dropouts": 0,
+   "jitter_cm": 1.428,
+   "idle_share": 0.18
+  },
+  "father": {
+   "frames": 32,
+   "duration": 2.072,
+   "dropouts": 0,
+   "jitter_cm": 1.625,
+   "idle_share": 0.065
+  },
+  "fish": {
+   "frames": 40,
+   "duration": 3.866,
+   "dropouts": 0,
+   "jitter_cm": 4.025,
+   "idle_share": 0.068
+  },
+  "friday": {
+   "frames": 22,
+   "duration": 1.68,
+   "dropouts": 0,
+   "jitter_cm": 0.641,
+   "idle_share": 0.286
+  },
+  "friend": {
+   "frames": 15,
+   "duration": 1.367,
+   "dropouts": 0,
+   "jitter_cm": 6.98,
+   "idle_share": 0.059
+  },
+  "girl": {
+   "frames": 19,
+   "duration": 1.752,
+   "dropouts": 0,
+   "jitter_cm": 3.009,
+   "idle_share": 0.0
+  },
+  "god": {
+   "frames": 25,
+   "duration": 1.88,
+   "dropouts": 0,
+   "jitter_cm": 2.094,
+   "idle_share": 0.333
+  },
+  "good": {
+   "frames": 12,
+   "duration": 1.1,
+   "dropouts": 0,
+   "jitter_cm": 4.122,
+   "idle_share": 0.0
+  },
+  "good_afternoon": {
+   "frames": 44,
+   "duration": 3.4,
+   "dropouts": 0,
+   "jitter_cm": 1.476,
+   "idle_share": 0.271
+  },
+  "good_evening": {
+   "frames": 34,
+   "duration": 2.64,
+   "dropouts": 0,
+   "jitter_cm": 1.343,
+   "idle_share": 0.364
+  },
+  "good_morning": {
+   "frames": 25,
+   "duration": 2.367,
+   "dropouts": 0,
+   "jitter_cm": 2.792,
+   "idle_share": 0.292
+  },
+  "good_night": {
+   "frames": 30,
+   "duration": 2.32,
+   "dropouts": 0,
+   "jitter_cm": 1.953,
+   "idle_share": 0.368
+  },
+  "grandfather": {
+   "frames": 39,
+   "duration": 3.04,
+   "dropouts": 0,
+   "jitter_cm": 2.055,
+   "idle_share": 0.053
+  },
+  "grandmother": {
+   "frames": 34,
+   "duration": 2.64,
+   "dropouts": 0,
+   "jitter_cm": 1.392,
+   "idle_share": 0.356
+  },
+  "green": {
+   "frames": 31,
+   "duration": 2.4,
+   "dropouts": 0,
+   "jitter_cm": 1.224,
+   "idle_share": 0.5
+  },
+  "grey": {
+   "frames": 23,
+   "duration": 2.1,
+   "dropouts": 0,
+   "jitter_cm": 1.929,
+   "idle_share": 0.233
+  },
+  "hand": {
+   "frames": 12,
+   "duration": 1.067,
+   "dropouts": 0,
+   "jitter_cm": 5.21,
+   "idle_share": 0.0
+  },
+  "happy": {
+   "frames": 38,
+   "duration": 2.96,
+   "dropouts": 0,
+   "jitter_cm": 4.22,
+   "idle_share": 0.027
+  },
+  "he": {
+   "frames": 25,
+   "duration": 1.88,
+   "dropouts": 0,
+   "jitter_cm": 1.34,
+   "idle_share": 0.396
+  },
+  "healthy": {
+   "frames": 32,
+   "duration": 2.44,
+   "dropouts": 0,
+   "jitter_cm": 5.023,
+   "idle_share": 0.274
+  },
+  "help": {
+   "frames": 20,
+   "duration": 1.867,
+   "dropouts": 0,
+   "jitter_cm": 4.839,
+   "idle_share": 0.0
+  },
+  "home": {
+   "frames": 17,
+   "duration": 1.24,
+   "dropouts": 0,
+   "jitter_cm": 1.491,
+   "idle_share": 0.367
+  },
+  "hospital": {
+   "frames": 35,
+   "duration": 2.72,
+   "dropouts": 0,
+   "jitter_cm": 3.798,
+   "idle_share": 0.097
+  },
+  "hot": {
+   "frames": 32,
+   "duration": 2.48,
+   "dropouts": 0,
+   "jitter_cm": 3.931,
+   "idle_share": 0.0
+  },
+  "how_are_you": {
+   "frames": 41,
+   "duration": 3.16,
+   "dropouts": 0,
+   "jitter_cm": 3.676,
+   "idle_share": 0.188
+  },
+  "husband": {
+   "frames": 24,
+   "duration": 1.84,
+   "dropouts": 0,
+   "jitter_cm": 2.564,
+   "idle_share": 0.043
+  },
+  "i_me": {
+   "frames": 22,
+   "duration": 1.68,
+   "dropouts": 0,
+   "jitter_cm": 1.108,
+   "idle_share": 0.528
+  },
+  "it": {
+   "frames": 32,
+   "duration": 2.48,
+   "dropouts": 0,
+   "jitter_cm": 0.819,
+   "idle_share": 0.571
+  },
+  "key": {
+   "frames": 27,
+   "duration": 2.04,
+   "dropouts": 0,
+   "jitter_cm": 1.854,
+   "idle_share": 0.327
+  },
+  "man": {
+   "frames": 34,
+   "duration": 2.64,
+   "dropouts": 0,
+   "jitter_cm": 1.225,
+   "idle_share": 0.338
+  },
+  "market": {
+   "frames": 40,
+   "duration": 3.12,
+   "dropouts": 0,
+   "jitter_cm": 1.477,
+   "idle_share": 0.27
+  },
+  "marriage": {
+   "frames": 28,
+   "duration": 2.12,
+   "dropouts": 0,
+   "jitter_cm": 3.334,
+   "idle_share": 0.095
+  },
+  "medicine": {
+   "frames": 35,
+   "duration": 2.68,
+   "dropouts": 0,
+   "jitter_cm": 4.393,
+   "idle_share": 0.086
+  },
+  "monday": {
+   "frames": 27,
+   "duration": 2.04,
+   "dropouts": 0,
+   "jitter_cm": 2.704,
+   "idle_share": 0.077
+  },
+  "money": {
+   "frames": 23,
+   "duration": 1.72,
+   "dropouts": 0,
+   "jitter_cm": 1.615,
+   "idle_share": 0.341
+  },
+  "monsoon": {
+   "frames": 27,
+   "duration": 2.468,
+   "dropouts": 0,
+   "jitter_cm": 9.39,
+   "idle_share": 0.038
+  },
+  "month": {
+   "frames": 26,
+   "duration": 2.0,
+   "dropouts": 0,
+   "jitter_cm": 3.467,
+   "idle_share": 0.02
+  },
+  "morning": {
+   "frames": 30,
+   "duration": 2.28,
+   "dropouts": 0,
+   "jitter_cm": 1.213,
+   "idle_share": 0.5
+  },
+  "mother": {
+   "frames": 22,
+   "duration": 2.067,
+   "dropouts": 0,
+   "jitter_cm": 2.135,
+   "idle_share": 0.095
+  },
+  "music": {
+   "frames": 53,
+   "duration": 5.2,
+   "dropouts": 0,
+   "jitter_cm": 5.82,
+   "idle_share": 0.042
+  },
+  "myname": {
+   "frames": 26,
+   "duration": 3.256,
+   "dropouts": 0,
+   "jitter_cm": 3.488,
+   "idle_share": 0.12
+  },
+  "namaskara": {
+   "frames": 53,
+   "duration": 3.466,
+   "dropouts": 0,
+   "jitter_cm": 1.103,
+   "idle_share": 0.456
+  },
+  "name": {
+   "frames": 16,
+   "duration": 1.467,
+   "dropouts": 0,
+   "jitter_cm": 5.004,
+   "idle_share": 0.0
+  },
+  "new": {
+   "frames": 25,
+   "duration": 1.92,
+   "dropouts": 0,
+   "jitter_cm": 1.965,
+   "idle_share": 0.238
+  },
+  "night": {
+   "frames": 18,
+   "duration": 1.687,
+   "dropouts": 0,
+   "jitter_cm": 6.257,
+   "idle_share": 0.0
+  },
+  "nose": {
+   "frames": 11,
+   "duration": 0.975,
+   "dropouts": 0,
+   "jitter_cm": 2.539,
+   "idle_share": 0.2
+  },
+  "office": {
+   "frames": 33,
+   "duration": 2.52,
+   "dropouts": 0,
+   "jitter_cm": 1.769,
+   "idle_share": 0.219
+  },
+  "old": {
+   "frames": 37,
+   "duration": 2.84,
+   "dropouts": 0,
+   "jitter_cm": 1.422,
+   "idle_share": 0.31
+  },
+  "orange": {
+   "frames": 28,
+   "duration": 2.12,
+   "dropouts": 0,
+   "jitter_cm": 1.56,
+   "idle_share": 0.352
+  },
+  "patient": {
+   "frames": 27,
+   "duration": 2.08,
+   "dropouts": 0,
+   "jitter_cm": 0.487,
+   "idle_share": 0.115
+  },
+  "pen": {
+   "frames": 25,
+   "duration": 1.88,
+   "dropouts": 0,
+   "jitter_cm": 1.344,
+   "idle_share": 0.417
+  },
+  "phone": {
+   "frames": 31,
+   "duration": 2.36,
+   "dropouts": 0,
+   "jitter_cm": 1.323,
+   "idle_share": 0.517
+  },
+  "pink": {
+   "frames": 34,
+   "duration": 2.6,
+   "dropouts": 0,
+   "jitter_cm": 1.137,
+   "idle_share": 0.379
+  },
+  "plane": {
+   "frames": 35,
+   "duration": 2.68,
+   "dropouts": 0,
+   "jitter_cm": 1.033,
+   "idle_share": 0.294
+  },
+  "pleased": {
+   "frames": 43,
+   "duration": 3.32,
+   "dropouts": 0,
+   "jitter_cm": 0.674,
+   "idle_share": 0.481
+  },
+  "police": {
+   "frames": 26,
+   "duration": 2.0,
+   "dropouts": 0,
+   "jitter_cm": 2.849,
+   "idle_share": 0.0
+  },
+  "power": {
+   "frames": 33,
+   "duration": 2.136,
+   "dropouts": 0,
+   "jitter_cm": 2.911,
+   "idle_share": 0.0
+  },
+  "railway_station": {
+   "frames": 30,
+   "duration": 2.32,
+   "dropouts": 0,
+   "jitter_cm": 4.281,
+   "idle_share": 0.019
+  },
+  "red": {
+   "frames": 19,
+   "duration": 1.4,
+   "dropouts": 0,
+   "jitter_cm": 1.305,
+   "idle_share": 0.394
+  },
+  "restaurant": {
+   "frames": 30,
+   "duration": 2.32,
+   "dropouts": 0,
+   "jitter_cm": 0.426,
+   "idle_share": 0.538
+  },
+  "ring": {
+   "frames": 24,
+   "duration": 1.8,
+   "dropouts": 0,
+   "jitter_cm": 1.483,
+   "idle_share": 0.14
+  },
+  "road": {
+   "frames": 30,
+   "duration": 2.32,
+   "dropouts": 0,
+   "jitter_cm": 2.405,
+   "idle_share": 0.02
+  },
+  "saturday": {
+   "frames": 28,
+   "duration": 2.16,
+   "dropouts": 0,
+   "jitter_cm": 1.508,
+   "idle_share": 0.302
+  },
+  "school": {
+   "frames": 26,
+   "duration": 1.96,
+   "dropouts": 0,
+   "jitter_cm": 3.37,
+   "idle_share": 0.08
+  },
+  "she": {
+   "frames": 37,
+   "duration": 2.88,
+   "dropouts": 0,
+   "jitter_cm": 1.202,
+   "idle_share": 0.403
+  },
+  "shirt": {
+   "frames": 56,
+   "duration": 4.4,
+   "dropouts": 0,
+   "jitter_cm": 2.565,
+   "idle_share": 0.136
+  },
+  "shoes": {
+   "frames": 36,
+   "duration": 2.8,
+   "dropouts": 0,
+   "jitter_cm": 4.048,
+   "idle_share": 0.047
+  },
+  "shop": {
+   "frames": 37,
+   "duration": 2.84,
+   "dropouts": 0,
+   "jitter_cm": 2.009,
+   "idle_share": 0.25
+  },
+  "sick": {
+   "frames": 33,
+   "duration": 2.52,
+   "dropouts": 0,
+   "jitter_cm": 3.028,
+   "idle_share": 0.178
+  },
+  "sister": {
+   "frames": 30,
+   "duration": 2.28,
+   "dropouts": 0,
+   "jitter_cm": 0.373,
+   "idle_share": 0.676
+  },
+  "sit": {
+   "frames": 16,
+   "duration": 1.001,
+   "dropouts": 0,
+   "jitter_cm": 4.396,
+   "idle_share": 0.034
+  },
+  "sleep": {
+   "frames": 14,
+   "duration": 1.257,
+   "dropouts": 0,
+   "jitter_cm": 2.042,
+   "idle_share": 0.08
+  },
+  "slow": {
+   "frames": 30,
+   "duration": 2.32,
+   "dropouts": 0,
+   "jitter_cm": 1.855,
+   "idle_share": 0.027
+  },
+  "small": {
+   "frames": 20,
+   "duration": 1.52,
+   "dropouts": 0,
+   "jitter_cm": 2.128,
+   "idle_share": 0.342
+  },
+  "son": {
+   "frames": 33,
+   "duration": 2.52,
+   "dropouts": 0,
+   "jitter_cm": 2.287,
+   "idle_share": 0.098
+  },
+  "sorry": {
+   "frames": 21,
+   "duration": 1.934,
+   "dropouts": 0,
+   "jitter_cm": 2.472,
+   "idle_share": 0.0
+  },
+  "sport": {
+   "frames": 29,
+   "duration": 2.2,
+   "dropouts": 0,
+   "jitter_cm": 5.337,
+   "idle_share": 0.0
+  },
+  "stand": {
+   "frames": 19,
+   "duration": 1.734,
+   "dropouts": 0,
+   "jitter_cm": 6.115,
+   "idle_share": 0.0
+  },
+  "stop": {
+   "frames": 15,
+   "duration": 1.367,
+   "dropouts": 0,
+   "jitter_cm": 5.037,
+   "idle_share": 0.0
+  },
+  "student": {
+   "frames": 28,
+   "duration": 2.3,
+   "dropouts": 0,
+   "jitter_cm": 3.161,
+   "idle_share": 0.0
+  },
+  "study": {
+   "frames": 22,
+   "duration": 1.799,
+   "dropouts": 0,
+   "jitter_cm": 1.9,
+   "idle_share": 0.071
+  },
+  "sunday": {
+   "frames": 40,
+   "duration": 3.08,
+   "dropouts": 0,
+   "jitter_cm": 0.326,
+   "idle_share": 0.648
+  },
+  "teacher": {
+   "frames": 22,
+   "duration": 1.766,
+   "dropouts": 0,
+   "jitter_cm": 1.798,
+   "idle_share": 0.095
+  },
+  "teeth": {
+   "frames": 30,
+   "duration": 1.94,
+   "dropouts": 0,
+   "jitter_cm": 1.541,
+   "idle_share": 0.0
+  },
+  "television": {
+   "frames": 26,
+   "duration": 1.96,
+   "dropouts": 0,
+   "jitter_cm": 3.725,
+   "idle_share": 0.04
+  },
+  "temple": {
+   "frames": 40,
+   "duration": 3.08,
+   "dropouts": 0,
+   "jitter_cm": 4.049,
+   "idle_share": 0.087
+  },
+  "thank_you": {
+   "frames": 17,
+   "duration": 1.567,
+   "dropouts": 0,
+   "jitter_cm": 3.405,
+   "idle_share": 0.065
+  },
+  "they": {
+   "frames": 26,
+   "duration": 1.96,
+   "dropouts": 0,
+   "jitter_cm": 1.874,
+   "idle_share": 0.152
+  },
+  "thursday": {
+   "frames": 5,
+   "duration": 0.32,
+   "dropouts": 0,
+   "jitter_cm": 0.295,
+   "idle_share": 0.0
+  },
+  "time": {
+   "frames": 30,
+   "duration": 2.28,
+   "dropouts": 0,
+   "jitter_cm": 2.253,
+   "idle_share": 0.102
+  },
+  "today": {
+   "frames": 15,
+   "duration": 1.266,
+   "dropouts": 0,
+   "jitter_cm": 5.388,
+   "idle_share": 0.0
+  },
+  "tomorrow": {
+   "frames": 23,
+   "duration": 1.467,
+   "dropouts": 0,
+   "jitter_cm": 1.655,
+   "idle_share": 0.0
+  },
+  "train": {
+   "frames": 30,
+   "duration": 2.28,
+   "dropouts": 0,
+   "jitter_cm": 1.892,
+   "idle_share": 0.351
+  },
+  "tuesday": {
+   "frames": 32,
+   "duration": 2.44,
+   "dropouts": 0,
+   "jitter_cm": 1.997,
+   "idle_share": 0.107
+  },
+  "umbrella": {
+   "frames": 15,
+   "duration": 1.299,
+   "dropouts": 0,
+   "jitter_cm": 4.34,
+   "idle_share": 0.0
+  },
+  "we": {
+   "frames": 24,
+   "duration": 1.986,
+   "dropouts": 0,
+   "jitter_cm": 3.313,
+   "idle_share": 0.043
+  },
+  "wednesday": {
+   "frames": 27,
+   "duration": 2.04,
+   "dropouts": 0,
+   "jitter_cm": 3.766,
+   "idle_share": 0.077
+  },
+  "week": {
+   "frames": 30,
+   "duration": 2.28,
+   "dropouts": 0,
+   "jitter_cm": 2.044,
+   "idle_share": 0.044
+  },
+  "welcome": {
+   "frames": 22,
+   "duration": 2.0,
+   "dropouts": 0,
+   "jitter_cm": 2.763,
+   "idle_share": 0.0
+  },
+  "white": {
+   "frames": 28,
+   "duration": 2.12,
+   "dropouts": 0,
+   "jitter_cm": 1.292,
+   "idle_share": 0.509
+  },
+  "wife": {
+   "frames": 27,
+   "duration": 2.04,
+   "dropouts": 0,
+   "jitter_cm": 5.568,
+   "idle_share": 0.068
+  },
+  "woman": {
+   "frames": 31,
+   "duration": 2.36,
+   "dropouts": 0,
+   "jitter_cm": 0.83,
+   "idle_share": 0.5
+  },
+  "work": {
+   "frames": 22,
+   "duration": 1.667,
+   "dropouts": 0,
+   "jitter_cm": 2.588,
+   "idle_share": 0.0
+  },
+  "write": {
+   "frames": 10,
+   "duration": 0.867,
+   "dropouts": 0,
+   "jitter_cm": 4.455,
+   "idle_share": 0.0
+  },
+  "year": {
+   "frames": 24,
+   "duration": 1.8,
+   "dropouts": 0,
+   "jitter_cm": 4.069,
+   "idle_share": 0.065
+  },
+  "yellow": {
+   "frames": 26,
+   "duration": 1.96,
+   "dropouts": 0,
+   "jitter_cm": 1.799,
+   "idle_share": 0.28
+  },
+  "yesterday": {
+   "frames": 23,
+   "duration": 1.9,
+   "dropouts": 0,
+   "jitter_cm": 3.8,
+   "idle_share": 0.136
+  },
+  "you": {
+   "frames": 32,
+   "duration": 2.44,
+   "dropouts": 0,
+   "jitter_cm": 0.97,
+   "idle_share": 0.532
+  },
+  "you_are_perfect": {
+   "frames": 30,
+   "duration": 2.844,
+   "dropouts": 0,
+   "jitter_cm": 4.503,
+   "idle_share": 0.035
+  },
+  "you_plural": {
+   "frames": 35,
+   "duration": 2.68,
+   "dropouts": 0,
+   "jitter_cm": 1.538,
+   "idle_share": 0.176
+  },
+  "your": {
+   "frames": 24,
+   "duration": 2.021,
+   "dropouts": 0,
+   "jitter_cm": 1.418,
+   "idle_share": 0.13
+  }
+ }
+}

@@ -7,7 +7,7 @@ description cites the dataset and recording. Clips stay verified=false: the
 retargeting is approximate (depth from apparent hand size, no elbow tracking) and
 must be reviewed against the original video before being called correct ISL.
 
-Usage (from backend/):  python tools/capture_dataset_clips.py [--overwrite-captured] [--only-missing]
+Usage (from backend/):  python tools/capture_dataset_clips.py [--overwrite-captured] [--only-missing] [--rebuild-existing]
 """
 import argparse
 import json
@@ -32,14 +32,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--overwrite-captured", action="store_true", help="replace clips captured from your own recordings")
     ap.add_argument("--only-missing", action="store_true", help="only signs that have no captured clip yet")
+    ap.add_argument("--rebuild-existing", action="store_true",
+                    help="re-retarget existing dataset clips from the SAME source recording (e.g. after a retargeting fix)")
     a = ap.parse_args()
     lib = AnimationLibrary()
+    files = {f.stem: f for f in PROCESSED_LANDMARKS_DIR.glob("*/*/*.json")}
     best: dict[str, tuple[float, Path]] = {}
-    for f in PROCESSED_LANDMARKS_DIR.glob("*/*/*.json"):
-        d = json.loads(f.read_text(encoding="utf-8"))
-        sc = score(d)
-        if d["label"] not in best or sc > best[d["label"]][0]:
-            best[d["label"]] = (sc, f)
+    if a.rebuild_existing:
+        for label, entry in lib.mapping.items():
+            src = entry.get("dataset_source") or {}
+            if entry.get("type") == "captured" and src.get("sample_id") in files:
+                best[label] = (0.0, files[src["sample_id"]])
+    else:
+        for f in files.values():
+            d = json.loads(f.read_text(encoding="utf-8"))
+            sc = score(d)
+            if d["label"] not in best or sc > best[d["label"]][0]:
+                best[d["label"]] = (sc, f)
     made, skipped = 0, []
     for label, (_, f) in sorted(best.items()):
         current = lib.mapping.get(label, {})

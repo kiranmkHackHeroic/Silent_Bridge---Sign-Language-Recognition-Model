@@ -106,6 +106,87 @@ def side_for_labels(frames: list[dict]) -> dict[str, str]:
     return dict(SIGNER_SIDE_FOR_LABEL)
 
 
+MAX_GAP_S = 0.4          # tracking dropouts up to this long are interpolated, not shown as the arm dropping to rest
+MIN_PRESENCE = 0.15      # a hand seen in fewer frames than this share is detector noise, not a signing hand
+SMOOTH_SIGMA = 1.5       # Gaussian smoothing over time (in frames) of the tracked poses
+IDLE_SPEED = 0.004       # wrist speed (m per frame) below which a hand counts as still
+TRIM_MARGIN_S = 0.12     # motion kept before the first / after the last moving frame
+
+
+def _blend_pose(a: dict, b: dict, w: float) -> dict:
+    d = _unit((1 - w) * np.array(a["dir"]) + w * np.array(b["dir"]))
+    n = (1 - w) * np.array(a["normal"]) + w * np.array(b["normal"])
+    n = _unit(n - np.dot(n, d) * d)
+    return {"pos": [round(float((1 - w) * x + w * y), 4) for x, y in zip(a["pos"], b["pos"])],
+            "dir": [round(float(v), 4) for v in d], "normal": [round(float(v), 4) for v in n],
+            "curl": [[round(float((1 - w) * x + w * y), 3) for x, y in zip(fa, fb)] for fa, fb in zip(a["curl"], b["curl"])]}
+
+
+def clean_track(times: list[float], poses: list[dict | None]) -> list[dict | None]:
+    """One hand's per-frame poses -> gaps filled, noise-only tracks removed, temporally smoothed."""
+    n = len(poses)
+    present = [p is not None for p in poses]
+    if sum(present) < max(2, MIN_PRESENCE * n):
+        return [None] * n
+    out = list(poses)
+    i = 0
+    while i < n:                                  # interpolate short dropouts between two tracked frames
+        if out[i] is None and i > 0 and out[i - 1] is not None:
+            j = i
+            while j < n and out[j] is None:
+                j += 1
+            if j < n and times[j] - times[i - 1] <= MAX_GAP_S:
+                for k in range(i, j):
+                    out[k] = _blend_pose(out[i - 1], out[j], (times[k] - times[i - 1]) / max(1e-6, times[j] - times[i - 1]))
+            i = j
+        else:
+            i += 1
+    radius = int(3 * SMOOTH_SIGMA)
+    weights = np.exp(-0.5 * (np.arange(-radius, radius + 1) / SMOOTH_SIGMA) ** 2)
+    smoothed: list[dict | None] = []
+    for i, p in enumerate(out):                   # smooth within continuous runs only
+        if p is None:
+            smoothed.append(None)
+            continue
+        acc = {"pos": np.zeros(3), "dir": np.zeros(3), "normal": np.zeros(3), "curl": np.zeros((5, 3))}
+        total = 0.0
+        for off, wgt in zip(range(-radius, radius + 1), weights):
+            j = i + off
+            if 0 <= j < n and out[j] is not None:
+                q = out[j]
+                for key in ("pos", "dir", "normal"):
+                    acc[key] += wgt * np.array(q[key])
+                acc["curl"] += wgt * np.array(q["curl"])
+                total += wgt
+        d = _unit(acc["dir"] / total)
+        nrm = acc["normal"] / total
+        nrm = _unit(nrm - np.dot(nrm, d) * d)
+        smoothed.append({"pos": [round(float(v), 4) for v in acc["pos"] / total], "dir": [round(float(v), 4) for v in d],
+                         "normal": [round(float(v), 4) for v in nrm],
+                         "curl": [[round(float(c), 3) for c in row] for row in acc["curl"] / total]})
+    return smoothed
+
+
+def _active_span(times: list[float], tracks: dict[str, list[dict | None]]) -> tuple[int, int]:
+    """First/last frame where a hand moves (plus a small margin): drops motionless lead-in and tail holds."""
+    n = len(times)
+    moving = [False] * n
+    for poses in tracks.values():
+        for i in range(1, n):
+            a, b = poses[i - 1], poses[i]
+            if a is not None and b is not None and np.linalg.norm(np.array(b["pos"]) - np.array(a["pos"])) > IDLE_SPEED:
+                moving[i] = True
+    idx = [i for i, m in enumerate(moving) if m]
+    if not idx:
+        return 0, n - 1
+    start, end = idx[0], idx[-1]
+    while start > 0 and times[idx[0]] - times[start - 1] <= TRIM_MARGIN_S:
+        start -= 1
+    while end < n - 1 and times[end + 1] - times[idx[-1]] <= TRIM_MARGIN_S:
+        end += 1
+    return start, end
+
+
 def sample_to_animation(sample: dict, sign_id: str, max_fps: float = 15.0) -> dict:
     frames = sample.get("frames") or []
     video = sample.get("video") or {}
@@ -114,12 +195,10 @@ def sample_to_animation(sample: dict, sign_id: str, max_fps: float = 15.0) -> di
     face = reference_face(frames)
     sides = side_for_labels(frames)
     t0 = float(frames[0].get("t", 0.0))
-    keyframes = []
-    last_t = -1.0
-    for frame in frames:
+    times: list[float] = []
+    tracks: dict[str, list[dict | None]] = {"right": [], "left": []}
+    for frame in frames:                          # every frame first: cleaning needs the full temporal resolution
         t = (float(frame.get("t", t0)) - t0) / 1000.0
-        if t - last_t < 1.0 / max_fps:
-            continue
         w = float(frame.get("w") or video.get("w") or 640)
         h = float(frame.get("h") or video.get("h") or 480)
         key = {"t": round(t, 3), "right": None, "left": None}
@@ -134,10 +213,20 @@ def sample_to_animation(sample: dict, sign_id: str, max_fps: float = 15.0) -> di
             if not np.all(np.isfinite(pts)):
                 continue
             key[side] = hand_pose(pts, w / h, face, side)
-        if key["right"] is None and key["left"] is None:
+        times.append(t)
+        tracks["right"].append(key["right"])
+        tracks["left"].append(key["left"])
+    tracks = {side: clean_track(times, poses) for side, poses in tracks.items()}
+    start, end = _active_span(times, tracks)
+    keyframes = []
+    last_t = -1.0
+    for i in range(start, end + 1):              # then thin out to max_fps
+        if times[i] - last_t < 1.0 / max_fps and i != end:
             continue
-        keyframes.append(key)
-        last_t = t
+        if tracks["right"][i] is None and tracks["left"][i] is None:
+            continue
+        keyframes.append({"t": round(times[i], 3), "right": tracks["right"][i], "left": tracks["left"][i]})
+        last_t = times[i]
     if len(keyframes) < 2:
         raise ValueError("not enough frames with hands to build an animation")
     base = keyframes[0]["t"]

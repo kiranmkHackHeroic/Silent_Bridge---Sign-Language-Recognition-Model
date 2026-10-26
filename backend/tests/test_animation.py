@@ -79,3 +79,31 @@ def test_retarget_assigns_arms_by_position_for_mirrored_videos():
     clip = sample_to_animation({"sample_id": "m", "frames": frames, "video": {"w": 640, "h": 480}}, "x")
     first = clip["keyframes"][0]
     assert first["right"]["pos"][0] < 0 < first["left"]["pos"][0]      # no crossed arms
+
+
+
+def test_retarget_fills_tracking_dropouts_smooths_and_drops_noise_tracks():
+    """A hand lost for 2 frames mid-sign must not make the avatar arm drop to rest; tracking noise is smoothed;
+    a 'hand' seen in only 2 of 40 frames (detector noise) is not animated."""
+    import math
+
+    from tests.synthetic import frame, hand_points
+    rng = np.random.default_rng(0)
+    frames = []
+    for i in range(40):
+        x = 0.4 + 0.2 * math.sin(i / 39 * math.pi)                         # smooth sign movement
+        hands = [("Left", hand_points(wrist=(x, 0.5), rng=rng, noise=0.004))]
+        if i in (17, 18):
+            hands = []                                                        # tracking dropout
+        if i in (5, 30):
+            hands.append(("Right", hand_points(wrist=(0.8, 0.7))))           # spurious second hand
+        frames.append(frame(i * 1000 / 30, hands, face={"cx": 0.5, "cy": 0.25, "w": 0.18, "h": 0.22}))
+    clip = sample_to_animation({"sample_id": "d", "frames": frames, "video": {"w": 640, "h": 480}}, "x")
+    assert not validate_animation(clip)
+    sides = {s for k in clip["keyframes"] for s in ("right", "left") if k[s] is not None}
+    assert len(sides) == 1                                                    # noise-only hand removed
+    (side,) = sides
+    assert all(k[side] is not None for k in clip["keyframes"])               # no drop to rest mid-sign
+    xs = np.array([k[side]["pos"][0] for k in clip["keyframes"]])
+    accel = np.abs(np.diff(xs, 2)).mean()
+    assert accel < 0.01                                                       # smooth motion, not frame jitter
