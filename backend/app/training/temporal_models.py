@@ -111,6 +111,46 @@ class TorchGRUClassifier:
         self.net.eval()
         return self
 
+    def fine_tune(self, X: np.ndarray, y, epochs: int = 12, lr: float = 3e-4, seed: int | None = None) -> dict:
+        """Continue training the FITTED network on new data (personal fine-tuning). Keeps the classes, the input
+        normalisation and the weights as the starting point; samples of unknown classes are ignored (a new sign
+        needs a full retrain). Returns a short summary."""
+        import torch
+
+        if self.net is None:
+            raise RuntimeError("fine_tune needs a fitted model")
+        seed = self.seed if seed is None else seed
+        torch.manual_seed(seed)
+        rng = np.random.default_rng(seed)
+        idx_of = {c: i for i, c in enumerate(self.classes_)}
+        y = np.asarray(y)
+        keep = np.flatnonzero([c in idx_of for c in y])
+        if not len(keep):
+            return {"samples": 0, "ignored_unknown_classes": int(len(y)), "epochs": 0}
+        Xn = (np.asarray(X, dtype=np.float32)[keep] - self.mu_) / self.sd_
+        yi = torch.tensor([idx_of[c] for c in y[keep]], dtype=torch.long)
+        seq, extra = self._split(Xn)
+        seq_t, extra_t = torch.tensor(seq), torch.tensor(extra)
+        opt = torch.optim.AdamW(self.net.parameters(), lr=lr, weight_decay=self.weight_decay)
+        loss_fn = torch.nn.CrossEntropyLoss()
+        losses = []
+        for _ in range(epochs):
+            self.net.train()
+            perm = rng.permutation(len(keep))
+            total = 0.0
+            for b in range(0, len(perm), self.batch_size):
+                bi = perm[b:b + self.batch_size]
+                opt.zero_grad()
+                loss = loss_fn(self.net(seq_t[bi], extra_t[bi]), yi[bi])
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.net.parameters(), 1.0)
+                opt.step()
+                total += float(loss.detach()) * len(bi)
+            losses.append(round(total / len(keep), 4))
+        self.net.eval()
+        return {"samples": int(len(keep)), "ignored_unknown_classes": int(len(y) - len(keep)), "epochs": epochs,
+                "loss_per_epoch": losses}
+
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
         import torch
 

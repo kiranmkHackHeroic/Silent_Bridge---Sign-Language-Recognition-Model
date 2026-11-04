@@ -130,7 +130,7 @@ class JobQueue:
         return list(reversed(self.jobs))
 
     def active_training(self) -> dict | None:
-        return next((j for j in self.jobs if j["type"] == "train" and j["state"] in ("queued", "running")), None)
+        return next((j for j in self.jobs if j["type"] in ("train", "finetune") and j["state"] in ("queued", "running")), None)
 
     def cancel(self, job_id: str) -> dict:
         with self._lock:
@@ -221,6 +221,13 @@ class JobQueue:
             return {"version": outcome["version"], "promoted": outcome["promoted"], "decision": outcome["decision"],
                     "accuracy": m["accuracy"], "macro_f1": m["macro_f1"], "headline_source": m["headline_source"],
                     "model_type": m["model_type"], "num_samples": m["num_samples"], "num_classes": m["num_classes"]}
+        if kind == "finetune":
+            from .training.finetune import finetune
+            r = finetune(progress=progress)
+            self.on_model_change()
+            return {k: r[k] for k in ("version", "finetuned_from", "promoted", "decision", "user_training_recordings",
+                                      "evaluation_recordings", "personal_accuracy", "retention_accuracy",
+                                      "skipped_signs_not_in_model")}
         if kind == "train_continuous":
             from .continuous.train import train as train_continuous
             m = train_continuous(progress=progress)

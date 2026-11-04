@@ -217,6 +217,16 @@ def _train_status_view(job: dict | None) -> dict:
             "progress": job["progress"], "error": error, "metrics": metrics, "job_id": job["id"], "result": result}
 
 
+@app.post("/api/model/finetune", status_code=202)
+def model_finetune():
+    """Queues personal fine-tuning of the active model on the user's own recordings (see app/training/finetune.py)."""
+    s = S()
+    running = s.jobs.active_training()
+    if running:
+        raise HTTPException(409, f"a training job is already {running['state']} ({running['id']})")
+    return s.jobs.submit("finetune", {}, "Personal fine-tuning", "started from the Dataset & Model page")
+
+
 @app.get("/api/model/train/status")
 def model_train_status():
     trains = [j for j in S().jobs.list() if j["type"] == "train"]

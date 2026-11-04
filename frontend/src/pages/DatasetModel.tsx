@@ -233,6 +233,18 @@ export function DatasetModel() {
     }
   };
 
+  const [ftMsg, setFtMsg] = useState<{ tone: "info" | "bad"; text: string } | null>(null);
+  const finetuneModel = async () => {
+    setFtMsg(null);
+    try {
+      await api.finetune();
+      setFtMsg({ tone: "info", text: "Personal fine-tuning started (a few minutes). The result appears under Background jobs; the model is only switched if your evaluation recordings improve." });
+      refreshJobs();
+    } catch (err) {
+      setFtMsg({ tone: "bad", text: String((err as Error).message || err) });
+    }
+  };
+
   const trainModel = async () => {
     try {
       setJob(await api.startTraining());
@@ -322,6 +334,11 @@ export function DatasetModel() {
             </Btn>
             <span className="muted small">Uses valid samples from your recordings and every imported dataset. Compares a logistic-regression baseline, an SVM, an MLP and a GRU temporal model; the new version is activated only if it passes the acceptance checks.</span>
           </div>
+          <div className="toolbar">
+            <Btn icon="hand" onClick={finetuneModel} disabled={training || busy || !status?.loaded}>Fine-tune on my recordings</Btn>
+            <span className="muted small">Adapts the current model to your camera and signing in a few minutes. Needs about 10 <strong>Training data</strong> recordings per sign, plus <strong>Evaluation only</strong> recordings (20 or more) to prove it helps. Your evaluation recordings are never trained on.</span>
+          </div>
+          {ftMsg && <Notice tone={ftMsg.tone}>{ftMsg.text}</Notice>}
           {job && job.state !== "idle" && (
             <div className="stack" aria-live="polite">
               {job.state === "running" && (

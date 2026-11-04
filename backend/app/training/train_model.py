@@ -70,7 +70,10 @@ MODEL_DESCRIPTIONS = {
            "split of training samples (PyTorch, CPU)",
     "ensemble": "Equal-weight average of the class probabilities of the logistic-regression baseline and the GRU "
                 "temporal model (weight chosen on signer-grouped validation folds)",
+    "gru_seeds": "Seed ensemble: equal-weight average of the class probabilities of three GRU temporal models trained "
+                 "with different random seeds (reduces the run-to-run variance of a single GRU)",
 }
+GRU_SEED_MEMBERS = 3
 
 ProgressFn = Callable[[str, float], None]
 
@@ -166,6 +169,10 @@ def build_model(kind: str, seed: int, fcfg: FeatureConfig = DEFAULT_FEATURE_CONF
         # folds among 0.3 / 0.5 / 0.7 (tools/phase6_experiments.py, reports/phase6_experiments.json)
         from .temporal_models import ProbabilityEnsemble
         return ProbabilityEnsemble([build_model("logreg", seed, fcfg), build_model("gru", seed, fcfg)], [0.5, 0.5])
+    elif kind == "gru_seeds":
+        from .temporal_models import ProbabilityEnsemble
+        return ProbabilityEnsemble([build_model("gru", seed + i, fcfg) for i in range(GRU_SEED_MEMBERS)],
+                                   [1.0] * GRU_SEED_MEMBERS)
     else:
         raise ValueError(f"unknown model type {kind!r}")
     return Pipeline([("scale", StandardScaler()), ("clf", clf)])
@@ -208,7 +215,7 @@ def fit_model(kind: str, samples: list[Sample], fcfg: FeatureConfig, tcfg: Train
     model = build_model(kind, tcfg.random_seed, fcfg)
     if kind == "mlp":
         x, y = oversample(x, y, rng)
-    if kind in ("gru", "ensemble"):
+    if kind in ("gru", "ensemble", "gru_seeds"):
         model.fit(x, y, groups=g)
     else:
         model.fit(x, y)
