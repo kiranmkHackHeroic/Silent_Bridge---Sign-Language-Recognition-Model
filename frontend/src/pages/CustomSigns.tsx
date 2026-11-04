@@ -190,13 +190,13 @@ export function CustomSigns() {
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
+      <div className="custom-grid">
         {/* Left: Studio Recorder */}
         <div className="stack">
           <Card title="Record New Sign" icon="record">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
-              <div>
-                <label style={{ display: "block", fontSize: 13, marginBottom: 4, fontWeight: 600 }}>Sign Name (English)</label>
+            <div className="form-grid cols-2">
+              <label className="field">
+                <span>Sign Name (English)</span>
                 <input
                   type="text"
                   className="input"
@@ -205,60 +205,66 @@ export function CustomSigns() {
                   onChange={(e) => setName(e.target.value)}
                   disabled={step === "countdown" || step === "recording"}
                 />
-              </div>
-              <div>
-                <label style={{ display: "block", fontSize: 13, marginBottom: 4, fontWeight: 600 }}>Kannada Meaning</label>
+              </label>
+              <label className="field">
+                <span>Kannada Meaning</span>
                 <input
                   type="text"
                   lang="kn"
-                  className="input"
+                  className="input kn"
                   placeholder="e.g. ಕಿರಣ್, ಬೆಂಗಳೂರು, ಸಹೋದರಿ"
                   value={kannada}
                   onChange={(e) => setKannada(e.target.value)}
                   disabled={step === "countdown" || step === "recording"}
                 />
-              </div>
+              </label>
             </div>
 
-            {/* Video Viewfinder */}
-            <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "#0f172a", borderRadius: 8, overflow: "hidden" }}>
-              <video ref={videoRef} playsInline muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              <canvas ref={canvasRef} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
+            {/* Video Viewfinder with Futuristic HUD */}
+            <div className="video-wrap">
+              <video ref={videoRef} playsInline muted className="mirror" />
+              <canvas ref={canvasRef} className="mirror" />
 
               {camera === "off" && (
-                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.7)" }}>
-                  <p style={{ color: "#fff", marginBottom: 12 }}>Camera is turned off</p>
+                <div className="video-placeholder">
+                  <p>Camera is turned off</p>
                   <Btn icon="camera" variant="primary" onClick={() => start()}>
                     Start Camera
                   </Btn>
                 </div>
               )}
 
-              {step === "countdown" && (
-                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.5)" }}>
-                  <span style={{ fontSize: 72, fontWeight: 800, color: "#38bdf8" }}>{countdown}</span>
-                </div>
-              )}
+              <div className="video-overlay">
+                <span>
+                  {step === "recording" ? (
+                    <span className="pill pill-rec">● REC SAMPLE {currentSampleIndex + 1}/3</span>
+                  ) : (
+                    <span className="pill">{camera === "on" ? "Studio HUD Ready" : "Standby"}</span>
+                  )}
+                </span>
+                <span>
+                  <span className="pill">Few-Shot Prototype</span>
+                </span>
+              </div>
 
-              {step === "recording" && (
-                <div style={{ position: "absolute", top: 12, left: 12, display: "flex", alignItems: "center", gap: 8, background: "rgba(239, 68, 68, 0.9)", color: "#fff", padding: "4px 12px", borderRadius: 20 }}>
-                  <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#fff", animation: "pulse 1s infinite" }} />
-                  <span style={{ fontSize: 13, fontWeight: 700 }}>RECORDING SIGN SAMPLE {currentSampleIndex + 1}/3...</span>
+              {step === "countdown" && (
+                <div className="avatar-loading">
+                  <span style={{ fontSize: 72, fontWeight: 800, color: "#38bdf8" }}>{countdown}</span>
                 </div>
               )}
             </div>
 
             {/* Progress & Controls */}
-            <div style={{ marginTop: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <span style={{ fontSize: 13, fontWeight: 600 }}>Sample Progress: {currentSampleIndex} / 3</span>
-                <span style={{ fontSize: 12, color: "var(--muted)" }}>Keep hands in camera frame</span>
+            <div className="stack" style={{ gap: 10 }}>
+              <div className="conf-head">
+                <span>Sample Progress: {currentSampleIndex} / 3</span>
+                <span className="muted xs">Keep hands in camera frame</span>
               </div>
-              <div style={{ height: 8, width: "100%", background: "var(--border)", borderRadius: 4, overflow: "hidden" }}>
-                <div style={{ height: "100%", width: `${(currentSampleIndex / 3) * 100}%`, background: "var(--accent)", transition: "width 0.3s ease" }} />
+              <div className="progress">
+                <div style={{ width: `${(currentSampleIndex / 3) * 100}%` }} />
               </div>
 
-              <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
+              <div className="toolbar">
                 {camera === "on" ? (
                   <Btn icon="cameraOff" variant="ghost" onClick={stop}>
                     Stop Camera
@@ -295,30 +301,19 @@ export function CustomSigns() {
             {signs.length === 0 ? (
               <Empty icon="hand">No custom signs recorded yet. Use the studio to record your first personalized sign!</Empty>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div className="stack" style={{ gap: 10 }}>
                 {signs.map((s) => (
-                  <div
-                    key={s.id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "10px 14px",
-                      background: "var(--card-bg, #1e293b)",
-                      borderRadius: 8,
-                      border: "1px solid var(--border)",
-                    }}
-                  >
+                  <div key={s.id} className="custom-sign-item">
                     <div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <strong style={{ fontSize: 15 }}>{s.name}</strong>
-                        <Chip tone="accent">{s.kannada}</Chip>
+                      <div className="toolbar">
+                        <strong>{s.name}</strong>
+                        <Chip tone="accent"><span lang="kn">{s.kannada}</span></Chip>
                       </div>
-                      <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4 }}>
+                      <div className="muted xs" style={{ marginTop: 4 }}>
                         {s.sampleCount} samples averaged · {new Date(s.createdAt).toLocaleDateString()}
                       </div>
                     </div>
-                    <Btn icon="trash" variant="ghost" size="sm" onClick={() => removeSign(s.id)} title="Delete sign" />
+                    <Btn icon="trash" variant="ghost" size="sm" onClick={() => removeSign(s.id)} title="Delete sign" aria-label={`Delete custom sign ${s.name}`} />
                   </div>
                 ))}
               </div>
@@ -326,7 +321,7 @@ export function CustomSigns() {
           </Card>
 
           <Card title="How Few-Shot Personalization Works" icon="info">
-            <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--text-muted)" }}>
+            <p className="small muted">
               SilentBridge extracts a <strong>3,668-dimensional normalized landmark trajectory</strong> for each recorded sample.
               The samples are averaged to compute a representative centroid embedding. When you sign in <strong>Live Recognition</strong> mode,
               the in-browser engine matches incoming signs against your custom prototypes using cosine distance before evaluating the general vocabulary!

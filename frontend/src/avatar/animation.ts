@@ -4,10 +4,10 @@
  * Coordinates are avatar world metres: avatar faces +z, its right hand is on -x.
  */
 import type { AnimationClip, HandPose, Vec3 } from "../services/types";
-import { computeFacePose, NEUTRAL_FACE, type FacePose } from "./lipSync";
+import { applyEmotionPreset, computeFacePose, NEUTRAL_FACE, type AvatarEmotion, type FacePose } from "./lipSync";
 
-export type { FacePose };
-export { NEUTRAL_FACE };
+export type { AvatarEmotion, FacePose };
+export { applyEmotionPreset, NEUTRAL_FACE };
 
 export type Side = "right" | "left";
 export interface PosePair {

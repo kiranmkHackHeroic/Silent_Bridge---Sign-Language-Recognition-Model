@@ -123,6 +123,7 @@ export function LiveRecognition() {
   const [thresholdTouched, setThresholdTouched] = useState(webcamThreshold !== null);
   const [engineMode, setEngineMode] = useState<"server" | "onnx">("server");
   const [onnxReady, setOnnxReady] = useState(false);
+  const [useTTA, setUseTTA] = useState(true);
   const engineModeRef = useRef(engineMode);
   engineModeRef.current = engineMode;
   const [now, setNow] = useState(Date.now());
@@ -237,13 +238,16 @@ export function LiveRecognition() {
   }, [handleMessage]);
 
   useEffect(() => {
+    onnxEngine.threshold = threshold;
+    onnxEngine.stillMs = stillMs;
+    onnxEngine.useTTA = useTTA;
     if (socketStatus !== "open") return;
     // the threshold is only sent once the user moves the slider; until then the server uses the
     // model's threshold calibrated on validation data
     const settings: Record<string, unknown> = { mode, still_ms: stillMs, dip_split: dipSplit, split_long: splitLong };
     if (thresholdTouched) settings.confidence_threshold = threshold;
     socketRef.current?.send({ type: "config", settings });
-  }, [threshold, thresholdTouched, mode, stillMs, dipSplit, splitLong, socketStatus]);
+  }, [threshold, thresholdTouched, mode, stillMs, dipSplit, splitLong, useTTA, socketStatus]);
 
   // pending words: confirmed by the user, or automatically after the countdown in "auto" mode
   const commitPending = useCallback((p: PendingWord, choice?: Candidate) => {
@@ -288,12 +292,29 @@ export function LiveRecognition() {
     if (!pausedRef.current && !demoRef.current) {
       if (engineModeRef.current === "onnx" && onnxEngine.ready) {
         onnxEngine.processFrame(r.frame).then((pred) => {
+          stateRef.current = {
+            ...stateRef.current,
+            activity: onnxEngine.active ? "signing" : "idle",
+            hands: r.frame.hands.length,
+            motion: Math.round(onnxEngine.motionEma * 10000) / 10000,
+            buffer: onnxEngine.bufferLength,
+            threshold: onnxEngine.threshold,
+          };
           if (!pred) return;
           const entry = vocab.find((v) => v.label === pred.label);
+          const enrichedTop: Candidate[] = pred.top.map((c) => {
+            const vEntry = vocab.find((v) => v.label === c.label);
+            return {
+              label: c.label,
+              kannada: c.kannada || vEntry?.kannada || c.label,
+              english: c.english || vEntry?.english || c.label,
+              confidence: Math.round(c.confidence * 10000) / 10000,
+            };
+          });
           const token: TranscriptToken = {
             label: pred.label,
-            kannada: entry?.kannada || pred.label,
-            english: entry?.english || pred.label,
+            kannada: entry?.kannada || pred.top[0]?.kannada || pred.label,
+            english: entry?.english || pred.top[0]?.english || pred.label,
             confidence: pred.confidence,
             source: "onnx",
             t: Date.now(),
@@ -303,11 +324,11 @@ export function LiveRecognition() {
           } else {
             setPending((ps) => [
               ...ps,
-              { id: `p${pendingCounter++}`, token, top: pred.top, created: Date.now() },
+              { id: `p${pendingCounter++}`, token, top: enrichedTop, created: Date.now() },
             ]);
           }
-          setHero({ kind: "sign", token, top: pred.top, simulated: false, at: Date.now() });
-          setEventMsg(`100% In-Browser ONNX inference: ${pred.latency_ms} ms (zero backend latency).`);
+          setHero({ kind: "sign", token, top: enrichedTop, simulated: false, at: Date.now() });
+          setEventMsg(`100% In-Browser ONNX (${useTTA ? "3-view TTA" : "single-view"}): ${pred.latency_ms} ms.`);
           sessionStats.signsRecognized++;
         });
       } else {
@@ -427,13 +448,31 @@ export function LiveRecognition() {
               topLeft={
                 paused ? <span className="pill"><Icon name="pause" size={12} /> Paused</span>
                 : serverState.activity === "signing" ? <span className="pill pill-live"><StatusDot tone="ok" /> Signing</span>
-                : <span className="pill">{serverState.hands} hand(s) · waiting</span>
+                : vision.camera === "on" ? <span className="pill pill-live"><StatusDot tone="ok" /> {serverState.hands} hand(s) · Live HUD</span>
+                : <span className="pill"><StatusDot tone="muted" /> Standby · {serverState.hands} hand(s)</span>
               }
               topRight={
                 engineMode === "onnx" ? (
                   <span className="pill pill-live"><StatusDot tone="ok" /> {onnxReady ? "100% In-Browser ONNX" : "Loading ONNX…"}</span>
                 ) : demo ? (
-                  <span className="pill">Simulated demo</span>
+                  <span className="pill"><StatusDot tone="sim" /> Simulated demo</span>
+                ) : (
+                  <span className="pill"><StatusDot tone={socketStatus === "open" ? "ok" : "warn"} /> {socketStatus === "open" ? "Stream Ready" : "Offline"}</span>
+                )
+              }
+              bottomLeft={
+                exprEnabled && (
+                  <span className="pill">
+                    <Icon name="face" size={13} />{" "}
+                    {expression ? EXPRESSION_TEXT[expression.label] : "Expression HUD Ready"}
+                  </span>
+                )
+              }
+              bottomRight={
+                nonManualState && nonManualState.marker !== "statement" ? (
+                  <span className="pill pill-live">
+                    {nonManualState.label} · {Math.round(nonManualState.confidence * 100)}%
+                  </span>
                 ) : undefined
               }
               controls={
@@ -525,6 +564,10 @@ export function LiveRecognition() {
                         <input type="range" min={1} max={10} step={1} value={commitSec} onChange={(e) => setCommitSec(Number(e.target.value))} />
                       </label>
                     )}
+                    <label className="switch">
+                      <input type="checkbox" checked={useTTA} onChange={(e) => setUseTTA(e.target.checked)} />
+                      Accuracy Boost: 3-View Test-Time Augmentation (TTA) + 3-Tap Landmark Denoising + Face-Occlusion Lock
+                    </label>
                     <label className="switch">
                       <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />
                       Simulated demo (scripted words, ignores camera)
@@ -644,6 +687,19 @@ export function LiveRecognition() {
               </>
             }
           >
+            <div className="context-pills-bar" aria-label="Detected emotion and grammatical tone context">
+              <div className="context-pills-group">
+                <span className="xs muted" style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Context &amp; Tone</span>
+                <span className="emotion-pill">
+                  <Icon name="face" size={13} />
+                  {exprEnabled ? (expression ? EXPRESSION_TEXT[expression.label] : "Neutral / Ready") : "Expression Off"}
+                </span>
+                <Chip tone={nonManualState && nonManualState.marker !== "statement" ? (nonManualState.marker === "negation" ? "bad" : "info") : "accent"}>
+                  {nonManualState ? nonManualState.label : "Statement · ಸಾಮಾನ್ಯ ವಾಕ್ಯ"}
+                </Chip>
+              </div>
+              <Chip tone={hasKnVoice ? "ok" : "muted"}>{hasKnVoice ? "Kannada TTS Ready" : "Browser TTS"}</Chip>
+            </div>
             {pending.length > 0 && (
               <div className="pending-box" aria-label="Words waiting for confirmation">
                 <span className="xs muted">

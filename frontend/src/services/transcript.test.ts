@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 import {
   correctAt, exportText, fromServerToken, insertPunctuation, joinTranscript, removeAt, type TranscriptItem,
 } from "./transcript";
@@ -16,46 +17,46 @@ const items = (): TranscriptItem[] => [
 
 describe("Kannada transcript", () => {
   it("joins words with single spaces", () => {
-    expect(joinTranscript(items())).toBe("ನಿಮ್ಮ ಹೆಸರು ಏನು");
+    assert.equal(joinTranscript(items()), "ನಿಮ್ಮ ಹೆಸರು ಏನು");
   });
 
   it("attaches punctuation to the previous word", () => {
-    expect(joinTranscript(insertPunctuation(items(), "?"))).toBe("ನಿಮ್ಮ ಹೆಸರು ಏನು?");
+    assert.equal(joinTranscript(insertPunctuation(items(), "?")), "ನಿಮ್ಮ ಹೆಸರು ಏನು?");
     const mid = insertPunctuation(items(), ",", 0);
-    expect(joinTranscript(mid)).toBe("ನಿಮ್ಮ, ಹೆಸರು ಏನು");
+    assert.equal(joinTranscript(mid), "ನಿಮ್ಮ, ಹೆಸರು ಏನು");
   });
 
   it("replaces instead of stacking punctuation", () => {
     const once = insertPunctuation(items(), "?");
     const twice = insertPunctuation(once, ".");
-    expect(twice).toHaveLength(4);
-    expect(joinTranscript(twice)).toBe("ನಿಮ್ಮ ಹೆಸರು ಏನು.");
+    assert.equal(twice.length, 4);
+    assert.equal(joinTranscript(twice), "ನಿಮ್ಮ ಹೆಸರು ಏನು.");
   });
 
   it("corrects a mistaken sign and marks it edited", () => {
     const fixed = correctAt(items(), 2, { label: "need", kannada: "ಬೇಕು", english: "Need" });
-    expect(joinTranscript(fixed)).toBe("ನಿಮ್ಮ ಹೆಸರು ಬೇಕು");
-    expect(fixed[2].source).toBe("edited");
+    assert.equal(joinTranscript(fixed), "ನಿಮ್ಮ ಹೆಸರು ಬೇಕು");
+    assert.equal(fixed[2].source, "edited");
   });
 
   it("removes an incorrect word", () => {
-    expect(joinTranscript(removeAt(items(), 1))).toBe("ನಿಮ್ಮ ಏನು");
+    assert.equal(joinTranscript(removeAt(items(), 1)), "ನಿಮ್ಮ ಏನು");
   });
 
   it("normalizes to NFC and keeps Kannada characters intact", () => {
     const decomposed = "ಕೊ".normalize("NFD");
     const t = fromServerToken(tok("x", decomposed));
-    expect(t.kannada).toBe("ಕೊ".normalize("NFC"));
+    assert.equal(t.kannada, "ಕೊ".normalize("NFC"));
     for (const word of ["ನಮಸ್ಕಾರ", "ಧನ್ಯವಾದಗಳು", "ನೀರು", "ಸಹಾಯ ಬೇಕು"]) {
-      expect(exportText(word)).toBe(word);
+      assert.equal(exportText(word), word);
     }
   });
 
   it("exports tidy text for copying", () => {
-    expect(exportText("  ನಿಮ್ಮ   ಹೆಸರು ಏನು ?  ")).toBe("ನಿಮ್ಮ ಹೆಸರು ಏನು?");
+    assert.equal(exportText("  ನಿಮ್ಮ   ಹೆಸರು ಏನು ?  "), "ನಿಮ್ಮ ಹೆಸರು ಏನು?");
   });
 
   it("does not show confidence for simulated tokens", () => {
-    expect(fromServerToken({ ...tok("x", "ನೀರು"), source: "simulated" }).confidence).toBeNull();
+    assert.equal(fromServerToken({ ...tok("x", "ನೀರು"), source: "simulated" }).confidence, null);
   });
 });

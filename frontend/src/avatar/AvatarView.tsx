@@ -1,9 +1,19 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import type { AnimationClip } from "../services/types";
 import { AvatarRig } from "./AvatarRig";
-import { NEUTRAL, NEUTRAL_FACE, buildTimeline, poseAt, type FacePose, type PosePair, type Timeline } from "./animation";
+import {
+  NEUTRAL,
+  NEUTRAL_FACE,
+  buildTimeline,
+  poseAt,
+  type AvatarEmotion,
+  type FacePose,
+  type PosePair,
+  type Timeline,
+} from "./animation";
 
 export interface PlaybackState {
   playing: boolean;
@@ -18,6 +28,7 @@ export interface AvatarHandle {
   resume: () => void;
   stop: () => void;
   greet: () => void;
+  setEmotion: (emotion: AvatarEmotion | null) => void;
 }
 
 interface Props {
@@ -25,9 +36,41 @@ interface Props {
   speed?: number;
 }
 
+function detectSoftwareGl(): boolean {
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    if (!gl) return true;
+    const ext = gl.getExtension("WEBGL_debug_renderer_info");
+    const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
+    const gpu = String(gl.getParameter(param));
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
+  } catch {
+    return true;
+  }
+}
+
+function createContactShadowTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext("2d")!;
+  const grad = ctx.createRadialGradient(64, 64, 8, 64, 64, 62);
+  grad.addColorStop(0, "rgba(7, 14, 26, 0.52)");
+  grad.addColorStop(0.55, "rgba(7, 14, 26, 0.22)");
+  grad.addColorStop(1, "rgba(7, 14, 26, 0.0)");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 128, 128);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ onState, speed = 1 }, ref) {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const [webglError, setWebglError] = useState<string | null>(null);
+  const [activeEmotion, setActiveEmotion] = useState<AvatarEmotion | null>(null);
   const timelineRef = useRef<Timeline | null>(null);
   const timeRef = useRef(0);
   const pausedRef = useRef(false);
@@ -39,6 +82,11 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
 
   speedRef.current = speed;
   onStateRef.current = onState;
+
+  const handleEmotionChange = (emotion: AvatarEmotion | null) => {
+    setActiveEmotion(emotion);
+    rigRef.current?.setEmotion(emotion);
+  };
 
   useImperativeHandle(ref, () => ({
     play(clips) {
@@ -65,19 +113,30 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
     greet() {
       rigRef.current?.triggerReaction("greeting");
     },
+    setEmotion(emotion) {
+      handleEmotionChange(emotion);
+    },
   }), []);
 
   useEffect(() => {
     const mount = mountRef.current!;
+    const isSoftwareGl = detectSoftwareGl();
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({
+        antialias: !isSoftwareGl,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
     } catch (err) {
       setWebglError(`3D rendering (WebGL) is not available: ${String(err)}`);
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
     mount.appendChild(renderer.domElement);
 
     const onLost = (e: Event) => {
@@ -87,52 +146,70 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
     renderer.domElement.addEventListener("webglcontextlost", onLost);
 
     const scene = new THREE.Scene();
-    // Upper-body framing: hands, face, and signing space
-    const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 20);
-    camera.position.set(0, 1.34, 1.78);
+
+    // Procedural Studio Environment Reflection (IBL for physical materials, glasses & eyes)
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    const envTex = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = envTex;
+    if ("environmentIntensity" in scene) {
+      (scene as THREE.Scene & { environmentIntensity: number }).environmentIntensity = 0.38;
+    }
+    pmremGenerator.dispose();
+
+    // Balanced upper-body framing: full wavy hair, face, round glasses, suit & signing space
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 20);
+    camera.position.set(0, 1.35, 1.92);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1.27, 0);
-    controls.enableDamping = true;
+    controls.target.set(0, 1.31, 0);
+    controls.enableDamping = !isSoftwareGl;
     controls.dampingFactor = 0.08;
     controls.enablePan = false;
-    controls.minDistance = 1.1;
+    controls.minDistance = 1.15;
     controls.maxDistance = 3.5;
-    controls.minPolarAngle = Math.PI * 0.3;
+    controls.minPolarAngle = Math.PI * 0.28;
     controls.maxPolarAngle = Math.PI * 0.62;
     controls.minAzimuthAngle = -Math.PI * 0.45;
     controls.maxAzimuthAngle = Math.PI * 0.45;
     controls.update();
 
-    // High-key animated character studio lighting (matching reference)
-    scene.add(new THREE.HemisphereLight(0xfffaf0, 0x252a34, 2.0));
+    // ---------------------------------------------------- Studio Three-Point Lighting Rig
+    // 1. Hemisphere Fill Light (warm studio ceiling to cool slate floor gradient)
+    const hemiLight = new THREE.HemisphereLight(0xfff8f0, 0x1e293b, 1.55);
+    hemiLight.position.set(0, 3.0, 0);
+    scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfffbf2, 2.6);
-    keyLight.position.set(1.2, 2.2, 2.6);
+    // 2. Soft Warm Key Light (front-right studio softbox angle)
+    const keyLight = new THREE.DirectionalLight(0xfff4e6, 2.45);
+    keyLight.position.set(1.5, 2.3, 2.5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xdbeafe, 1.1);
-    fillLight.position.set(-1.6, 1.4, 2.0);
+    // 3. Soft Cool Fill Light (front-left to keep facial features & suit lapels legible)
+    const fillLight = new THREE.DirectionalLight(0xdbeafe, 1.05);
+    fillLight.position.set(-1.8, 1.4, 2.0);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffedd5, 1.5);
-    rimLight.position.set(0.2, 2.6, -2.0);
-    scene.add(rimLight);
+    // 4. Cool Rim / Back Light (3D edge separation along dark suit shoulders & wavy hair)
+    const rimLightCool = new THREE.DirectionalLight(0x93c5fd, 1.95);
+    rimLightCool.position.set(-1.3, 2.4, -2.2);
+    scene.add(rimLightCool);
 
-    const softBounce = new THREE.DirectionalLight(0xfef3c7, 0.6);
-    softBounce.position.set(0, -1.0, 1.4);
-    scene.add(softBounce);
+    const rimLightWarm = new THREE.DirectionalLight(0xffedd5, 1.35);
+    rimLightWarm.position.set(1.3, 2.2, -1.9);
+    scene.add(rimLightWarm);
 
-    // Soft grounded contact shadow disc
-    const shadowGeo = new THREE.CircleGeometry(0.32, 32);
+    // 5. Soft radial contact shadow grounding disc beneath the torso
+    const shadowTex = createContactShadowTexture();
+    const shadowGeo = new THREE.CircleGeometry(0.36, 36);
     const shadowMat = new THREE.MeshBasicMaterial({
-      color: 0x07111c,
+      map: shadowTex,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.85,
+      depthWrite: false,
     });
     const shadow = new THREE.Mesh(shadowGeo, shadowMat);
     shadow.rotation.x = -Math.PI / 2;
-    shadow.position.set(0, 0.7, 0);
+    shadow.position.set(0, 0.715, 0);
     scene.add(shadow);
 
     const rig = new AvatarRig();
@@ -175,14 +252,36 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
     ro.observe(mount);
     resize();
 
-    let raf = 0;
+    let frameId = 0;
+    let disposed = false;
     let last = performance.now();
     let lastReport = 0;
     let lastReported = "";
     const clock = new THREE.Clock();
 
+    const afterDraw = (cb: () => void) => {
+      const gl = renderer.getContext() as WebGL2RenderingContext;
+      if (gl && typeof gl.fenceSync === "function") {
+        const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
+        gl.flush();
+        const poll = () => {
+          if (disposed) return;
+          const state = sync && gl.getSyncParameter(sync, gl.SYNC_STATUS);
+          if (state === gl.UNSIGNALED) {
+            frameId = window.setTimeout(poll, 5);
+          } else {
+            if (sync) gl.deleteSync(sync);
+            frameId = window.setTimeout(cb, 80);
+          }
+        };
+        frameId = window.setTimeout(poll, 5);
+      } else {
+        frameId = window.setTimeout(cb, 80);
+      }
+    };
+
     const tick = () => {
-      raf = requestAnimationFrame(tick);
+      if (disposed) return;
       const now = performance.now();
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
@@ -225,16 +324,29 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
         lastReport = now;
         onStateRef.current(state);
       }
+
+      if (isSoftwareGl) {
+        afterDraw(tick);
+      } else {
+        frameId = requestAnimationFrame(tick);
+      }
     };
-    raf = requestAnimationFrame(tick);
+
+    frameId = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(raf);
+      disposed = true;
+      cancelAnimationFrame(frameId);
+      clearTimeout(frameId);
       ro.disconnect();
       mount.removeEventListener("pointermove", onPointerMove);
       mount.removeEventListener("pointerleave", onPointerLeave);
       mount.removeEventListener("click", onClick);
       renderer.domElement.removeEventListener("webglcontextlost", onLost);
+      envTex.dispose();
+      shadowTex.dispose();
+      shadowGeo.dispose();
+      shadowMat.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
@@ -248,13 +360,38 @@ export const AvatarView = forwardRef<AvatarHandle, Props>(function AvatarView({ 
 
   return (
     <div
-      ref={mountRef}
       className="avatar-mount"
-      style={{ cursor: "pointer" }}
       title="Click anywhere to greet the avatar · Move mouse to track eyes"
     >
+      <div
+        ref={mountRef}
+        className="avatar-canvas-host"
+        style={{ width: "100%", height: "100%", cursor: "pointer" }}
+      />
       <div className="avatar-hint-badge">
-        <span>✨ Interactive 3D Human · Click to greet (ನಮಸ್ಕಾರ) · Follows cursor</span>
+        <span>Click to greet (ನಮಸ್ಕಾರ) · Follows cursor</span>
+      </div>
+      <div className="avatar-expr-bar" role="group" aria-label="Facial expression preset">
+        {(
+          [
+            { id: null, label: "Auto" },
+            { id: "smile", label: "Smile" },
+            { id: "neutral", label: "Neutral" },
+            { id: "question", label: "Question ?" },
+          ] as const
+        ).map((item) => (
+          <button
+            key={item.label}
+            type="button"
+            className={`avatar-expr-btn ${activeEmotion === item.id ? "on" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEmotionChange(item.id);
+            }}
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -1,0 +1,8 @@
+{
+  "name": "Kannada SignBridge",
+  "description": "Real-Time Indian Sign Language Recognition and Kannada Communication with 3D Sign Avatar",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

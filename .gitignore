@@ -1,3 +1,8 @@
+node_modules/
+dist/
+.playwright-cli/
+.aistudio/
+.env
 backend/.venv/
 __pycache__/
 .pytest_cache/

@@ -6,6 +6,8 @@
  * into continuous phonetic viseme targets, eye blinks, and facial gestures.
  */
 
+export type AvatarEmotion = "neutral" | "smile" | "question" | "surprised";
+
 export interface VisemeTarget {
   mouthOpen: number;   // 0 = closed, 1 = wide open
   mouthSmile: number;  // 0 = neutral, 1 = wide smile, -0.5 = frown
@@ -18,6 +20,7 @@ export interface FacePose extends VisemeTarget {
   blink: number;       // 0 = eyes open, 1 = eyes closed
   headTilt: number;    // subtle roll in radians
   headNod: number;     // subtle pitch in radians
+  emotion?: AvatarEmotion;
 }
 
 export const REST_VISEME: VisemeTarget = {
@@ -33,6 +36,7 @@ export const NEUTRAL_FACE: FacePose = {
   blink: 0.0,
   headTilt: 0.0,
   headNod: 0.0,
+  emotion: "neutral",
 };
 
 const VISEMES: Record<string, VisemeTarget> = {
@@ -59,11 +63,60 @@ const SPECIAL_SIGNS: Record<string, VisemeTarget[]> = {
   kudi: [VISEMES.KG, VISEMES.U, VISEMES.TDS, VISEMES.I],
   please: [VISEMES.MBP, VISEMES.TDS, VISEMES.I, VISEMES.TDS],
   thank: [VISEMES.TDS, VISEMES.A, VISEMES.KG],
+  thank_you: [VISEMES.TDS, VISEMES.A, VISEMES.KG, VISEMES.I, VISEMES.U],
   yes: [VISEMES.I, VISEMES.E, VISEMES.TDS],
   no: [VISEMES.TDS, VISEMES.O],
   haudu: [VISEMES.A, VISEMES.U, VISEMES.TDS, VISEMES.U],
   illa: [VISEMES.I, VISEMES.TDS, VISEMES.A],
+  what: [VISEMES.U, VISEMES.A, VISEMES.TDS],
+  where: [VISEMES.U, VISEMES.E, VISEMES.TDS],
+  how: [VISEMES.A, VISEMES.U],
+  how_are_you: [VISEMES.A, VISEMES.U, VISEMES.A, VISEMES.I, VISEMES.U],
 };
+
+const QUESTION_SIGNS = new Set([
+  "what",
+  "where",
+  "how",
+  "how_are_you",
+  "who",
+  "why",
+  "when",
+  "which",
+]);
+
+const SMILE_SIGNS = new Set([
+  "namaskara",
+  "hello",
+  "welcome",
+  "good",
+  "good_morning",
+  "good_afternoon",
+  "good_evening",
+  "good_night",
+  "happy",
+  "pleased",
+  "thank",
+  "thank_you",
+  "friend",
+  "family",
+  "alright",
+  "yes",
+  "you_are_perfect",
+  "healthy",
+]);
+
+const FURROW_SIGNS = new Set([
+  "angry",
+  "bad",
+  "sick",
+  "sorry",
+  "emergency",
+  "help",
+  "no",
+  "stop",
+  "patient",
+]);
 
 const lerp = (a: number, b: number, w: number) => a + (b - a) * w;
 
@@ -80,18 +133,23 @@ export function lerpViseme(a: VisemeTarget, b: VisemeTarget, w: number): VisemeT
  * Convert any Kannada or English sign label into a sequence of timed visemes.
  */
 export function wordToVisemes(word: string): VisemeTarget[] {
-  const clean = word.toLowerCase().trim().replace(/[^a-z\u0C80-\u0CFF]/g, "");
+  const clean = word.toLowerCase().trim().replace(/[^a-z_\u0C80-\u0CFF]/g, "");
   if (!clean) return [VISEMES.REST, VISEMES.A, VISEMES.REST];
 
   if (SPECIAL_SIGNS[clean]) {
     return SPECIAL_SIGNS[clean];
   }
 
+  const stripped = clean.replace(/_/g, "");
+  if (SPECIAL_SIGNS[stripped]) {
+    return SPECIAL_SIGNS[stripped];
+  }
+
   const targets: VisemeTarget[] = [];
   targets.push(VISEMES.REST);
 
-  for (let i = 0; i < clean.length; i++) {
-    const ch = clean[i];
+  for (let i = 0; i < stripped.length; i++) {
+    const ch = stripped[i];
     const code = ch.charCodeAt(0);
 
     // Kannada unicode range: 0x0C80 - 0x0CFF
@@ -171,7 +229,7 @@ export function sampleLipSync(word: string, progress: number): VisemeTarget {
 export function computeBlink(time: number): number {
   const period = 3.6;
   const duration = 0.15;
-  const cycle = time % period;
+  const cycle = ((time % period) + period) % period;
   if (cycle > duration) return 0.0;
   const w = cycle / duration;
   // Fast close (40%), gentle open (60%)
@@ -183,7 +241,41 @@ export function computeBlink(time: number): number {
 }
 
 /**
+ * Applies an explicit emotion / ISL non-manual grammar preset on top of a base FacePose.
+ */
+export function applyEmotionPreset(base: FacePose, emotion: AvatarEmotion): FacePose {
+  if (emotion === "smile") {
+    return {
+      ...base,
+      mouthSmile: Math.max(base.mouthSmile, 0.78),
+      mouthOpen: Math.max(base.mouthOpen, 0.12),
+      mouthPucker: base.mouthPucker * 0.4,
+      browRaise: Math.max(base.browRaise, 0.32),
+      browFurrow: 0,
+      emotion: "smile",
+    };
+  }
+  if (emotion === "question" || emotion === "surprised") {
+    return {
+      ...base,
+      mouthOpen: Math.max(base.mouthOpen, 0.42),
+      mouthPucker: Math.max(base.mouthPucker, 0.68),
+      mouthSmile: Math.min(base.mouthSmile, 0.05),
+      browRaise: Math.max(base.browRaise, 0.85),
+      browFurrow: 0.12,
+      headTilt: base.headTilt + 0.08,
+      emotion,
+    };
+  }
+  return {
+    ...base,
+    emotion: "neutral",
+  };
+}
+
+/**
  * Compute the complete face pose (mouth, brows, eyes, head tilt/nod) at time t.
+ * Incorporates ISL non-manual grammar markers (question brow raises, wh-furrows, affirmative smiles).
  */
 export function computeFacePose(
   signId: string | undefined,
@@ -198,32 +290,61 @@ export function computeFacePose(
     const relaxFactor = isInterSign ? 0.3 : 0.0;
     return {
       mouthOpen: REST_VISEME.mouthOpen * (1 + relaxFactor),
-      mouthSmile: 0.0,
+      mouthSmile: 0.14,
       mouthPucker: 0.0,
       browRaise: 0.0,
       browFurrow: 0.0,
       blink,
       headTilt: Math.sin(time * 0.7) * 0.015,
       headNod: Math.sin(time * 1.1) * 0.01,
+      emotion: "neutral",
     };
   }
 
-  // Active clip mouthing
-  const viseme = sampleLipSync(signId, clipProgress);
+  const key = signId.toLowerCase().trim();
+  const viseme = sampleLipSync(key, clipProgress);
+  const envelope = Math.sin(Math.min(1, Math.max(0, clipProgress)) * Math.PI);
 
-  // Expressive prosody: subtle brow raise on peak vowel opening
-  const browRaise = Math.max(0, (viseme.mouthOpen - 0.3) * 0.6);
-  // Head nod accents on the syllable beats
-  const headNod = Math.sin(clipProgress * Math.PI * 4) * 0.02;
-  const headTilt = Math.sin(clipProgress * Math.PI * 2) * 0.025;
+  const isQuestion = QUESTION_SIGNS.has(key);
+  const isSmile = SMILE_SIGNS.has(key);
+  const isFurrow = FURROW_SIGNS.has(key);
+
+  // Expressive prosody: brow raise on peak vowel opening + ISL grammar markers
+  let browRaise = Math.max(0, (viseme.mouthOpen - 0.3) * 0.6);
+  let browFurrow = 0.0;
+  let emotion: AvatarEmotion = "neutral";
+  let mouthSmile = viseme.mouthSmile;
+  let mouthPucker = viseme.mouthPucker;
+
+  if (isQuestion) {
+    browRaise = Math.max(browRaise, 0.75 * envelope);
+    browFurrow = key === "what" || key === "where" || key === "how" ? 0.28 * envelope : 0.0;
+    mouthPucker = Math.max(mouthPucker, 0.45 * envelope);
+    emotion = "question";
+  } else if (isSmile) {
+    browRaise = Math.max(browRaise, 0.28 * envelope);
+    mouthSmile = Math.max(mouthSmile, 0.68 * envelope);
+    emotion = "smile";
+  } else if (isFurrow) {
+    browFurrow = 0.62 * envelope;
+    mouthSmile = Math.min(mouthSmile, -0.15 * envelope);
+  }
+
+  // Head nod/tilt accents on the syllable beats & grammar markers
+  const headNod = Math.sin(clipProgress * Math.PI * 4) * 0.02 + (isQuestion ? -0.03 * envelope : 0);
+  const headTilt = Math.sin(clipProgress * Math.PI * 2) * 0.025 + (isQuestion ? 0.07 * envelope : 0);
 
   return {
-    ...viseme,
+    mouthOpen: viseme.mouthOpen,
+    mouthSmile,
+    mouthPucker,
     browRaise,
-    browFurrow: 0.0,
+    browFurrow,
     blink,
     headTilt,
     headNod,
+    emotion,
   };
 }
+
 

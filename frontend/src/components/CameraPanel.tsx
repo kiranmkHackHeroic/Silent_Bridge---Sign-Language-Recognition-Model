@@ -15,9 +15,11 @@ interface Props {
   switches?: ReactNode;
   topLeft?: ReactNode;
   topRight?: ReactNode;
+  bottomLeft?: ReactNode;
+  bottomRight?: ReactNode;
 }
 
-export function CameraPanel({ vision, overlay, setOverlay, controls, switches, topLeft, topRight }: Props) {
+export function CameraPanel({ vision, overlay, setOverlay, controls, switches, topLeft, topRight, bottomLeft, bottomRight }: Props) {
   const { videoRef, canvasRef, camera, modelState, error, devices, deviceId, stats, start, stop, switchCamera } = vision;
   const camTone = camera === "on" ? "ok" : camera === "error" ? "bad" : camera === "starting" ? "warn" : "muted";
   const lmTone = modelState === "ready" ? "ok" : modelState === "error" ? "bad" : modelState === "loading" ? "warn" : "muted";
@@ -41,10 +43,16 @@ export function CameraPanel({ vision, overlay, setOverlay, controls, switches, t
             )}
           </div>
         )}
-        {camera === "on" && (topLeft || topRight) && (
+        {(topLeft || topRight) && (
           <div className="video-overlay">
             <span>{topLeft}</span>
             <span>{topRight}</span>
+          </div>
+        )}
+        {(bottomLeft || bottomRight) && (
+          <div className="video-hud-bottom">
+            <span>{bottomLeft}</span>
+            <span>{bottomRight}</span>
           </div>
         )}
       </div>

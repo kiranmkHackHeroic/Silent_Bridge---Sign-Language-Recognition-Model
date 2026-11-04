@@ -75,12 +75,18 @@ export default function App() {
           ))}
         </nav>
         <div className="top-actions">
-          <button className="btn btn-ghost btn-sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}>
+          <button
+            className="btn btn-ghost btn-sm"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          >
             <Icon name={theme === "dark" ? "sun" : "moon"} size={16} />
+            <span className="xs">{theme === "dark" ? "Light" : "Dark"}</span>
           </button>
         </div>
       </header>
-      <main className="content">
+      <main key={page} className="content page-transition">
         {page === "live" && <LiveRecognition />}
         {page === "custom" && <CustomSigns />}
         {page === "k2s" && <KannadaToSign />}

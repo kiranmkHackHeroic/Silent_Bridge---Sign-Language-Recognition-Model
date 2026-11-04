@@ -1,7 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, it } from "node:test";
+import assert from "node:assert/strict";
 import { speakKannada } from "./speech";
 
 const TEXT = "ನಿಮ್ಮ ಹೆಸರೇನು? ನನ್ನ ತಾಯಿ";
+const origFetch = globalThis.fetch;
 
 function mockSpeech(voices: { lang: string }[]) {
   const spoken: { text: string; lang: string }[] = [];
@@ -27,32 +29,38 @@ afterEach(() => {
   const g = globalThis as Record<string, unknown>;
   delete g.window;
   delete g.SpeechSynthesisUtterance;
-  vi.unstubAllGlobals();
+  globalThis.fetch = origFetch;
 });
 
 describe("Kannada speech output", () => {
   it("sends the exact Kannada text to an installed Kannada voice", async () => {
     const spoken = mockSpeech([{ lang: "en-US" }, { lang: "kn-IN" }]);
-    expect(await speakKannada(`  ${TEXT}  `, false)).toBe("local");
-    expect(spoken).toEqual([{ text: TEXT, lang: "kn-IN" }]);
+    assert.equal(await speakKannada(`  ${TEXT}  `, false), "local");
+    assert.deepEqual(spoken, [{ text: TEXT, lang: "kn-IN" }]);
   });
 
   it("refuses to send text online unless the user allowed it", async () => {
     mockSpeech([{ lang: "en-US" }]);
-    const fetchSpy = vi.fn();
-    vi.stubGlobal("fetch", fetchSpy);
-    await expect(speakKannada(TEXT, false)).rejects.toThrow(/No Kannada voice/);
-    expect(fetchSpy).not.toHaveBeenCalled();
+    let called = false;
+    globalThis.fetch = (async () => {
+      called = true;
+      return new Response();
+    }) as typeof fetch;
+    await assert.rejects(() => speakKannada(TEXT, false), /No Kannada voice/);
+    assert.equal(called, false);
   });
 
   it("keeps Kannada Unicode intact in the online TTS request", async () => {
     mockSpeech([]);
-    const fetchSpy = vi.fn(async () => ({ ok: false, statusText: "offline", json: async () => ({ detail: "offline" }) }));
-    vi.stubGlobal("fetch", fetchSpy);
-    await expect(speakKannada(TEXT, true)).rejects.toThrow(/Online TTS unavailable/);
-    const body = JSON.parse((fetchSpy.mock.calls[0] as unknown as [string, { body: string }])[1].body);
-    expect(body.text).toBe(TEXT);
-    expect(body.text.normalize("NFC")).toBe(body.text);
+    let capturedBody = "";
+    globalThis.fetch = (async (_url: unknown, init?: RequestInit) => {
+      capturedBody = String(init?.body ?? "");
+      return { ok: false, statusText: "offline", json: async () => ({ detail: "offline" }) } as Response;
+    }) as typeof fetch;
+    await assert.rejects(() => speakKannada(TEXT, true), /Online TTS unavailable/);
+    const body = JSON.parse(capturedBody);
+    assert.equal(body.text, TEXT);
+    assert.equal(body.text.normalize("NFC"), body.text);
   });
 
   it("waits for a voice list that loads after the page opens", async () => {
@@ -74,8 +82,8 @@ describe("Kannada speech output", () => {
     const pending = speakKannada(TEXT, false);
     voices = [{ lang: "kn-IN" }];
     listeners.forEach((cb) => cb());
-    expect(await pending).toBe("local");
-    expect(spoken).toEqual([{ text: TEXT, lang: "kn-IN" }]);
+    assert.equal(await pending, "local");
+    assert.deepEqual(spoken, [{ text: TEXT, lang: "kn-IN" }]);
   });
 
   it("reports a voice that fails after speaking started", async () => {
@@ -87,12 +95,12 @@ describe("Kannada speech output", () => {
     const errors: string[] = [];
     await speakKannada(TEXT, false, (m) => errors.push(m));
     utter!.onerror!({ error: "network" });
-    utter!.onerror!({ error: "interrupted" });            // stopping playback is not an error
-    expect(errors).toEqual(["The Kannada voice could not speak (network)."]);
+    utter!.onerror!({ error: "interrupted" });
+    assert.deepEqual(errors, ["The Kannada voice could not speak (network)."]);
   });
 
   it("rejects empty text", async () => {
     mockSpeech([{ lang: "kn-IN" }]);
-    await expect(speakKannada("   ", true)).rejects.toThrow(/Nothing to speak/);
+    await assert.rejects(() => speakKannada("   ", true), /Nothing to speak/);
   });
 });

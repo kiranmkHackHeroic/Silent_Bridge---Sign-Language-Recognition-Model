@@ -98,6 +98,7 @@ export function useVision({ face, overlay, onResult }: Options) {
     let fpsWindowStart = performance.now();
     let infAvg = 0;
     let faceToggle = 0;
+    let faceMissingCount = 0;
     let lastFace: { box: FaceBox | null; blend: Record<string, number> | null; detected: boolean } = {
       box: null, blend: null, detected: false,
     };
@@ -137,6 +138,7 @@ export function useVision({ face, overlay, onResult }: Options) {
             const fr = models.face.detectForVideo(src, now);
             const lm = fr.faceLandmarks?.[0];
             if (lm && lm.length) {
+              faceMissingCount = 0;
               let minX = 1, minY = 1, maxX = 0, maxY = 0;
               for (const p of lm) {
                 if (p.x < minX) minX = p.x;
@@ -146,13 +148,34 @@ export function useVision({ face, overlay, onResult }: Options) {
               }
               const blend: Record<string, number> = {};
               for (const c of fr.faceBlendshapes?.[0]?.categories ?? []) blend[c.categoryName] = c.score;
+              const rawBox: FaceBox = {
+                cx: r4((minX + maxX) / 2),
+                cy: r4((minY + maxY) / 2),
+                w: r4(maxX - minX),
+                h: r4(maxY - minY),
+              };
+              const prevBox = lastFace.box;
+              const smoothedBox: FaceBox = prevBox
+                ? {
+                    cx: r4(0.35 * rawBox.cx + 0.65 * prevBox.cx),
+                    cy: r4(0.35 * rawBox.cy + 0.65 * prevBox.cy),
+                    w: r4(0.35 * rawBox.w + 0.65 * prevBox.w),
+                    h: r4(0.35 * rawBox.h + 0.65 * prevBox.h),
+                  }
+                : rawBox;
               lastFace = {
-                box: { cx: r4((minX + maxX) / 2), cy: r4((minY + maxY) / 2), w: r4(maxX - minX), h: r4(maxY - minY) },
+                box: smoothedBox,
                 blend: Object.keys(blend).length ? blend : null,
                 detected: true,
               };
             } else {
-              lastFace = { box: null, blend: null, detected: false };
+              faceMissingCount += 1;
+              // Retain last known face box across brief hand-over-face occlusions (up to ~1.5s)
+              lastFace = {
+                box: faceMissingCount <= 22 ? lastFace.box : null,
+                blend: null,
+                detected: false,
+              };
             }
           } catch (err) {
             console.warn("face detection failed", err);
