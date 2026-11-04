@@ -5,6 +5,8 @@ import { MeaningPanel } from "../components/MeaningPanel";
 import { PipelineDiagnostics, type Decision, type FrameDiag } from "../components/PipelineDiagnostics";
 import { Btn, Card, Chip, ConfidenceBar, Notice, StatusDot } from "../components/ui";
 import { EXPRESSION_TEXT, ExpressionSmoother, type ExpressionEstimate } from "../expression/expressionClassifier";
+import { NonManualGrammarTracker, type NonManualGrammarState } from "../expression/nonManualGrammar";
+import { onnxEngine } from "../services/onnxInference";
 import { api, WEBCAM_THRESHOLD_KEY } from "../services/api";
 import { RecognitionSocket, type ServerMessage, type SocketStatus } from "../services/recognitionSocket";
 import { sessionStats } from "../services/sessionStats";
@@ -98,6 +100,7 @@ export function LiveRecognition() {
   const [items, setItems] = useState<TranscriptItem[]>([]);
   const [manualText, setManualText] = useState<string | null>(null);
   const [expression, setExpression] = useState<ExpressionEstimate | null>(null);
+  const [nonManualState, setNonManualState] = useState<NonManualGrammarState | null>(null);
   const [vocab, setVocab] = useState<VocabEntry[]>([]);
   const [speakMsg, setSpeakMsg] = useState<{ tone: "info" | "warn"; text: string } | null>(null);
   const [allowOnlineTts, setAllowOnlineTts] = useState(false);
@@ -118,12 +121,18 @@ export function LiveRecognition() {
     }
   });
   const [thresholdTouched, setThresholdTouched] = useState(webcamThreshold !== null);
+  const [engineMode, setEngineMode] = useState<"server" | "onnx">("server");
+  const [onnxReady, setOnnxReady] = useState(false);
+  const engineModeRef = useRef(engineMode);
+  engineModeRef.current = engineMode;
   const [now, setNow] = useState(Date.now());
 
   const socketRef = useRef<RecognitionSocket | null>(null);
   const stateRef = useRef<ServerState>(EMPTY_STATE);
   const exprRef = useRef(new ExpressionSmoother());
   const exprValueRef = useRef<ExpressionEstimate | null>(null);
+  const nonManualRef = useRef(new NonManualGrammarTracker());
+  const nonManualValueRef = useRef<NonManualGrammarState | null>(null);
   const pausedRef = useRef(paused);
   const demoRef = useRef(demo);
   const exprEnabledRef = useRef(exprEnabled);
@@ -215,6 +224,7 @@ export function LiveRecognition() {
       setServerState({ ...stateRef.current });
       setNow(Date.now());
       if (exprValueRef.current) setExpression(exprValueRef.current);
+      if (nonManualValueRef.current) setNonManualState(nonManualValueRef.current);
     }, 120);
     const updateVoice = () => setHasKnVoice(Boolean(kannadaVoice()));
     updateVoice();
@@ -275,11 +285,46 @@ export function LiveRecognition() {
   }, [demo, socketStatus]);
 
   const onResult = useCallback((r: VisionResult) => {
-    if (!pausedRef.current && !demoRef.current) socketRef.current?.send({ type: "frame", ...r.frame });
+    if (!pausedRef.current && !demoRef.current) {
+      if (engineModeRef.current === "onnx" && onnxEngine.ready) {
+        onnxEngine.processFrame(r.frame).then((pred) => {
+          if (!pred) return;
+          const entry = vocab.find((v) => v.label === pred.label);
+          const token: TranscriptToken = {
+            label: pred.label,
+            kannada: entry?.kannada || pred.label,
+            english: entry?.english || pred.label,
+            confidence: pred.confidence,
+            source: "onnx",
+            t: Date.now(),
+          };
+          if (confirmModeRef.current === "off") {
+            setItems((t) => [...t, fromServerToken(token)]);
+          } else {
+            setPending((ps) => [
+              ...ps,
+              { id: `p${pendingCounter++}`, token, top: pred.top, created: Date.now() },
+            ]);
+          }
+          setHero({ kind: "sign", token, top: pred.top, simulated: false, at: Date.now() });
+          setEventMsg(`100% In-Browser ONNX inference: ${pred.latency_ms} ms (zero backend latency).`);
+          sessionStats.signsRecognized++;
+        });
+      } else {
+        socketRef.current?.send({ type: "frame", ...r.frame });
+      }
+    }
     framesRef.current.push(r.frame);
     if (framesRef.current.length > FRAME_RING * 1.5) framesRef.current.splice(0, framesRef.current.length - FRAME_RING);
-    if (exprEnabledRef.current) exprValueRef.current = exprRef.current.update(r.faceDetected ? r.blendshapes : null);
-  }, []);
+    if (exprEnabledRef.current) {
+      exprValueRef.current = exprRef.current.update(r.faceDetected ? r.blendshapes : null);
+      nonManualValueRef.current = nonManualRef.current.update(
+        r.faceDetected ? r.blendshapes : null,
+        r.frame.face,
+        r.frame.t
+      );
+    }
+  }, [vocab]);
 
   // The face landmarker always runs: its face box gives the "location relative to the face" features.
   const vision = useVision({ face: true, overlay, onResult });
@@ -384,7 +429,13 @@ export function LiveRecognition() {
                 : serverState.activity === "signing" ? <span className="pill pill-live"><StatusDot tone="ok" /> Signing</span>
                 : <span className="pill">{serverState.hands} hand(s) · waiting</span>
               }
-              topRight={demo ? <span className="pill">Simulated demo</span> : undefined}
+              topRight={
+                engineMode === "onnx" ? (
+                  <span className="pill pill-live"><StatusDot tone="ok" /> {onnxReady ? "100% In-Browser ONNX" : "Loading ONNX…"}</span>
+                ) : demo ? (
+                  <span className="pill">Simulated demo</span>
+                ) : undefined
+              }
               controls={
                 <Btn icon={paused ? "play" : "pause"} onClick={togglePause} disabled={demo}>
                   {paused ? "Resume" : "Pause"}
@@ -395,8 +446,11 @@ export function LiveRecognition() {
                   <input type="checkbox" checked={exprEnabled} onChange={(e) => {
                     setExprEnabled(e.target.checked);
                     exprRef.current.reset();
+                    nonManualRef.current.reset();
                     exprValueRef.current = null;
+                    nonManualValueRef.current = null;
                     setExpression(null);
+                    setNonManualState(null);
                   }} /> Expression analysis
                 </label>
               }
@@ -405,6 +459,25 @@ export function LiveRecognition() {
               <summary><Icon name="settings" size={15} /> Recognition settings</summary>
               <div className="disclosure-body">
                 <div className="form-grid cols-2">
+                  <label className="field">
+                    <span>Inference engine</span>
+                    <select
+                      value={engineMode}
+                      onChange={(e) => {
+                        const m = e.target.value as "server" | "onnx";
+                        setEngineMode(m);
+                        if (m === "onnx") onnxEngine.load().then(setOnnxReady);
+                      }}
+                    >
+                      <option value="server">FastAPI Backend (WebSocket)</option>
+                      <option value="onnx">⚡ 100% In-Browser ONNX (WebAssembly · Zero Backend)</option>
+                    </select>
+                    <span className="hint">
+                      {engineMode === "onnx"
+                        ? (onnxReady ? `⚡ ONNX model active (${onnxEngine.classCount} classes). Zero network latency, 100% private.` : "Loading ONNX model in browser…")
+                        : "Streaming landmarks to local Python FastAPI backend."}
+                    </span>
+                  </label>
                   <label className="field">
                     <span>Confidence threshold: {Math.round(threshold * 100)}%</span>
                     <input type="range" min={0.05} max={0.95} step={0.05} value={threshold} onChange={(e) => { setThresholdTouched(true); setThreshold(Number(e.target.value)); }} />
@@ -652,12 +725,13 @@ export function LiveRecognition() {
 
           <MeaningPanel
             labels={items.filter((t) => t.kind === "sign" && t.label !== "sentence").map((t) => t.label)}
+            nonManual={nonManualState}
             onUseKannada={(text) => setManualText(text)}
           />
 
-          <Card title="Facial expression" icon="face" subtitle="Visible-expression estimate, shown separately from the sign">
+          <Card title="Face & Non-Manual Grammar" icon="face" subtitle="Facial blendshapes & non-manual markers for ISL grammar">
             {!exprEnabled ? (
-              <span className="muted small">Expression analysis is off.</span>
+              <span className="muted small">Expression and non-manual analysis is off.</span>
             ) : vision.stats.faceError ? (
               <Notice tone="warn">Face model unavailable: {vision.stats.faceError}</Notice>
             ) : (
@@ -673,10 +747,21 @@ export function LiveRecognition() {
                     ))}
                   </div>
                 )}
+                {nonManualState && nonManualState.marker !== "statement" && (
+                  <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 8, background: "rgba(120, 120, 120, 0.08)", border: "1px solid rgba(120, 120, 120, 0.2)" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                      <strong className="small">Grammatical Marker:</strong>
+                      <Chip tone={nonManualState.marker === "negation" ? "bad" : nonManualState.marker.startsWith("question") ? "info" : "ok"}>
+                        {nonManualState.label}
+                      </Chip>
+                    </div>
+                    <span className="muted xs">Impacts Kannada grammar: {nonManualState.kannadaHint} (confidence: {Math.round(nonManualState.confidence * 100)}%)</span>
+                  </div>
+                )}
               </>
             )}
             <p className="muted xs">
-              A rule-based estimate from face-landmark blendshapes (heuristic intensity, not a calibrated probability). It does not tell you how someone feels. In sign languages, facial expressions are also grammar, so this never changes a recognized sign.
+              In Indian Sign Language, non-manual markers (raised brows for yes/no questions, furrowed brows for wh-questions, head shake for negation) convey sentence grammar and mood, which shapes the translated Kannada output.
             </p>
           </Card>
         </div>

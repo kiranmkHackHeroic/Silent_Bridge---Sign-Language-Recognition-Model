@@ -83,6 +83,11 @@ export interface GlossTranslation {
   english_text: string;
   kannada_text: string;
   direct_kannada: string;
+  natural_kannada?: string;
+  llm_method?: "gemini" | "ollama" | "rules" | "passthrough";
+  llm_latency_ms?: number;
+  llm_cached?: boolean;
+  llm_error?: string | null;
   segments: GlossSegment[];
   status: "phrase" | "phrases" | "partial" | "word_by_word" | "unsupported" | "empty";
   phrase_coverage: number;
@@ -170,8 +175,8 @@ export const api = {
     request<{ isolated: number; per_label: Record<string, number>; sessions: string[]; signers?: string[]; sequences: number;
       sequence_signs: number; metadata_warnings?: string[] }>("/api/evaluation/data"),
   evaluateLive: () => request<LiveEvalReport>("/api/evaluation/live", { method: "POST" }),
-  translateGlosses: (labels: string[]) =>
-    request<GlossTranslation>("/api/translate/glosses", { method: "POST", body: JSON.stringify({ labels }) }),
+  translateGlosses: (labels: string[], nonManual?: object | null) =>
+    request<GlossTranslation>("/api/translate/glosses", { method: "POST", body: JSON.stringify({ labels, non_manual: nonManual }) }),
   continuousStatus: () => request<ContinuousStatus>("/api/continuous/status"),
   trainContinuous: () => request<Job>("/api/continuous/train", { method: "POST" }),
   finetune: () => request<Job>("/api/model/finetune", { method: "POST" }),

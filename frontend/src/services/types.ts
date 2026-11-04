@@ -156,7 +156,7 @@ export interface TranscriptToken {
   kannada: string;
   english: string;
   confidence: number;
-  source: "model" | "simulated" | "edited";
+  source: "model" | "simulated" | "edited" | "onnx";
   t: number;
 }
 

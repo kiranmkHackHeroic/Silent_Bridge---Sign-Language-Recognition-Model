@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Icon, type IconName } from "./components/Icon";
 import { AboutTesting } from "./pages/AboutTesting";
+import { CustomSigns } from "./pages/CustomSigns";
 import { DatasetModel } from "./pages/DatasetModel";
 import { KannadaToSign } from "./pages/KannadaToSign";
 import { LiveRecognition } from "./pages/LiveRecognition";
@@ -8,12 +9,13 @@ import { SignReference } from "./pages/SignReference";
 
 const PAGES: { id: PageId; label: string; icon: IconName }[] = [
   { id: "live", label: "Live Recognition", icon: "hand" },
+  { id: "custom", label: "Custom Signs", icon: "record" },
   { id: "k2s", label: "Kannada to Sign", icon: "text" },
   { id: "reference", label: "Sign Reference", icon: "eye" },
   { id: "dataset", label: "Dataset & Model", icon: "database" },
   { id: "about", label: "About & Testing", icon: "flask" },
 ];
-type PageId = "live" | "k2s" | "reference" | "dataset" | "about";
+type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "about";
 
 function pageFromHash(): PageId {
   const h = location.hash.replace("#", "");
@@ -80,6 +82,7 @@ export default function App() {
       </header>
       <main className="content">
         {page === "live" && <LiveRecognition />}
+        {page === "custom" && <CustomSigns />}
         {page === "k2s" && <KannadaToSign />}
         {page === "reference" && <SignReference />}
         {page === "dataset" && <DatasetModel />}

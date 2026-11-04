@@ -8,14 +8,16 @@ Stages (kept separate in every result):
                            each sign; leftover signs get word-level English glosses, explicitly marked
   3. Kannada               the Kannada sentence of the matched phrase (same phrase entry as the English);
                            leftover signs fall back to Kannada gloss words, explicitly marked
-  4. unknown / ambiguous   unknown labels, word-by-word leftovers and sequences with several possible
+  4. LLM grammar           the baseline Kannada from stages 2-3 is optionally post-processed by an LLM
+                           (or rule-based fallback) into grammatically fluent, natural Kannada
+  5. unknown / ambiguous   unknown labels, word-by-word leftovers and sequences with several possible
                            meanings (e.g. statement vs question, which ISL marks with the face) are flagged
                            and alternatives returned
 
 The phrase table is data/kannada_sign_mapping.json (entries with a category): one entry holds the sign
 sequence (ISL order), its English meaning and its Kannada sentence, so English and Kannada can never
-drift apart. English is a semantic representation for display and lookup; no machine translation model
-is used, and nothing here receives video.
+drift apart. The LLM layer post-processes the phrase-table output to add proper grammar, vibhakti
+suffixes, copula verbs and SOV word order that ISL omits.
 """
 from __future__ import annotations
 
@@ -23,6 +25,7 @@ from dataclasses import dataclass
 
 from ..config import NONE_LABEL
 from .kannada_mapping import KannadaSignMapper, Vocabulary, clean_display_text, normalize_kannada
+from .llm_kannada import get_llm_translator
 
 
 @dataclass
@@ -72,7 +75,7 @@ class SemanticTranslator:
         return out
 
     # ---------------------------------------------------------------- stages 2-4
-    def translate(self, labels: list[str]) -> dict:
+    def translate(self, labels: list[str], non_manual: dict | None = None) -> dict:
         """Recognised sign labels (in signing order) -> structured meaning."""
         glosses = self.normalize_glosses(labels)
         ids = [g["sign_id"] for g in glosses]
@@ -132,11 +135,46 @@ class SemanticTranslator:
             "unknown": [s["glosses"][0] for s in segments if s["type"] == "unknown"],
             "verified": bool(segments) and all(s["verified"] for s in segments),
             "method": "phrase table (sequence-level), English meaning and Kannada from the same entry",
+            **self._llm_translate(glosses, segments, non_manual),
         }
 
     def direct_kannada(self, labels: list[str]) -> str:
         """Baseline: each sign's Kannada gloss word in signing order (no sequence-level meaning)."""
         return " ".join(g["kannada"] for g in self.normalize_glosses(labels) if g["kannada"])
+
+    def _llm_translate(self, glosses: list[dict], segments: list[dict],
+                       non_manual: dict | None = None) -> dict:
+        """Run the LLM Kannada grammar post-processor on the phrase-table output.
+
+        Returns a dict with keys added to the translate() result:
+          - natural_kannada: the LLM-refined Kannada sentence
+          - llm_method: which backend was used ("gemini" / "ollama" / "rules" / "passthrough")
+          - llm_latency_ms: wall-clock milliseconds for the LLM call
+          - llm_cached: True if served from cache
+          - llm_error: error message if the LLM call failed (fallback was used)
+          - non_manual: the applied non-manual grammatical marker
+        """
+        if not glosses:
+            return {"natural_kannada": "", "llm_method": "passthrough",
+                    "llm_latency_ms": 0, "llm_cached": False, "llm_error": None,
+                    "non_manual": non_manual}
+
+        gloss_tokens = [g["gloss"] for g in glosses]
+        english_tokens = [g.get("english", "") for g in glosses]
+        baseline_kannada = self._join_kannada(segments)
+
+        translator = get_llm_translator()
+        result = translator.translate(gloss_tokens, english_tokens, baseline_kannada, non_manual=non_manual)
+
+        return {
+            "natural_kannada": result.kannada,
+            "llm_method": result.method,
+            "llm_latency_ms": result.latency_ms,
+            "llm_cached": result.cached,
+            "llm_error": result.error,
+            "non_manual": non_manual,
+        }
+
 
     @staticmethod
     def _join_english(segments: list[dict]) -> str:

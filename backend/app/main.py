@@ -101,6 +101,7 @@ class TranslateRequest(BaseModel):
 
 class GlossTranslateRequest(BaseModel):
     labels: list[str] = Field(..., max_length=60)
+    non_manual: dict | None = None
 
 
 class VocabRequest(BaseModel):
@@ -497,7 +498,7 @@ def translate_glosses(req: GlossTranslateRequest):
     if any(len(lab) > 40 for lab in req.labels):
         raise HTTPException(422, "label too long")
     t = _semantic()
-    out = t.translate(req.labels)
+    out = t.translate(req.labels, non_manual=req.non_manual)
     out["direct_kannada"] = t.direct_kannada(req.labels)
     return out
 

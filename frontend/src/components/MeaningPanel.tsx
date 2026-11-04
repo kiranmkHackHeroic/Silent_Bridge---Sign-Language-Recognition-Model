@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api, type GlossTranslation } from "../services/api";
+import type { NonManualGrammarState } from "../expression/nonManualGrammar";
 import { Btn, Card, Chip, Notice, type Tone } from "./ui";
 
 const STATUS: Record<string, { tone: Tone; text: string }> = {
@@ -13,14 +14,22 @@ const STATUS: Record<string, { tone: Tone; text: string }> = {
 
 /**
  * Recognised signs -> ISL gloss sequence -> English meaning -> Kannada, each shown separately.
- * The whole sequence is matched against the phrase table (meaning depends on the sequence), so correcting
- * a word in the transcript re-translates everything. Unknown or word-by-word parts are labelled, never guessed.
+ * The whole sequence is matched against the phrase table and processed by the LLM/Grammar Engine,
+ * integrating non-manual facial and head markers (questions, negation, affirmation).
  */
-export function MeaningPanel({ labels, onUseKannada }: { labels: string[]; onUseKannada: (text: string) => void }) {
+export function MeaningPanel({
+  labels,
+  nonManual,
+  onUseKannada,
+}: {
+  labels: string[];
+  nonManual?: NonManualGrammarState | null;
+  onUseKannada: (text: string) => void;
+}) {
   const [res, setRes] = useState<GlossTranslation | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [choice, setChoice] = useState<Record<number, number>>({});    // segment index -> alternative index
-  const key = labels.join(" ");
+  const key = `${labels.join(" ")}::${nonManual?.marker ?? "statement"}`;
 
   useEffect(() => {
     setChoice({});
@@ -29,7 +38,10 @@ export function MeaningPanel({ labels, onUseKannada }: { labels: string[]; onUse
       return;
     }
     const t = window.setTimeout(() => {
-      api.translateGlosses(labels).then((r) => { setRes(r); setErr(null); }).catch((e) => setErr(String(e.message || e)));
+      api
+        .translateGlosses(labels, nonManual ? { marker: nonManual.marker, label: nonManual.label, confidence: nonManual.confidence } : null)
+        .then((r) => { setRes(r); setErr(null); })
+        .catch((e) => setErr(String(e.message || e)));
     }, 250);
     return () => window.clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,9 +71,31 @@ export function MeaningPanel({ labels, onUseKannada }: { labels: string[]; onUse
           <div className="meaning-row"><span className="meaning-label">English</span>
             <span>{segText("english")} <Chip tone={st.tone}>{st.text}</Chip></span>
           </div>
+          {nonManual && nonManual.marker !== "statement" && (
+            <div className="meaning-row">
+              <span className="meaning-label">Face / Head</span>
+              <span>
+                <Chip tone={nonManual.marker === "negation" ? "bad" : nonManual.marker.startsWith("question") ? "info" : "ok"}>
+                  {nonManual.label} ({Math.round(nonManual.confidence * 100)}%)
+                </Chip>
+                <span className="muted small" style={{ marginLeft: 8 }}>{nonManual.kannadaHint}</span>
+              </span>
+            </div>
+          )}
           <div className="meaning-row"><span className="meaning-label">ಕನ್ನಡ</span>
-            <span className="meaning-kn" lang="kn">{segText("kannada") || "—"}</span>
+            <span className="meaning-kn" lang="kn">{res.natural_kannada || segText("kannada") || "—"}</span>
+            {res.llm_method && res.llm_method !== "passthrough" && (
+              <Chip tone={res.llm_method === "gemini" ? "ok" : res.llm_method === "ollama" ? "ok" : "warn"}>
+                {res.llm_method === "gemini" ? "Gemini AI" : res.llm_method === "ollama" ? "Ollama AI" : "Grammar Engine"}
+                {res.llm_cached ? " (cached)" : res.llm_latency_ms ? ` (${res.llm_latency_ms} ms)` : ""}
+              </Chip>
+            )}
           </div>
+          {res.natural_kannada && segText("kannada") && res.natural_kannada !== segText("kannada") && (
+            <div className="meaning-row"><span className="meaning-label">ಪದಶಃ (Literal)</span>
+              <span className="muted small" lang="kn">{segText("kannada")}</span>
+            </div>
+          )}
           {res.segments.some((s) => s.alternatives.length > 0) && (
             <div className="small">
               {res.segments.map((s, i) => s.alternatives.length > 0 && (
@@ -81,7 +115,7 @@ export function MeaningPanel({ labels, onUseKannada }: { labels: string[]; onUse
             {res.unknown.length > 0 && <> · unsupported: {res.unknown.join(", ")}</>}
           </div>
           <div className="toolbar">
-            <Btn size="sm" icon="copy" onClick={() => onUseKannada(segText("kannada"))} disabled={!segText("kannada")}>Use this Kannada in the editable text</Btn>
+            <Btn size="sm" icon="copy" onClick={() => onUseKannada(res.natural_kannada || segText("kannada"))} disabled={!(res.natural_kannada || segText("kannada"))}>Use Natural Kannada in the editable text</Btn>
             <span className="muted xs">Correct a sign in the transcript and the meaning is recomputed for the whole sequence.</span>
           </div>
         </div>

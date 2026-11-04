@@ -37,6 +37,7 @@ export function KannadaToSign() {
   const [playing, setPlaying] = useState<SeqSign[]>([]);
   const [speed, setSpeed] = useState(1);
   const [listening, setListening] = useState(false);
+  const [autoSignVoice, setAutoSignVoice] = useState(true);
   const [speechMsg, setSpeechMsg] = useState("");
   const avatarRef = useRef<AvatarHandle | null>(null);
   const stopListenRef = useRef<() => void>(() => undefined);
@@ -56,12 +57,13 @@ export function KannadaToSign() {
     avatarRef.current?.play(list.map((s) => s.clip!));
   };
 
-  const translate = async () => {
+  const translateText = async (targetText: string) => {
+    if (!targetText.trim()) return;
     setError(null);
     setBusy(true);
     avatarRef.current?.stop();
     try {
-      const res = await api.translate(text);
+      const res = await api.translate(targetText.trim());
       setResult(res);
       const flat: SeqSign[] = [];
       res.items.forEach((item, group) => item.signs.forEach((sign) => flat.push({ group, item, sign, clip: null })));
@@ -87,6 +89,8 @@ export function KannadaToSign() {
     }
   };
 
+  const translate = () => translateText(text);
+
   const clear = () => {
     setText("");
     setResult(null);
@@ -101,7 +105,13 @@ export function KannadaToSign() {
     setSpeechMsg("");
     setListening(true);
     stopListenRef.current = listenKannada(
-      (t) => setText((prev) => (prev ? `${prev} ${t}` : t)),
+      (t) => {
+        setText((prev) => {
+          const next = prev ? `${prev} ${t}` : t;
+          if (autoSignVoice) translateText(next);
+          return next;
+        });
+      },
       (e) => setSpeechMsg(e),
       () => setListening(false),
     );
@@ -139,9 +149,19 @@ export function KannadaToSign() {
               </Btn>
               <Btn icon="x" onClick={clear}>Clear</Btn>
               {speechRecognitionSupported() && (
-                <Btn icon="mic" variant="ghost" onClick={toggleListen} title="Uses the browser's online speech service">
-                  {listening ? "Stop listening" : "Speak Kannada"}
-                </Btn>
+                <>
+                  <Btn icon="mic" variant={listening ? "primary" : "ghost"} onClick={toggleListen} title="Uses speech recognition to convert Kannada speech to 3D signs">
+                    {listening ? "Listening (Speaking...)" : "Speak Kannada"}
+                  </Btn>
+                  <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, cursor: "pointer", marginLeft: 8 }}>
+                    <input
+                      type="checkbox"
+                      checked={autoSignVoice}
+                      onChange={(e) => setAutoSignVoice(e.target.checked)}
+                    />
+                    <span>Auto-sign voice</span>
+                  </label>
+                </>
               )}
             </div>
             <div className="examples">
@@ -253,7 +273,26 @@ export function KannadaToSign() {
         </div>
 
         <div className="avatar-col">
-          <Card title="Sign avatar" icon="hand" actions={<Chip tone="sim" title="Procedural Three.js avatar built for this prototype">Prototype avatar</Chip>}>
+          <Card
+            title="3D Human Sign Avatar"
+            icon="face"
+            actions={
+              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                <Chip tone="ok" icon="eye" title="Avatar eyes and head follow your mouse cursor">
+                  Interactive Gaze
+                </Chip>
+                <Btn
+                  size="sm"
+                  variant="ghost"
+                  icon="hand"
+                  onClick={() => avatarRef.current?.greet()}
+                  title="Say hello to the avatar"
+                >
+                  Greet
+                </Btn>
+              </div>
+            }
+          >
             <div className="avatar-stage">
               <AvatarView ref={avatarRef} onState={setPlayback} speed={speed} />
               {busy && <div className="avatar-loading"><Spinner label="Loading sign animations…" /></div>}

@@ -65,3 +65,41 @@ describe("sequence timeline", () => {
     expect(poseAt(tl, 0).done).toBe(true);
   });
 });
+
+describe("co-articulation & lip-mouthing (Feature 6)", () => {
+  it("coarticulatePair adds a smooth ballistic arc offset between consecutive signs", async () => {
+    const { coarticulatePair, lerpPair } = await import("./animation");
+    const a = { ...NEUTRAL, right: { ...NEUTRAL.right, pos: [0.0, 1.2, 0.3] as [number, number, number] } };
+    const b = { ...NEUTRAL, right: { ...NEUTRAL.right, pos: [0.2, 1.2, 0.3] as [number, number, number] } };
+    const straight = lerpPair(a, b, 0.5);
+    const coarticulated = coarticulatePair(a, b, 0.5, true);
+    // Inter-sign transition exhibits ballistic downward dip
+    expect(coarticulated.right.pos[1]).toBeLessThan(straight.right.pos[1]);
+  });
+
+  it("converts Kannada text to phonetic visemes", async () => {
+    const { wordToVisemes, sampleLipSync } = await import("./lipSync");
+    const visemes = wordToVisemes("ನಮಸ್ಕಾರ");
+    expect(visemes.length).toBeGreaterThanOrEqual(3);
+    const midViseme = sampleLipSync("ನಮಸ್ಕಾರ", 0.5);
+    expect(midViseme.mouthOpen).toBeGreaterThan(0.05);
+  });
+
+  it("animates lip mouthing during clip playback and returns to rest during hold", () => {
+    const tl = buildTimeline([clip]);
+    const inClipFace = poseAt(tl, BLEND_IN + 0.5).face;
+    expect(inClipFace).toBeDefined();
+    expect(inClipFace.mouthOpen).toBeGreaterThan(0);
+
+    const holdFace = poseAt(tl, BLEND_IN + 1 + HOLD / 2).face;
+    expect(holdFace.mouthOpen).toBeLessThanOrEqual(inClipFace.mouthOpen + 0.1);
+  });
+
+  it("calculates spontaneous natural eye blinking", async () => {
+    const { computeBlink } = await import("./lipSync");
+    // At time 0, eyes are open (0)
+    expect(computeBlink(0)).toBe(0);
+    // At peak of blink cycle (e.g. 0.06s), eyes are shut (> 0.5)
+    expect(computeBlink(0.06)).toBeGreaterThan(0.5);
+  });
+});

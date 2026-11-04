@@ -8,7 +8,7 @@
  */
 import type { TranscriptToken } from "./types";
 
-export type ItemSource = "model" | "simulated" | "edited" | "manual";
+export type ItemSource = "model" | "simulated" | "edited" | "manual" | "onnx";
 
 export interface TranscriptItem {
   id: string;
