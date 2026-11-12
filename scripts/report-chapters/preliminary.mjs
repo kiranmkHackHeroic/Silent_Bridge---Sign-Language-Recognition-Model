@@ -176,7 +176,7 @@ export function buildPreliminaryPages(meta) {
           CERTIFICATE
         </div>
 
-        <p style="font-size:12pt; line-height:1.75; text-align:justify; text-indent:0; margin-bottom:24pt;">
+        <p style="font-size:11.5pt; line-height:1.75; text-align:justify; text-indent:0; margin-bottom:24pt;">
           This is to certify that the Project work entitled <strong>“<span class="report-project-title">${title}</span>”</strong> is a bona-fide work carried out by <strong>${studentInlineCert}</strong> in partial fulfillment for the award of degree of Bachelor of Engineering in <strong>Computer Science and Business Systems</strong> from <strong>Visvesvaraya Technological University, Belgaum</strong> during the year <strong>${academicYear}</strong>. It is certified that all corrections/suggestions indicated for internal assessment have been incorporated in the report deposited in the department library. The Project has been approved as it satisfies the academic requirements in respect of Project work prescribed for the Bachelor of Engineering Degree.
         </p>
 

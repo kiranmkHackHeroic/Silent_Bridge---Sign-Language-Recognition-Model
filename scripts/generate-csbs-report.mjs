@@ -528,7 +528,7 @@ const fullHtml = `<!DOCTYPE html>
     }
 
     p {
-      font-size: 12pt !important;
+      font-size: 12pt;
       line-height: 1.5;
       text-align: justify;
       text-justify: inter-word;
@@ -539,7 +539,7 @@ const fullHtml = `<!DOCTYPE html>
     }
 
     ul, ol {
-      font-size: 12pt !important;
+      font-size: 12pt;
       line-height: 1.5;
       text-align: justify;
       margin-top: 2pt;
@@ -548,7 +548,6 @@ const fullHtml = `<!DOCTYPE html>
     }
 
     li {
-      font-size: 12pt !important;
       margin-bottom: 2pt;
     }
 
@@ -954,13 +953,12 @@ const fullHtml = `<!DOCTYPE html>
         const listItems = inner.querySelectorAll(".toc-chapter-entry, .toc-section-entry, .toc-prelim-entry, .leader-list-item, .def-list-item, .sym-list-item");
 
         // Multi-step full-width vertical compaction if a page is taller than available height
-        // Body font size remains strictly 12pt across all pages for uniform typography
         const steps = [
-          { pFs: "12pt", pLh: "1.42", pMb: "3.8pt", tFs: "8.6pt", tLh: "1.18", cPad: "2pt 3.8pt", hScale: 0.96, codeFs: "8.4pt", codeLh: "1.22", lFs: "12pt", lLh: "1.34", lMb: "2.2pt" },
-          { pFs: "12pt", pLh: "1.35", pMb: "3pt",   tFs: "8.2pt", tLh: "1.15", cPad: "1.6pt 3.2pt", hScale: 0.92, codeFs: "8.0pt", codeLh: "1.18", lFs: "12pt", lLh: "1.28", lMb: "1.8pt" },
-          { pFs: "12pt", pLh: "1.28", pMb: "2.4pt", tFs: "7.8pt", tLh: "1.12", cPad: "1.3pt 2.8pt", hScale: 0.88, codeFs: "7.6pt", codeLh: "1.14", lFs: "12pt", lLh: "1.22", lMb: "1.4pt" },
-          { pFs: "12pt", pLh: "1.22", pMb: "1.8pt", tFs: "7.4pt", tLh: "1.09", cPad: "1.0pt 2.4pt", hScale: 0.84, codeFs: "7.2pt", codeLh: "1.10", lFs: "12pt", lLh: "1.18", lMb: "1.0pt" },
-          { pFs: "12pt", pLh: "1.16", pMb: "1.4pt", tFs: "7.0pt", tLh: "1.06", cPad: "0.8pt 2.0pt", hScale: 0.80, codeFs: "6.8pt", codeLh: "1.06", lFs: "12pt", lLh: "1.14", lMb: "0.8pt" },
+          { pFs: "11.4pt", pLh: "1.42", pMb: "3.8pt", tFs: "8.6pt", tLh: "1.18", cPad: "2pt 3.8pt", hScale: 0.96, codeFs: "8.4pt", codeLh: "1.22", lFs: "11.2pt", lLh: "1.34", lMb: "2.2pt" },
+          { pFs: "10.8pt", pLh: "1.35", pMb: "3pt",   tFs: "8.2pt", tLh: "1.15", cPad: "1.6pt 3.2pt", hScale: 0.92, codeFs: "8.0pt", codeLh: "1.18", lFs: "10.8pt", lLh: "1.28", lMb: "1.8pt" },
+          { pFs: "10.2pt", pLh: "1.28", pMb: "2.4pt", tFs: "7.8pt", tLh: "1.12", cPad: "1.3pt 2.8pt", hScale: 0.88, codeFs: "7.6pt", codeLh: "1.14", lFs: "10.4pt", lLh: "1.22", lMb: "1.4pt" },
+          { pFs: "9.6pt",  pLh: "1.22", pMb: "1.8pt", tFs: "7.4pt", tLh: "1.09", cPad: "1.0pt 2.4pt", hScale: 0.84, codeFs: "7.2pt", codeLh: "1.10", lFs: "10.0pt", lLh: "1.18", lMb: "1.0pt" },
+          { pFs: "9.0pt",  pLh: "1.16", pMb: "1.4pt", tFs: "7.0pt", tLh: "1.06", cPad: "0.8pt 2.0pt", hScale: 0.80, codeFs: "6.8pt", codeLh: "1.06", lFs: "9.5pt",  lLh: "1.14", lMb: "0.8pt" },
         ];
 
         for (const step of steps) {
@@ -968,11 +966,10 @@ const fullHtml = `<!DOCTYPE html>
           textBlocks.forEach((el) => {
             const tag = el.tagName.toLowerCase();
             if (tag === "p" || tag === "ul" || tag === "ol") {
-              el.style.fontSize = "12pt";
+              el.style.fontSize = step.pFs;
               el.style.lineHeight = step.pLh;
               el.style.marginBottom = step.pMb;
             } else if (tag === "li") {
-              el.style.fontSize = "12pt";
               el.style.marginBottom = "1pt";
             }
           });
