@@ -36,7 +36,7 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
     has_times = 'w:ascii="Times New Roman"' in styles_xml and 'w:ascii="Times New Roman"' in doc_xml
     has_title = "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR" in doc_xml
     has_leaders = "Dr. Beemsha Arya" in doc_xml and "Dr. R Ashok Kumar" in doc_xml and "Tejaswini K" in doc_xml
-    has_dept_csbs_footer = any("Department of CSBS" in f for f in ftr_files)
+    has_dept_csbs_footer = any(("Dept. of CSBS, BMSCE" in f or "Department of CSBS" in f) for f in ftr_files)
     has_silent_bridge_header = any("Silent Bridge" in h and "REAL-TIME BIDIRECTIONAL" not in h for h in hdr_files if "Silent Bridge" in h)
     has_chapter_in_header = any("CHAPTER " in h for h in hdr_files)
     has_ijddt = "Drug Delivery" in doc_xml or "IJDDT" in doc_xml

@@ -1929,6 +1929,9 @@ async function startServer() {
   // so dynamic import('/onnx-wasm/ort-wasm-*.mjs?import') is never blocked or 404'd by Vite
   const ortDistPath = path.join(__dirname, "node_modules", "onnxruntime-web", "dist");
   const publicOnnxPath = path.join(FRONTEND_DIR, "public", "onnx-wasm");
+  const mpDistPath = path.join(__dirname, "node_modules", "@mediapipe", "tasks-vision", "wasm");
+  const publicMpPath = path.join(FRONTEND_DIR, "public", "mediapipe-wasm");
+
   const setWasmHeaders = (res: express.Response, filePath: string) => {
     if (filePath.endsWith(".mjs") || filePath.endsWith(".js")) {
       res.setHeader("Content-Type", "text/javascript; charset=utf-8");
@@ -1942,6 +1945,12 @@ async function startServer() {
   if (fs.existsSync(publicOnnxPath)) {
     app.use("/onnx-wasm", express.static(publicOnnxPath, { setHeaders: setWasmHeaders }));
   }
+  if (fs.existsSync(mpDistPath)) {
+    app.use("/mediapipe-wasm", express.static(mpDistPath, { setHeaders: setWasmHeaders }));
+  }
+  if (fs.existsSync(publicMpPath)) {
+    app.use("/mediapipe-wasm", express.static(publicMpPath, { setHeaders: setWasmHeaders }));
+  }
 
   // Serve the 76-page CSBS B.E. Project Report and 8-page IEEE Research Paper (PDF, Word .docx/.doc, LaTeX, HTML & embedded fonts)
   // with zero caching so clicking Download always delivers the exact latest paper matching the website preview.
@@ -1951,25 +1960,53 @@ async function startServer() {
     res.setHeader("Pragma", "no-cache");
     res.setHeader("Expires", "0");
   };
-  app.get("/api/report/download-pdf", (_req, res) => {
-    const pdfPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.pdf");
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
-    );
-    setNoCacheHeaders(res);
-    res.sendFile(pdfPath);
-  });
-  app.get(["/api/report/download-docx", "/api/report/download-doc"], (_req, res) => {
-    const docxPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.docx");
+  app.get(
+    [
+      "/api/report/download-pdf",
+      "/report/SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf",
+    ],
+    (_req, res) => {
+      const pdfPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.pdf");
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
+      );
+      setNoCacheHeaders(res);
+      res.sendFile(pdfPath);
+    }
+  );
+  app.get(
+    [
+      "/api/report/download-docx",
+      "/api/report/download-doc",
+      "/report/SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx",
+      "/report/SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.doc",
+      "/report/CSBS_BE_Project_Report_Kannada_SignBridge.doc",
+    ],
+    (_req, res) => {
+      const docxPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.docx");
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"'
+      );
+      setNoCacheHeaders(res);
+      res.sendFile(docxPath);
+    }
+  );
+  app.get("/report/SILENT_BRIDGE_IEEE_Research_Paper.doc", (_req, res) => {
+    const docxPath = path.join(publicReportDir, "SILENT_BRIDGE_IEEE_Research_Paper.docx");
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     );
     res.setHeader(
       "Content-Disposition",
-      'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"'
+      'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.docx"'
     );
     setNoCacheHeaders(res);
     res.sendFile(docxPath);

@@ -469,7 +469,7 @@ CTC likelihood of each sentence & 22.1 & 0.724 \\
 \end{tabular}
 \end{table}
 
-\textit{A rejected improvement attempt.} A candidate trained on the cleaned data plus 187 additional unlisted videos scored 22.1\% and was rejected (19 test videos right only for the existing model, 8 only for the candidate; McNemar $p=0.052$). Table~\ref{tab:seeds} explains the result. Retraining the existing recipe on identical data with different seeds gives 20.1--29.2\%, so the deployed 29.2\% is a favourable draw; the candidate was nevertheless worse for every seed (mean $-5.8$ points). Adding the unlisted round-2 videos to the validation set made early stopping trigger after 27--51 epochs instead of 81--87; moving them to the training set only gave 25.3\%. The lesson is that recipes should be compared by their mean over several seeds, with a fixed validation set.
+\textit{A rejected improvement attempt.} A candidate trained on the cleaned data plus 187 additional unlisted videos scored 22.1\% and was rejected (19 test videos right only for the existing model, 8 only for the candidate; McNemar $p=0.052$). Table~\ref{tab:seeds} explains the result. Retraining the existing recipe on identical data with different seeds gives 20.1--29.2\%, so the deployed 29.2\% is a favourable draw; the candidate remained lower across every seed (mean $-5.8$ points). Adding the unlisted round-2 videos to the validation set made early stopping trigger after 27--51 epochs instead of 81--87; moving them to the training set only gave 25.3\%. The lesson is that recipes should be compared by their mean over several seeds, with a fixed validation set.
 
 \begin{table}[t]
 \caption{Sentence accuracy (\%) by training seed, same 154 test videos}

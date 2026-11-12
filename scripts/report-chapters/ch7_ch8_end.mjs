@@ -152,7 +152,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
 
     <div class="sec-h2">7.4.2 Non-Functional CPU Latency &amp; Resource Profiling</div>
     <p>
-      Table 7.5 reports the measured execution latencies on a standard CPU-only laptop (no discrete GPU). Per-frame backend processing takes $1.4\text{ ms}$ and single-sign BiGRU classification takes $3.8\text{ ms}$ ($11.2\text{ ms}$ for 3-view TTA), satisfying <code>NFR-01</code> by a wide margin. Consequently, user-perceived response time after finishing a sign is governed by the intentional $280\text{ ms}$ stillness boundary window rather than neural computation.
+      Table 7.5 reports the measured execution latencies on a standard CPU-only laptop (no discrete GPU). Per-frame backend processing takes $1.4\text{ ms}$ and single-sign BiGRU classification takes $3.8\text{ ms}$ ($11.2\text{ ms}$ for 3-view TTA), satisfying <code>NFR-01</code> by a wide margin. As a result, user-perceived response time after finishing a sign is governed by the intentional $280\text{ ms}$ stillness boundary window rather than neural computation.
     </p>
 
     <div class="table-caption">Table 7.5 Measured Processing Latencies on Commodity Laptop CPU</div>
@@ -275,7 +275,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
     </div>
 
     <p style="margin-top:8pt;">
-      <strong>Governance Case Study — Why the Promotion Gate Rejected the 144-Class Candidate:</strong> In Phase 9, we downloaded $1,430$ additional INCLUDE videos covering $79$ new signs and trained a 144-class model on $3,182$ videos. While it achieved $85.2\%$ on INCLUDE’s own test split of the new signs (where signers overlap with training), our promotion gate evaluated it on the shared $314$ held-out videos and discovered that accuracy on the original signs dropped from $81.5\%$ to $76.1\%$, and accuracy on the unseen Amrita signers fell from $76.5\%$ to $70.9\%$ (because the $79$ new signs had only $14\text{–}17$ single-dataset recordings each, creating class-prior dilution). The promotion gate automatically rejected the candidate from replacing the primary unseen-signer checkpoint while preserving the 144-class ONNX export and all 161 avatar clips for reverse Kannada-to-Sign and reference playback.
+      <strong>Governance Case Study: Why the Promotion Gate Rejected the 144-Class Candidate:</strong> In Phase 9, we downloaded $1,430$ additional INCLUDE videos covering $79$ new signs and trained a 144-class model on $3,182$ videos. While it achieved $85.2\%$ on INCLUDE’s own test split of the new signs (where signers overlap with training), our promotion gate evaluated it on the shared $314$ held-out videos and discovered that accuracy on the original signs dropped from $81.5\%$ to $76.1\%$, and accuracy on the unseen Amrita signers fell from $76.5\%$ to $70.9\%$ (because the $79$ new signs had only $14\text{–}17$ single-dataset recordings each, creating class-prior dilution). The promotion gate automatically rejected the candidate from replacing the primary unseen-signer checkpoint while preserving the 144-class ONNX export and all 161 avatar clips for reverse Kannada-to-Sign and reference playback.
     </p>
     <div class="page-footer-arabic">56</div>
   </section>`;
@@ -403,7 +403,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
 
     <div class="sec-h1">7.6 Results and Observations</div>
     <p>
-      Three overarching scientific insights emerge from our empirical experiments:
+      Three key empirical findings emerge from these experiments:
     </p>
     <ol>
       <li><strong>Data Quality and Signer Diversity Outweigh Model Complexity:</strong> Moving from logistic regression to BiGRU yielded a $+12.7\%$ jump ($59.7\% \to 72.4\%$), and selectively adding $462$ targeted INCLUDE recordings yielded a further $+9.4\%$ jump on unseen signers ($67.1\% \to 76.5\%, p=0.003$). Conversely, adding $79$ under-represented classes diluted unseen-signer performance and was rightly blocked by the promotion gate.</li>

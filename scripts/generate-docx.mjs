@@ -747,9 +747,6 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
           alignment: AlignmentType.CENTER,
           keepNext: true,
           spacing: { before: 20, after: 140, line: 280 },
-          border: !isIeee
-            ? { bottom: { style: BorderStyle.SINGLE, size: 6, space: 2, color: "1E293B" } }
-            : undefined,
           children: parseHtmlFragmentToRuns(inner, { size: 36, bold: true }),
         })
       );
@@ -1113,7 +1110,7 @@ function makeRunningFooter() {
         spacing: { before: 60 },
         children: [
           new TextRun({
-            text: "Department of CSBS\t",
+            text: "Dept. of CSBS, BMSCE\t",
             font: "Times New Roman",
             size: 20,
             bold: true,
@@ -1260,11 +1257,12 @@ async function generateCsbsReportDocx() {
   const buffer = await Packer.toBuffer(doc);
 
   const out1 = path.join(REPORT_DIR, "CSBS_BE_Project_Report_Kannada_SignBridge.docx");
-  const out2 = path.join(REPORT_DIR, "SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx");
-  const outDoc = path.join(REPORT_DIR, "CSBS_BE_Project_Report_Kannada_SignBridge.doc");
   fs.writeFileSync(out1, buffer);
-  fs.writeFileSync(out2, buffer);
-  fs.writeFileSync(outDoc, buffer);
+  for (const alias of ["SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx", "CSBS_BE_Project_Report_Kannada_SignBridge.doc"]) {
+    const aliasPath = path.join(REPORT_DIR, alias);
+    try { if (fs.existsSync(aliasPath) || fs.lstatSync(aliasPath)) fs.unlinkSync(aliasPath); } catch {}
+    try { fs.symlinkSync("CSBS_BE_Project_Report_Kannada_SignBridge.docx", aliasPath); } catch {}
+  }
   console.log(
     `[generate-docx] Wrote CSBS B.E. Project Report .docx (${pages.length} pages, ${buffer.length} bytes) -> ${out1}`
   );
@@ -1367,12 +1365,10 @@ async function generateIeeePaperDocx() {
   const buffer = await Packer.toBuffer(doc);
 
   const out1 = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.docx");
-  const out2 = path.join(DOCS_PAPER_DIR, "kannada_signbridge_ieee.docx");
-  const outDoc = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.doc");
-  fs.mkdirSync(DOCS_PAPER_DIR, { recursive: true });
   fs.writeFileSync(out1, buffer);
-  fs.writeFileSync(out2, buffer);
-  fs.writeFileSync(outDoc, buffer);
+  const aliasDoc = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.doc");
+  try { if (fs.existsSync(aliasDoc) || fs.lstatSync(aliasDoc)) fs.unlinkSync(aliasDoc); } catch {}
+  try { fs.symlinkSync("SILENT_BRIDGE_IEEE_Research_Paper.docx", aliasDoc); } catch {}
   console.log(
     `[generate-docx] Wrote 8-page IEEE Research Paper .docx (${pages.length} pages, ${buffer.length} bytes) -> ${out1}`
   );

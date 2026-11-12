@@ -14,7 +14,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">3.1 Introduction</div>
     <p>
-      Engineering an assistive communication system that operates reliably in real-world Karnataka institutions requires rigorous requirements engineering before architectural design. Unlike batch offline machine learning scripts, an interactive bidirectional sign-language bridge must satisfy simultaneous constraints on real-time latency ($&lt;5\text{ ms}$ classifier response), strict camera privacy, linguistic fidelity in Kannada Unicode rendering, accessibility for deaf users, and statistical safety against model regressions. This chapter presents the stakeholder analysis, user and business opportunity assessment, eighteen formal Functional Requirements (<code>FR-01</code> to <code>FR-18</code>), twelve Non-Functional Requirements (<code>NFR-01</code> to <code>NFR-12</code>), hardware and software specifications, three-dimensional feasibility analysis, an 11-phase project schedule, Failure Mode and Effects Analysis (FMEA), and regulatory privacy compliance.
+      Engineering an assistive communication system that operates reliably in real-world Karnataka institutions requires systematic requirements analysis before architectural design. Unlike batch offline machine learning scripts, an interactive bidirectional sign-language bridge must satisfy simultaneous constraints on real-time latency ($&lt;5\text{ ms}$ classifier response), strict camera privacy, linguistic fidelity in Kannada Unicode rendering, accessibility for deaf users, and statistical safety against model regressions. This chapter presents the stakeholder analysis, user and business opportunity assessment, eighteen formal Functional Requirements (<code>FR-01</code> to <code>FR-18</code>), twelve Non-Functional Requirements (<code>NFR-01</code> to <code>NFR-12</code>), hardware and software specifications, three-dimensional feasibility analysis, an 11-phase project schedule, Failure Mode and Effects Analysis (FMEA), and regulatory privacy compliance.
     </p>
 
     <div class="sec-h1">3.2 Stakeholder Identification and User Needs</div>
@@ -77,7 +77,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">3.3 Problem / Opportunity Analysis from User and Business Perspectives</div>
     <p>
-      From the <strong>User Perspective</strong>, existing communication workarounds—such as writing broken notes on paper, relying on family members as ad-hoc interpreters (which compromises medical and financial confidentiality), or scheduling scarce human interpreters days in advance—create chronic friction and social exclusion. A deaf user needs an instant, self-contained application that respects ISL’s visual-spatial grammar (including facial expressions and eyebrow markers) and transparently indicates when a sign is ambiguous rather than guessing blindly.
+      From the <strong>User Perspective</strong>, existing communication workarounds (such as writing notes on paper, relying on family members as ad-hoc interpreters, or scheduling scarce human interpreters days in advance) create chronic friction and social exclusion. A deaf user needs an instant, self-contained application that respects ISL’s visual-spatial grammar (including facial expressions and eyebrow markers) and transparently indicates when a sign is ambiguous rather than guessing blindly.
     </p>
     <p>
       From the <strong>Business and Institutional Perspective</strong>, organizations in Karnataka face both regulatory mandates under the <em>RPwD Act 2016</em> and ESG/diversity commitments to make customer-facing counters and internal workplaces accessible. Traditional hardware solutions (specialized RGB-D cameras or wearable sensor gloves costing ₹40,000–₹1,20,000 per unit) suffer from hygiene, calibration, and maintenance failures, while cloud-hosted video AI incurs recurring GPU bandwidth costs and legal liability under India’s <em>Digital Personal Data Protection (DPDP) Act 2023</em>. <strong>Silent Bridge</strong> transforms any existing front-desk PC or tablet into an offline-capable ISL–Kannada communication terminal at zero marginal hardware or cloud cost.
@@ -211,7 +211,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h2">3.7.2 Economic / Cost Feasibility</div>
     <p>
-      <strong>Silent Bridge</strong> was built using $100\%$ open-source software (React, TypeScript, Three.js, MediaPipe, PyTorch, ONNX Runtime) and open-access CC BY 4.0 datasets (Amrita SLR, INCLUDE, ISL-CSLTR). Development required zero expenditure on proprietary software licenses, zero cloud GPU training bills (full cross-validated model training completes in $43\text{ minutes}$ on a laptop CPU), and zero specialized hardware sensors. In deployment, the 100% in-browser ONNX mode reduces server hosting costs to static file serving ($₹0\text{/month}$ on institutional intranets or static CDNs), yielding exceptional economic feasibility.
+      <strong>Silent Bridge</strong> was built using $100\%$ open-source software (React, TypeScript, Three.js, MediaPipe, PyTorch, ONNX Runtime) and open-access CC BY 4.0 datasets (Amrita SLR, INCLUDE, ISL-CSLTR). Development required zero expenditure on proprietary software licenses, zero cloud GPU training bills (full cross-validated model training completes in $43\text{ minutes}$ on a laptop CPU), and zero specialized hardware sensors. In deployment, the 100% in-browser ONNX mode reduces server hosting costs to static file serving ($₹0\text{/month}$ on institutional intranets or static CDNs), yielding high cost efficiency.
     </p>
 
     <div class="sec-h2">3.7.3 Operational and Schedule Feasibility</div>
@@ -647,9 +647,9 @@ export function buildChapters3And4() {
       To quantify the addressable market for <strong>Silent Bridge</strong> across institutional and consumer channels, a bottom-up TAM–SAM–SOM market sizing analysis was conducted:
     </p>
     <ul>
-      <li><strong>Total Addressable Market (TAM — India-Wide Institutional &amp; Assistive Sector):</strong> India has over $1,50,000$ public health facilities, $1,60,000$ bank branches, $25,000$ citizen service centers, and $3,500+$ special education and inclusive vocational institutes. At an average institutional software valuation of ₹12,000/year per facility, the national TAM across Indian regional sign bridges is approximately <strong>₹408 Crore/year</strong> ($5\text{M+}$ deaf citizens).</li>
-      <li><strong>Serviceable Addressable Market (SAM — Karnataka Kannada-Speaking Ecosystem):</strong> Focusing specifically on Karnataka (where Kannada is the official administrative language), there are $2,500+$ primary health centers and district hospitals, $11,000+$ bank branches, $1,200+$ <em>Karnataka One / Bangalore One / Grama One</em> citizen centers, and $280+$ special schools and inclusive colleges, representing a regional SAM of <strong>₹18.0 Crore/year</strong> serving $3,00,000+$ deaf residents.</li>
-      <li><strong>Serviceable Obtainable Market (SOM — Initial 3-Year Target):</strong> Capturing just $3.5\%$ of Karnataka’s institutional counters ($525$ active kiosk terminals across urban hospitals, banks, and civic centers plus $12$ enterprise/CSR contracts) yields a realistic 3-year SOM of <strong>₹78.0 Lakhs/year</strong> in recurring annual revenue.</li>
+      <li><strong>Total Addressable Market (TAM: India-Wide Institutional &amp; Assistive Sector):</strong> India has over $1,50,000$ public health facilities, $1,60,000$ bank branches, $25,000$ citizen service centers, and $3,500+$ special education and inclusive vocational institutes. At an average institutional software valuation of ₹12,000/year per facility, the national TAM across Indian regional sign bridges is approximately <strong>₹408 Crore/year</strong> ($5\text{M+}$ deaf citizens).</li>
+      <li><strong>Serviceable Addressable Market (SAM: Karnataka Kannada-Speaking Ecosystem):</strong> Focusing specifically on Karnataka (where Kannada is the official administrative language), there are $2,500+$ primary health centers and district hospitals, $11,000+$ bank branches, $1,200+$ <em>Karnataka One / Bangalore One / Grama One</em> citizen centers, and $280+$ special schools and inclusive colleges, representing a regional SAM of <strong>₹18.0 Crore/year</strong> serving $3,00,000+$ deaf residents.</li>
+      <li><strong>Serviceable Obtainable Market (SOM: Initial 3-Year Target):</strong> Capturing just $3.5\%$ of Karnataka’s institutional counters ($525$ active kiosk terminals across urban hospitals, banks, and civic centers plus $12$ enterprise/CSR contracts) yields a realistic 3-year SOM of <strong>₹78.0 Lakhs/year</strong> in recurring annual revenue.</li>
     </ul>
 
     <div class="sec-h1">4.6 Cost-Benefit Analysis</div>
@@ -786,7 +786,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">4.10 SDG Impact Pathway and Measurable Indicators</div>
     <p>
-      To ensure that social impact is rigorously tracked alongside financial viability, Table 4.6 defines the formal <strong>SDG Theory of Change (Inputs &rarr; Activities &rarr; Outputs &rarr; Outcomes &rarr; Long-Term Impact)</strong> and quantitative Key Performance Indicators (KPIs) for <strong>Silent Bridge</strong>.
+      To ensure that social impact is systematically tracked alongside financial viability, Table 4.6 defines the formal <strong>SDG Theory of Change (Inputs &rarr; Activities &rarr; Outputs &rarr; Outcomes &rarr; Long-Term Impact)</strong> and quantitative Key Performance Indicators (KPIs) for <strong>Silent Bridge</strong>.
     </p>
 
     <div class="table-caption">Table 4.6 SDG Impact Pathway and Measurable Key Performance Indicators (KPIs)</div>

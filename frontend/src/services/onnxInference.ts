@@ -10,12 +10,12 @@
  *  - Velocity (138) + 2D path length (2) concatenation -> 3668 input floats
  *  - 144 class probability output with calibrated confidence thresholding
  */
-import * as ort from "onnxruntime-web";
+import * as ort from "onnxruntime-web/wasm";
 import type { Candidate, LandmarkFrame } from "./types";
 import { matchCustomSign } from "./customSigns";
 
-// Configure ONNX Runtime to load local WASM binaries from /onnx-wasm/
-ort.env.wasm.wasmPaths = "/onnx-wasm/";
+// Configure ONNX Runtime to load WASM binaries from jsdelivr CDN with local server fallback
+ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/";
 ort.env.wasm.numThreads = 1;
 ort.env.logLevel = "error";
 

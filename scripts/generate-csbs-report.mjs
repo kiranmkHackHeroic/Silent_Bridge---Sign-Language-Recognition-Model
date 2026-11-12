@@ -206,7 +206,7 @@ function wrapPageBodies(html) {
       if (footerMatch) {
         const footerCls = footerMatch[1];
         const pageNum = footerMatch[2].replace(/<[^>]+>/g, "").trim();
-        footerHtml = `<div class="${footerCls}"><span class="footer-dept">Department of CSBS</span><span class="footer-page-num">${pageNum}</span></div>`;
+        footerHtml = `<div class="${footerCls}"><span class="footer-dept">Dept. of CSBS, BMSCE</span><span class="footer-page-num">${pageNum}</span></div>`;
         rest = rest.slice(0, rest.length - footerMatch[0].length);
       }
       return `${openTag}\n${headerHtml}\n<div class="page-body-wrap"><div class="page-body-inner">${rest.trim()}</div></div>\n${footerHtml}\n${closeTag}`;
@@ -499,8 +499,8 @@ const fullHtml = `<!DOCTYPE html>
       font-weight: 700;
       margin-top: 0;
       margin-bottom: 8pt;
-      padding-bottom: 4pt;
-      border-bottom: 1.5px double #1e293b;
+      padding-bottom: 2pt;
+      border-bottom: none;
       line-height: 1.20;
       color: #000000;
       text-transform: uppercase;
@@ -1059,9 +1059,7 @@ const outPublicHtml = path.join(rootDir, "frontend", "public", "report", "CSBS_B
 const outDocsHtml = path.join(rootDir, "docs", "report", "CSBS_BE_Project_Report_Kannada_SignBridge.html");
 
 fs.mkdirSync(path.dirname(outPublicHtml), { recursive: true });
-fs.mkdirSync(path.dirname(outDocsHtml), { recursive: true });
 fs.writeFileSync(outPublicHtml, fullHtml, "utf8");
-fs.writeFileSync(outDocsHtml, fullHtml, "utf8");
 
 const pageCount = (fullHtml.match(/class="report-page/g) || []).length;
 console.log(`[generate-csbs-report] Generated ${pageCount} A4 pages -> ${outPublicHtml}`);

@@ -26,26 +26,10 @@ function patchMediaPipeWasmLoader(dir) {
 }
 
 if (existsSync(src)) {
-  mkdirSync(dst, { recursive: true });
-  cpSync(src, dst, { recursive: true });
   patchMediaPipeWasmLoader(src);
-  patchMediaPipeWasmLoader(dst);
-  console.log("[copy-mediapipe-wasm] copied and patched MediaPipe wasm in frontend/public/mediapipe-wasm");
+  console.log("[copy-mediapipe-wasm] patched MediaPipe wasm loader in node_modules");
 } else {
-  patchMediaPipeWasmLoader(dst);
-  console.warn("[copy-mediapipe-wasm] wasm folder not found in node_modules, patched existing public/mediapipe-wasm");
-}
-
-const ortSrc = join(root, "node_modules", "onnxruntime-web", "dist");
-const ortDst = join(root, "frontend", "public", "onnx-wasm");
-if (existsSync(ortSrc)) {
-  mkdirSync(ortDst, { recursive: true });
-  for (const file of readdirSync(ortSrc)) {
-    if (file.startsWith("ort-wasm") && (file.endsWith(".wasm") || file.endsWith(".mjs"))) {
-      cpSync(join(ortSrc, file), join(ortDst, file));
-    }
-  }
-  console.log("[copy-mediapipe-wasm] copied ONNX Runtime Web wasm/mjs to frontend/public/onnx-wasm");
+  console.warn("[copy-mediapipe-wasm] wasm folder not found in node_modules");
 }
 
 

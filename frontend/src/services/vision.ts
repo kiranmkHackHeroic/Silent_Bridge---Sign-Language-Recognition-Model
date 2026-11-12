@@ -15,33 +15,67 @@ export interface VisionModels {
 
 let loading: Promise<VisionModels> | null = null;
 
+const HAND_MODEL_CDN = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
+const FACE_MODEL_CDN = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+const MEDIAPIPE_WASM_CDN = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.17/wasm";
+
 async function createHands(fileset: Awaited<ReturnType<typeof FilesetResolver.forVisionTasks>>, delegate: "GPU" | "CPU") {
-  return HandLandmarker.createFromOptions(fileset, {
-    baseOptions: { modelAssetPath: "/models/hand_landmarker.task", delegate },
-    runningMode: "VIDEO",
-    numHands: 2,
-    minHandDetectionConfidence: 0.5,
-    minHandPresenceConfidence: 0.5,
-    minTrackingConfidence: 0.5,
-  });
+  try {
+    return await HandLandmarker.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: HAND_MODEL_CDN, delegate },
+      runningMode: "VIDEO",
+      numHands: 2,
+      minHandDetectionConfidence: 0.5,
+      minHandPresenceConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+  } catch (err) {
+    console.warn("Falling back to local hand model", err);
+    return await HandLandmarker.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: "/models/hand_landmarker.task", delegate },
+      runningMode: "VIDEO",
+      numHands: 2,
+      minHandDetectionConfidence: 0.5,
+      minHandPresenceConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+  }
 }
 
 async function createFace(fileset: Awaited<ReturnType<typeof FilesetResolver.forVisionTasks>>, delegate: "GPU" | "CPU") {
-  return FaceLandmarker.createFromOptions(fileset, {
-    baseOptions: { modelAssetPath: "/models/face_landmarker.task", delegate },
-    runningMode: "VIDEO",
-    numFaces: 1,
-    outputFaceBlendshapes: true,
-    minFaceDetectionConfidence: 0.5,
-    minFacePresenceConfidence: 0.5,
-    minTrackingConfidence: 0.5,
-  });
+  try {
+    return await FaceLandmarker.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: FACE_MODEL_CDN, delegate },
+      runningMode: "VIDEO",
+      numFaces: 1,
+      outputFaceBlendshapes: true,
+      minFaceDetectionConfidence: 0.5,
+      minFacePresenceConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+  } catch (err) {
+    return await FaceLandmarker.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: "/models/face_landmarker.task", delegate },
+      runningMode: "VIDEO",
+      numFaces: 1,
+      outputFaceBlendshapes: true,
+      minFaceDetectionConfidence: 0.5,
+      minFacePresenceConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+  }
 }
 
 export function loadVisionModels(): Promise<VisionModels> {
   if (!loading) {
     loading = (async () => {
-      const fileset = await FilesetResolver.forVisionTasks("/mediapipe-wasm");
+      let fileset: Awaited<ReturnType<typeof FilesetResolver.forVisionTasks>>;
+      try {
+        fileset = await FilesetResolver.forVisionTasks(MEDIAPIPE_WASM_CDN);
+      } catch (err) {
+        console.warn("CDN wasm unavailable, falling back to local /mediapipe-wasm", err);
+        fileset = await FilesetResolver.forVisionTasks("/mediapipe-wasm");
+      }
       let delegate: "GPU" | "CPU" = "GPU";
       let hands: HandLandmarker;
       try {

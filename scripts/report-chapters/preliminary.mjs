@@ -231,14 +231,21 @@ export function buildPreliminaryPages(meta) {
     <p style="line-height:1.8; margin-bottom:32pt;">
       We understand that any act of plagiarism or fabrication of experimental results is a violation of academic integrity, and we take full responsibility for the originality of the software implementation, mathematical formulations, and empirical evaluations presented herein.
     </p>
-    <div style="display:flex; justify-content:space-between; margin-top:36pt; font-size:12pt; line-height:1.8;">
-      <div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:28pt; font-size:12pt;">
+      <div style="line-height:2.0; padding-bottom:12pt;">
         <strong>Place:</strong> Bangalore<br/>
         <strong>Date:</strong> November 2026
       </div>
       <div style="text-align:right;">
-        <div style="font-weight:700; margin-bottom:8pt;">Signature of Students:</div>
-        ${students.map((s) => `<div style="margin-bottom:10pt;"><strong>${s.name}</strong> (${s.usn})</div>`).join("")}
+        <div style="font-weight:700; margin-bottom:16pt;">Signature of the Students:</div>
+        ${students.map((s) => `
+          <div style="margin-bottom:18pt; text-align:right;">
+            <div style="height:26pt;"></div>
+            <div>_____________________________</div>
+            <div style="font-weight:700; margin-top:2pt;">${s.name}</div>
+            <div style="font-size:11pt; color:#1e293b;">(${s.usn})</div>
+          </div>
+        `).join("")}
       </div>
     </div>
     <div class="page-footer-roman">i</div>
@@ -251,20 +258,30 @@ export function buildPreliminaryPages(meta) {
       <span class="report-project-title">${title}</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:18pt;">ACKNOWLEDGEMENT</div>
-    <p style="line-height:1.8; margin-bottom:14pt;">
+    <p style="line-height:1.75; margin-bottom:12pt;">
       The successful completion of this major engineering project required technical guidance, institutional support, and encouragement from several distinguished individuals. We express our deep sense of gratitude to our respected Principal, <strong>${principalName}</strong>, B.M.S. College of Engineering, Bangalore, for providing an outstanding academic and research environment conducive to innovation.
     </p>
-    <p style="line-height:1.8; margin-bottom:14pt;">
+    <p style="line-height:1.75; margin-bottom:12pt;">
       We extend our sincere thanks to <strong>${hodName}</strong>, Professor and Head, Department of Computer Science and Business Systems, BMSCE, for continuous support, constructive panel reviews, and access to departmental computing resources throughout all phases of the project.
     </p>
-    <p style="line-height:1.8; margin-bottom:14pt;">
-      We are profoundly grateful to our Project Guide, <strong>${guideName}</strong>, ${guideDesignation}, Department of Computer Science and Business Systems, BMSCE, whose technical mentorship, rigorous emphasis on signer-independent statistical evaluation, and thoughtful feedback shaped every architectural decision of <em>Silent Bridge</em>.
+    <p style="line-height:1.75; margin-bottom:12pt;">
+      We express our sincere gratitude to our Project Guide, <strong>${guideName}</strong>, ${guideDesignation}, Department of Computer Science and Business Systems, BMSCE, whose technical mentorship, emphasis on signer-independent statistical evaluation, and thoughtful feedback guided the architectural decisions of <em>Silent Bridge</em>.
     </p>
-    <p style="line-height:1.8; margin-bottom:28pt;">
+    <p style="line-height:1.75; margin-bottom:20pt;">
       We also thank the Project Coordinator, panel evaluators, faculty members, and non-teaching staff of the Department of Computer Science and Business Systems, as well as the creators and deaf signers of the open-access Amrita SLR, INCLUDE, and ISL-CSLTR corpora whose public contributions made authentic Indian Sign Language research possible.
     </p>
-    <div style="text-align:right; margin-top:32pt; font-size:12pt; line-height:1.8;">
-      ${students.map((s) => `<div><strong>${s.name}</strong> (${s.usn})</div>`).join("")}
+    <div style="display:flex; justify-content:flex-end; margin-top:20pt; font-size:12pt;">
+      <div style="text-align:right;">
+        <div style="font-weight:700; margin-bottom:14pt;">Signature of the Students:</div>
+        ${students.map((s) => `
+          <div style="margin-bottom:16pt; text-align:right;">
+            <div style="height:24pt;"></div>
+            <div>_____________________________</div>
+            <div style="font-weight:700; margin-top:2pt;">${s.name}</div>
+            <div style="font-size:11pt; color:#1e293b;">(${s.usn})</div>
+          </div>
+        `).join("")}
+      </div>
     </div>
     <div class="page-footer-roman">ii</div>
   </section>`;
@@ -515,7 +532,7 @@ export function buildPreliminaryPages(meta) {
         <span style="flex:1;">FULL EXPANSION AND TECHNICAL MEANING</span>
       </div>
 
-      <div class="def-list-item"><span class="def-item-term">ISL</span><span class="def-item-desc">Indian Sign Language — Natural visual-spatial language used by the deaf community in India</span></div>
+      <div class="def-list-item"><span class="def-item-term">ISL</span><span class="def-item-desc">Indian Sign Language: Natural visual-spatial language used by the deaf community in India</span></div>
       <div class="def-list-item"><span class="def-item-term">SLR / SLT</span><span class="def-item-desc">Sign Language Recognition / Sign Language Translation</span></div>
       <div class="def-list-item"><span class="def-item-term">CSLR</span><span class="def-item-desc">Continuous Sign Language Recognition (unsegmented multi-sign stream decoding)</span></div>
       <div class="def-list-item"><span class="def-item-term">BiGRU</span><span class="def-item-desc">Bidirectional Gated Recurrent Unit neural network architecture</span></div>
