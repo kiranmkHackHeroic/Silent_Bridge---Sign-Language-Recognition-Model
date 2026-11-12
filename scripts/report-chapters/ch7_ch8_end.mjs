@@ -647,50 +647,52 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
     <div class="page-footer-arabic">64</div>
   </section>`;
 
-  // ==================== PUBLICATIONS (Page 65) ====================
+  // ==================== RESEARCH MANUSCRIPT & ARTIFACTS (Page 65) ====================
   const page65 = String.raw`
   <section class="report-page body-page" data-page="65">
     <div class="page-running-header">
       <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
-      <span>Publications: Published Journal / Conference / Patent</span>
+      <span>Research Manuscript &amp; Reproducible Artifacts</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">PUBLICATIONS: PUBLISHED JOURNAL / CONFERENCE / PATENT</div>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">RESEARCH MANUSCRIPT &amp; REPRODUCIBLE ARTIFACTS</div>
 
     <div style="border:1.5px solid #1e293b; padding:10pt 14pt; background:#f8fafc; margin-bottom:10pt;">
       <div style="font-size:12pt; font-weight:700; color:#1e3a8a; margin-bottom:5pt;">
-        1. Published Scopus Indexed Q3 Journal Article — International Journal of Drug Delivery Technologies (IJDDT)
+        1. IEEE Two-Column Format Research Manuscript (Prepared for Submission)
       </div>
       <p style="font-size:10.5pt; line-height:1.45; text-indent:0; margin-bottom:6pt;">
-        <strong>Journal:</strong> <em>International Journal of Drug Delivery Technologies (IJDDT)</em> &nbsp;|&nbsp; <strong>ISSN:</strong> 0975-4415 (Active Scopus Indexed Q3 Journal for 2026)<br/>
-        <strong>Volume &amp; Issue:</strong> Volume 16, No. 7, 2026 (190 Articles in Issue) &nbsp;|&nbsp; <strong>URL:</strong> <code>https://ijddt.com/volume16issue7/</code><br/>
-        <strong>Authors:</strong> Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066), under the guidance of <strong>Tejaswini K</strong>, Assistant Professor, Dept. of CSBS, B.M.S. College of Engineering, Bangalore – 560019.<br/>
-        <strong>Official Notification:</strong> Editor IJDDT &lt;<code>ijddtjournal@gmail.com</code>&gt; (Sun, Oct 4, 10:04 AM) — <em>“We are delighted to congratulate you on the successful publication of your research article in the International Journal of Drug Delivery Technologies ISSN: 0975-4415 an Active Scopus Indexed Q3 journal for 2026. The article published in Volume 16 No. 7, 2026... Your research is now part of the global scholarly community, contributing valuable knowledge and inspiring future research.”</em> — Managing Editor, IJDDT (<code>https://ijddt.com</code>).
+        <strong>Title:</strong> <em>“SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR”</em><br/>
+        <strong>Format:</strong> IEEEtran Two-Column Conference / Transactions Standard (8 Pages · 12 Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References)<br/>
+        <strong>Authors:</strong> H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), under the guidance of <strong>Tejaswini K</strong>, Assistant Professor, Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019.<br/>
+        <strong>Department Leadership:</strong> <strong>Dr. R Ashok Kumar</strong> (Professor &amp; Head, Dept. of CSBS, BMSCE) and <strong>Dr. Beemsha Arya</strong> (Professor &amp; Principal, BMSCE).
       </p>
       <div style="font-size:10.5pt; font-weight:700; color:#0f172a; margin-bottom:3pt;">
         2. Accompanying Research Manuscript &amp; Reproducible Artifacts
       </div>
       <p style="font-size:10pt; line-height:1.42; text-indent:0; margin:0;">
-        Full LaTeX source (<code>docs/paper/kannada_signbridge_ieee.tex</code>), compiled manuscript PDF (<code>docs/paper/kannada_signbridge_ieee.pdf</code>), Overleaf archive (<code>docs/paper/kannada_signbridge_ieee_overleaf.zip</code>), and reproducible figure generator (<code>docs/paper/make_figures_extended.py</code>). On 268 held-out recorded videos, isolated-sign accuracy improved from 59.7% (LogReg baseline) to 79.9% (81.5% overall across 481 held-out videos), and on 213 videos of two unseen signers it rose from 54.5% to 76.5% ($p=0.003$).
+        Full LaTeX source (<code>docs/paper/kannada_signbridge_ieee.tex</code>), compiled manuscript PDF (<code>docs/paper/kannada_signbridge_ieee.pdf</code>), editable Microsoft Word document (<code>SILENT_BRIDGE_IEEE_Research_Paper.docx</code>), and reproducible figure generator (<code>docs/paper/make_figures_extended.py</code>). On 268 held-out recorded videos, isolated-sign accuracy improved from 59.7% (LogReg baseline) to 79.9% (81.5% overall across 314 held-out videos), and on 213 videos of two unseen signers it rose from 54.5% to 76.5% ($p=0.003$).
       </p>
     </div>
 
-    <div class="table-caption">Table 8.2 Summary of Research Figures and Experimental Artifacts Included in the Published Study</div>
-    <table class="data-table" style="font-size:9.2pt;">
+    <div class="table-caption">Table 8.2 Summary of Research Figures, Website Workflow Screenshots, and Experimental Artifacts</div>
+    <table class="data-table" style="font-size:9.0pt;">
       <thead>
         <tr>
-          <th style="width:24%;">Artifact File</th>
-          <th style="width:48%;">Scientific Content &amp; Benchmark Scope</th>
+          <th style="width:26%;">Artifact File</th>
+          <th style="width:46%;">Scientific / Application Workflow Content</th>
           <th style="width:28%;">Report Cross-Reference</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td><code>fig_architecture.pdf</code></td><td>End-to-end bidirectional ISL &leftrightarrow; Kannada landmark-only system architecture</td><td>Chapter 5, Fig. 5.1 (Page 32)</td></tr>
-        <tr><td><code>fig_datadist.pdf</code></td><td>Per-sign training recording distribution across Amrita SLR and INCLUDE</td><td>Chapter 7, Fig. 7.1 (Page 52)</td></tr>
-        <tr><td><code>fig_results.pdf</code></td><td>Top-1 accuracy progression across model iterations on unseen signers</td><td>Chapter 7, Fig. 7.2 (Page 55)</td></tr>
-        <tr><td><code>fig_calibration.pdf</code></td><td>Out-of-fold precision, recall, and coverage curve ($\tau^* = 0.50$)</td><td>Chapter 7, Fig. 7.3 (Page 55)</td></tr>
-        <tr><td><code>fig_perclass.pdf</code></td><td>Sorted per-sign F1-scores across 60 held-out test classes (mean 0.800)</td><td>Chapter 7, Fig. 7.4 (Page 56)</td></tr>
-        <tr><td><code>fig_segmentation.pdf</code></td><td>Sign Error Rate (SER) of segmentation variants on 50 five-sign streams</td><td>Chapter 7, Fig. 7.5 (Page 57)</td></tr>
-        <tr><td><code>fig_robustness.pdf</code></td><td>Synthetic landmark perturbation benchmark across 268 held-out videos</td><td>Chapter 7, Fig. 7.6 (Page 57)</td></tr>
+        <tr><td><code>fig_architecture.png</code></td><td>End-to-end bidirectional ISL &leftrightarrow; Kannada landmark-only system architecture</td><td>Chapter 5, Fig. 5.1 (Page 32)</td></tr>
+        <tr><td><code>fig_ui_live.png</code></td><td>Actual Website Workflow: Live ISL-to-Kannada Recognition Studio &amp; Transcript</td><td>Chapter 6, Fig. 6.1 (Page 45)</td></tr>
+        <tr><td><code>fig_ui_custom.png</code></td><td>Actual Website Workflow: Few-Shot Custom Signs &amp; Personalization Studio</td><td>Chapter 6, Fig. 6.2 (Page 46)</td></tr>
+        <tr><td><code>fig_ui_avatar.png</code></td><td>Actual Website Workflow: Kannada-to-Sign 3D Avatar Studio &amp; Analytic IK</td><td>Chapter 6, Fig. 6.3 (Page 47)</td></tr>
+        <tr><td><code>fig_ui_reference.png</code> &amp; <code>fig_ui_dataset.png</code></td><td>Actual Website Workflow: 144-Class Sign Reference &amp; Dataset/Model Workbench</td><td>Chapter 6, Fig. 6.4–6.5 (Page 50)</td></tr>
+        <tr><td><code>fig_ui_testing.png</code></td><td>Actual Website Workflow: System Architecture &amp; Empirical Testing Dashboard</td><td>Chapter 6, Fig. 6.6 (Page 51)</td></tr>
+        <tr><td><code>fig_datadist.png</code> &amp; <code>fig_results.png</code></td><td>Per-sign training distribution &amp; Top-1 accuracy progression on unseen signers</td><td>Chapter 7, Fig. 7.1–7.2 (Pages 52, 55)</td></tr>
+        <tr><td><code>fig_calibration.png</code> &amp; <code>fig_perclass.png</code></td><td>Out-of-fold calibration curve ($\tau^* = 0.50$) &amp; per-sign F1-scores (mean 0.800)</td><td>Chapter 7, Fig. 7.3–7.4 (Pages 55–56)</td></tr>
+        <tr><td><code>fig_segmentation.png</code> &amp; <code>fig_robustness.png</code></td><td>Segmentation SER across 50 five-sign streams &amp; perturbation benchmark</td><td>Chapter 7, Fig. 7.5–7.6 (Page 57)</td></tr>
       </tbody>
     </table>
     <div class="page-footer-arabic">65</div>

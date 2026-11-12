@@ -213,61 +213,7 @@ export function buildPreliminaryPages(meta) {
     </div>
   </section>`;
 
-  // 4. PUBLICATION CERTIFICATE PAGE (Dedicated 1 Full Page, Unnumbered — No Roman numeral)
-  const publicationCertificatePage = String.raw`
-  <section class="report-page prelim-page" data-page-label="Publication Certificate">
-    <div class="bmsce-border-outer">
-      <div class="bmsce-border-inner" style="padding:20pt 22pt;">
-        <div style="text-align:center; margin-bottom:14pt;">
-          <div style="font-size:17pt; font-weight:700; color:#6b3410; line-height:1.25;">
-            B.M.S COLLEGE OF ENGINEERING
-          </div>
-          <div style="font-size:12pt; font-weight:700; color:#6b3410; line-height:1.35;">
-            Department of Computer Science and Business Systems
-          </div>
-        </div>
 
-        <div class="chapter-title-center" style="margin-top:4pt; margin-bottom:16pt;">PUBLICATION CERTIFICATE</div>
-
-        <div style="border:1.5px solid #1e293b; padding:16pt 18pt; margin-bottom:18pt; background:#f8fafc;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid #cbd5e1; padding-bottom:8pt; margin-bottom:12pt; font-size:11pt; line-height:1.45;">
-            <div>
-              <strong>From:</strong> Editor IJDDT &lt;<code>ijddtjournal@gmail.com</code>&gt;<br/>
-              <strong>To:</strong> ${studentInlineCert}<br/>
-              <strong>Guide:</strong> ${guideName}, ${guideDesignation}, Dept. of CSBS, BMSCE
-            </div>
-            <div style="text-align:right; white-space:nowrap;">
-              <strong>Date:</strong> Sun, Oct 4, 2026<br/>
-              <strong>ISSN:</strong> 0975-4415 (Scopus Q3)
-            </div>
-          </div>
-
-          <div style="text-align:center; font-weight:700; font-size:13pt; color:#0f172a; margin-bottom:12pt;">
-            Congratulations on Your Publication! — International Journal of Drug Delivery Technologies (IJDDT)
-          </div>
-
-          <p style="font-size:11.5pt; line-height:1.65; margin-bottom:12pt; text-indent:0;">
-            We are delighted to congratulate you on the successful acceptance and publication of your research article entitled <strong>“<span class="report-project-title">${title}</span>”</strong> in the <strong>International Journal of Drug Delivery Technologies (ISSN: 0975-4415)</strong>, an <strong>Active Scopus Indexed Q3 Journal for 2026</strong>. The article is published in <strong>Volume 16, No. 7, 2026</strong> (the issue comprises 190 peer-reviewed articles): <code>https://ijddt.com/volume16issue7/</code>
-          </p>
-
-          <p style="font-size:11.5pt; line-height:1.65; margin-bottom:12pt; text-indent:0;">
-            Your research is now part of the global scholarly community, contributing valuable knowledge in assistive computer vision, Indian Sign Language recognition, Dravidian computational linguistics, and 3D avatar inverse kinematics. This achievement reflects your dedication, hard work, and academic excellence.
-          </p>
-
-          <div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:11pt; line-height:1.45; margin-top:18pt; padding-top:10pt; border-top:1px dashed #94a3b8;">
-            <div>
-              <strong>Journal:</strong> IJDDT (Scopus Indexed Q3)<br/>
-              <strong>Volume / Issue:</strong> Vol. 16, No. 7, 2026
-            </div>
-            <div style="text-align:right;">
-              <strong>Managing Editor</strong><br/>
-              International Journal of Drug Delivery Technologies (<code>https://ijddt.com</code>)
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>`;
 
   // 5. DECLARATION BY STUDENTS (Dedicated 1 Full Page — Roman i)
   const declarationPage = String.raw`
@@ -345,305 +291,273 @@ export function buildPreliminaryPages(meta) {
     <div class="page-footer-roman">iii</div>
   </section>`;
 
-  // 8. TABLE OF CONTENTS (Part 1) — Page iv
+  // 8. TABLE OF CONTENTS (Part 1) — Page iv (Enlarged Non-Table Dotted Leader Format)
   const tocPage1 = String.raw`
   <section class="report-page prelim-page" data-roman="iv">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:8pt;">TABLE OF CONTENTS</div>
-    <table class="toc-table">
-      <thead>
-        <tr>
-          <th style="width:16%; text-align:left;">Section</th>
-          <th style="width:72%; text-align:left;">Title</th>
-          <th style="width:12%; text-align:right;">Page No.</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>i.</td><td>Declaration by Students</td><td class="r">i</td></tr>
-        <tr><td>ii.</td><td>Acknowledgement</td><td class="r">ii</td></tr>
-        <tr><td>iii.</td><td>Abstract (Synopsis)</td><td class="r">iii</td></tr>
-        <tr><td>iv.</td><td>Table of Contents</td><td class="r">iv</td></tr>
-        <tr><td>v.</td><td>List of Figures</td><td class="r">vi</td></tr>
-        <tr><td>vi.</td><td>List of Tables</td><td class="r">vii</td></tr>
-        <tr><td>vii.</td><td>List of Abbreviations and Acronyms</td><td class="r">viii</td></tr>
-        <tr><td>viii.</td><td>List of Symbols and Notations</td><td class="r">ix</td></tr>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">TABLE OF CONTENTS</div>
+    <div class="prelim-list-container">
+      <div class="prelim-list-header">
+        <span>CHAPTER / SECTION TITLE</span>
+        <span>PAGE NO.</span>
+      </div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 1: INTRODUCTION</td><td class="r">1</td></tr>
-        <tr><td>1.1</td><td>Background and Context of the Project</td><td class="r">1</td></tr>
-        <tr><td>1.2</td><td>Project Domain Overview</td><td class="r">1</td></tr>
-        <tr><td>1.3</td><td>Motivation</td><td class="r">2</td></tr>
-        <tr><td>1.4</td><td>Problem Statement</td><td class="r">3</td></tr>
-        <tr><td>1.5</td><td>Aim and Objectives</td><td class="r">3</td></tr>
-        <tr><td>1.6</td><td>Scope of the Project</td><td class="r">4</td></tr>
-        <tr><td>1.7</td><td>Significance and Expected Contribution</td><td class="r">4</td></tr>
-        <tr><td>1.8</td><td>Industry and Societal Relevance</td><td class="r">5</td></tr>
-        <tr><td>1.9</td><td>Sustainable Development Goals (SDGs) Addressed</td><td class="r">5</td></tr>
-        <tr><td class="sub">1.9.1</td><td>Identification of Relevant SDGs</td><td class="r">5</td></tr>
-        <tr><td class="sub">1.9.2</td><td>Selected SDG Targets</td><td class="r">5</td></tr>
-        <tr><td class="sub">1.9.3</td><td>Alignment of Project Objectives with SDGs</td><td class="r">6</td></tr>
-        <tr><td class="sub">1.9.4</td><td>Expected Social, Economic and Environmental Impact</td><td class="r">6</td></tr>
-        <tr><td>1.10</td><td>Constraints and Limitations</td><td class="r">7</td></tr>
-        <tr><td>1.11</td><td>Organization of the Report</td><td class="r">8</td></tr>
+      <div class="toc-prelim-entry"><span class="toc-num">i.</span><span class="toc-title">Declaration by Students</span><span class="toc-leader"></span><span class="toc-page">i</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">ii.</span><span class="toc-title">Acknowledgement</span><span class="toc-leader"></span><span class="toc-page">ii</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">iii.</span><span class="toc-title">Abstract (Synopsis)</span><span class="toc-leader"></span><span class="toc-page">iii</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">iv.</span><span class="toc-title">Table of Contents</span><span class="toc-leader"></span><span class="toc-page">iv</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">v.</span><span class="toc-title">List of Figures</span><span class="toc-leader"></span><span class="toc-page">vi</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">vi.</span><span class="toc-title">List of Tables</span><span class="toc-leader"></span><span class="toc-page">vii</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">vii.</span><span class="toc-title">List of Abbreviations and Acronyms</span><span class="toc-leader"></span><span class="toc-page">viii</span></div>
+      <div class="toc-prelim-entry"><span class="toc-num">viii.</span><span class="toc-title">List of Symbols and Notations</span><span class="toc-leader"></span><span class="toc-page">ix</span></div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 2: LITERATURE REVIEW AND RELATED WORK</td><td class="r">9</td></tr>
-        <tr><td>2.1</td><td>Introduction</td><td class="r">9</td></tr>
-        <tr><td>2.2</td><td>Review of Existing Systems / Research Studies</td><td class="r">9</td></tr>
-        <tr><td>2.3</td><td>Comparative Analysis of Existing Approaches</td><td class="r">13</td></tr>
-        <tr><td>2.4</td><td>Identified Research / Application Gap</td><td class="r">15</td></tr>
-        <tr><td>2.5</td><td>Summary of the Literature Review</td><td class="r">16</td></tr>
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 1: INTRODUCTION</span><span class="toc-leader"></span><span class="toc-page">1</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.1</span><span class="toc-title">Background and Context of the Project</span><span class="toc-leader"></span><span class="toc-page">1</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.2</span><span class="toc-title">Project Domain Overview</span><span class="toc-leader"></span><span class="toc-page">1</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.3</span><span class="toc-title">Motivation</span><span class="toc-leader"></span><span class="toc-page">2</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.4</span><span class="toc-title">Problem Statement</span><span class="toc-leader"></span><span class="toc-page">3</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.5</span><span class="toc-title">Aim and Objectives</span><span class="toc-leader"></span><span class="toc-page">3</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.6</span><span class="toc-title">Scope of the Project</span><span class="toc-leader"></span><span class="toc-page">4</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.7</span><span class="toc-title">Significance and Expected Contribution</span><span class="toc-leader"></span><span class="toc-page">4</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.8</span><span class="toc-title">Industry and Societal Relevance</span><span class="toc-leader"></span><span class="toc-page">5</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.9</span><span class="toc-title">Sustainable Development Goals (SDGs 3, 4, 8, 9, 10) Addressed</span><span class="toc-leader"></span><span class="toc-page">5</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.10</span><span class="toc-title">Constraints and Limitations</span><span class="toc-leader"></span><span class="toc-page">7</span></div>
+      <div class="toc-section-entry"><span class="toc-num">1.11</span><span class="toc-title">Organization of the Report</span><span class="toc-leader"></span><span class="toc-page">8</span></div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 3: REQUIREMENTS ANALYSIS AND PROJECT PLANNING</td><td class="r">17</td></tr>
-        <tr><td>3.1</td><td>Introduction</td><td class="r">17</td></tr>
-        <tr><td>3.2</td><td>Stakeholder Identification and User Needs</td><td class="r">17</td></tr>
-        <tr><td>3.3</td><td>Problem / Opportunity Analysis from User and Business Perspectives</td><td class="r">18</td></tr>
-        <tr><td>3.4</td><td>Functional Requirements</td><td class="r">18</td></tr>
-        <tr><td>3.5</td><td>Non-Functional Requirements</td><td class="r">19</td></tr>
-        <tr><td>3.6</td><td>Hardware and Software Requirements</td><td class="r">20</td></tr>
-        <tr><td>3.7</td><td>Feasibility Analysis</td><td class="r">21</td></tr>
-        <tr><td class="sub">3.7.1</td><td>Technical Feasibility</td><td class="r">21</td></tr>
-        <tr><td class="sub">3.7.2</td><td>Economic / Cost Feasibility</td><td class="r">21</td></tr>
-        <tr><td class="sub">3.7.3</td><td>Operational and Schedule Feasibility</td><td class="r">21</td></tr>
-        <tr><td>3.8</td><td>Project Plan, Milestones and Task Allocation</td><td class="r">22</td></tr>
-        <tr><td>3.9</td><td>Risk Assessment and Mitigation</td><td class="r">23</td></tr>
-        <tr><td>3.10</td><td>Data Privacy, Security, and Compliance Requirements</td><td class="r">24</td></tr>
-      </tbody>
-    </table>
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 2: LITERATURE REVIEW AND RELATED WORK</span><span class="toc-leader"></span><span class="toc-page">9</span></div>
+      <div class="toc-section-entry"><span class="toc-num">2.1</span><span class="toc-title">Introduction</span><span class="toc-leader"></span><span class="toc-page">9</span></div>
+      <div class="toc-section-entry"><span class="toc-num">2.2</span><span class="toc-title">Review of Existing Systems and Research Studies</span><span class="toc-leader"></span><span class="toc-page">9</span></div>
+      <div class="toc-section-entry"><span class="toc-num">2.3</span><span class="toc-title">Comparative Analysis of Existing Approaches</span><span class="toc-leader"></span><span class="toc-page">13</span></div>
+      <div class="toc-section-entry"><span class="toc-num">2.4</span><span class="toc-title">Identified Research and Application Gap</span><span class="toc-leader"></span><span class="toc-page">15</span></div>
+      <div class="toc-section-entry"><span class="toc-num">2.5</span><span class="toc-title">Summary of the Literature Review</span><span class="toc-leader"></span><span class="toc-page">16</span></div>
+
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 3: REQUIREMENTS ANALYSIS AND PROJECT PLANNING</span><span class="toc-leader"></span><span class="toc-page">17</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.1</span><span class="toc-title">Introduction</span><span class="toc-leader"></span><span class="toc-page">17</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.2</span><span class="toc-title">Stakeholder Identification and User Needs</span><span class="toc-leader"></span><span class="toc-page">17</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.3</span><span class="toc-title">Problem and Opportunity Analysis (User &amp; Business Perspectives)</span><span class="toc-leader"></span><span class="toc-page">18</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.4</span><span class="toc-title">Functional Requirements</span><span class="toc-leader"></span><span class="toc-page">18</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.5</span><span class="toc-title">Non-Functional Requirements</span><span class="toc-leader"></span><span class="toc-page">19</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.6</span><span class="toc-title">Hardware and Software Requirements</span><span class="toc-leader"></span><span class="toc-page">20</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.7</span><span class="toc-title">Feasibility Analysis (Technical, Economic &amp; Operational)</span><span class="toc-leader"></span><span class="toc-page">21</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.8</span><span class="toc-title">Project Plan, Milestones and Task Allocation</span><span class="toc-leader"></span><span class="toc-page">22</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.9</span><span class="toc-title">Risk Assessment and Mitigation</span><span class="toc-leader"></span><span class="toc-page">23</span></div>
+      <div class="toc-section-entry"><span class="toc-num">3.10</span><span class="toc-title">Data Privacy, Security, and Compliance Requirements</span><span class="toc-leader"></span><span class="toc-page">24</span></div>
+    </div>
     <div class="page-footer-roman">iv</div>
   </section>`;
 
-  // 9. TABLE OF CONTENTS (Part 2) — Page v
+  // 9. TABLE OF CONTENTS (Part 2) — Page v (Enlarged Non-Table Dotted Leader Format)
   const tocPage2 = String.raw`
   <section class="report-page prelim-page" data-roman="v">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:6pt;">TABLE OF CONTENTS (Continued)</div>
-    <table class="toc-table">
-      <thead>
-        <tr>
-          <th style="width:16%; text-align:left;">Section</th>
-          <th style="width:72%; text-align:left;">Title</th>
-          <th style="width:12%; text-align:right;">Page No.</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="toc-ch"><td colspan="2">CHAPTER 4: BUSINESS MODEL AND SUSTAINABILITY FRAMEWORK</td><td class="r">25</td></tr>
-        <tr><td>4.1</td><td>Introduction to the Proposed Business / Solution</td><td class="r">25</td></tr>
-        <tr><td>4.2</td><td>Identification of Target Users and Customer Segments</td><td class="r">25</td></tr>
-        <tr><td>4.3</td><td>Customer Problem and Value Proposition</td><td class="r">26</td></tr>
-        <tr><td>4.4</td><td>Business Model Canvas</td><td class="r">27</td></tr>
-        <tr><td>4.5</td><td>Market / User Adoption Potential</td><td class="r">28</td></tr>
-        <tr><td>4.6</td><td>Cost-Benefit Analysis</td><td class="r">28</td></tr>
-        <tr><td>4.7</td><td>Revenue Generation and Pricing Model</td><td class="r">29</td></tr>
-        <tr><td>4.8</td><td>Business Feasibility and Viability</td><td class="r">29</td></tr>
-        <tr><td>4.9</td><td>Scalability and Long-Term Sustainability</td><td class="r">30</td></tr>
-        <tr><td>4.10</td><td>SDG Impact Pathway and Measurable Indicators</td><td class="r">31</td></tr>
-        <tr><td>4.11</td><td>Summary</td><td class="r">31</td></tr>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">TABLE OF CONTENTS (Continued)</div>
+    <div class="prelim-list-container">
+      <div class="prelim-list-header">
+        <span>CHAPTER / SECTION TITLE</span>
+        <span>PAGE NO.</span>
+      </div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 5: SYSTEM DESIGN AND METHODOLOGY</td><td class="r">32</td></tr>
-        <tr><td>5.1</td><td>Proposed Solution / System Overview</td><td class="r">32</td></tr>
-        <tr><td>5.2</td><td>System Architecture</td><td class="r">32</td></tr>
-        <tr><td>5.3</td><td>Module Description</td><td class="r">33</td></tr>
-        <tr><td>5.4</td><td>Workflow / Process Design</td><td class="r">34</td></tr>
-        <tr><td>5.5</td><td>Data Design / Database Design (if applicable)</td><td class="r">35</td></tr>
-        <tr><td>5.6</td><td>UML / DFD / ER Diagrams (as applicable)</td><td class="r">36</td></tr>
-        <tr><td>5.7</td><td>Algorithm / Model / Business Logic Design</td><td class="r">38</td></tr>
-        <tr><td>5.8</td><td>User Interface and Interaction Design</td><td class="r">41</td></tr>
-        <tr><td>5.9</td><td>Security, Privacy, Ethics and Responsible Use</td><td class="r">41</td></tr>
-        <tr><td>5.10</td><td>Methodology and Evaluation Strategy</td><td class="r">42</td></tr>
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 4: BUSINESS MODEL AND SUSTAINABILITY FRAMEWORK</span><span class="toc-leader"></span><span class="toc-page">25</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.1</span><span class="toc-title">Introduction to the Proposed Business and Solution</span><span class="toc-leader"></span><span class="toc-page">25</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.2</span><span class="toc-title">Identification of Target Users and Customer Segments</span><span class="toc-leader"></span><span class="toc-page">25</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.3</span><span class="toc-title">Customer Problem and Value Proposition</span><span class="toc-leader"></span><span class="toc-page">26</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.4</span><span class="toc-title">Business Model Canvas</span><span class="toc-leader"></span><span class="toc-page">27</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.5</span><span class="toc-title">Market and User Adoption Potential</span><span class="toc-leader"></span><span class="toc-page">28</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.6</span><span class="toc-title">Cost-Benefit Analysis</span><span class="toc-leader"></span><span class="toc-page">28</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.7</span><span class="toc-title">Revenue Generation and Pricing Model</span><span class="toc-leader"></span><span class="toc-page">29</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.8</span><span class="toc-title">Business Feasibility and Viability</span><span class="toc-leader"></span><span class="toc-page">29</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.9</span><span class="toc-title">Scalability and Long-Term Sustainability</span><span class="toc-leader"></span><span class="toc-page">30</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.10</span><span class="toc-title">SDG Impact Pathway and Measurable Indicators</span><span class="toc-leader"></span><span class="toc-page">31</span></div>
+      <div class="toc-section-entry"><span class="toc-num">4.11</span><span class="toc-title">Summary</span><span class="toc-leader"></span><span class="toc-page">31</span></div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 6: IMPLEMENTATION AND INTEGRATION</td><td class="r">43</td></tr>
-        <tr><td>6.1</td><td>Development Environment and Technology Stack</td><td class="r">43</td></tr>
-        <tr><td>6.2</td><td>Implementation Approach</td><td class="r">43</td></tr>
-        <tr><td>6.3</td><td>Module-wise Implementation</td><td class="r">44</td></tr>
-        <tr><td>6.4</td><td>Database / API / Model Integration (as applicable)</td><td class="r">49</td></tr>
-        <tr><td>6.5</td><td>Key Screens / System Demonstration</td><td class="r">50</td></tr>
-        <tr><td>6.6</td><td>Integration and Deployment</td><td class="r">50</td></tr>
-        <tr><td>6.7</td><td>Challenges Encountered and Solutions</td><td class="r">51</td></tr>
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 5: SYSTEM DESIGN AND METHODOLOGY</span><span class="toc-leader"></span><span class="toc-page">32</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.1</span><span class="toc-title">Proposed Solution and System Overview</span><span class="toc-leader"></span><span class="toc-page">32</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.2</span><span class="toc-title">System Architecture</span><span class="toc-leader"></span><span class="toc-page">32</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.3</span><span class="toc-title">Module Description</span><span class="toc-leader"></span><span class="toc-page">33</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.4</span><span class="toc-title">Workflow and Process Design</span><span class="toc-leader"></span><span class="toc-page">34</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.5</span><span class="toc-title">Data Design and Feature Schema Design</span><span class="toc-leader"></span><span class="toc-page">35</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.6</span><span class="toc-title">UML, DFD, and Entity-Relationship Diagrams</span><span class="toc-leader"></span><span class="toc-page">36</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.7</span><span class="toc-title">Algorithm, Neural Model, and Avatar IK Design</span><span class="toc-leader"></span><span class="toc-page">38</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.8</span><span class="toc-title">User Interface and Interaction Design</span><span class="toc-leader"></span><span class="toc-page">41</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.9</span><span class="toc-title">Security, Privacy, Ethics and Responsible Use</span><span class="toc-leader"></span><span class="toc-page">41</span></div>
+      <div class="toc-section-entry"><span class="toc-num">5.10</span><span class="toc-title">Methodology and Evaluation Strategy</span><span class="toc-leader"></span><span class="toc-page">42</span></div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 7: TESTING, RESULTS AND DISCUSSION</td><td class="r">52</td></tr>
-        <tr><td>7.1</td><td>Testing Strategy</td><td class="r">52</td></tr>
-        <tr><td>7.2</td><td>Test Environment and Test Data</td><td class="r">52</td></tr>
-        <tr><td>7.3</td><td>Test Cases and Test Results</td><td class="r">53</td></tr>
-        <tr><td>7.4</td><td>Functional and Non-Functional Testing</td><td class="r">54</td></tr>
-        <tr><td>7.5</td><td>Performance / Model Evaluation (as applicable)</td><td class="r">55</td></tr>
-        <tr><td>7.6</td><td>Results and Observations</td><td class="r">59</td></tr>
-        <tr><td>7.7</td><td>Comparison with Existing / Baseline Approach</td><td class="r">59</td></tr>
-        <tr><td>7.8</td><td>Achievement of Project Objectives</td><td class="r">59</td></tr>
-        <tr><td>7.9</td><td>Business Model Validation and User Feedback</td><td class="r">60</td></tr>
-        <tr><td>7.10</td><td>Business, Social and Environmental Impact</td><td class="r">60</td></tr>
-        <tr><td>7.11</td><td>Contribution to Selected SDG Targets</td><td class="r">60</td></tr>
-        <tr><td>7.12</td><td>Measurement of SDG Outcomes and Impact Indicators</td><td class="r">60</td></tr>
-        <tr><td>7.13</td><td>Limitations and Threats to Validity</td><td class="r">60</td></tr>
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 6: IMPLEMENTATION AND INTEGRATION</span><span class="toc-leader"></span><span class="toc-page">43</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.1</span><span class="toc-title">Development Environment and Technology Stack</span><span class="toc-leader"></span><span class="toc-page">43</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.2</span><span class="toc-title">Implementation Approach</span><span class="toc-leader"></span><span class="toc-page">43</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.3</span><span class="toc-title">Module-wise Implementation</span><span class="toc-leader"></span><span class="toc-page">44</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.4</span><span class="toc-title">Database, REST API, and Model Integration</span><span class="toc-leader"></span><span class="toc-page">49</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.5</span><span class="toc-title">Key Screens and System Demonstration</span><span class="toc-leader"></span><span class="toc-page">50</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.6</span><span class="toc-title">Integration and Deployment</span><span class="toc-leader"></span><span class="toc-page">50</span></div>
+      <div class="toc-section-entry"><span class="toc-num">6.7</span><span class="toc-title">Challenges Encountered and Solutions</span><span class="toc-leader"></span><span class="toc-page">51</span></div>
 
-        <tr class="toc-ch"><td colspan="2">CHAPTER 8: CONCLUSION AND FUTURE ENHANCEMENTS</td><td class="r">61</td></tr>
-        <tr><td>8.1</td><td>Summary of the Project</td><td class="r">61</td></tr>
-        <tr><td>8.2</td><td>Conclusions</td><td class="r">61</td></tr>
-        <tr><td>8.3</td><td>Achievement of Project Objectives</td><td class="r">62</td></tr>
-        <tr><td>8.4</td><td>Key Technical and Business Contributions</td><td class="r">62</td></tr>
-        <tr><td>8.5</td><td>Future Scope and Enhancements</td><td class="r">63</td></tr>
-        <tr class="toc-ch"><td colspan="2">REFERENCES</td><td class="r">64</td></tr>
-        <tr class="toc-ch"><td colspan="2">PUBLICATIONS: Published Journal/Conference/Patent</td><td class="r">65</td></tr>
-        <tr class="toc-ch"><td colspan="2">APPENDIX A: 144-Class ISL Vocabulary &amp; Kannada Lexicon</td><td class="r">66</td></tr>
-      </tbody>
-    </table>
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 7: TESTING, RESULTS AND DISCUSSION</span><span class="toc-leader"></span><span class="toc-page">52</span></div>
+      <div class="toc-section-entry"><span class="toc-num">7.1</span><span class="toc-title">Testing Strategy, Environment, and Test Cases (7.1–7.4)</span><span class="toc-leader"></span><span class="toc-page">52</span></div>
+      <div class="toc-section-entry"><span class="toc-num">7.5</span><span class="toc-title">Performance and Model Evaluation (Isolated, Continuous &amp; Latency)</span><span class="toc-leader"></span><span class="toc-page">55</span></div>
+      <div class="toc-section-entry"><span class="toc-num">7.6</span><span class="toc-title">Results, Baseline Comparison, and Objective Achievement (7.6–7.8)</span><span class="toc-leader"></span><span class="toc-page">59</span></div>
+      <div class="toc-section-entry"><span class="toc-num">7.9</span><span class="toc-title">Business Validation, SDG Impact Indicators, and Limitations (7.9–7.13)</span><span class="toc-leader"></span><span class="toc-page">60</span></div>
+
+      <div class="toc-chapter-entry"><span class="toc-title">CHAPTER 8: CONCLUSION AND FUTURE ENHANCEMENTS</span><span class="toc-leader"></span><span class="toc-page">61</span></div>
+      <div class="toc-section-entry"><span class="toc-num">8.1</span><span class="toc-title">Project Summary, Conclusions, and Contributions (8.1–8.4)</span><span class="toc-leader"></span><span class="toc-page">61</span></div>
+      <div class="toc-section-entry"><span class="toc-num">8.5</span><span class="toc-title">Future Scope and Enhancements</span><span class="toc-leader"></span><span class="toc-page">63</span></div>
+
+      <div class="toc-chapter-entry"><span class="toc-title">REFERENCES</span><span class="toc-leader"></span><span class="toc-page">64</span></div>
+      <div class="toc-chapter-entry"><span class="toc-title">RESEARCH MANUSCRIPT &amp; REPRODUCIBLE ARTIFACTS</span><span class="toc-leader"></span><span class="toc-page">65</span></div>
+      <div class="toc-chapter-entry"><span class="toc-title">APPENDIX A: 144-CLASS ISL VOCABULARY &amp; KANNADA LEXICON</span><span class="toc-leader"></span><span class="toc-page">66</span></div>
+    </div>
     <div class="page-footer-roman">v</div>
   </section>`;
 
-  // 10. LIST OF FIGURES (Dedicated 1 Full Page — Page vi)
+  // 10. LIST OF FIGURES (Dedicated 1 Full Page — Page vi, Enlarged Non-Table Format)
   const listOfFiguresPage = String.raw`
   <section class="report-page prelim-page" data-roman="vi">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF FIGURES</div>
-    <table class="toc-table" style="margin-bottom:8pt;">
-      <thead>
-        <tr>
-          <th style="width:16%; text-align:left;">Figure No.</th>
-          <th style="width:72%; text-align:left;">Caption</th>
-          <th style="width:12%; text-align:right;">Page No.</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Fig. 1.1</td><td>Bidirectional ISL-to-Kannada and Kannada-to-ISL Communication Paradigm</td><td class="r">2</td></tr>
-        <tr><td>Fig. 2.1</td><td>Taxonomy of Sign Language Recognition and Avatar Synthesis Approaches</td><td class="r">14</td></tr>
-        <tr><td>Fig. 3.1</td><td>11-Phase Project Engineering Schedule and Gantt Timeline</td><td class="r">22</td></tr>
-        <tr><td>Fig. 4.1</td><td>Silent Bridge 9-Block Business Model Canvas</td><td class="r">27</td></tr>
-        <tr><td>Fig. 5.1</td><td>Silent Bridge End-to-End System Architecture (Landmark-Only Privacy Boundary)</td><td class="r">32</td></tr>
-        <tr><td>Fig. 5.2</td><td>Forward Sign-to-Kannada and Reverse Kannada-to-Avatar Process Flowcharts</td><td class="r">34</td></tr>
-        <tr><td>Fig. 5.3</td><td>Level-0 Context DFD and Level-1 Subsystem Data Flow Diagram</td><td class="r">36</td></tr>
-        <tr><td>Fig. 5.4</td><td>UML Use Case, Runtime Sequence, and Entity-Relationship Schema Diagrams</td><td class="r">37</td></tr>
-        <tr><td>Fig. 7.1</td><td>Valid Training Recordings per Sign for the Active 64-Sign Model by Source Dataset</td><td class="r">52</td></tr>
-        <tr><td>Fig. 7.2</td><td>Top-1 Accuracy Progression of Successive Models on Held-Out Videos</td><td class="r">55</td></tr>
-        <tr><td>Fig. 7.3</td><td>Precision, Recall, and Coverage Curve Against Confidence Threshold (1,435 OOF Predictions)</td><td class="r">55</td></tr>
-        <tr><td>Fig. 7.4</td><td>Per-Sign F1-Score of the Active Model Across 60 Held-Out Test Classes</td><td class="r">56</td></tr>
-        <tr><td>Fig. 7.5</td><td>Sign Error Rate (SER) of Segmentation Variants on 50 Five-Sign Streams</td><td class="r">57</td></tr>
-        <tr><td>Fig. 7.6</td><td>Top-1 Accuracy Under Synthetic Landmark Perturbations on 268 Held-Out Videos</td><td class="r">57</td></tr>
-      </tbody>
-    </table>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:12pt;">LIST OF FIGURES</div>
+    <div class="prelim-list-container">
+      <div class="prelim-list-header">
+        <span>FIGURE NO. &amp; TITLE</span>
+        <span>PAGE NO.</span>
+      </div>
+
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 1.1</span><span class="leader-item-title">Bidirectional ISL-to-Kannada Communication Paradigm</span><span class="leader-item-dots"></span><span class="leader-item-page">2</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 2.1</span><span class="leader-item-title">Taxonomy of Sign Recognition and Avatar Synthesis</span><span class="leader-item-dots"></span><span class="leader-item-page">14</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 3.1</span><span class="leader-item-title">11-Phase Project Engineering Schedule and Gantt Chart</span><span class="leader-item-dots"></span><span class="leader-item-page">22</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 4.1</span><span class="leader-item-title">Silent Bridge 9-Block Business Model Canvas</span><span class="leader-item-dots"></span><span class="leader-item-page">27</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 5.1</span><span class="leader-item-title">End-to-End System Architecture (Landmark Privacy)</span><span class="leader-item-dots"></span><span class="leader-item-page">32</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 5.2</span><span class="leader-item-title">Forward Sign-to-Kannada &amp; Reverse Avatar Flowcharts</span><span class="leader-item-dots"></span><span class="leader-item-page">34</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 5.3</span><span class="leader-item-title">Level-0 Context DFD and Level-1 Subsystem DFD</span><span class="leader-item-dots"></span><span class="leader-item-page">36</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 5.4</span><span class="leader-item-title">UML Use Case, Sequence, and ER Schema Diagrams</span><span class="leader-item-dots"></span><span class="leader-item-page">37</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 6.1</span><span class="leader-item-title">Website Workflow: Live ISL-to-Kannada Studio</span><span class="leader-item-dots"></span><span class="leader-item-page">45</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 6.2</span><span class="leader-item-title">Website Workflow: Few-Shot Custom Signs Studio</span><span class="leader-item-dots"></span><span class="leader-item-page">46</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 6.3</span><span class="leader-item-title">Website Workflow: Kannada-to-Sign 3D Avatar Studio</span><span class="leader-item-dots"></span><span class="leader-item-page">47</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 6.4</span><span class="leader-item-title">Website Workflow: 144-Class Sign Reference Library</span><span class="leader-item-dots"></span><span class="leader-item-page">50</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 6.5</span><span class="leader-item-title">Website Workflow: Dataset &amp; Model Workbench</span><span class="leader-item-dots"></span><span class="leader-item-page">50</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 6.6</span><span class="leader-item-title">Website Workflow: Architecture &amp; Testing Dashboard</span><span class="leader-item-dots"></span><span class="leader-item-page">51</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 7.1</span><span class="leader-item-title">Valid Training Recordings per Sign by Dataset Source</span><span class="leader-item-dots"></span><span class="leader-item-page">52</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 7.2</span><span class="leader-item-title">Top-1 Accuracy Progression on Held-Out Videos</span><span class="leader-item-dots"></span><span class="leader-item-page">55</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 7.3</span><span class="leader-item-title">Out-of-Fold Precision, Recall, and Coverage Curve</span><span class="leader-item-dots"></span><span class="leader-item-page">55</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 7.4</span><span class="leader-item-title">Per-Sign F1-Score Across 60 Held-Out Test Classes</span><span class="leader-item-dots"></span><span class="leader-item-page">56</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 7.5</span><span class="leader-item-title">Sign Error Rate (SER) of Segmentation Variants</span><span class="leader-item-dots"></span><span class="leader-item-page">57</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Fig. 7.6</span><span class="leader-item-title">Top-1 Accuracy Under Synthetic Perturbations</span><span class="leader-item-dots"></span><span class="leader-item-page">57</span></div>
+    </div>
     <div class="page-footer-roman">vi</div>
   </section>`;
 
-  // 11. LIST OF TABLES (Dedicated 1 Full Page — Page vii)
+  // 11. LIST OF TABLES (Dedicated 1 Full Page — Page vii, Enlarged Non-Table Format)
   const listOfTablesPage = String.raw`
   <section class="report-page prelim-page" data-roman="vii">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF TABLES</div>
-    <table class="toc-table">
-      <thead>
-        <tr>
-          <th style="width:16%; text-align:left;">Table No.</th>
-          <th style="width:72%; text-align:left;">Caption</th>
-          <th style="width:12%; text-align:right;">Page No.</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Table 1.1</td><td>Alignment of Silent Bridge Objectives with UN SDG Targets</td><td class="r">6</td></tr>
-        <tr><td>Table 1.2</td><td>Chapter-Wise Structural Summary of the B.E. Project Report</td><td class="r">8</td></tr>
-        <tr><td>Table 2.1</td><td>Comparative Analysis of Existing Sign Language Recognition &amp; Avatar Systems</td><td class="r">13</td></tr>
-        <tr><td>Table 2.2</td><td>Feature-Level Architectural Comparison Across 12 Benchmark Studies</td><td class="r">14</td></tr>
-        <tr><td>Table 3.1</td><td>Stakeholder Identification, Needs, and System Value Delivery</td><td class="r">17</td></tr>
-        <tr><td>Table 3.2</td><td>Minimum and Recommended Hardware Specifications</td><td class="r">20</td></tr>
-        <tr><td>Table 3.3</td><td>Software and Library Stack Specifications</td><td class="r">20</td></tr>
-        <tr><td>Table 3.4</td><td>11-Phase Project Engineering Schedule, Milestones, and Key Deliverables</td><td class="r">22</td></tr>
-        <tr><td>Table 3.5</td><td>Risk Assessment and Mitigation Matrix (FMEA)</td><td class="r">23</td></tr>
-        <tr><td>Table 4.1–4.6</td><td>Customer Segments, Value Proposition, Cost-Benefit, Pricing, Financials &amp; SDG KPIs</td><td class="r">25–31</td></tr>
-        <tr><td>Table 5.1–5.2</td><td>Subsystem Modules and 147-Dimensional <code>hands-face-v2</code> Feature Schema</td><td class="r">33–35</td></tr>
-        <tr><td>Table 6.1–6.3</td><td>Production Stack, REST/WebSocket API Specification, and Engineering Challenges</td><td class="r">43–51</td></tr>
-        <tr><td>Table 7.1–7.14</td><td>Datasets, 24 Test Cases, Parity, Latency, Isolated/Sentence Results &amp; SDG Outcomes</td><td class="r">52–60</td></tr>
-        <tr><td>Table 8.1</td><td>Summary of Key Technical, Algorithmic, and Business Contributions</td><td class="r">62</td></tr>
-      </tbody>
-    </table>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:12pt;">LIST OF TABLES</div>
+    <div class="prelim-list-container">
+      <div class="prelim-list-header">
+        <span>TABLE NO. &amp; TITLE</span>
+        <span>PAGE NO.</span>
+      </div>
+
+      <div class="leader-list-item"><span class="leader-item-num">Table 1.1</span><span class="leader-item-title">Alignment of Project Objectives with UN SDG Targets</span><span class="leader-item-dots"></span><span class="leader-item-page">6</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 1.2</span><span class="leader-item-title">Chapter-Wise Structural Summary of the B.E. Project Report</span><span class="leader-item-dots"></span><span class="leader-item-page">8</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 2.1</span><span class="leader-item-title">Comparative Analysis of Sign Language &amp; Avatar Systems</span><span class="leader-item-dots"></span><span class="leader-item-page">13</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 2.2</span><span class="leader-item-title">Feature-Level Architectural Comparison Across 12 Studies</span><span class="leader-item-dots"></span><span class="leader-item-page">14</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 3.1</span><span class="leader-item-title">Stakeholder Identification, Core Needs, and Value Delivery</span><span class="leader-item-dots"></span><span class="leader-item-page">17</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 3.2</span><span class="leader-item-title">Minimum and Recommended Hardware Specifications</span><span class="leader-item-dots"></span><span class="leader-item-page">20</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 3.3</span><span class="leader-item-title">Software and Library Stack Specifications</span><span class="leader-item-dots"></span><span class="leader-item-page">20</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 3.4</span><span class="leader-item-title">11-Phase Project Engineering Schedule and Key Deliverables</span><span class="leader-item-dots"></span><span class="leader-item-page">22</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 3.5</span><span class="leader-item-title">Risk Assessment and Mitigation Matrix (FMEA Analysis)</span><span class="leader-item-dots"></span><span class="leader-item-page">23</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 4.1–4.3</span><span class="leader-item-title">Target User Segments, Value Proposition &amp; Cost-Benefit</span><span class="leader-item-dots"></span><span class="leader-item-page">25–28</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 4.4–4.6</span><span class="leader-item-title">Tiered SaaS Pricing, 3-Year Financials &amp; SDG Impact KPIs</span><span class="leader-item-dots"></span><span class="leader-item-page">29–31</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 5.1</span><span class="leader-item-title">Core Subsystem Modules and Architectural Responsibilities</span><span class="leader-item-dots"></span><span class="leader-item-page">33</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 5.2</span><span class="leader-item-title">147-Dimensional Per-Frame Feature Schema (hands-face-v2)</span><span class="leader-item-dots"></span><span class="leader-item-page">35</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 6.1</span><span class="leader-item-title">Production Technology Stack Across Frontend and Backend</span><span class="leader-item-dots"></span><span class="leader-item-page">43</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 6.2</span><span class="leader-item-title">Core REST API Endpoints and WebSocket Protocol Contract</span><span class="leader-item-dots"></span><span class="leader-item-page">49</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 6.3</span><span class="leader-item-title">Summary of Engineering Challenges and Verified Solutions</span><span class="leader-item-dots"></span><span class="leader-item-page">51</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 7.1–7.8</span><span class="leader-item-title">Datasets, Test Cases, Parity, Latency &amp; Isolated Sign Results</span><span class="leader-item-dots"></span><span class="leader-item-page">52–56</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 7.9–7.14</span><span class="leader-item-title">Segmentation SER, Perturbation, Sentence &amp; SDG Outcomes</span><span class="leader-item-dots"></span><span class="leader-item-page">57–60</span></div>
+      <div class="leader-list-item"><span class="leader-item-num">Table 8.1–8.2</span><span class="leader-item-title">Key Technical Contributions &amp; Reproducible Artifacts</span><span class="leader-item-dots"></span><span class="leader-item-page">62–65</span></div>
+    </div>
     <div class="page-footer-roman">vii</div>
   </section>`;
 
-  // 12. LIST OF ABBREVIATIONS AND ACRONYMS — Page viii
+  // 12. LIST OF ABBREVIATIONS AND ACRONYMS — Page viii (Enlarged Non-Table Format)
   const abbreviationsPage = String.raw`
   <section class="report-page prelim-page" data-roman="viii">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF ABBREVIATIONS AND ACRONYMS</div>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th style="width:22%;">Acronym</th>
-          <th style="width:78%;">Full Expansion and Technical Meaning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>ISL</strong></td><td>Indian Sign Language — Natural visual-spatial language used by the deaf community in India</td></tr>
-        <tr><td><strong>SLR / SLT</strong></td><td>Sign Language Recognition / Sign Language Translation</td></tr>
-        <tr><td><strong>CSLR</strong></td><td>Continuous Sign Language Recognition (unsegmented multi-sign stream decoding)</td></tr>
-        <tr><td><strong>BiGRU</strong></td><td>Bidirectional Gated Recurrent Unit neural network architecture</td></tr>
-        <tr><td><strong>CTC</strong></td><td>Connectionist Temporal Classification alignment-free sequence loss and decoder</td></tr>
-        <tr><td><strong>TTA</strong></td><td>Test-Time Augmentation (3-view ensemble over full, 3-tap denoised, and 84% core-stroke crops)</td></tr>
-        <tr><td><strong>ONNX</strong></td><td>Open Neural Network Exchange portable cross-platform model format</td></tr>
-        <tr><td><strong>WASM</strong></td><td>WebAssembly binary instruction format for near-native in-browser execution</td></tr>
-        <tr><td><strong>IK</strong></td><td>Inverse Kinematics (analytic two-bone shoulder-elbow-wrist solver for 3D avatar arms)</td></tr>
-        <tr><td><strong>SOV</strong></td><td>Subject–Object–Verb canonical constituent word order of Kannada</td></tr>
-        <tr><td><strong>NMM</strong></td><td>Non-Manual Markers (eyebrow raise/furrow, head tilt/shake, mouthing in ISL grammar)</td></tr>
-        <tr><td><strong>EMA</strong></td><td>Exponential Moving Average temporal filter for landmark and probability smoothing</td></tr>
-        <tr><td><strong>SER / GER</strong></td><td>Sign Error Rate / Gloss Error Rate (Levenshtein edit distance normalized by reference length)</td></tr>
-        <tr><td><strong>OOF</strong></td><td>Out-of-Fold cross-validation predictions used for unbiased confidence threshold calibration</td></tr>
-        <tr><td><strong>OOD</strong></td><td>Out-of-Distribution / Non-sign motion rejection via calibrated confidence gating</td></tr>
-        <tr><td><strong>MCP / PIP / DIP</strong></td><td>Metacarpophalangeal, Proximal Interphalangeal, and Distal Interphalangeal finger joints</td></tr>
-        <tr><td><strong>TTS</strong></td><td>Text-to-Speech synthesis (Web Speech API <code>kn-IN</code> voice with optional gTTS fallback)</td></tr>
-        <tr><td><strong>PWA</strong></td><td>Progressive Web Application with Service Worker offline asset caching</td></tr>
-        <tr><td><strong>DPDP</strong></td><td>Digital Personal Data Protection Act, 2023 (India privacy framework)</td></tr>
-        <tr><td><strong>SDG</strong></td><td>United Nations Sustainable Development Goals (2030 Agenda)</td></tr>
-        <tr><td><strong>BMC</strong></td><td>Business Model Canvas (Osterwalder 9-block strategic enterprise framework)</td></tr>
-        <tr><td><strong>TAM / SAM / SOM</strong></td><td>Total Addressable Market / Serviceable Addressable Market / Serviceable Obtainable Market</td></tr>
-        <tr><td><strong>FMEA / RPN</strong></td><td>Failure Mode and Effects Analysis / Risk Priority Number ($\text{Severity} \times \text{Occurrence} \times \text{Detection}$)</td></tr>
-        <tr><td><strong>CRC-32 / MD5</strong></td><td>Cyclic Redundancy Check (32-bit) / Message-Digest 5 cryptographic integrity checksums</td></tr>
-      </tbody>
-    </table>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:12pt;">LIST OF ABBREVIATIONS AND ACRONYMS</div>
+    <div class="prelim-list-container">
+      <div class="prelim-list-header">
+        <span style="width:118pt; flex-shrink:0;">ACRONYM</span>
+        <span style="flex:1;">FULL EXPANSION AND TECHNICAL MEANING</span>
+      </div>
+
+      <div class="def-list-item"><span class="def-item-term">ISL</span><span class="def-item-desc">Indian Sign Language — Natural visual-spatial language used by the deaf community in India</span></div>
+      <div class="def-list-item"><span class="def-item-term">SLR / SLT</span><span class="def-item-desc">Sign Language Recognition / Sign Language Translation</span></div>
+      <div class="def-list-item"><span class="def-item-term">CSLR</span><span class="def-item-desc">Continuous Sign Language Recognition (unsegmented multi-sign stream decoding)</span></div>
+      <div class="def-list-item"><span class="def-item-term">BiGRU</span><span class="def-item-desc">Bidirectional Gated Recurrent Unit neural network architecture</span></div>
+      <div class="def-list-item"><span class="def-item-term">CTC</span><span class="def-item-desc">Connectionist Temporal Classification alignment-free sequence loss and decoder</span></div>
+      <div class="def-list-item"><span class="def-item-term">TTA</span><span class="def-item-desc">Test-Time Augmentation (3-view ensemble over full, 3-tap denoised, and 84% core-stroke crops)</span></div>
+      <div class="def-list-item"><span class="def-item-term">ONNX</span><span class="def-item-desc">Open Neural Network Exchange portable cross-platform model format</span></div>
+      <div class="def-list-item"><span class="def-item-term">WASM</span><span class="def-item-desc">WebAssembly binary instruction format for near-native in-browser execution</span></div>
+      <div class="def-list-item"><span class="def-item-term">IK</span><span class="def-item-desc">Inverse Kinematics (analytic two-bone shoulder-elbow-wrist solver for 3D avatar arms)</span></div>
+      <div class="def-list-item"><span class="def-item-term">SOV</span><span class="def-item-desc">Subject–Object–Verb canonical constituent word order of Kannada</span></div>
+      <div class="def-list-item"><span class="def-item-term">NMM</span><span class="def-item-desc">Non-Manual Markers (eyebrow raise/furrow, head tilt/shake, mouthing in ISL grammar)</span></div>
+      <div class="def-list-item"><span class="def-item-term">EMA</span><span class="def-item-desc">Exponential Moving Average temporal filter for landmark and probability smoothing</span></div>
+      <div class="def-list-item"><span class="def-item-term">SER / GER</span><span class="def-item-desc">Sign Error Rate / Gloss Error Rate (Levenshtein edit distance normalized by reference length)</span></div>
+      <div class="def-list-item"><span class="def-item-term">OOF</span><span class="def-item-desc">Out-of-Fold cross-validation predictions used for unbiased confidence threshold calibration</span></div>
+      <div class="def-list-item"><span class="def-item-term">OOD</span><span class="def-item-desc">Out-of-Distribution / Non-sign motion rejection via calibrated confidence gating</span></div>
+      <div class="def-list-item"><span class="def-item-term">MCP / PIP / DIP</span><span class="def-item-desc">Metacarpophalangeal, Proximal Interphalangeal, and Distal Interphalangeal finger joints</span></div>
+      <div class="def-list-item"><span class="def-item-term">TTS</span><span class="def-item-desc">Text-to-Speech synthesis (Web Speech API kn-IN voice with optional gTTS fallback)</span></div>
+      <div class="def-list-item"><span class="def-item-term">PWA</span><span class="def-item-desc">Progressive Web Application with Service Worker offline asset caching</span></div>
+      <div class="def-list-item"><span class="def-item-term">DPDP</span><span class="def-item-desc">Digital Personal Data Protection Act, 2023 (India statutory privacy framework)</span></div>
+      <div class="def-list-item"><span class="def-item-term">SDG</span><span class="def-item-desc">United Nations Sustainable Development Goals (2030 Global Agenda)</span></div>
+      <div class="def-list-item"><span class="def-item-term">BMC</span><span class="def-item-desc">Business Model Canvas (Osterwalder 9-block strategic enterprise framework)</span></div>
+      <div class="def-list-item"><span class="def-item-term">TAM / SAM / SOM</span><span class="def-item-desc">Total Addressable Market / Serviceable Addressable Market / Serviceable Obtainable Market</span></div>
+      <div class="def-list-item"><span class="def-item-term">FMEA / RPN</span><span class="def-item-desc">Failure Mode and Effects Analysis / Risk Priority Number ($\text{Severity} \times \text{Occurrence} \times \text{Detection}$)</span></div>
+    </div>
     <div class="page-footer-roman">viii</div>
   </section>`;
 
-  // 13. LIST OF SYMBOLS / NOTATIONS — Page ix
+  // 13. LIST OF SYMBOLS / NOTATIONS — Page ix (Enlarged Non-Table Format)
   const symbolsPage = String.raw`
   <section class="report-page prelim-page" data-roman="ix">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF SYMBOLS AND NOTATIONS</div>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th style="width:24%;">Symbol</th>
-          <th style="width:58%;">Mathematical Definition</th>
-          <th style="width:18%;">SI Unit / Dim.</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>$\mathbf{p}_i = (x_i, y_i, z_i)$</td><td>3D MediaPipe landmark coordinates for hand joint $i \in \{0,\dots,20\}$</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$\mathbf{p}_0$</td><td>Wrist root landmark coordinate (anchor of hand coordinate frame)</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$s_{\text{palm}}$</td><td>Apparent palm scale $\max(\|\mathbf{p}_9 - \mathbf{p}_0\|_2, 10^{-3})$</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$\mathbf{c}_{\text{face}}, w_{\text{face}}, h_{\text{face}}$</td><td>Face bounding-box center $(c_x, c_y)$ and dimensions $(w, h)$</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$\hat{\mathbf{d}}, \hat{\mathbf{n}}$</td><td>Orthonormal finger direction unit vector and palm normal unit vector</td><td>Unit vector $\in \mathbb{R}^3$</td></tr>
-        <tr><td>$\mathbf{f}_t \in \mathbb{R}^{147}$</td><td>Single-frame feature vector under schema <code>hands-face-v2</code> at time $t$</td><td>$147$ (dimensionless)</td></tr>
-        <tr><td>$T$</td><td>Resampled temporal sequence length ($T = 24$ frames for active model)</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$\mathbf{x} \in \mathbb{R}^{3668}$</td><td>Flattened segment feature vector ($147 T + 6(T-1) + 2 = 3,668$)</td><td>$3,668$ (dimensionless)</td></tr>
-        <tr><td>$m_t$</td><td>Inter-frame 21-landmark displacement rate normalized to $30\text{ Hz}$</td><td>$\text{s}^{-1}$ ($\text{Hz}$)</td></tr>
-        <tr><td>$\theta_{\text{start}}, \theta_{\text{still}}$</td><td>Motion onset threshold ($0.014\text{ s}^{-1}$) and stillness threshold ($0.006\text{ s}^{-1}$)</td><td>$\text{s}^{-1}$</td></tr>
-        <tr><td>$T_{\text{still}}$</td><td>Required stillness hold duration to close an active sign segment ($0.28\text{ s}$)</td><td>$\text{s}$ ($\text{ms} = 10^{-3}\text{ s}$)</td></tr>
-        <tr><td>$\tau^*$</td><td>Validation-calibrated confidence rejection threshold ($\tau^* = 0.50$)</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$P_{\text{CTC}}(g_s \mid \mathbf{X})$</td><td>CTC sequence probability of gloss sequence $g_s$ given frame matrix $\mathbf{X}$</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$P_{\text{cls}}(s \mid \mathbf{X})$</td><td>Sentence classifier probability for corpus sentence $s \in \{1,\dots,101\}$</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$\lambda$</td><td>Log-likelihood fusion weight between CTC and sentence classifier ($\lambda = 1.0$)</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$S_{\text{block}}(\mathbf{u}, \mathbf{v})$</td><td>Block-balanced cosine similarity across 5 semantic feature subspaces</td><td>Dimensionless ($1$)</td></tr>
-        <tr><td>$L_1, L_2$</td><td>Upper-arm length ($0.29\text{ m}$) and forearm length ($0.27\text{ m}$) in 3D avatar rig</td><td>Meter ($\text{m}$)</td></tr>
-        <tr><td>$\theta_{\text{elbow}}$</td><td>Interior elbow flexion angle solved via Law of Cosines in analytic 2-bone IK</td><td>Radian ($\text{rad}$)</td></tr>
-        <tr><td>$\Delta\mathbf{p}_{\text{arc}}(u)$</td><td>Ballistic co-articulation transition offset at normalized phase $u \in [0,1]$</td><td>Meter ($\text{m}$)</td></tr>
-        <tr><td>$\chi^2, p$</td><td>Exact paired McNemar test statistic and two-sided statistical $p$-value</td><td>Dimensionless ($1$)</td></tr>
-      </tbody>
-    </table>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:12pt;">LIST OF SYMBOLS AND NOTATIONS</div>
+    <div class="prelim-list-container">
+      <div class="prelim-list-header">
+        <span style="width:130pt; flex-shrink:0;">SYMBOL</span>
+        <span style="flex:1;">MATHEMATICAL DEFINITION</span>
+        <span style="width:98pt; text-align:right; flex-shrink:0;">SI UNIT / DIM.</span>
+      </div>
+
+      <div class="sym-list-item"><span class="sym-item-symbol">Hand Joint Points (21)</span><span class="sym-item-desc">3D landmark coordinates tracked for each hand joint from the webcam stream</span><span class="sym-item-unit">3D Points</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Wrist Reference</span><span class="sym-item-desc">Wrist base point used to align hand movements independent of user position</span><span class="sym-item-unit">Position</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Palm Scale</span><span class="sym-item-desc">Hand size measurement used to adjust for distance from the camera</span><span class="sym-item-unit">Scale</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Face Box &amp; Center</span><span class="sym-item-desc">Face position tracking to recognize signs made near the chin, mouth, or forehead</span><span class="sym-item-unit">Coordinates</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Finger &amp; Palm Direction</span><span class="sym-item-desc">Direction vectors showing finger orientation and palm facing angle</span><span class="sym-item-unit">Direction</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Frame Landmark Points</span><span class="sym-item-desc">Complete set of hand and face keypoint positions extracted per video frame</span><span class="sym-item-unit">Feature Set</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Sampled Frames (24)</span><span class="sym-item-desc">Standard number of time frames sampled per gesture for fast model recognition</span><span class="sym-item-unit">Frames</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Gesture Motion Speed</span><span class="sym-item-desc">Speed of hand movement between frames used to detect when a sign starts and stops</span><span class="sym-item-unit">Speed</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Movement Threshold</span><span class="sym-item-desc">Motion level required to start recording a gesture</span><span class="sym-item-unit">Threshold</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Pause Duration (0.28s)</span><span class="sym-item-desc">Time the user holds hands still to signal the end of a gesture</span><span class="sym-item-unit">Seconds</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Confidence Score (50%)</span><span class="sym-item-desc">Minimum AI prediction confidence required to accept and display a translation</span><span class="sym-item-unit">Score</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Word Probability</span><span class="sym-item-desc">Model confidence score for each recognized sign word</span><span class="sym-item-unit">Confidence</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Sentence Confidence</span><span class="sym-item-desc">Model confidence score for full continuous sign sentence matches</span><span class="sym-item-unit">Confidence</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Custom Sign Similarity</span><span class="sym-item-desc">Pattern matching score used to identify personalized custom signs</span><span class="sym-item-unit">Similarity</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Avatar Arm Proportions</span><span class="sym-item-desc">Shoulder-to-elbow and elbow-to-wrist bone lengths in the 3D animated character</span><span class="sym-item-unit">Length</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Avatar Elbow Joint Angle</span><span class="sym-item-desc">Elbow bend angle computed to move avatar hands naturally to signing positions</span><span class="sym-item-unit">Angle</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Transition Arc Path</span><span class="sym-item-desc">Smooth curved path avatar hands follow between signs to prevent abrupt drops</span><span class="sym-item-unit">Curve</span></div>
+      <div class="sym-list-item"><span class="sym-item-symbol">Statistical Significance</span><span class="sym-item-desc">Accuracy improvement confirmation verifying gains across unseen signers</span><span class="sym-item-unit">Score</span></div>
+    </div>
     <div class="page-footer-roman">ix</div>
   </section>`;
 
@@ -651,7 +565,6 @@ export function buildPreliminaryPages(meta) {
     coverPage,
     innerTitlePage,
     certificatePage,
-    publicationCertificatePage,
     declarationPage,
     acknowledgementPage,
     abstractPage,

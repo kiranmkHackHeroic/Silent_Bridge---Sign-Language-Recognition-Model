@@ -58,10 +58,26 @@ export function CameraPanel({ vision, overlay, setOverlay, controls, switches, t
       </div>
       {error && <Notice tone="bad">{error}</Notice>}
       <div className="toolbar">
+        <label
+          className="switch"
+          title="Turn camera stream on or off for privacy and battery/energy control"
+        >
+          <input
+            type="checkbox"
+            role="switch"
+            aria-label="Toggle camera stream"
+            checked={camera === "on" || camera === "starting"}
+            disabled={camera === "starting"}
+            onChange={(e) => (e.target.checked ? start() : stop())}
+          />
+          <span>
+            Camera stream: <strong style={{ color: camera === "on" ? "var(--accent)" : "inherit" }}>{camera === "on" ? "ON" : camera === "starting" ? "Starting…" : "OFF"}</strong>
+          </span>
+        </label>
         {camera === "on" ? (
-          <Btn icon="cameraOff" onClick={stop}>Stop camera</Btn>
+          <Btn icon="cameraOff" size="sm" onClick={stop}>Stop</Btn>
         ) : (
-          <Btn icon="camera" variant="primary" onClick={() => start()} disabled={camera === "starting"}>Start camera</Btn>
+          <Btn icon="camera" size="sm" variant="primary" onClick={() => start()} disabled={camera === "starting"}>Start camera</Btn>
         )}
         {controls}
         <span className="grow" />

@@ -440,7 +440,41 @@ export function LiveRecognition() {
 
       <div className="live-layout">
         <div className="stack">
-          <Card title="Camera" icon="camera">
+          <Card
+            title="Camera"
+            icon="camera"
+            actions={
+              <label
+                className="switch"
+                title="Toggle camera stream on/off for privacy and energy control"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontSize: "0.85rem",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  role="switch"
+                  aria-label="Toggle camera stream"
+                  checked={vision.camera === "on" || vision.camera === "starting"}
+                  disabled={vision.camera === "starting"}
+                  onChange={(e) => {
+                    if (e.target.checked) vision.start();
+                    else vision.stop();
+                  }}
+                />
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+                  <Icon name={vision.camera === "on" ? "camera" : "cameraOff"} size={13} />
+                  <span>
+                    Stream: <strong>{vision.camera === "on" ? "ON" : vision.camera === "starting" ? "Starting…" : "OFF"}</strong>
+                  </span>
+                </span>
+              </label>
+            }
+          >
             <CameraPanel
               vision={vision}
               overlay={overlay}

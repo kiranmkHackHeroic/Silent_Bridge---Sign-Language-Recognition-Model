@@ -1,7 +1,15 @@
 // Chapter 6: Implementation and Integration (Pages 43–51)
 // Strictly adheres to BMSCE CSBS B.E. Project Report Guidelines
 
-export function buildChapter6() {
+export function buildChapter6(figSrcs = {}) {
+  const {
+    figUiLive = "/report/fig_ui_live.png",
+    figUiCustom = "/report/fig_ui_custom.png",
+    figUiAvatar = "/report/fig_ui_avatar.png",
+    figUiReference = "/report/fig_ui_reference.png",
+    figUiDataset = "/report/fig_ui_dataset.png",
+    figUiTesting = "/report/fig_ui_testing.png",
+  } = figSrcs;
   const page43 = String.raw`
   <section class="report-page body-page" data-page="43">
     <div class="page-running-header">
@@ -160,51 +168,37 @@ export function framesToVectorsTTA(
   const values: number[] = [];
   for (const slot of ["0", "1"]) {
     const a = prev.points[slot], b = curr.points[slot];
-    if (!a || !b || a.length === 0 || b.length === 0) continue;
-    let total = 0.0;
-    const count = Math.min(a.length, b.length);
-    for (let i = 0; i &lt; count; i++) {
-      total += Math.hypot(b[i][0] - a[i][0], b[i][1] - a[i][1], b[i][2] - a[i][2]);
-    }
+    if (!a || !b || !a.length || !b.length) continue;
+    let total = 0.0, count = Math.min(a.length, b.length);
+    for (let i = 0; i &lt; count; i++) total += Math.hypot(b[i][0] - a[i][0], b[i][1] - a[i][1], b[i][2] - a[i][2]);
     values.push(total / count);
   }
-  if (values.length === 0) return 0.0;
-  return Math.max(...values) * (33.3 / Math.min(dt, 200.0));
+  return values.length ? Math.max(...values) * (33.3 / Math.min(dt, 200.0)) : 0.0;
 }
 
 public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise&lt;OnnxPrediction | null&gt; {
-  const rawMatrix = segmentFrames.map((f) =&gt; [...f.vector]);
-  const cleaned = this.cleanSequence(rawMatrix);
+  const cleaned = this.cleanSequence(segmentFrames.map((f) =&gt; [...f.vector]));
   if (!cleaned || !this.session) return null;
-
-  const views: Array&lt;{ vec: Float32Array; weight: number }&gt; = [];
-  const fullVec = this.matrixToVector(cleaned);
-  views.push({ vec: fullVec, weight: this.useTTA ? 0.50 : 1.0 });
-
+  const views = [{ vec: this.matrixToVector(cleaned), weight: this.useTTA ? 0.50 : 1.0 }];
   if (this.useTTA) {
-    const denoised = this.trimIdleEnds(this.smoothSequenceMatrix(cleaned));
-    views.push({ vec: this.matrixToVector(denoised), weight: 0.30 });
-    if (cleaned.length &gt;= 8) {
-      const cut = Math.max(1, Math.floor(cleaned.length * 0.08));
-      const core = cleaned.slice(cut, cleaned.length - cut);
-      if (core.length &gt;= this.minFrames) {
-        views.push({ vec: this.matrixToVector(this.smoothSequenceMatrix(core)), weight: 0.20 });
-      }
-    }
+    views.push({ vec: this.matrixToVector(this.trimIdleEnds(this.smoothSequenceMatrix(cleaned))), weight: 0.30 });
+    const cut = Math.max(1, Math.floor(cleaned.length * 0.08)), core = cleaned.slice(cut, -cut);
+    if (core.length &gt;= this.minFrames) views.push({ vec: this.matrixToVector(this.smoothSequenceMatrix(core)), weight: 0.20 });
   }
-  const numClasses = this.classes.length;
-  const combinedProbs = new Float32Array(numClasses);
+  const combinedProbs = new Float32Array(this.classes.length);
   const weightSum = views.reduce((s, v) =&gt; s + v.weight, 0);
   for (const v of views) {
     const probs = await this.runVectorInference(v.vec);
     if (!probs) return null;
-    const w = v.weight / weightSum;
-    for (let i = 0; i &lt; Math.min(probs.length, numClasses); i++) {
-      combinedProbs[i] += w * probs[i];
-    }
+    for (let i = 0; i &lt; combinedProbs.length; i++) combinedProbs[i] += (v.weight / weightSum) * probs[i];
   }
-  // Match against Few-Shot Custom Signs and calibrated threshold...
+  return this.resolveTopPrediction(combinedProbs, cleaned);
 }</pre>
+    </div>
+
+    <div class="figure-box" style="margin-top:6pt;">
+      <img src="${figUiLive}" alt="Fig. 6.1 Live ISL-to-Kannada Recognition Studio Workflow" style="width:100%; max-height:285px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <div class="figure-caption">Fig. 6.1 Actual Website Workflow — Live ISL-to-Kannada Recognition Studio showing real-time camera stream status, 144-class trained model indicator, Kannada transcript editor, and SOV meaning panel.</div>
     </div>
     <div class="page-footer-arabic">45</div>
   </section>`;
@@ -225,25 +219,17 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
       <div class="code-title">Listing 6.3: Outlier-Resistant Prototype Centroid &amp; Block-Balanced Similarity (customSigns.ts)</div>
       <pre class="code-pre">export function averageEmbeddings(samples: number[][]): number[] {
   if (samples.length === 0) return [];
-  const dim = samples[0].length;
-  const k = samples.length;
-  const weights = new Array(k).fill(1.0);
+  const dim = samples[0].length, k = samples.length, weights = new Array(k).fill(1.0);
   if (k &gt;= 3) {
     for (let i = 0; i &lt; k; i++) {
       let sumSim = 0;
-      for (let j = 0; j &lt; k; j++) {
-        if (i !== j) sumSim += cosineSimilarity(samples[i], samples[j]);
-      }
-      const meanPeerSim = sumSim / (k - 1);
-      // Down-weight noisy outlier sample whose peer similarity is low
-      weights[i] = Math.max(0.15, Math.pow(Math.max(0, meanPeerSim), 3));
+      for (let j = 0; j &lt; k; j++) if (i !== j) sumSim += cosineSimilarity(samples[i], samples[j]);
+      weights[i] = Math.max(0.15, Math.pow(Math.max(0, sumSim / (k - 1)), 3));
     }
   }
-  const wTotal = weights.reduce((a, b) =&gt; a + b, 0) || 1.0;
-  const avg = new Array(dim).fill(0);
+  const wTotal = weights.reduce((a, b) =&gt; a + b, 0) || 1.0, avg = new Array(dim).fill(0);
   for (let i = 0; i &lt; k; i++) {
-    const w = weights[i] / wTotal;
-    for (let d = 0; d &lt; dim; d++) avg[d] += w * samples[i][d];
+    for (let d = 0; d &lt; dim; d++) avg[d] += (weights[i] / wTotal) * samples[i][d];
   }
   return avg;
 }</pre>
@@ -253,6 +239,11 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
     <p>
       In <code>backend_ts/translation.ts</code>, <code>SemanticTranslator</code> bridges ISL gloss order and Kannada Subject–Object–Verb (SOV) syntax across three tiers: (1) Greedy longest-prefix matching against the 187-entry phrase dictionary (mapping multi-gloss idioms such as <code>["HOW_ARE_YOU"]</code> $\to$ <code>ನೀವು ಹೇಗಿದ್ದೀರಿ?</code> or <code>["I_ME", "WATER", "WANT"]</code> $\to$ <code>ನನಗೆ ನೀರು ಬೇಕು.</code>), (2) Deterministic SOV syntactic reordering that places temporal adjuncts first, attaches locative suffix <code>-ದಲ್ಲಿ / -ಲ್ಲಿ</code> to place nouns (e.g., <code>ಶಾಲೆ</code> $\to$ <code>ಶಾಲೆಯಲ್ಲಿ</code>, <code>ಮನೆ</code> $\to$ <code>ಮನೆಯಲ್ಲಿ</code>), converts pronouns to dative case (<code>ನಾನು</code> $\to$ <code>ನನಗೆ</code>) before experiential predicates (<em>want, happy, sick, cold</em>), and places verbs/modals at the clause end, and (3) Non-manual facial marker integration that converts statements into Kannada interrogatives (appending <code>ಏನು?</code> / <code>?</code>) when brow-raise or brow-furrow grammar markers are active.
     </p>
+
+    <div class="figure-box" style="margin-top:6pt;">
+      <img src="${figUiCustom}" alt="Fig. 6.2 Few-Shot Custom Signs Studio Workflow" style="width:100%; max-height:230px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <div class="figure-caption">Fig. 6.2 Actual Website Workflow — Custom Signs &amp; Personalization Studio for recording 3 repetitions of user-defined regional or personal signs and matching 3,668-D landmark centroids in-browser.</div>
+    </div>
     <div class="page-footer-arabic">46</div>
   </section>`;
 
@@ -277,28 +268,23 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
       <div class="code-title">Listing 6.4: Analytic Two-Bone Arm Inverse Kinematics Solver (frontend/src/avatar/AvatarRig.ts)</div>
       <pre class="code-pre">private updateArm(arm: ArmRig, pose: HandPose) {
   const target = new THREE.Vector3(...pose.wrist).clamp(MIN_BOUNDS, MAX_BOUNDS);
-  const shoulder = arm.shoulder.position;
-  const toTarget = target.clone().sub(shoulder);
-  const maxReach = UPPER_ARM + FOREARM - 0.004;
-  const minReach = Math.abs(UPPER_ARM - FOREARM) + 0.01;
-  const dist = THREE.MathUtils.clamp(toTarget.length(), minReach, maxReach);
-  const dir = toTarget.LengthSq() &gt; 1e-6 ? toTarget.normalize() : new THREE.Vector3(0, -1, 0);
-
-  // Law of Cosines for interior shoulder angle alpha
-  const cosAlpha = THREE.MathUtils.clamp(
-    (UPPER_ARM * UPPER_ARM + dist * dist - FOREARM * FOREARM) / (2 * UPPER_ARM * dist), -1, 1
-  );
-  const alpha = Math.acos(cosAlpha);
-  const pole = new THREE.Vector3(arm.side * 0.55, -0.80, -0.22).normalize();
+  const shoulder = arm.shoulder.position, toTarget = target.clone().sub(shoulder);
+  const dist = THREE.MathUtils.clamp(toTarget.length(), Math.abs(UPPER_ARM - FOREARM) + 0.01, UPPER_ARM + FOREARM - 0.004);
+  const dir = toTarget.lengthSq() &gt; 1e-6 ? toTarget.normalize() : new THREE.Vector3(0, -1, 0);
+  const cosAlpha = THREE.MathUtils.clamp((UPPER_ARM ** 2 + dist ** 2 - FOREARM ** 2) / (2 * UPPER_ARM * dist), -1, 1);
+  const alpha = Math.acos(cosAlpha), pole = new THREE.Vector3(arm.side * 0.55, -0.80, -0.22).normalize();
   const bendAxis = pole.clone().sub(dir.clone().multiplyScalar(pole.dot(dir)));
   if (bendAxis.lengthSq() &lt; 1e-5) bendAxis.set(0, 0, -1); else bendAxis.normalize();
-
-  const upperDir = dir.clone().multiplyScalar(Math.cos(alpha))
-    .add(bendAxis.multiplyScalar(Math.sin(alpha))).normalize();
+  const upperDir = dir.clone().multiplyScalar(Math.cos(alpha)).add(bendAxis.multiplyScalar(Math.sin(alpha))).normalize();
   const elbowPos = shoulder.clone().addScaledVector(upperDir, UPPER_ARM);
   const foreDir = target.clone().sub(elbowPos).normalize();
   // Orient upper arm, forearm, wrist basis (dir, normal), and 5x3 finger phalanges...
 }</pre>
+    </div>
+
+    <div class="figure-box" style="margin-top:6pt;">
+      <img src="${figUiAvatar}" alt="Fig. 6.3 Kannada-to-Sign 3D Avatar Studio Workflow" style="width:100%; max-height:230px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <div class="figure-caption">Fig. 6.3 Actual Website Workflow — Kannada-to-Sign 3D Avatar Studio translating Kannada text (ನಿಮ್ಮ ಹೆಸರು ಏನು?) into ordered ISL gloss sequences and rendering continuous 3D humanoid signing with analytic 2-bone IK.</div>
     </div>
     <div class="page-footer-arabic">47</div>
   </section>`;
@@ -404,8 +390,19 @@ export function kannadaToVisemes(text: string): Viseme[] {
       <li><strong>Screen 3 — Kannada to Sign 3D Avatar Studio:</strong> Features Kannada text input with quick-select conversational sentences (e.g., <em>ನಮಸ್ಕಾರ, ನನ್ನ ಹೆಸರು ರಾಮು / ನಿಮ್ಮ ಹೆಸರು ಏನು?</em>), gloss sequence chips, facial expression/grammar toggles (Neutral, Smile, Question), and the studio-lit 3D Pixar-style character performing continuous co-articulated ISL signing with synchronized Kannada lip mouthing.</li>
       <li><strong>Screen 4 — Sign Reference Library:</strong> Filterable grid of all 144 vocabulary signs categorized by domain (Greetings, Family, Food, Health, Transport, Colors, Pronouns, Time) with embedded dataset reference videos and 3D avatar preview.</li>
       <li><strong>Screen 5 — Dataset &amp; Model Governance:</strong> End-to-end ML workbench showing per-class sample counts, guided variation recording, model training launcher, version registry table with promotion gate verdicts, and one-click rollback.</li>
-      <li><strong>Screen 6 — About, Testing &amp; B.E. Report Viewer:</strong> Displays empirical benchmark charts, segmentation and parity matrices, live evaluation error attribution, and the interactive 76-page CSBS B.E. Project Report viewer &amp; PDF downloader.</li>
+      <li><strong>Screen 6 — About, Testing &amp; B.E. Report Viewer:</strong> Displays empirical benchmark charts, segmentation and parity matrices, live evaluation error attribution, and the interactive CSBS B.E. Project Report viewer &amp; Word/PDF downloader (Fig. 6.4–Fig. 6.6).</li>
     </ol>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8pt; margin:4pt 0;">
+      <div class="figure-box" style="margin:0;">
+        <img src="${figUiReference}" alt="Fig. 6.4 Sign Reference Library Workflow" style="width:100%; max-height:145px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+        <div class="figure-caption">Fig. 6.4 Actual Website Workflow — 144-Class Bilingual Sign Reference Library with searchable Kannada/English glosses and signing guidelines.</div>
+      </div>
+      <div class="figure-box" style="margin:0;">
+        <img src="${figUiDataset}" alt="Fig. 6.5 Dataset and Model Governance Workbench Workflow" style="width:100%; max-height:145px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+        <div class="figure-caption">Fig. 6.5 Actual Website Workflow — Dataset &amp; Model Governance Workbench showing active checkpoint v20261103-195651 (144 classes, 3,182 valid samples).</div>
+      </div>
+    </div>
 
     <div class="sec-h1">6.6 Integration and Deployment</div>
     <p>
@@ -423,11 +420,11 @@ export function kannadaToVisemes(text: string): Viseme[] {
 
     <div class="sec-h1">6.7 Challenges Encountered and Solutions</div>
     <p>
-      During the engineering and integration of <strong>Silent Bridge</strong>, seven non-trivial technical challenges were encountered, diagnosed, and resolved with verified code fixes (Table 6.3).
+      During the engineering and integration of <strong>Silent Bridge</strong>, seven non-trivial technical challenges were encountered, diagnosed, and resolved with verified code fixes (Table 6.3 and Fig. 6.6).
     </p>
 
     <div class="table-caption">Table 6.3 Summary of Major Engineering Challenges, Root Causes, and Verified Solutions</div>
-    <table class="data-table" style="font-size:9.6pt;">
+    <table class="data-table" style="font-size:9.0pt;">
       <thead>
         <tr>
           <th style="width:18%;">Challenge</th>
@@ -473,6 +470,11 @@ export function kannadaToVisemes(text: string): Viseme[] {
         </tr>
       </tbody>
     </table>
+
+    <div class="figure-box" style="margin-top:4pt;">
+      <img src="${figUiTesting}" alt="Fig. 6.6 About and Testing Workflow Dashboard" style="width:100%; max-height:155px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <div class="figure-caption">Fig. 6.6 Actual Website Workflow — System Architecture &amp; Empirical Testing Dashboard summarizing the 6-stage bidirectional pipeline and downloadable report artifacts.</div>
+    </div>
     <div class="page-footer-arabic">51</div>
   </section>`;
 

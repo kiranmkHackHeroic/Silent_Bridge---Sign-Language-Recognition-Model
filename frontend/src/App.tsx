@@ -15,13 +15,13 @@ const PAGES: { id: PageId; label: string; icon: IconName }[] = [
   { id: "reference", label: "Sign Reference", icon: "eye" },
   { id: "dataset", label: "Dataset & Model", icon: "database" },
   { id: "about", label: "About & Testing", icon: "flask" },
-  { id: "report", label: "IEEE Paper & BE Report", icon: "download" },
+  { id: "report", label: "Report, IEEE Paper & PPT", icon: "download" },
 ];
 type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "about" | "report";
 
 function pageFromHash(): PageId {
   const h = location.hash.replace("#", "");
-  if (h === "paper") return "report";
+  if (h === "paper" || h === "ppt") return "report";
   return (PAGES.find((p) => p.id === h)?.id ?? "live") as PageId;
 }
 

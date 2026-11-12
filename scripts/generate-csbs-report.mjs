@@ -28,9 +28,9 @@ const meta = {
   shortTitle:
     "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR",
   students: [
+    { name: "H S Thanush", usn: "1BM23CB066" },
     { name: "Kiran M K", usn: "1BM23CB068" },
     { name: "Manoj G U", usn: "1BM24CB401" },
-    { name: "H S Thanush", usn: "1BM23CB066" },
   ],
   guideName: "Tejaswini K",
   guideDesignation: "Assistant Professor",
@@ -48,6 +48,12 @@ const figSrcs = {
   figPerclass: toDataUri("frontend/public/report/fig_perclass.png", "image/png"),
   figSegmentation: toDataUri("frontend/public/report/fig_segmentation.png", "image/png"),
   figRobustness: toDataUri("frontend/public/report/fig_robustness.png", "image/png"),
+  figUiLive: toDataUri("frontend/public/report/fig_ui_live.png", "image/png"),
+  figUiCustom: toDataUri("frontend/public/report/fig_ui_custom.png", "image/png"),
+  figUiAvatar: toDataUri("frontend/public/report/fig_ui_avatar.png", "image/png"),
+  figUiReference: toDataUri("frontend/public/report/fig_ui_reference.png", "image/png"),
+  figUiDataset: toDataUri("frontend/public/report/fig_ui_dataset.png", "image/png"),
+  figUiTesting: toDataUri("frontend/public/report/fig_ui_testing.png", "image/png"),
 };
 
 function convertLatexExpr(expr) {
@@ -212,7 +218,7 @@ const prelimHtml = wrapPageBodies(formatLatexMathToHtml(buildPreliminaryPages(me
 const ch1And2Html = wrapPageBodies(formatLatexMathToHtml(buildChapters1And2()));
 const ch3And4Html = wrapPageBodies(formatLatexMathToHtml(buildChapters3And4()));
 const ch5Html = wrapPageBodies(formatLatexMathToHtml(buildChapter5(figSrcs)));
-const ch6Html = wrapPageBodies(formatLatexMathToHtml(buildChapter6()));
+const ch6Html = wrapPageBodies(formatLatexMathToHtml(buildChapter6(figSrcs)));
 const ch7And8Html = wrapPageBodies(formatLatexMathToHtml(buildChapters7And8AndBackMatter(figSrcs)));
 
 const fullHtml = `<!DOCTYPE html>
@@ -623,39 +629,156 @@ const fullHtml = `<!DOCTYPE html>
       text-align: center;
     }
 
-    /* Table of Contents Table */
-    .toc-table {
+    /* Enlarged Non-Table Table of Contents & Preliminary Lists (Pages iv–ix) */
+    .prelim-list-container {
       width: 100%;
-      border-collapse: collapse;
-      font-size: 8.8pt;
-      line-height: 1.16;
+      display: flex;
+      flex-direction: column;
+      margin-top: 2pt;
     }
-    .toc-table th {
-      border-top: 1.5px solid #0f172a;
+    .prelim-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12pt;
+      font-weight: 700;
+      color: #0f172a;
       border-bottom: 1.5px solid #0f172a;
-      background: #f1f5f9;
-      padding: 2.2pt 4pt;
+      padding-bottom: 4pt;
+      margin-bottom: 8pt;
+      letter-spacing: 0.3px;
+    }
+    .toc-chapter-entry {
+      display: flex;
+      align-items: baseline;
+      font-size: 12pt;
       font-weight: 700;
+      line-height: 1.45;
+      margin-top: 6pt;
+      margin-bottom: 3pt;
+      color: #000000;
     }
-    .toc-table td {
-      padding: 1.1pt 4pt;
-      border-bottom: 0.5px dotted #94a3b8;
+    .toc-section-entry {
+      display: flex;
+      align-items: baseline;
+      font-size: 11.5pt;
+      font-weight: 400;
+      line-height: 1.42;
+      margin-bottom: 2.8pt;
+      padding-left: 12pt;
+      color: #000000;
     }
-    .toc-table tr.toc-ch td {
+    .toc-prelim-entry {
+      display: flex;
+      align-items: baseline;
+      font-size: 11.5pt;
+      font-weight: 400;
+      line-height: 1.42;
+      margin-bottom: 2.8pt;
+      color: #000000;
+    }
+    .toc-num {
+      width: 38pt;
+      flex-shrink: 0;
       font-weight: 700;
-      padding-top: 2.2pt;
-      padding-bottom: 1.5pt;
-      background: #f1f5f9;
-      border-top: 0.75px solid #64748b;
-      border-bottom: 0.75px solid #64748b;
+      text-align: left;
     }
-    .toc-table td.sub {
-      padding-left: 14pt;
-    }
-    .toc-table td.r {
-      text-align: right;
-      font-weight: 700;
+    .toc-title {
+      flex-shrink: 0;
       white-space: nowrap;
+    }
+    .toc-leader {
+      flex: 1 1 auto;
+      border-bottom: 1.2px dotted #475569;
+      margin: 0 8pt 3.5pt 8pt;
+      min-width: 14pt;
+    }
+    .toc-page {
+      flex-shrink: 0;
+      font-weight: 700;
+      text-align: right;
+      min-width: 24pt;
+    }
+
+    /* Enlarged List of Figures & List of Tables (Non-Table Dotted Leader Format) */
+    .leader-list-item {
+      display: flex;
+      align-items: baseline;
+      font-size: 11.4pt;
+      line-height: 1.68;
+      margin-bottom: 7pt;
+      color: #000000;
+    }
+    .leader-item-num {
+      width: 78pt;
+      flex-shrink: 0;
+      font-weight: 700;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .leader-item-title {
+      flex-shrink: 0;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .leader-item-dots {
+      flex: 1 1 auto;
+      border-bottom: 1.2px dotted #475569;
+      margin: 0 8pt 3.5pt 8pt;
+      min-width: 16pt;
+    }
+    .leader-item-page {
+      flex-shrink: 0;
+      font-weight: 700;
+      text-align: right;
+      min-width: 30pt;
+    }
+
+    /* Enlarged List of Abbreviations & List of Symbols (Non-Table Structured Format) */
+    .def-list-item {
+      display: flex;
+      align-items: baseline;
+      font-size: 12pt;
+      line-height: 1.52;
+      margin-bottom: 5.5pt;
+      color: #000000;
+    }
+    .def-item-term {
+      width: 118pt;
+      flex-shrink: 0;
+      font-weight: 700;
+      text-align: left;
+      padding-right: 8pt;
+    }
+    .def-item-desc {
+      flex: 1 1 auto;
+      text-align: left;
+    }
+    .sym-list-item {
+      display: flex;
+      align-items: baseline;
+      font-size: 12pt;
+      line-height: 1.55;
+      margin-bottom: 6pt;
+      color: #000000;
+    }
+    .sym-item-symbol {
+      width: 130pt;
+      flex-shrink: 0;
+      font-weight: 700;
+      text-align: left;
+      padding-right: 8pt;
+    }
+    .sym-item-desc {
+      flex: 1 1 auto;
+      text-align: left;
+      padding-right: 8pt;
+    }
+    .sym-item-unit {
+      width: 98pt;
+      flex-shrink: 0;
+      text-align: right;
+      font-style: italic;
     }
 
     /* Equations (Guideline 6.xv–xvi: decimal form with right justified equation numbers) */
@@ -826,14 +949,16 @@ const fullHtml = `<!DOCTYPE html>
         const tables = inner.querySelectorAll(".data-table, .toc-table");
         const cells = inner.querySelectorAll(".data-table th, .data-table td, .toc-table th, .toc-table td");
         const boxes = inner.querySelectorAll(".eq-row, .alg-box, .code-box, .figure-box");
+        const codePres = inner.querySelectorAll(".code-pre");
+        const listItems = inner.querySelectorAll(".toc-chapter-entry, .toc-section-entry, .toc-prelim-entry, .leader-list-item, .def-list-item, .sym-list-item");
 
         // Multi-step full-width vertical compaction if a page is taller than available height
         const steps = [
-          { pFs: "11.4pt", pLh: "1.42", pMb: "3.8pt", tFs: "8.6pt", tLh: "1.18", cPad: "2pt 3.8pt", hScale: 0.96 },
-          { pFs: "10.8pt", pLh: "1.35", pMb: "3pt",   tFs: "8.2pt", tLh: "1.15", cPad: "1.6pt 3.2pt", hScale: 0.92 },
-          { pFs: "10.2pt", pLh: "1.28", pMb: "2.4pt", tFs: "7.8pt", tLh: "1.12", cPad: "1.3pt 2.8pt", hScale: 0.88 },
-          { pFs: "9.6pt",  pLh: "1.22", pMb: "1.8pt", tFs: "7.4pt", tLh: "1.09", cPad: "1.0pt 2.4pt", hScale: 0.84 },
-          { pFs: "9.0pt",  pLh: "1.16", pMb: "1.4pt", tFs: "7.0pt", tLh: "1.06", cPad: "0.8pt 2.0pt", hScale: 0.80 },
+          { pFs: "11.4pt", pLh: "1.42", pMb: "3.8pt", tFs: "8.6pt", tLh: "1.18", cPad: "2pt 3.8pt", hScale: 0.96, codeFs: "8.4pt", codeLh: "1.22", lFs: "11.2pt", lLh: "1.34", lMb: "2.2pt" },
+          { pFs: "10.8pt", pLh: "1.35", pMb: "3pt",   tFs: "8.2pt", tLh: "1.15", cPad: "1.6pt 3.2pt", hScale: 0.92, codeFs: "8.0pt", codeLh: "1.18", lFs: "10.8pt", lLh: "1.28", lMb: "1.8pt" },
+          { pFs: "10.2pt", pLh: "1.28", pMb: "2.4pt", tFs: "7.8pt", tLh: "1.12", cPad: "1.3pt 2.8pt", hScale: 0.88, codeFs: "7.6pt", codeLh: "1.14", lFs: "10.4pt", lLh: "1.22", lMb: "1.4pt" },
+          { pFs: "9.6pt",  pLh: "1.22", pMb: "1.8pt", tFs: "7.4pt", tLh: "1.09", cPad: "1.0pt 2.4pt", hScale: 0.84, codeFs: "7.2pt", codeLh: "1.10", lFs: "10.0pt", lLh: "1.18", lMb: "1.0pt" },
+          { pFs: "9.0pt",  pLh: "1.16", pMb: "1.4pt", tFs: "7.0pt", tLh: "1.06", cPad: "0.8pt 2.0pt", hScale: 0.80, codeFs: "6.8pt", codeLh: "1.06", lFs: "9.5pt",  lLh: "1.14", lMb: "0.8pt" },
         ];
 
         for (const step of steps) {
@@ -874,13 +999,31 @@ const fullHtml = `<!DOCTYPE html>
             b.style.margin = "2pt 0";
             b.style.padding = "2.5pt 5pt";
           });
+          codePres.forEach((pre) => {
+            pre.style.fontSize = step.codeFs;
+            pre.style.lineHeight = step.codeLh;
+          });
+          listItems.forEach((li) => {
+            li.style.fontSize = step.lFs;
+            li.style.lineHeight = step.lLh;
+            li.style.marginBottom = step.lMb;
+            if (li.classList.contains("toc-chapter-entry")) {
+              li.style.marginTop = "3.5pt";
+            }
+          });
           contentH = inner.scrollHeight;
         }
 
-        // Gentle vertical rhythm balancing for pages with >110px spare height
+        // Gentle vertical rhythm balancing for pages with >60px spare height
         contentH = inner.scrollHeight;
         const spare = availH - contentH;
-        if (spare > 110 && contentH > 200) {
+        if (listItems.length >= 10 && spare > 40) {
+          const addPerItem = Math.min(6, (spare * 0.72) / listItems.length);
+          listItems.forEach((li) => {
+            const cur = parseFloat(window.getComputedStyle(li).marginBottom) || 4;
+            li.style.marginBottom = (cur + addPerItem).toFixed(2) + "px";
+          });
+        } else if (spare > 110 && contentH > 200) {
           const children = [...inner.children];
           if (children.length >= 2) {
             const addPerChild = Math.min(14, Math.floor((spare * 0.55) / children.length));

@@ -16,7 +16,7 @@ function buildIeeePages() {
   const page1 = String.raw`
   <section class="ieee-page" data-page="1">
     <div class="ieee-top-banner">
-      <span>INTERNATIONAL JOURNAL OF DRUG DELIVERY TECHNOLOGIES (IJDDT) · ISSN: 0975-4415 · SCOPUS INDEXED Q3 JOURNAL · VOL. 16, NO. 7, 2026</span>
+      <span>B.M.S. COLLEGE OF ENGINEERING · DEPARTMENT OF COMPUTER SCIENCE AND BUSINESS SYSTEMS (CSBS)</span>
       <span>IEEE TWO-COLUMN RESEARCH MANUSCRIPT</span>
     </div>
 
@@ -24,6 +24,13 @@ function buildIeeePages() {
       <h1 class="ieee-paper-title report-project-title">${TITLE}</h1>
 
       <div class="ieee-authors-grid">
+        <div class="ieee-author-card">
+          <div class="ieee-author-name">H S Thanush</div>
+          <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
+          <div class="ieee-author-affil">B.M.S. College of Engineering</div>
+          <div class="ieee-author-affil">Bangalore – 560019, India</div>
+          <div class="ieee-author-id">USN: 1BM23CB066</div>
+        </div>
         <div class="ieee-author-card">
           <div class="ieee-author-name">Kiran M K</div>
           <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
@@ -37,13 +44,6 @@ function buildIeeePages() {
           <div class="ieee-author-affil">B.M.S. College of Engineering</div>
           <div class="ieee-author-affil">Bangalore – 560019, India</div>
           <div class="ieee-author-id">USN: 1BM24CB401</div>
-        </div>
-        <div class="ieee-author-card">
-          <div class="ieee-author-name">H S Thanush</div>
-          <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
-          <div class="ieee-author-affil">B.M.S. College of Engineering</div>
-          <div class="ieee-author-affil">Bangalore – 560019, India</div>
-          <div class="ieee-author-id">USN: 1BM23CB066</div>
         </div>
         <div class="ieee-author-card">
           <div class="ieee-author-name">Tejaswini K</div>
@@ -110,7 +110,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="2">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-two-col">
@@ -258,7 +258,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 2 of 8</span>
     </div>
   </section>`;
@@ -270,7 +270,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="3">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-fig-wide">
@@ -391,7 +391,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 3 of 8</span>
     </div>
   </section>`;
@@ -403,7 +403,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="4">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-two-col">
@@ -535,7 +535,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 4 of 8</span>
     </div>
   </section>`;
@@ -547,7 +547,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="5">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-two-col">
@@ -632,7 +632,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 5 of 8</span>
     </div>
   </section>`;
@@ -644,7 +644,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="6">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-two-col">
@@ -826,7 +826,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 6 of 8</span>
     </div>
   </section>`;
@@ -838,7 +838,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="7">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-two-col">
@@ -1011,7 +1011,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 7 of 8</span>
     </div>
   </section>`;
@@ -1023,7 +1023,7 @@ function buildIeeePages() {
   <section class="ieee-page" data-page="8">
     <div class="ieee-running-header">
       <span class="report-project-title">${TITLE}</span>
-      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+      <span>DEPT. OF CSBS · B.M.S. COLLEGE OF ENGINEERING, BANGALORE</span>
     </div>
 
     <div class="ieee-two-col">
@@ -1080,7 +1080,7 @@ function buildIeeePages() {
     </div>
 
     <div class="ieee-page-footer">
-      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>SILENT BRIDGE · Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019</span>
       <span>Page 8 of 8</span>
     </div>
   </section>`;

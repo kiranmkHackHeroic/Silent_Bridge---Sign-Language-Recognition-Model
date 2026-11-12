@@ -2007,6 +2007,29 @@ async function startServer() {
     setNoCacheHeaders(res);
     res.sendFile(texPath);
   });
+  app.get(["/api/ppt/download-pptx", "/api/ppt/download"], (_req, res) => {
+    const pptxPath = path.join(publicReportDir, "SILENT_BRIDGE_Presentation_10Slides.pptx");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_Presentation_10Slides.pptx"'
+    );
+    setNoCacheHeaders(res);
+    res.sendFile(pptxPath);
+  });
+  app.get("/api/ppt/download-pdf", (_req, res) => {
+    const pdfPath = path.join(publicReportDir, "SILENT_BRIDGE_Presentation_10Slides.pdf");
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_Presentation_10Slides.pdf"'
+    );
+    setNoCacheHeaders(res);
+    res.sendFile(pdfPath);
+  });
   if (fs.existsSync(publicReportDir)) {
     app.use(
       "/report",
@@ -2021,11 +2044,26 @@ async function startServer() {
               "Content-Disposition",
               'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.pdf"'
             );
+          } else if (filePath.endsWith("SILENT_BRIDGE_Presentation_10Slides.pdf")) {
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_Presentation_10Slides.pdf"'
+            );
           } else if (filePath.endsWith(".pdf")) {
             res.setHeader("Content-Type", "application/pdf");
             res.setHeader(
               "Content-Disposition",
               'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
+            );
+          } else if (filePath.endsWith(".pptx")) {
+            res.setHeader(
+              "Content-Type",
+              "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            );
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_Presentation_10Slides.pptx"'
             );
           } else if (
             filePath.endsWith("SILENT_BRIDGE_IEEE_Research_Paper.docx") ||

@@ -555,9 +555,9 @@ function buildPrelimCoverOrTitleElements(pageHtml, isInnerTitle = false) {
   );
 
   for (const student of [
+    "H S Thanush – 1BM23CB066",
     "Kiran M K – 1BM23CB068",
     "Manoj G U – 1BM24CB401",
-    "H S Thanush – 1BM23CB066",
   ]) {
     elements.push(
       new Paragraph({
@@ -715,103 +715,12 @@ function buildCertificatePageElements(pageHtml) {
   return elements;
 }
 
-function buildPublicationCertificatePageElements() {
-  return [
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      spacing: { before: 40, after: 30 },
-      children: [makeTextRun("B.M.S COLLEGE OF ENGINEERING", { bold: true, size: 32 })],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 120 },
-      children: [
-        makeTextRun("Department of Computer Science and Business Systems", {
-          bold: true,
-          size: 26,
-        }),
-      ],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 160 },
-      border: {
-        bottom: { style: BorderStyle.SINGLE, size: 6, space: 2, color: "1E293B" },
-      },
-      children: [makeTextRun("PUBLICATION CERTIFICATE", { bold: true, size: 32 })],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.LEFT,
-      spacing: { before: 120, after: 80, line: 300 },
-      children: [
-        makeTextRun("From: ", { bold: true, size: 24 }),
-        makeTextRun("Editor IJDDT <ijddtjournal@gmail.com>", { size: 24 }),
-        new TextRun({ text: "", font: "Times New Roman", size: 24, break: 1 }),
-        makeTextRun("To: ", { bold: true, size: 24 }),
-        makeTextRun(
-          "Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066)",
-          { bold: true, size: 24 }
-        ),
-        new TextRun({ text: "", font: "Times New Roman", size: 24, break: 1 }),
-        makeTextRun("Guide: ", { bold: true, size: 24 }),
-        makeTextRun("Tejaswini K, Assistant Professor, Dept. of CSBS, BMSCE", { size: 24 }),
-        new TextRun({ text: "", font: "Times New Roman", size: 24, break: 1 }),
-        makeTextRun("Journal & ISSN: ", { bold: true, size: 24 }),
-        makeTextRun(
-          "International Journal of Drug Delivery Technologies (IJDDT) · ISSN: 0975-4415 (Active Scopus Indexed Q3 Journal for 2026)",
-          { size: 24 }
-        ),
-      ],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      spacing: { before: 120, after: 120 },
-      children: [
-        makeTextRun(
-          "Congratulations on Your Publication! — International Journal of Drug Delivery Technologies (IJDDT)",
-          { bold: true, size: 26 }
-        ),
-      ],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.JUSTIFIED,
-      spacing: { after: 140, line: 360 },
-      children: [
-        makeTextRun(
-          `We are delighted to congratulate you on the successful acceptance and publication of your research article entitled “${TITLE}” in the International Journal of Drug Delivery Technologies (ISSN: 0975-4415), an Active Scopus Indexed Q3 journal for 2026. The article is published in Volume 16, No. 7, 2026 (https://ijddt.com/volume16issue7/).`,
-          { size: 24 }
-        ),
-      ],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.JUSTIFIED,
-      spacing: { after: 200, line: 360 },
-      children: [
-        makeTextRun(
-          "Your research is now part of the global scholarly community, contributing valuable knowledge in assistive computer vision, Indian Sign Language recognition, Dravidian computational linguistics, and 3D avatar inverse kinematics. This achievement reflects your dedication, hard work, and academic excellence.",
-          { size: 24 }
-        ),
-      ],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.RIGHT,
-      spacing: { before: 200, after: 0, line: 300 },
-      children: [
-        makeTextRun("Managing Editor", { bold: true, size: 24 }),
-        new TextRun({ text: "", font: "Times New Roman", size: 24, break: 1 }),
-        makeTextRun("International Journal of Drug Delivery Technologies (https://ijddt.com)", {
-          italics: true,
-          size: 22,
-        }),
-      ],
-    }),
-  ];
-}
+
 
 function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = false) {
   const out = [];
   const tokenRe =
-    /(<div\s+class="chapter-num-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="chapter-title-center"[^>]*>[\s\S]*?<\/div>|<h1[^>]*>[\s\S]*?<\/h1>|<h2[^>]*>[\s\S]*?<\/h2>|<h3[^>]*>[\s\S]*?<\/h3>|<div\s+class="sec-h1"[^>]*>[\s\S]*?<\/div>|<div\s+class="sec-h2"[^>]*>[\s\S]*?<\/div>|<div\s+class="table-caption"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-cap"[^>]*>[\s\S]*?<\/div>|<table[^>]*>[\s\S]*?<\/table>|<div\s+class="figure-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-wide"[^>]*>[\s\S]*?<\/div>|<div\s+class="eq-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-eq"[^>]*>[\s\S]*?<\/div>|<div\s+class="alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="code-box"[^>]*>[\s\S]*?<\/div>|<ol[^>]*>[\s\S]*?<\/ol>|<ul[^>]*>[\s\S]*?<\/ul>|<p[^>]*>[\s\S]*?<\/p>)/gi;
+    /(<div\s+class="chapter-num-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="chapter-title-center"[^>]*>[\s\S]*?<\/div>|<h1[^>]*>[\s\S]*?<\/h1>|<h2[^>]*>[\s\S]*?<\/h2>|<h3[^>]*>[\s\S]*?<\/h3>|<div\s+class="sec-h1"[^>]*>[\s\S]*?<\/div>|<div\s+class="sec-h2"[^>]*>[\s\S]*?<\/div>|<div\s+class="prelim-list-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-chapter-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-section-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-prelim-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="leader-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="def-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="sym-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="table-caption"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-cap"[^>]*>[\s\S]*?<\/div>|<table[^>]*>[\s\S]*?<\/table>|<div\s+class="figure-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-wide"[^>]*>[\s\S]*?<\/div>|<div\s+class="eq-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-eq"[^>]*>[\s\S]*?<\/div>|<div\s+class="alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="code-box"[^>]*>[\s\S]*?<\/div>|<ol[^>]*>[\s\S]*?<\/ol>|<ul[^>]*>[\s\S]*?<\/ul>|<p[^>]*>[\s\S]*?<\/p>)/gi;
 
   const bodySz = isIeee ? 20 : 24;
   const lineSp = isIeee ? 276 : 360;
@@ -866,6 +775,160 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
             bold: true,
             italics: isIeee,
           }),
+        })
+      );
+    } else if (bLower.includes('class="prelim-list-header"')) {
+      const spans = [...block.matchAll(/<span[^>]*>([\s\S]*?)<\/span>/gi)].map((s) =>
+        s[1].trim()
+      );
+      if (spans.length === 3) {
+        out.push(
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            keepNext: true,
+            tabStops: [
+              { type: TabStopType.LEFT, position: 2100 },
+              { type: TabStopType.RIGHT, position: 8666 },
+            ],
+            border: {
+              bottom: { style: BorderStyle.SINGLE, size: 8, space: 4, color: "0F172A" },
+            },
+            spacing: { before: 40, after: 140, line: 280 },
+            children: [
+              ...parseHtmlFragmentToRuns(spans[0], { size: 24, bold: true }),
+              makeTextRun("\t", { size: 24, bold: true }),
+              ...parseHtmlFragmentToRuns(spans[1], { size: 24, bold: true }),
+              makeTextRun("\t", { size: 24, bold: true }),
+              ...parseHtmlFragmentToRuns(spans[2], { size: 24, bold: true }),
+            ].filter(Boolean),
+          })
+        );
+      } else if (spans.length === 2) {
+        const isAcronymHdr = /ACRONYM/i.test(spans[0]);
+        out.push(
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            keepNext: true,
+            tabStops: isAcronymHdr
+              ? [{ type: TabStopType.LEFT, position: 1950 }]
+              : [{ type: TabStopType.RIGHT, position: 8666 }],
+            border: {
+              bottom: { style: BorderStyle.SINGLE, size: 8, space: 4, color: "0F172A" },
+            },
+            spacing: { before: 40, after: 140, line: 280 },
+            children: [
+              ...parseHtmlFragmentToRuns(spans[0], { size: 24, bold: true }),
+              makeTextRun("\t", { size: 24, bold: true }),
+              ...parseHtmlFragmentToRuns(spans[1], { size: 24, bold: true }),
+            ].filter(Boolean),
+          })
+        );
+      }
+    } else if (bLower.includes('class="toc-chapter-entry"')) {
+      const titleM = block.match(/<span\s+class="toc-title"[^>]*>([\s\S]*?)<\/span>/i);
+      const pageM = block.match(/<span\s+class="toc-page"[^>]*>([\s\S]*?)<\/span>/i);
+      const titleHtml = titleM ? titleM[1].trim() : "";
+      const pageTxt = pageM ? pageM[1].trim() : "";
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          tabStops: [{ type: TabStopType.RIGHT, position: 8666, leader: "dot" }],
+          spacing: { before: 100, after: 45, line: 290 },
+          children: [
+            ...parseHtmlFragmentToRuns(titleHtml, { size: 24, bold: true }),
+            makeTextRun(`\t${pageTxt}`, { size: 24, bold: true }),
+          ].filter(Boolean),
+        })
+      );
+    } else if (
+      bLower.includes('class="toc-section-entry"') ||
+      bLower.includes('class="toc-prelim-entry"')
+    ) {
+      const isSection = bLower.includes('class="toc-section-entry"');
+      const numM = block.match(/<span\s+class="toc-num"[^>]*>([\s\S]*?)<\/span>/i);
+      const titleM = block.match(/<span\s+class="toc-title"[^>]*>([\s\S]*?)<\/span>/i);
+      const pageM = block.match(/<span\s+class="toc-page"[^>]*>([\s\S]*?)<\/span>/i);
+      const numTxt = numM ? numM[1].trim() : "";
+      const titleHtml = titleM ? titleM[1].trim() : "";
+      const pageTxt = pageM ? pageM[1].trim() : "";
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          indent: isSection ? { left: 220 } : undefined,
+          tabStops: [
+            { type: TabStopType.LEFT, position: isSection ? 940 : 720 },
+            { type: TabStopType.RIGHT, position: 8666, leader: "dot" },
+          ],
+          spacing: { before: 25, after: 45, line: 280 },
+          children: [
+            makeTextRun(`${numTxt}\t`, { size: 23, bold: true }),
+            ...parseHtmlFragmentToRuns(titleHtml, { size: 23 }),
+            makeTextRun(`\t${pageTxt}`, { size: 23, bold: true }),
+          ].filter(Boolean),
+        })
+      );
+    } else if (bLower.includes('class="leader-list-item"')) {
+      const numM = block.match(/<span\s+class="leader-item-num"[^>]*>([\s\S]*?)<\/span>/i);
+      const titleM = block.match(/<span\s+class="leader-item-title"[^>]*>([\s\S]*?)<\/span>/i);
+      const pageM = block.match(/<span\s+class="leader-item-page"[^>]*>([\s\S]*?)<\/span>/i);
+      const numTxt = numM ? numM[1].trim() : "";
+      const titleHtml = titleM ? titleM[1].trim() : "";
+      const pageTxt = pageM ? pageM[1].trim() : "";
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          tabStops: [
+            { type: TabStopType.LEFT, position: 1350 },
+            { type: TabStopType.RIGHT, position: 8666, leader: "dot" },
+          ],
+          spacing: { before: 40, after: 80, line: 300 },
+          children: [
+            makeTextRun(`${numTxt}\t`, { size: 24, bold: true }),
+            ...parseHtmlFragmentToRuns(titleHtml, { size: 24 }),
+            makeTextRun(`\t${pageTxt}`, { size: 24, bold: true }),
+          ].filter(Boolean),
+        })
+      );
+    } else if (bLower.includes('class="def-list-item"')) {
+      const termM = block.match(/<span\s+class="def-item-term"[^>]*>([\s\S]*?)<\/span>/i);
+      const descM = block.match(/<span\s+class="def-item-desc"[^>]*>([\s\S]*?)<\/span>/i);
+      const termHtml = termM ? termM[1].trim() : "";
+      const descHtml = descM ? descM[1].trim() : "";
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          indent: { left: 1950, hanging: 1950 },
+          tabStops: [{ type: TabStopType.LEFT, position: 1950 }],
+          spacing: { before: 35, after: 75, line: 290 },
+          children: [
+            ...parseHtmlFragmentToRuns(termHtml, { size: 24, bold: true }),
+            makeTextRun("\t", { size: 24 }),
+            ...parseHtmlFragmentToRuns(descHtml, { size: 24 }),
+          ].filter(Boolean),
+        })
+      );
+    } else if (bLower.includes('class="sym-list-item"')) {
+      const symM = block.match(/<span\s+class="sym-item-symbol"[^>]*>([\s\S]*?)<\/span>/i);
+      const descM = block.match(/<span\s+class="sym-item-desc"[^>]*>([\s\S]*?)<\/span>/i);
+      const unitM = block.match(/<span\s+class="sym-item-unit"[^>]*>([\s\S]*?)<\/span>/i);
+      const symHtml = symM ? symM[1].trim() : "";
+      const descHtml = descM ? descM[1].trim() : "";
+      const unitHtml = unitM ? unitM[1].trim() : "";
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          tabStops: [
+            { type: TabStopType.LEFT, position: 2100 },
+            { type: TabStopType.RIGHT, position: 8666 },
+          ],
+          spacing: { before: 35, after: 80, line: 290 },
+          children: [
+            ...parseHtmlFragmentToRuns(symHtml, { size: 24, bold: true }),
+            makeTextRun("\t", { size: 24 }),
+            ...parseHtmlFragmentToRuns(descHtml, { size: 24 }),
+            makeTextRun("\t", { size: 24 }),
+            ...parseHtmlFragmentToRuns(unitHtml, { size: 24, italics: true }),
+          ].filter(Boolean),
         })
       );
     } else if (bLower.includes('class="table-caption"') || bLower.includes('class="ieee-table-cap"')) {
@@ -1078,9 +1141,9 @@ async function generateCsbsReportDocx() {
 
   const svgCounterRef = { count: 0 };
 
-  // Section 1: Unnumbered Certificate & Title Pages (Pages 0..3: Outer Cover, Inner Title, BMSCE Certificate, Publication Certificate)
+  // Section 1: Unnumbered Certificate & Title Pages (Pages 0..2: Outer Cover, Inner Title, BMSCE Certificate)
   const unnumberedChildren = [];
-  for (let idx = 0; idx <= 3 && idx < pages.length; idx++) {
+  for (let idx = 0; idx <= 2 && idx < pages.length; idx++) {
     const pageHtml = pages[idx];
     if (idx === 0) {
       unnumberedChildren.push(...buildPrelimCoverOrTitleElements(pageHtml, false));
@@ -1088,18 +1151,16 @@ async function generateCsbsReportDocx() {
       unnumberedChildren.push(...buildPrelimCoverOrTitleElements(pageHtml, true));
     } else if (idx === 2) {
       unnumberedChildren.push(...buildCertificatePageElements(pageHtml));
-    } else if (idx === 3) {
-      unnumberedChildren.push(...buildPublicationCertificatePageElements());
     }
-    if (idx < 3) {
+    if (idx < 2) {
       unnumberedChildren.push(new Paragraph({ children: [new PageBreak()] }));
     }
   }
 
-  // Section 2: Roman Preliminary Pages (Pages 4..12: Declaration i, Acknowledgement ii, Abstract iii, TOC iv–v, Figures vi, Tables vii, Abbreviations viii, Symbols ix)
+  // Section 2: Roman Preliminary Pages (Pages 3..11: Declaration i, Acknowledgement ii, Abstract iii, TOC iv–v, Figures vi, Tables vii, Abbreviations viii, Symbols ix)
   const romanPrelimChildren = [];
-  const romanStartIdx = 4;
-  const romanEndIdx = 12;
+  const romanStartIdx = 3;
+  const romanEndIdx = 11;
   for (let idx = romanStartIdx; idx <= romanEndIdx && idx < pages.length; idx++) {
     romanPrelimChildren.push(
       ...convertHtmlBlocksToDocxElements(pages[idx], svgCounterRef, false)
@@ -1109,9 +1170,9 @@ async function generateCsbsReportDocx() {
     }
   }
 
-  // Section 3: Main Report Chapters 1–8 + References + Publications + Appendix (Pages 13..end, Arabic 1..66)
+  // Section 3: Main Report Chapters 1–8 + References + Research Manuscript + Appendix (Pages 12..end, Arabic 1..66)
   const arabicMainChildren = [];
-  const arabicStartIdx = 13;
+  const arabicStartIdx = 12;
   for (let idx = arabicStartIdx; idx < pages.length; idx++) {
     arabicMainChildren.push(
       ...convertHtmlBlocksToDocxElements(pages[idx], svgCounterRef, false)
@@ -1122,7 +1183,7 @@ async function generateCsbsReportDocx() {
   }
 
   const doc = new Document({
-    creator: "Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066)",
+    creator: "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401)",
     title: TITLE,
     description: `${TITLE} — Department of Computer Science and Business Systems, B.M.S. College of Engineering`,
     styles: {
@@ -1226,7 +1287,7 @@ async function generateIeeePaperDocx() {
       },
       children: [
         makeTextRun(
-          "INTERNATIONAL JOURNAL OF DRUG DELIVERY TECHNOLOGIES (IJDDT) · ISSN: 0975-4415 · SCOPUS INDEXED Q3 · VOL. 16, NO. 7, 2026",
+          "B.M.S. COLLEGE OF ENGINEERING · DEPARTMENT OF COMPUTER SCIENCE AND BUSINESS SYSTEMS (CSBS) · IEEE TWO-COLUMN RESEARCH MANUSCRIPT",
           { bold: true, italics: true, size: 18 }
         ),
       ],
@@ -1241,7 +1302,7 @@ async function generateIeeePaperDocx() {
       spacing: { before: 0, after: 30 },
       children: [
         makeTextRun(
-          "Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066), and Tejaswini K (Assistant Professor & Project Guide)",
+          "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), and Tejaswini K (Assistant Professor & Project Guide)",
           { bold: true, size: 20 }
         ),
       ],
@@ -1273,7 +1334,7 @@ async function generateIeeePaperDocx() {
   });
 
   const doc = new Document({
-    creator: "Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066)",
+    creator: "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401)",
     title: TITLE,
     description: `${TITLE} — Department of CSBS, BMSCE`,
     styles: {
