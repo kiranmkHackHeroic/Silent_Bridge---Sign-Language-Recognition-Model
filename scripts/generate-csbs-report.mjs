@@ -192,7 +192,7 @@ function wrapPageBodies(html) {
       let headerHtml = "";
       const headerMatch = rest.match(/^\s*(<div class="page-running-header">[\s\S]*?<\/div>)/);
       if (headerMatch) {
-        headerHtml = `<div class="page-running-header"><span class="report-project-title">${meta.title}</span></div>`;
+        headerHtml = `<div class="page-running-header"><span class="report-project-title">Silent Bridge</span></div>`;
         rest = rest.slice(headerMatch[0].length);
       }
       let footerHtml = "";
@@ -200,7 +200,7 @@ function wrapPageBodies(html) {
       if (footerMatch) {
         const footerCls = footerMatch[1];
         const pageNum = footerMatch[2].replace(/<[^>]+>/g, "").trim();
-        footerHtml = `<div class="${footerCls}"><span class="footer-page-num">${pageNum}</span><span class="footer-dept">Department of CSBS</span></div>`;
+        footerHtml = `<div class="${footerCls}"><span class="footer-dept">Department of CSBS</span><span class="footer-page-num">${pageNum}</span></div>`;
         rest = rest.slice(0, rest.length - footerMatch[0].length);
       }
       return `${openTag}\n${headerHtml}\n<div class="page-body-wrap"><div class="page-body-inner">${rest.trim()}</div></div>\n${footerHtml}\n${closeTag}`;
@@ -432,12 +432,12 @@ const fullHtml = `<!DOCTYPE html>
       min-height: 0;
     }
 
-    /* Running Header — Right-aligned project title only (no chapter name on left) */
+    /* Running Header — Only "Silent Bridge" in header */
     .page-running-header {
       display: flex;
       justify-content: flex-end;
       align-items: baseline;
-      font-size: 7.5pt;
+      font-size: 10pt;
       font-style: italic;
       color: #0f172a;
       border-bottom: 1px solid #1e293b;
@@ -470,14 +470,14 @@ const fullHtml = `<!DOCTYPE html>
       justify-content: flex-start;
     }
 
-    /* CSBS Typography Hierarchy (Guideline 6.ix):
-       - Chapter number: Right justified, 16pt bold
+    /* CSBS Typography Hierarchy:
+       - Chapter number: Left aligned, 16pt bold
        - Chapter title: Centered, 18pt bold uppercase
        - Section heading (X.Y): Left justified, 16pt bold
        - Subsection heading (X.Y.Z): Left justified, 14pt bold
        - Body text: 12pt Times New Roman, 1.5 line spacing, justified */
     .chapter-num-header {
-      text-align: right;
+      text-align: left;
       font-size: 16pt;
       font-weight: 700;
       letter-spacing: 0.6px;
@@ -759,7 +759,7 @@ const fullHtml = `<!DOCTYPE html>
       color: #0f172a;
     }
 
-    /* Page Footers — Page number on Left, Department of CSBS on Right */
+    /* Page Footers — Department of CSBS on Left, Page number on Right */
     .page-footer-roman, .page-footer-arabic {
       margin-top: auto;
       width: 100%;
@@ -775,13 +775,13 @@ const fullHtml = `<!DOCTYPE html>
       flex-shrink: 0;
       background: #ffffff;
     }
-    .page-footer-roman .footer-page-num,
-    .page-footer-arabic .footer-page-num {
+    .page-footer-roman .footer-dept,
+    .page-footer-arabic .footer-dept {
       text-align: left;
       font-weight: 700;
     }
-    .page-footer-roman .footer-dept,
-    .page-footer-arabic .footer-dept {
+    .page-footer-roman .footer-page-num,
+    .page-footer-arabic .footer-page-num {
       text-align: right;
       font-weight: 700;
     }

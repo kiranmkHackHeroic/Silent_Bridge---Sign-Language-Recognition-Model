@@ -821,11 +821,11 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
     const bLower = block.toLowerCase();
 
     if (bLower.includes('class="chapter-num-header"')) {
-      // CSBS Guideline 6.ix + User Request: Each chapter number ("CHAPTER 1", etc.) on the RIGHT side of the paper (16pt bold)
+      // User Request: Align left to chapters ("CHAPTER 1", etc., 16pt bold)
       const inner = block.replace(/^<div[^>]*>|<\/div>$/gis, "").trim();
       out.push(
         new Paragraph({
-          alignment: AlignmentType.RIGHT,
+          alignment: AlignmentType.LEFT,
           keepNext: true,
           spacing: { before: 40, after: 40, line: 280 },
           children: parseHtmlFragmentToRuns(inner, { size: 32, bold: true }),
@@ -1015,6 +1015,7 @@ const A4_PAGE_MARGIN = {
 };
 
 function makeRunningHeader() {
+  // User Request: In header mention only "Silent Bridge"
   return new Header({
     children: [
       new Paragraph({
@@ -1024,10 +1025,10 @@ function makeRunningHeader() {
         },
         spacing: { after: 60 },
         children: [
-          makeTextRun(TITLE, {
+          makeTextRun("Silent Bridge", {
             bold: true,
             italics: true,
-            size: 16,
+            size: 20,
             color: "0F172A",
           }),
         ],
@@ -1037,7 +1038,7 @@ function makeRunningHeader() {
 }
 
 function makeRunningFooter() {
-  // Page number on LEFT side, "Department of CSBS" on RIGHT side
+  // User Request: In footer align left "Department of CSBS" and right to "page no"
   return new Footer({
     children: [
       new Paragraph({
@@ -1049,14 +1050,14 @@ function makeRunningFooter() {
         spacing: { before: 60 },
         children: [
           new TextRun({
-            children: [PageNumber.CURRENT],
+            text: "Department of CSBS\t",
             font: "Times New Roman",
             size: 20,
             bold: true,
             color: "0F172A",
           }),
           new TextRun({
-            text: "\tDepartment of CSBS",
+            children: [PageNumber.CURRENT],
             font: "Times New Roman",
             size: 20,
             bold: true,

@@ -60,7 +60,7 @@ export function ProjectReport() {
     const doc = iframeRef.current?.contentDocument;
     if (!doc || !doc.body) return;
 
-    const titleSpans = doc.querySelectorAll(".report-project-title");
+    const titleSpans = doc.querySelectorAll(":not(.page-running-header) > .report-project-title");
     titleSpans.forEach((el) => {
       el.textContent = projectTitle.trim();
     });

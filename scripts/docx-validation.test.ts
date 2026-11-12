@@ -37,6 +37,7 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
     has_title = "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR" in doc_xml
     has_leaders = "Dr. Beemsha Arya" in doc_xml and "Dr. R Ashok Kumar" in doc_xml and "Tejaswini K" in doc_xml
     has_dept_csbs_footer = any("Department of CSBS" in f for f in ftr_files)
+    has_silent_bridge_header = any("Silent Bridge" in h and "REAL-TIME BIDIRECTIONAL" not in h for h in hdr_files if "Silent Bridge" in h)
     has_chapter_in_header = any("CHAPTER " in h for h in hdr_files)
     print(json.dumps({
         "mediaCount": len(media_files),
@@ -51,6 +52,7 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
         "hasTitle": has_title,
         "hasLeaders": has_leaders,
         "hasDeptCsbsFooter": has_dept_csbs_footer,
+        "hasSilentBridgeHeader": has_silent_bridge_header,
         "hasChapterInHeader": has_chapter_in_header
     }))
 `,
@@ -65,10 +67,11 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
   assert.equal(res.tblCount > 40 && res.tblCount === res.gridCount, true, "Every <w:tbl> must have a <w:tblGrid>");
   assert.equal(res.hasCoreProps, true, "Must include docProps/core.xml, docProps/app.xml, and word/settings.xml");
   assert.equal(res.hasTimes, true, "Must strictly use Times New Roman font");
-  assert.equal(res.hasTitle, true, "Must include official SILENT BRIDGE title");
+  assert.equal(res.hasTitle, true, "Must include official SILENT BRIDGE title on cover/certificates");
   assert.equal(res.hasLeaders, true, "Must include Principal Dr. Beemsha Arya, HoD Dr. R Ashok Kumar, and Guide Tejaswini K");
-  assert.equal(res.hasDeptCsbsFooter, true, "Footer must include Department of CSBS");
-  assert.equal(res.hasChapterInHeader, false, "Running header must NOT contain chapter names on the left");
+  assert.equal(res.hasDeptCsbsFooter, true, "Footer must include Department of CSBS on left");
+  assert.equal(res.hasSilentBridgeHeader, true, "Running header must mention only Silent Bridge");
+  assert.equal(res.hasChapterInHeader, false, "Running header must NOT contain chapter names");
 });
 
 test("8-Page IEEE Research Paper .docx has 100% Microsoft Word-compliant OOXML structure", () => {
