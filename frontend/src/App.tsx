@@ -15,12 +15,13 @@ const PAGES: { id: PageId; label: string; icon: IconName }[] = [
   { id: "reference", label: "Sign Reference", icon: "eye" },
   { id: "dataset", label: "Dataset & Model", icon: "database" },
   { id: "about", label: "About & Testing", icon: "flask" },
-  { id: "report", label: "BE Report (76p)", icon: "download" },
+  { id: "report", label: "IEEE Paper & BE Report", icon: "download" },
 ];
 type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "about" | "report";
 
 function pageFromHash(): PageId {
   const h = location.hash.replace("#", "");
+  if (h === "paper") return "report";
   return (PAGES.find((p) => p.id === h)?.id ?? "live") as PageId;
 }
 
@@ -64,8 +65,10 @@ export default function App() {
         <div className="brand">
           <span className="logo" lang="kn" aria-hidden>ಸ</span>
           <div>
-            <h1>Kannada SignBridge</h1>
-            <p>Real-Time Sign Language Recognition and Kannada Communication</p>
+            <h1>Silent Bridge · Kannada SignBridge</h1>
+            <p title="SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR">
+              Real-Time Bidirectional Indian Sign Language and Kannada Translation with 3D Avatar
+            </p>
           </div>
         </div>
         <nav className="nav" aria-label="Main sections">
@@ -98,7 +101,7 @@ export default function App() {
         {page === "report" && <ProjectReport />}
       </main>
       <footer className="footer">
-        Kannada SignBridge · final-year project prototype · camera processing stays on this computer · recognizes only trained, supported signs
+        <strong>SILENT BRIDGE:</strong> Real-Time Bidirectional Indian Sign Language and Kannada Translation with 3D Avatar · B.M.S. College of Engineering (Dept. of CSBS)
       </footer>
     </div>
   );

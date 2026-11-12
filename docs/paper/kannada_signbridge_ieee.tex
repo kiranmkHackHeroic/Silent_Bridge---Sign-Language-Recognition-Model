@@ -14,38 +14,36 @@
 
 \begin{document}
 
-\title{Kannada SignBridge: Signer-Independent Indian Sign Language Recognition with Kannada Text, Speech and Avatar Output}
+\title{SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR}
 
-% Replace the placeholders with the authors' names, department and institution.
-\author{\IEEEauthorblockN{Author Name 1}
-\IEEEauthorblockA{\textit{Dept. of Computer Science and Engineering} \\
-\textit{Institution Name}\\
-City, India \\
-email@example.com}
+\author{\IEEEauthorblockN{Kiran M K}
+\IEEEauthorblockA{\textit{Dept. of Computer Science and Business Systems} \\
+\textit{B.M.S. College of Engineering}\\
+Bangalore -- 560019, India \\
+USN: 1BM23CB068}
 \and
-\IEEEauthorblockN{Author Name 2}
-\IEEEauthorblockA{\textit{Dept. of Computer Science and Engineering} \\
-\textit{Institution Name}\\
-City, India \\
-email@example.com}
+\IEEEauthorblockN{Manoj G U}
+\IEEEauthorblockA{\textit{Dept. of Computer Science and Business Systems} \\
+\textit{B.M.S. College of Engineering}\\
+Bangalore -- 560019, India \\
+USN: 1BM24CB401}
 \and
-\IEEEauthorblockN{Author Name 3}
-\IEEEauthorblockA{\textit{Dept. of Computer Science and Engineering} \\
-\textit{Institution Name}\\
-City, India \\
-email@example.com}
+\IEEEauthorblockN{H S Thanush}
+\IEEEauthorblockA{\textit{Dept. of Computer Science and Business Systems} \\
+\textit{B.M.S. College of Engineering}\\
+Bangalore -- 560019, India \\
+USN: 1BM23CB066}
 \and
-\IEEEauthorblockN{Guide Name}
-\IEEEauthorblockA{\textit{Dept. of Computer Science and Engineering} \\
-\textit{Institution Name}\\
-City, India \\
-email@example.com}
+\IEEEauthorblockN{Tejaswini K}
+\IEEEauthorblockA{\textit{Assistant Professor \& Project Guide, Dept. of CSBS} \\
+\textit{B.M.S. College of Engineering}\\
+Bangalore -- 560019, India}
 }
 
 \maketitle
 
 \begin{abstract}
-Deaf and hard-of-hearing people in Karnataka commonly sign Indian Sign Language (ISL), while the hearing people around them read and speak Kannada, and almost no software connects the two. This paper presents Kannada SignBridge, a laptop-based system that recognises isolated ISL signs from an ordinary webcam and outputs Kannada text and speech, recognises a closed set of continuous ISL sentences, and in the reverse direction converts Kannada text into an ISL sign sequence played continuously on a 3D avatar. Hand and face landmarks are extracted in the browser with MediaPipe, so no video leaves the user's computer; a motion-based segmenter isolates signs and a bidirectional GRU classifies them. The models are trained only on public ISL datasets (Amrita SLR, INCLUDE and ISL-CSLTR) and are evaluated on signers or recording rounds never seen in training. On 268 held-out recorded videos the isolated-sign accuracy improved from 59.7\% (logistic-regression baseline) to 79.9\% after adding temporal modelling and selectively importing 462 additional INCLUDE recordings; on 213 videos of two completely unseen signers it rose from 54.5\% to 76.5\% (paired McNemar test, $p=0.003$). A fused CTC and sentence-classifier decoder reaches 29.2\% exact-sentence accuracy on 101 corpus sentences. Model updates are deployed only through a promotion gate that compares candidates on identical held-out videos; two candidates were rejected by it. Avatar clips are retargeted from dataset recordings with gap interpolation and smoothing, which removed all mid-sign arm drops, and sentences are signed continuously. We also report robustness, calibration, segmentation, parity and latency analyses and the negative results of the project. Live webcam accuracy has not yet been measured and is identified as the next evaluation step.
+Deaf and hard-of-hearing people in Karnataka commonly sign Indian Sign Language (ISL), while the hearing people around them read and speak Kannada, and almost no software connects the two. This paper presents Silent Bridge, a laptop-based system that recognises isolated ISL signs from an ordinary webcam and outputs Kannada text and speech, recognises a closed set of continuous ISL sentences, and in the reverse direction converts Kannada text into an ISL sign sequence played continuously on a 3D avatar. Hand and face landmarks are extracted in the browser with MediaPipe, so no video leaves the user's computer; a motion-based segmenter isolates signs and a bidirectional GRU classifies them. The models are trained only on public ISL datasets (Amrita SLR, INCLUDE and ISL-CSLTR) and are evaluated on signers or recording rounds never seen in training. On 268 held-out recorded videos the isolated-sign accuracy improved from 59.7\% (logistic-regression baseline) to 79.9\% after adding temporal modelling and selectively importing 462 additional INCLUDE recordings; on 213 videos of two completely unseen signers it rose from 54.5\% to 76.5\% (paired McNemar test, $p=0.003$). A fused CTC and sentence-classifier decoder reaches 29.2\% exact-sentence accuracy on 101 corpus sentences. Model updates are deployed only through a promotion gate that compares candidates on identical held-out videos; two candidates were rejected by it. Avatar clips are retargeted from dataset recordings with gap interpolation and smoothing, which removed all mid-sign arm drops, and sentences are signed continuously. We also report robustness, calibration, segmentation, parity and latency analyses and the negative results of the project. Live webcam accuracy has not yet been measured and is identified as the next evaluation step.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -191,7 +189,7 @@ Fig.~\ref{fig:arch} shows the system. The browser front end (React, TypeScript) 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{fig_architecture.pdf}
-\caption{Kannada SignBridge architecture. Only landmark coordinates leave the browser. Top: sign to Kannada; bottom: Kannada to sign.}
+\caption{Silent Bridge architecture. Only landmark coordinates leave the browser. Top: sign to Kannada; bottom: Kannada to sign.}
 \label{fig:arch}
 \end{figure*}
 
@@ -545,10 +543,10 @@ Training the active isolated model & 43\,min \\
 \textit{Ethics and privacy.} Video never leaves the user's computer, evaluation recordings are kept separate from training data, and dataset licences (CC~BY~4.0) and the privacy of the recorded signers are respected. The system is a communication aid for limited vocabularies and does not replace qualified interpreters.
 
 \section{Conclusion and Future Work}
-Kannada SignBridge demonstrates a complete, privacy-preserving ISL--Kannada pipeline on a CPU-only laptop, with signer-independent evaluation and a governance process that prevents regressions from reaching users. Additional real ISL data was the most effective single improvement, raising unseen-signer accuracy from 67.1\% to 76.5\%, and cleaning the avatar motion removed all mid-sign tracking artefacts. Future work comprises (i) live webcam evaluation sessions with several signers, (ii) recordings from Karnataka signers to cover regional variants and to support a larger recognised vocabulary, (iii) sentence-level training on larger ISL corpora such as iSign \cite{joshi2024isign}, (iv) arm and body pose for more accurate avatar motion, and (v) review of the Kannada output and avatar clips by the deaf community.
+Silent Bridge demonstrates a complete, privacy-preserving ISL--Kannada pipeline on a CPU-only laptop, with signer-independent evaluation and a governance process that prevents regressions from reaching users. Additional real ISL data was the most effective single improvement, raising unseen-signer accuracy from 67.1\% to 76.5\%, and cleaning the avatar motion removed all mid-sign tracking artefacts. Future work comprises (i) live webcam evaluation sessions with several signers, (ii) recordings from Karnataka signers to cover regional variants and to support a larger recognised vocabulary, (iii) sentence-level training on larger ISL corpora such as iSign \cite{joshi2024isign}, (iv) arm and body pose for more accurate avatar motion, and (v) review of the Kannada output and avatar clips by the deaf community.
 
 \section*{Acknowledgment}
-The authors thank the creators of the Amrita SLR, INCLUDE and ISL-CSLTR datasets and the signers who recorded them.
+The authors express their sincere gratitude to Dr. Beemsha Arya (Principal, B.M.S. College of Engineering), Dr. R Ashok Kumar (Professor \& Head, Dept. of Computer Science and Business Systems, BMSCE), and Project Guide Tejaswini K (Assistant Professor, Dept. of CSBS, BMSCE) for their guidance and institutional support. The authors also thank the creators of the Amrita SLR, INCLUDE and ISL-CSLTR datasets and the signers who recorded them.
 
 \begin{thebibliography}{00}
 \bibitem{li2020wlasl} D. Li, C. Rodriguez, X. Yu, and H. Li, ``Word-level deep sign language recognition from video: A new large-scale dataset and methods comparison,'' in \textit{Proc. IEEE/CVF Winter Conf. Applications of Computer Vision (WACV)}, 2020, pp. 1459--1469.

@@ -68,13 +68,16 @@ export function AboutTesting() {
       {error && <div style={{ marginBottom: 16 }}><Notice tone="bad">{error}</Notice></div>}
       <div className="stack">
         <Card title="B.M.S. College of Engineering — CSBS B.E. Project Report (76 Pages · A4)" icon="download">
+          <p style={{ fontWeight: 700, marginBottom: 6 }}>
+            Project Title: “SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR”
+          </p>
           <p style={{ marginBottom: 10 }}>
             Complete <strong>76-page structured B.E. Project Report</strong> (10 Roman-numbered preliminary pages + 66 Arabic-numbered main pages across Chapters 1–8, References, IEEE Publication Record &amp; 144-Sign Appendix) formatted strictly per BMSCE Department of Computer Science and Business Systems (CSBS) guidelines.
           </p>
           <div className="row" style={{ gap: 10, flexWrap: "wrap" }}>
             <a
-              href="/report/CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
-              download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
+              href="/api/report/download-pdf"
+              download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"
               className="btn btn-primary"
               style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
             >

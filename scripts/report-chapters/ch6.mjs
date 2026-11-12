@@ -5,7 +5,7 @@ export function buildChapter6() {
   const page43 = String.raw`
   <section class="report-page body-page" data-page="43">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
     <div class="chapter-num-header">CHAPTER 6</div>
@@ -13,7 +13,7 @@ export function buildChapter6() {
 
     <div class="sec-h1">6.1 Development Environment and Technology Stack</div>
     <p>
-      <strong>Kannada SignBridge</strong> is implemented as a full-stack, cross-platform TypeScript and Python repository with bit-accurate parity between offline Python training scripts and the real-time TypeScript/Node.js and in-browser WebAssembly inference engines. Table 6.1 details the complete production technology stack.
+      <strong>Silent Bridge</strong> is implemented as a full-stack, cross-platform TypeScript and Python repository with bit-accurate parity between offline Python training scripts and the real-time TypeScript/Node.js and in-browser WebAssembly inference engines. Table 6.1 details the complete production technology stack.
     </p>
 
     <div class="table-caption">Table 6.1 Production Technology Stack Across Frontend, Vision, Neural Runtime, and Backend</div>
@@ -74,7 +74,7 @@ export function buildChapter6() {
   const page44 = String.raw`
   <section class="report-page body-page" data-page="44">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -143,7 +143,7 @@ export function framesToVectorsTTA(
   const page45 = String.raw`
   <section class="report-page body-page" data-page="45">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -212,7 +212,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
   const page46 = String.raw`
   <section class="report-page body-page" data-page="46">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -259,7 +259,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
   const page47 = String.raw`
   <section class="report-page body-page" data-page="47">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -306,7 +306,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
   const page48 = String.raw`
   <section class="report-page body-page" data-page="48">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -352,7 +352,7 @@ export function kannadaToVisemes(text: string): Viseme[] {
   const page49 = String.raw`
   <section class="report-page body-page" data-page="49">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -390,7 +390,7 @@ export function kannadaToVisemes(text: string): Viseme[] {
   const page50 = String.raw`
   <section class="report-page body-page" data-page="50">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
@@ -417,13 +417,13 @@ export function kannadaToVisemes(text: string): Viseme[] {
   const page51 = String.raw`
   <section class="report-page body-page" data-page="51">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 6: Implementation and Integration</span>
     </div>
 
     <div class="sec-h1">6.7 Challenges Encountered and Solutions</div>
     <p>
-      During the engineering and integration of <strong>Kannada SignBridge</strong>, seven non-trivial technical challenges were encountered, diagnosed, and resolved with verified code fixes (Table 6.3).
+      During the engineering and integration of <strong>Silent Bridge</strong>, seven non-trivial technical challenges were encountered, diagnosed, and resolved with verified code fixes (Table 6.3).
     </p>
 
     <div class="table-caption">Table 6.3 Summary of Major Engineering Challenges, Root Causes, and Verified Solutions</div>

@@ -6,7 +6,7 @@ export function buildChapters1And2() {
   const page1 = String.raw`
   <section class="report-page body-page" data-page="1">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
     <div class="chapter-num-header">CHAPTER 1</div>
@@ -14,18 +14,18 @@ export function buildChapters1And2() {
 
     <div class="sec-h1">1.1 Background and Context of the Project</div>
     <p>
-      Sign languages are complete, self-contained natural languages possessing their own phonological, morphological, syntactic, and discourse structures; they are not manual encodings or word-for-word gestural representations of spoken languages [1], [5]. Across India, Indian Sign Language (ISL) serves as the primary visual-spatial vernacular for millions of deaf and hard-of-hearing citizens. According to the Census of India and estimates from the National Association of the Deaf (NAD), India is home to over 5 million deaf and hard-of-hearing individuals, with more than 300,000 residing in the state of Karnataka alone. Despite the linguistic richness of ISL, fewer than 350 certified ISL interpreters are registered nationwide by the Indian Sign Language Research and Training Centre (ISLRTC), creating an acute communication barrier whenever a deaf citizen interacts with public infrastructure.
+      Sign languages are complete, self-contained natural languages possessing their own phonological, morphological, syntactic, and discourse structures; they are not manual encodings or word-for-word gestural representations of spoken languages [1], [2]. Across India, Indian Sign Language (ISL) serves as the primary visual-spatial vernacular for millions of deaf and hard-of-hearing citizens. According to the Census of India and estimates from the National Association of the Deaf (NAD), India is home to over 5 million deaf and hard-of-hearing individuals, with more than 300,000 residing in the state of Karnataka alone. Despite the linguistic richness of ISL, fewer than 350 certified ISL interpreters are registered nationwide by the Indian Sign Language Research and Training Centre (ISLRTC), creating an acute communication barrier whenever a deaf citizen interacts with public infrastructure.
     </p>
     <p>
-      In Karnataka, this communication divide is compounded by a regional linguistic mismatch. While the deaf community communicates in ISL, the surrounding hearing population—including hospital receptionists, primary care physicians, bank officers, municipal clerks, transport staff, and school teachers—reads and speaks <strong>Kannada</strong>, a classical Dravidian language written in the Kannada abugida script (Unicode block <code>U+0C80–U+0CFF</code>). Virtually all mainstream sign language recognition research has concentrated on American Sign Language (WLASL [1], MS-ASL [2]), German Sign Language (RWTH-PHOENIX-Weather [3]), or Chinese Sign Language, outputting English or German text. Even the limited Indian Sign Language prototypes developed in academic literature predominantly output English glosses rather than grammatically well-formed regional Indian languages.
+      In Karnataka, this communication divide is compounded by a regional linguistic mismatch. While the deaf community communicates in ISL, the surrounding hearing population—including hospital receptionists, primary care physicians, bank officers, municipal clerks, transport staff, and school teachers—reads and speaks <strong>Kannada</strong>, a classical Dravidian language written in the Kannada abugida script (Unicode block <code>U+0C80–U+0CFF</code>). Virtually all mainstream sign language recognition research has concentrated on American Sign Language (WLASL [1], MS-ASL [2]), German Sign Language (RWTH-PHOENIX-Weather [3]), or neural sign-to-spoken-language translation [4], outputting English or German text. Even the limited Indian Sign Language prototypes developed in academic literature predominantly output English glosses rather than grammatically well-formed regional Indian languages.
     </p>
 
     <div class="sec-h1">1.2 Project Domain Overview</div>
     <p>
-      The engineering domain of <strong>Kannada SignBridge</strong> sits at the intersection of five technical disciplines: (i) <em>Visual-Spatial Sign Linguistics</em>, (ii) <em>Real-Time Pose and Landmark Computer Vision</em>, (iii) <em>Spatio-Temporal Deep Sequence Modeling</em>, (iv) <em>Dravidian Computational Linguistics and SOV Machine Translation</em>, and (v) <em>Procedural 3D Character Rigging and Analytic Inverse Kinematics</em>.
+      The engineering domain of <strong>Silent Bridge</strong> sits at the intersection of five technical disciplines: (i) <em>Visual-Spatial Sign Linguistics</em>, (ii) <em>Real-Time Pose and Landmark Computer Vision</em>, (iii) <em>Spatio-Temporal Deep Sequence Modeling</em>, (iv) <em>Dravidian Computational Linguistics and SOV Machine Translation</em>, and (v) <em>Procedural 3D Character Rigging and Analytic Inverse Kinematics</em>.
     </p>
     <p>
-      From a linguistic perspective, an ISL sign is defined simultaneously along five phonological parameters originally formalized by Stokoe and extended to ISL [5], [19]: (1) <strong>Handshape</strong> (the configuration and flexion of the 20 finger joints relative to the wrist), (2) <strong>Location</strong> (the spatial placement of the hands relative to the signer’s face, chin, forehead, or chest), (3) <strong>Palm Orientation</strong> (the 3D unit normal of the palmar surface and the longitudinal axis of the middle finger), (4) <strong>Movement</strong> (the trajectory, velocity, and path length of the wrists over time), and (5) <strong>Non-Manual Markers (NMMs)</strong> (eyebrow elevation, brow furrow, head tilt, head shake, and lip mouthing that encode interrogative, negative, or declarative sentence mood). Many distinct ISL signs share identical handshapes and differ solely in their location relative to the face—for example, <em>EAT</em>, <em>DRINK</em>, <em>WATER</em>, <em>SPEAK</em>, and <em>NOSE</em> all occur within centimeters of the mouth and nose. Consequently, a recognition architecture that strips face-relative coordinates or fails when a hand momentarily occludes the face cannot reliably separate these high-frequency everyday signs.
+      From a linguistic perspective, an ISL sign is defined simultaneously along five phonological parameters extended to Indian Sign Language corpora [5]: (1) <strong>Handshape</strong> (the configuration and flexion of the 20 finger joints relative to the wrist), (2) <strong>Location</strong> (the spatial placement of the hands relative to the signer’s face, chin, forehead, or chest), (3) <strong>Palm Orientation</strong> (the 3D unit normal of the palmar surface and the longitudinal axis of the middle finger), (4) <strong>Movement</strong> (the trajectory, velocity, and path length of the wrists over time), and (5) <strong>Non-Manual Markers (NMMs)</strong> (eyebrow elevation, brow furrow, head tilt, head shake, and lip mouthing that encode interrogative, negative, or declarative sentence mood). Many distinct ISL signs share identical handshapes and differ solely in their location relative to the face—for example, <em>EAT</em>, <em>DRINK</em>, <em>WATER</em>, <em>SPEAK</em>, and <em>NOSE</em> all occur within centimeters of the mouth and nose. Consequently, a recognition architecture that strips face-relative coordinates or fails when a hand momentarily occludes the face cannot reliably separate these high-frequency everyday signs.
     </p>
     <div class="page-footer-arabic">1</div>
   </section>`;
@@ -33,7 +33,7 @@ export function buildChapters1And2() {
   const page2 = String.raw`
   <section class="report-page body-page" data-page="2">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
     <p>
@@ -106,12 +106,12 @@ export function buildChapters1And2() {
         <text x="673" y="163" text-anchor="middle" font-family="Times New Roman" font-size="9.5">2-Bone IK + Ballistic Arc</text>
         <text x="673" y="177" text-anchor="middle" font-family="Times New Roman" font-size="9" fill="#9a3412">Kannada Viseme Lip-Sync</text>
       </svg>
-      <div class="figure-caption">Fig. 1.1 Bidirectional ISL-to-Kannada and Kannada-to-ISL communication paradigm implemented in Kannada SignBridge.</div>
+      <div class="figure-caption">Fig. 1.1 Bidirectional ISL-to-Kannada and Kannada-to-ISL communication paradigm implemented in Silent Bridge.</div>
     </div>
 
     <div class="sec-h1">1.3 Motivation</div>
     <p>
-      Four concrete real-world observations motivated the creation of <strong>Kannada SignBridge</strong>:
+      Four concrete real-world observations motivated the creation of <strong>Silent Bridge</strong>:
     </p>
     <ol>
       <li><strong>Severe Interpreter Scarcity in Regional Languages:</strong> While urban English-speaking deaf individuals can occasionally access remote interpretation, a deaf patient visiting a taluk hospital or a student attending a Kannada-medium school in Karnataka has no practical access to real-time ISL–Kannada interpretation.</li>
@@ -125,7 +125,7 @@ export function buildChapters1And2() {
   const page3 = String.raw`
   <section class="report-page body-page" data-page="3">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
 
@@ -154,13 +154,13 @@ export function buildChapters1And2() {
   const page4 = String.raw`
   <section class="report-page body-page" data-page="4">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
 
     <div class="sec-h1">1.6 Scope of the Project</div>
     <p>
-      The functional and technical scope of <strong>Kannada SignBridge</strong> encompasses the complete lifecycle of bidirectional ISL–Kannada communication, dataset curation, model training, evaluation governance, and edge deployment:
+      The functional and technical scope of <strong>Silent Bridge</strong> encompasses the complete lifecycle of bidirectional ISL–Kannada communication, dataset curation, model training, evaluation governance, and edge deployment:
     </p>
     <ul>
       <li><strong>Authentic ISL Vocabulary &amp; Corpora:</strong> The system operates exclusively on authentic Indian Sign Language recordings sourced from three peer-reviewed CC BY 4.0 datasets: <em>Amrita SLR</em> (933 validated videos across 49 signs and 7 signer groups), <em>INCLUDE</em> (816 validated videos across 42 core classes, plus 1,430 selectively downloaded videos covering 144 total vocabulary classes), and <em>ISL-CSLTR</em> (492 validated sentence videos across 101 sentences and 168 glosses).</li>
@@ -188,7 +188,7 @@ export function buildChapters1And2() {
   const page5 = String.raw`
   <section class="report-page body-page" data-page="5">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
 
@@ -197,12 +197,12 @@ export function buildChapters1And2() {
       The enactment of India’s <em>Rights of Persons with Disabilities (RPwD) Act, 2016</em> and the <em>Accessible India Campaign (Sugamya Bharat Abhiyan)</em> mandates accessible digital and physical public services across government offices, healthcare centers, banks, courts, and educational institutions. However, deploying human ISL interpreters at every primary health center (PHC), citizen service kiosk (<em>Bangalore One / Karnataka One</em>), railway helpdesk, or rural bank branch across Karnataka’s 31 districts is economically and logistically impossible.
     </p>
     <p>
-      Because <strong>Kannada SignBridge</strong> runs on any standard ₹30,000–₹45,000 CPU laptop or tablet with a built-in webcam and requires no external depth cameras (such as Kinect or Leap Motion), no specialized data gloves, and no recurring cloud GPU servers, it can be deployed immediately at public service counters, special education classrooms, and corporate HR onboarding desks. For the Computer Science and Business Systems (CSBS) discipline, the project exemplifies how data-centric AI, edge WebAssembly optimization, and human-centric UX design can deliver high social utility at near-zero marginal operating cost.
+      Because <strong>Silent Bridge</strong> runs on any standard ₹30,000–₹45,000 CPU laptop or tablet with a built-in webcam and requires no external depth cameras (such as Kinect or Leap Motion), no specialized data gloves, and no recurring cloud GPU servers, it can be deployed immediately at public service counters, special education classrooms, and corporate HR onboarding desks. For the Computer Science and Business Systems (CSBS) discipline, the project exemplifies how data-centric AI, edge WebAssembly optimization, and human-centric UX design can deliver high social utility at near-zero marginal operating cost.
     </p>
 
     <div class="sec-h1">1.9 Sustainable Development Goals (SDGs) Addressed</div>
     <p>
-      The design, deployment model, and measurable outcomes of <strong>Kannada SignBridge</strong> directly advance the United Nations 2030 Agenda for Sustainable Development.
+      The design, deployment model, and measurable outcomes of <strong>Silent Bridge</strong> directly advance the United Nations 2030 Agenda for Sustainable Development.
     </p>
 
     <div class="sec-h2">1.9.1 Identification of Relevant SDGs</div>
@@ -231,16 +231,16 @@ export function buildChapters1And2() {
   const page6 = String.raw`
   <section class="report-page body-page" data-page="6">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
 
     <div class="sec-h2">1.9.3 Alignment of Project Objectives with SDGs</div>
     <p>
-      Table 1.1 maps each core engineering objective of <strong>Kannada SignBridge</strong> to the corresponding UN Sustainable Development Goal, specific target, technical mechanism implemented in the codebase, and verifiable impact indicator.
+      Table 1.1 maps each core engineering objective of <strong>Silent Bridge</strong> to the corresponding UN Sustainable Development Goal, specific target, technical mechanism implemented in the codebase, and verifiable impact indicator.
     </p>
 
-    <div class="table-caption">Table 1.1 Alignment of Kannada SignBridge Project Objectives with UN SDG Targets</div>
+    <div class="table-caption">Table 1.1 Alignment of Silent Bridge Project Objectives with UN SDG Targets</div>
     <table class="data-table">
       <thead>
         <tr>
@@ -302,13 +302,13 @@ export function buildChapters1And2() {
   const page7 = String.raw`
   <section class="report-page body-page" data-page="7">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
 
     <div class="sec-h1">1.10 Constraints and Limitations</div>
     <p>
-      In accordance with rigorous engineering practice, the design and evaluation of <strong>Kannada SignBridge</strong> explicitly account for six practical constraints and operational boundaries:
+      In accordance with rigorous engineering practice, the design and evaluation of <strong>Silent Bridge</strong> explicitly account for six practical constraints and operational boundaries:
     </p>
     <ol>
       <li><strong>Authentic Public Dataset Scarcity and Signer Diversity:</strong> Unlike American Sign Language benchmarks that contain tens of thousands of clips across hundreds of signers, publicly licensed ISL datasets with verified class labels contain roughly $17$ to $45$ valid recordings per sign across $7$ to $12$ signers. Furthermore, Amrita SLR was recorded in Kerala and INCLUDE in Chennai; regional lexical variations signed in parts of Karnataka may differ from the training corpus unless adapted via the Few-Shot Custom Signs module or the Sign Reference guide.</li>
@@ -324,7 +324,7 @@ export function buildChapters1And2() {
   const page8 = String.raw`
   <section class="report-page body-page" data-page="8">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 1: Introduction</span>
     </div>
 
@@ -410,7 +410,7 @@ export function buildChapters1And2() {
   const page9 = String.raw`
   <section class="report-page body-page" data-page="9">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
     <div class="chapter-num-header">CHAPTER 2</div>
@@ -421,7 +421,7 @@ export function buildChapters1And2() {
       Automatic Sign Language Recognition (SLR), Sign Language Translation (SLT), and 3D Signing Avatar synthesis have evolved rapidly over the past decade, transitioning from sensor-instrumented data gloves and hidden Markov models to deep spatio-temporal networks operating on monocular video and skeletal pose landmarks. However, a critical examination of the literature reveals a sharp disparity between resource-rich Western sign languages (such as American Sign Language and German Sign Language) and Indian Sign Language (ISL)—and an even wider chasm when regional Indian languages such as Kannada are required as the target communication medium.
     </p>
     <p>
-      This chapter presents a systematic review of twenty-two foundational and state-of-the-art research studies organized across four thematic pillars: (i) <em>Benchmark Sign Language Datasets and Split Protocols</em>, (ii) <em>Appearance-Based versus Pose-Landmark Feature Extraction</em>, (iii) <em>Isolated and Continuous Sequence Modeling with Neural Translation</em>, and (iv) <em>3D Signing Avatars, Linguistic Notation, and Statistical Evaluation Governance</em>. Section 2.3 synthesizes these studies into comparative matrices, and Section 2.4 formalizes the seven research and application gaps addressed by <strong>Kannada SignBridge</strong>.
+      This chapter presents a systematic review of twenty-two foundational and state-of-the-art research studies organized across four thematic pillars: (i) <em>Benchmark Sign Language Datasets and Split Protocols</em>, (ii) <em>Appearance-Based versus Pose-Landmark Feature Extraction</em>, (iii) <em>Isolated and Continuous Sequence Modeling with Neural Translation</em>, and (iv) <em>3D Signing Avatars, Linguistic Notation, and Statistical Evaluation Governance</em>. Section 2.3 synthesizes these studies into comparative matrices, and Section 2.4 formalizes the seven research and application gaps addressed by <strong>Silent Bridge</strong>.
     </p>
 
     <div class="sec-h1">2.2 Review of Existing Systems / Research Studies</div>
@@ -441,7 +441,7 @@ export function buildChapters1And2() {
   const page10 = String.raw`
   <section class="report-page body-page" data-page="10">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
     <p>
@@ -456,7 +456,7 @@ export function buildChapters1And2() {
       <strong>6. Multi-Person 2D Pose and On-Device Hand Tracking — Cao et al. (OpenPose, IEEE TPAMI 2021) [11], Lugaresi et al. (MediaPipe, 2019) [12], and Zhang et al. (MediaPipe Hands, 2020) [13]:</strong> Cao et al. [11] pioneered Part Affinity Fields in OpenPose for full-body and 21-keypoint hand estimation, but OpenPose still requires desktop GPUs for real-time frame rates. Lugaresi et al. [12] and Zhang et al. [13] solved the edge inference bottleneck with MediaPipe Hands, combining a lightweight palm detector (BlazePalm) with a 21-point 3D hand-landmark regression network capable of running at $30+\text{ FPS}$ in WebAssembly on a laptop CPU. By reducing a $640 \times 480 \times 3$ video frame ($921,600$ bytes) to compact 3D anatomical coordinates, MediaPipe achieves invariance to signer clothing, skin tone, and room background while keeping camera video strictly inside the browser.
     </p>
     <p>
-      <strong>7. Skeleton-Aware and Self-Supervised Hand Representations — Jiang et al. (SAM-SLR, CVPRW 2021) [14] and Hu et al. (SignBERT, ICCV 2021) [15]:</strong> Jiang et al. [14] demonstrated that decoupling skeletal hand-shape, body-relative trajectory, and orientation features substantially outperforms naive concatenation of raw image coordinates. Hu et al. [15] introduced SignBERT, pre-training a self-supervised transformer over masked hand-pose tokens to model anatomical constraints. Inspired by these findings, <strong>Kannada SignBridge</strong> engineers an explicit 147-dimensional geometric feature vector (<code>hands-face-v2</code>) that decomposes each hand into 60 palm-scaled wrist-relative shape coordinates, 3 image coordinates, 3 face-relative coordinates, 6 orthonormal palm-orientation components, and explicit presence flags, paired with a 3-tap temporal denoiser and median face-occlusion imputation.
+      <strong>7. Skeleton-Aware and Self-Supervised Hand Representations — Jiang et al. (SAM-SLR, CVPRW 2021) [14] and Hu et al. (SignBERT, ICCV 2021) [15]:</strong> Jiang et al. [14] demonstrated that decoupling skeletal hand-shape, body-relative trajectory, and orientation features substantially outperforms naive concatenation of raw image coordinates. Hu et al. [15] introduced SignBERT, pre-training a self-supervised transformer over masked hand-pose tokens to model anatomical constraints. Inspired by these findings, <strong>Silent Bridge</strong> engineers an explicit 147-dimensional geometric feature vector (<code>hands-face-v2</code>) that decomposes each hand into 60 palm-scaled wrist-relative shape coordinates, 3 image coordinates, 3 face-relative coordinates, 6 orthonormal palm-orientation components, and explicit presence flags, paired with a 3-tap temporal denoiser and median face-occlusion imputation.
     </p>
     <div class="page-footer-arabic">10</div>
   </section>`;
@@ -464,13 +464,13 @@ export function buildChapters1And2() {
   const page11 = String.raw`
   <section class="report-page body-page" data-page="11">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
 
     <div class="sec-h2">2.2.3 Temporal Sequence Modeling, Continuous CTC Decoding, and Neural Translation</div>
     <p>
-      <strong>8. Bidirectional Recurrent Sequence Models — Schuster &amp; Paliwal (BiRNN, IEEE TSP 1997) [17] and Cho et al. (GRU, EMNLP 2014) [16]:</strong> Schuster and Paliwal [17] proved that processing temporal sequences in both forward and backward directions captures full context across gesture preparation, stroke, and retraction phases. Cho et al. [16] introduced Gated Recurrent Units (GRUs) with reset and update gates that mitigate vanishing gradients while requiring $25\%$ fewer parameters than LSTMs. In low-resource regimes ($1,749$ training videos across $64$ classes), a two-direction BiGRU with temporal mean+max pooling and global velocity concatenation generalizes significantly better to unseen signers than over-parameterized transformers while executing in $3.8\text{ ms}$ on a single CPU thread.
+      <strong>8. Bidirectional Recurrent Sequence Models — Cho et al. (GRU, EMNLP 2014) [16] and Schuster &amp; Paliwal (BiRNN, IEEE TSP 1997) [17]:</strong> Cho et al. [16] introduced Gated Recurrent Units (GRUs) with reset and update gates that mitigate vanishing gradients while requiring $25\%$ fewer parameters than LSTMs, and Schuster and Paliwal [17] proved that processing temporal sequences in both forward and backward directions captures full context across gesture preparation, stroke, and retraction phases. In low-resource regimes ($1,749$ training videos across $64$ classes), a two-direction BiGRU with temporal mean+max pooling and global velocity concatenation generalizes significantly better to unseen signers than over-parameterized transformers while executing in $3.8\text{ ms}$ on a single CPU thread.
     </p>
     <p>
       <strong>9. Connectionist Temporal Classification — Graves et al. (CTC, ICML 2006) [18]:</strong> Graves et al. [18] formulated CTC, enabling recurrent networks to map unsegmented frame sequences $\mathbf{X} = (\mathbf{x}_1, \dots, \mathbf{x}_T)$ directly to label sequences $g = (g_1, \dots, g_L)$ ($L \le T$) by marginalizing over all valid monotonic frame-to-gloss alignments augmented with a blank token $\epsilon$. While greedy CTC decoding is fast ($12.3\text{ ms}$), it makes conditionally independent frame decisions and can emit ungrammatical gloss combinations when training sentences are scarce ($265$ training videos in ISL-CSLTR). Our work overcomes this limitation by mathematically fusing the exact CTC dynamic-programming log-likelihood $\log P_{\text{CTC}}(g_s \mid \mathbf{X})$ with a global sentence-level log-posterior $\lambda \log P_{\text{cls}}(s \mid \mathbf{X})$.
@@ -484,7 +484,7 @@ export function buildChapters1And2() {
   const page12 = String.raw`
   <section class="report-page body-page" data-page="12">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
 
@@ -493,10 +493,10 @@ export function buildChapters1And2() {
       <strong>11. Symbolic Notation vs. Data-Driven Signing Avatars — Hanke (HamNoSys, LREC 2004) [19] and Wolfe et al. (Sign Language Avatars, Information 2022) [20]:</strong> Hanke [19] developed the Hamburg Notation System (HamNoSys) to transcribe manual parameters symbolically for procedural avatar synthesis. However, Wolfe et al. [20] comprehensively reviewed signing avatar perception by deaf communities and highlighted two critical failure modes: (i) rule-invented keyframe animations appear robotic and linguistically unnatural to native signers, and (ii) raw uncleaned landmark retargeting causes jarring anatomical artifacts such as mid-sign arm drops whenever the tracker loses a hand for $2\text{–}5$ frames. Moreover, Wolfe et al. [20] emphasized that non-manual facial cues (eyebrows, eye gaze, and mouthing) are indispensable for intelligibility and user trust.
     </p>
     <p>
-      To address both findings from Wolfe et al. [20], <strong>Kannada SignBridge</strong> derives every avatar sign clip from real ISL dataset recordings (never inventing fake signs), applies a 5-stage motion-cleaning pipeline (presence filtering, $\le 0.4\text{ s}$ gap interpolation, $\sigma=1.5$ Gaussian smoothing, idle trimming, and $15\text{ Hz}$ keyframe resampling) that eliminated all $367$ mid-sign arm drops, connects consecutive sentence signs via $0.2\text{ s}$ ballistic co-articulation arcs, and renders them on an appealing Pixar-inspired 3D character equipped with Kannada phonetic viseme mouthing and dynamic eyebrow grammar markers.
+      To address both findings from Wolfe et al. [20], <strong>Silent Bridge</strong> derives every avatar sign clip from real ISL dataset recordings (never inventing fake signs), applies a 5-stage motion-cleaning pipeline (presence filtering, $\le 0.4\text{ s}$ gap interpolation, $\sigma=1.5$ Gaussian smoothing, idle trimming, and $15\text{ Hz}$ keyframe resampling) that eliminated all $367$ mid-sign arm drops, connects consecutive sentence signs via $0.2\text{ s}$ ballistic co-articulation arcs, and renders them on an appealing Pixar-inspired 3D character equipped with Kannada phonetic viseme mouthing and dynamic eyebrow grammar markers.
     </p>
     <p>
-      <strong>12. Paired Non-Parametric Statistical Testing — McNemar (Psychometrika 1947) [21]:</strong> When comparing two classifiers $M_A$ and $M_B$ on the same held-out test set of $N$ videos, comparing aggregate accuracy percentages alone can be misleading due to finite-sample variance and random training seeds. McNemar’s test [21] analyzes the $2 \times 2$ contingency table of discordant pairs ($n_{01}$ videos wrong in $M_A$ but right in $M_B$, versus $n_{10}$ videos right in $M_A$ but wrong in $M_B$). By embedding exact binomial McNemar testing and a pre-registered promotion gate directly into our model registry, <strong>Kannada SignBridge</strong> guarantees that no model update is deployed unless its improvement on identical held-out videos is statistically verified.
+      <strong>12. Paired Statistical Testing &amp; Linguistic Foundations — McNemar (Psychometrika 1947) [21], Stokoe (1960) [22], and Sridhar (Kannada Grammar, 1990) [23]:</strong> When comparing two classifiers $M_A$ and $M_B$ on the same held-out test set of $N$ videos, McNemar’s test [21] analyzes the $2 \times 2$ contingency table of discordant pairs ($n_{01}$ vs. $n_{10}$) to verify statistical significance. Simultaneously, Stokoe’s structural sign phonology [22] and Sridhar’s descriptive grammar of Kannada SOV case suffixation [23] ground our 147-D feature representation and multi-tier Kannada meaning layer.
     </p>
     <div class="page-footer-arabic">12</div>
   </section>`;
@@ -504,16 +504,16 @@ export function buildChapters1And2() {
   const page13 = String.raw`
   <section class="report-page body-page" data-page="13">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
 
     <div class="sec-h1">2.3 Comparative Analysis of Existing Approaches</div>
     <p>
-      Table 2.1 provides a systematic, multi-dimensional comparison of representative published systems and benchmarks against <strong>Kannada SignBridge</strong> across target sign language, model architecture, evaluation protocol, regional Indian language support, reverse text-to-sign avatar capability, and edge hardware feasibility.
+      Table 2.1 provides a systematic, multi-dimensional comparison of representative published systems and benchmarks against <strong>Silent Bridge</strong> across target sign language, model architecture, evaluation protocol, regional Indian language support, reverse text-to-sign avatar capability, and edge hardware feasibility.
     </p>
 
-    <div class="table-caption">Table 2.1 Comparative Analysis of Existing Sign Language Recognition &amp; Avatar Systems vs. Kannada SignBridge</div>
+    <div class="table-caption">Table 2.1 Comparative Analysis of Existing Sign Language Recognition &amp; Avatar Systems vs. Silent Bridge</div>
     <table class="data-table" style="font-size:9.8pt;">
       <thead>
         <tr>
@@ -522,7 +522,7 @@ export function buildChapters1And2() {
           <th style="width:19%;">Input &amp; Model Architecture</th>
           <th style="width:17%;">Evaluation Protocol &amp; Split</th>
           <th style="width:18%;">Key Limitations / Gaps</th>
-          <th style="width:18%;">How Kannada SignBridge Advances</th>
+          <th style="width:18%;">How Silent Bridge Advances</th>
         </tr>
       </thead>
       <tbody>
@@ -591,7 +591,7 @@ export function buildChapters1And2() {
           <td>Real ISL retargeting + gap interp + $\sigma=1.5$ smoothing ($0$ arm drops) + Pixar rig</td>
         </tr>
         <tr>
-          <td><strong>Kannada SignBridge</strong><br/>(Proposed, 2026)</td>
+          <td><strong>Silent Bridge</strong><br/>(Proposed, 2026)</td>
           <td><strong>ISL &leftrightarrow; Kannada</strong><br/>Iso + Sent + Avatar</td>
           <td><strong>MediaPipe 147-D + BiGRU 3-View TTA + Fused CTC + WebAssembly ONNX + 2-Bone IK Avatar</strong></td>
           <td><strong>Strict unseen-signer (314) &amp; unseen-round (154) + McNemar gate</strong></td>
@@ -606,7 +606,7 @@ export function buildChapters1And2() {
   const page14 = String.raw`
   <section class="report-page body-page" data-page="14">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
 
@@ -619,7 +619,7 @@ export function buildChapters1And2() {
           <th style="width:14%; text-align:center;">INCLUDE Baseline [5]</th>
           <th style="width:14%; text-align:center;">ISL-CSLTR Baseline [6]</th>
           <th style="width:14%; text-align:center;">HamNoSys Avatar [19]</th>
-          <th style="width:16%; text-align:center;">Kannada SignBridge</th>
+          <th style="width:16%; text-align:center;">Silent Bridge</th>
         </tr>
       </thead>
       <tbody>
@@ -670,7 +670,7 @@ export function buildChapters1And2() {
         <text x="630" y="141" text-anchor="middle" font-family="Times New Roman" font-size="9.5">• 2-Bone IK + Ballistic Arc + Visemes</text>
         <text x="630" y="158" text-anchor="middle" font-family="Times New Roman" font-size="9.5" fill="#15803d" font-weight="bold">✓ Adopted in Reverse Pipeline (0 Drops)</text>
       </svg>
-      <div class="figure-caption">Fig. 2.1 Taxonomy of sign language recognition and avatar synthesis approaches and the architectural positioning of Kannada SignBridge.</div>
+      <div class="figure-caption">Fig. 2.1 Taxonomy of sign language recognition and avatar synthesis approaches and the architectural positioning of Silent Bridge.</div>
     </div>
     <div class="page-footer-arabic">14</div>
   </section>`;
@@ -678,7 +678,7 @@ export function buildChapters1And2() {
   const page15 = String.raw`
   <section class="report-page body-page" data-page="15">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
 
@@ -701,13 +701,13 @@ export function buildChapters1And2() {
   const page16 = String.raw`
   <section class="report-page body-page" data-page="16">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 2: Literature Review and Related Work</span>
     </div>
 
     <div class="sec-h1">2.5 Summary of the Literature Review</div>
     <p>
-      The literature review establishes a clear scientific foundation for the architectural choices made in <strong>Kannada SignBridge</strong>:
+      The literature review establishes a clear scientific foundation for the architectural choices made in <strong>Silent Bridge</strong>:
     </p>
     <ul>
       <li>First, on small-to-medium authentic ISL datasets ($1,749$ isolated recordings and $492$ sentence recordings), <strong>pose-based anatomical landmark representations</strong> (MediaPipe Hands + Face [12], [13]) strictly dominate raw pixel 3D-CNNs [10] in CPU inference speed ($3.8\text{ ms}$ vs. $>200\text{ ms}$), background invariance, and user privacy.</li>

@@ -1,172 +1,1522 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Kannada SignBridge (IEEE)</title>
-<style>
-@page { size: Letter; margin: 0.75in 0.625in 1in 0.625in; }
-* { box-sizing: border-box; }
-body { margin: 0; font-family: "Times New Roman", Times, serif; font-size: 10pt; line-height: 1.18; color: #000; }
-h1 { font-size: 22pt; font-weight: normal; text-align: center; margin: 0 0 12pt; line-height: 1.15; }
-.authors { display: flex; justify-content: center; flex-wrap: wrap; gap: 6pt 18pt; margin-bottom: 14pt; }
-.author { text-align: center; width: 23%; font-size: 9pt; }
-.an { font-size: 11pt; } .aa i { font-style: italic; }
-.cols { column-count: 2; column-gap: 0.2in; text-align: justify; hyphens: auto; }
-p { margin: 0 0 0; text-indent: 1em; }
-p.abstract { text-indent: 0; font-size: 9pt; margin-bottom: 6pt; }
-h2 { font-size: 10pt; font-weight: normal; font-variant: small-caps; text-align: center; margin: 9pt 0 4pt; break-after: avoid; }
-h3 { font-size: 10pt; font-weight: normal; font-style: italic; margin: 6pt 0 3pt; break-after: avoid; }
-ul { margin: 2pt 0 2pt 0; padding-left: 1.4em; } li { margin: 1pt 0; }
-.eq { display: flex; justify-content: center; position: relative; margin: 5pt 0; font-style: normal; }
-.eqn { position: absolute; right: 0; }
-.table { margin: 6pt 0; break-inside: avoid; }
-.tcap { font-size: 8pt; text-align: center; font-variant: small-caps; margin-bottom: 3pt; letter-spacing: 0.02em; }
-table { width: 100%; border-collapse: collapse; font-size: 8pt; border-top: 1px solid #000; border-bottom: 1px solid #000; }
-thead tr:last-child th { border-bottom: 0.6px solid #000; }
-th, td { padding: 1.5pt 3pt; text-align: right; font-weight: normal; }
-th:first-child, td:first-child { text-align: left; }
-.tfoot { font-size: 7.5pt; margin-top: 2pt; }
-figure { margin: 6pt 0; break-inside: avoid; } figure img { width: 100%; display: block; }
-figure.wide { column-span: all; margin: 0 0 10pt; }
-figcaption { font-size: 8pt; margin-top: 3pt; text-align: justify; }
-code { font-family: "Courier New", monospace; font-size: 9pt; }
-.refs { font-size: 8pt; } .refs ol { list-style: none; padding: 0; margin: 0; }
-.refs li { display: grid; grid-template-columns: 2.2em 1fr; margin: 0 0 2pt; text-align: left; }
-h2.unnumbered { font-variant: small-caps; }
-.algo { margin: 6pt 0; break-inside: avoid; border-top: 1px solid #000; border-bottom: 1px solid #000; font-size: 8.5pt; }
-.acap { border-bottom: 0.6px solid #000; padding: 2pt 0; }
-.abody { padding: 2pt 0; } .al { text-align: left; line-height: 1.25; display: flex; } .alt { flex: 1; }
-.aln { display: inline-block; flex: none; width: 1.8em; font-size: 7.5pt; color: #000; }
-</style></head><body>
-<h1>Kannada SignBridge: Signer-Independent Indian Sign Language Recognition with Kannada Text, Speech and Avatar Output</h1>
-<div class="authors"><div class="author"><div class="an">Author Name 1</div><div class="aa"><i>Dept. of Computer Science and Engineering</i> <br>
-<i>Institution Name</i><br>
-City, India <br>
-email@example.com</div></div><div class="author"><div class="an">Author Name 2</div><div class="aa"><i>Dept. of Computer Science and Engineering</i> <br>
-<i>Institution Name</i><br>
-City, India <br>
-email@example.com</div></div><div class="author"><div class="an">Author Name 3</div><div class="aa"><i>Dept. of Computer Science and Engineering</i> <br>
-<i>Institution Name</i><br>
-City, India <br>
-email@example.com</div></div><div class="author"><div class="an">Guide Name</div><div class="aa"><i>Dept. of Computer Science and Engineering</i> <br>
-<i>Institution Name</i><br>
-City, India <br>
-email@example.com</div></div></div>
-<div class="cols">
-<p class="abstract"><b><i>Abstract</i>—Deaf and hard-of-hearing people in Karnataka commonly sign Indian Sign Language (ISL), while the hearing people around them read and speak Kannada, and almost no software connects the two. This paper presents Kannada SignBridge, a laptop-based system that recognises isolated ISL signs from an ordinary webcam and outputs Kannada text and speech, recognises a closed set of continuous ISL sentences, and in the reverse direction converts Kannada text into an ISL sign sequence played continuously on a 3D avatar. Hand and face landmarks are extracted in the browser with MediaPipe, so no video leaves the user's computer; a motion-based segmenter isolates signs and a bidirectional GRU classifies them. The models are trained only on public ISL datasets (Amrita SLR, INCLUDE and ISL-CSLTR) and are evaluated on signers or recording rounds never seen in training. On 268 held-out recorded videos the isolated-sign accuracy improved from 59.7% (logistic-regression baseline) to 79.9% after adding temporal modelling and selectively importing 462 additional INCLUDE recordings; on 213 videos of two completely unseen signers it rose from 54.5% to 76.5% (paired McNemar test, <i>p</i>=0.003). A fused CTC and sentence-classifier decoder reaches 29.2% exact-sentence accuracy on 101 corpus sentences. Model updates are deployed only through a promotion gate that compares candidates on identical held-out videos; two candidates were rejected by it. Avatar clips are retargeted from dataset recordings with gap interpolation and smoothing, which removed all mid-sign arm drops, and sentences are signed continuously. We also report robustness, calibration, segmentation, parity and latency analyses and the negative results of the project. Live webcam accuracy has not yet been measured and is identified as the next evaluation step.</b></p>
-<p class="abstract"><b><i>Index Terms</i>—Indian Sign Language, sign language recognition, Kannada, MediaPipe, gated recurrent unit, connectionist temporal classification, signing avatar, assistive technology</b></p>
-<h2>I. Introduction</h2>
-<p>Sign languages are complete natural languages with their own grammar; they are not signed versions of spoken languages. Indian Sign Language (ISL) is used by a large deaf community, yet automatic recognition research and tools focus mainly on American, German and Chinese sign languages [1], [2], [3]. For regional languages such as Kannada the gap is wider: a deaf signer in Karnataka and a Kannada-speaking hearing person have no common written or spoken channel without an interpreter, and certified interpreters are few.</p>
-<p>A sign is described by several simultaneous parameters: the handshape, the location of the hands relative to the body, the palm orientation, the movement, and non-manual signals such as facial expression and mouth movements. Many signs differ in only one of these parameters, and the same concept can be signed differently in different regions of India. Recognition must therefore capture fine hand detail and its position relative to the face, and must be evaluated on people whose signing the system has never seen.</p>
-<h3>A. Problem Statement</h3>
-<p>Given an ordinary laptop webcam and a CPU, the task is (i) to recognise ISL signs performed by a person not present in the training data and present their meaning in Kannada text and speech, (ii) to recognise short continuous ISL sentences, and (iii) to render Kannada text as an ISL sign sequence on an avatar, while reporting honestly how accurate each part is and when the system is uncertain.</p>
-<h3>B. Objectives and Design Constraints</h3>
-<p>The project adopted the following constraints:</p>
-<ul><li><i>ISL only and public data only</i>: all training and evaluation data is authentic ISL from published datasets; no other sign language is mixed in, and no signs are invented.</li><li><i>Privacy</i>: camera frames are processed in the browser; only landmark coordinates reach the server, and nothing is stored unless the user records data deliberately.</li><li><i>Commodity hardware</i>: training and inference run on a CPU-only laptop.</li><li><i>Honest evaluation</i>: test sets contain only signers or recording rounds unseen in training; models and thresholds are chosen on development data; negative results are reported.</li><li><i>Safe deployment</i>: a new model replaces the current one only if it is not worse on the same held-out videos.</li></ul>
-<h3>C. Contributions</h3>
-<ul><li>A complete bidirectional pipeline: ISL signs to Kannada text and speech (word level, phrase level and closed-set sentence level), and Kannada text to an ISL gloss sequence rendered on a 3D avatar whose clips are retargeted from real dataset recordings.</li><li>A landmark-based isolated-sign recogniser with motion segmentation, still-tail trimming and a calibrated rejection threshold, evaluated signer-independently on 268 to 314 held-out videos.</li><li>A data-centric improvement: selective, checksum-verified download of only the INCLUDE [5] recordings that match the vocabulary (6.0&#8202;GB instead of 44.7&#8202;GB of archives), which raised unseen-signer accuracy by 9.4 percentage points.</li><li>A continuous-sentence recogniser that fuses a BiGRU-CTC model [18] with a sentence classifier, chosen on a validation round only.</li><li>A model-governance procedure (identical held-out test sets, paired McNemar tests [21], a promotion gate and full rollback) that rejected two candidates that looked promising, including a 144-sign model.</li><li>Avatar clips generated automatically from dataset recordings with tracking-gap interpolation, temporal smoothing and idle trimming, played as continuous signing; this removed all 367 mid-sign arm drops and reduced motion jitter by 36%.</li><li>An extensive empirical analysis: calibration, per-sign accuracy, confusions, robustness to perturbations, segmentation variants, browser–Python feature parity, latency and seed variance.</li></ul>
-<p>The remainder of the paper is organised as follows. Section&nbsp;II reviews related work, Section&nbsp;III the datasets and protocol, Section&nbsp;IV the architecture, Section&nbsp;V the methods, Section&nbsp;VI the implementation, Section&nbsp;VII the results, Section&nbsp;VIII the discussion and limitations, and Section&nbsp;IX concludes.</p>
-<h2>II. Related Work</h2>
-<h3>A. Sign Language Datasets</h3>
-<p>Large isolated-sign benchmarks such as WLASL [1] and MS-ASL [2] target American Sign Language, and RWTH-PHOENIX-Weather [3] supports continuous German Sign Language recognition and translation [4]. For ISL, INCLUDE [5] provides 4,287 videos of 263 isolated words recorded in Chennai with official train/test splits, ISL-CSLTR [6] provides sentence videos with gloss annotations, and the Amrita SLR dataset [7] provides isolated signs from several signers. ISLTranslate [8] and iSign [9] offer larger sentence-level ISL corpora aligned with English text but without gloss annotations, which makes them suitable for end-to-end translation but not for gloss-level recognition.</p>
-<h3>B. Recognition from Video and from Pose</h3>
-<p>Appearance-based recognisers learn directly from pixels, for example with 3-D convolutional networks pre-trained on action recognition [10]; they need large datasets and GPUs. Pose-based recognisers first estimate body and hand keypoints, for example with OpenPose [11] or MediaPipe [12], [13], and classify the keypoint sequences. Keypoints reduce the input dimensionality by orders of magnitude and transfer better across backgrounds and clothing. Skeleton-based and pre-trained hand-model approaches [14], [15] have achieved strong isolated-sign results. With the small per-class data available for ISL, compact recurrent models [16], [17] on landmark sequences are a practical choice that also runs on a CPU.</p>
-<h3>C. Continuous Recognition and Translation</h3>
-<p>Connectionist temporal classification (CTC) [18] trains a sequence model from a gloss sequence without sign boundaries and is the standard objective for continuous sign language recognition [3]. Neural sign language translation [4] maps sign videos directly to spoken-language text, but requires large parallel corpora that do not yet exist with gloss annotations for ISL.</p>
-<h3>D. Signing Avatars</h3>
-<p>Avatars can render sign language from notation systems such as HamNoSys [19] or from motion capture. Wolfe <i>et al.</i> [20] discuss how the representation of signs limits avatar quality and acceptance by deaf users. Our clips are derived from 2-D landmarks of real ISL recordings, which avoids invented motions but limits accuracy; we therefore label every clip as unverified.</p>
-<h3>E. Positioning of this Work</h3>
-<p>Most ISL systems we found report results on random splits that mix a signer's recordings across training and test data, do not output Kannada, and do not provide a reverse text-to-sign direction. This work uses signer- or round-independent splits throughout, provides both directions with Kannada, and documents negative results and the governance used to avoid regressions.</p>
-<h2>III. Datasets and Evaluation Protocol</h2>
-<p>All data is ISL and published under CC&nbsp;BY&nbsp;4.0 (Table&nbsp;I). Videos are downloaded from the publishers' sources with checksum verification. Labels are taken from each dataset's own class folders or official metadata, never from file names.</p>
-<div class="table"><div class="tcap">TABLE I<br>ISL DATASETS USED (AFTER VALIDATION)</div><table><thead><tr><th>Dataset</th><th>Task</th><th>Content used</th><th>Videos</th></tr></thead><tbody><tr><td>Amrita SLR [7]</td><td>isolated</td><td>49 signs, 7 signer groups</td><td>933</td></tr><tr><td>INCLUDE [5]</td><td>isolated</td><td>42 classes, official split</td><td>816</td></tr><tr><td>ISL-CSLTR [6]</td><td>sentences</td><td>101 sentences, 168 glosses</td><td>492</td></tr></tbody></table></div>
-<h3>A. Isolated Signs</h3>
-<p>The active model is trained on 1,749 videos of 64 signs; 49 signs come from Amrita SLR, 42 from INCLUDE, and 27 signs have recordings in both datasets. Fig.&nbsp;1 shows the number of valid recordings per sign (minimum 17, median 21, maximum 45). Amrita SLR has no signer identifiers, so recording groups are inferred from each signer's file-naming style and kept together. The held-out test set consists of all videos of two Amrita signers (213 videos) and INCLUDE's official test split; it contained 268 videos before and 314 videos after the INCLUDE expansion. All model selection uses three-fold cross-validation grouped by signer or session on the development data only.</p>
-<figure class="fig"><img src="fig_datadist.png" alt=""><figcaption>Fig. 1. Valid training recordings per sign for the active 64-sign model, by source dataset.</figcaption></figure>
-<h3>B. Selective INCLUDE Expansion</h3>
-<p>INCLUDE is distributed as category archives totalling 56.8&#8202;GB, while only a fraction of its classes match the vocabulary. Because a ZIP archive stores its central directory at the end of the file, we read the directory with HTTP range requests and download only the member videos whose class matches the vocabulary, verifying each against the CRC-32 stored in the archive (Algorithm&nbsp;1). Classes are matched by name against the official metadata. Table&nbsp;II summarises the two downloads made; both completed with zero failed videos at 1.2–1.8&#8202;MB/s on a home connection.</p>
-<div class="algo"><div class="acap"><b>Algorithm 1</b> Selective download of archive members</div><div class="abody"><div class="al"><span class="aln"></span><span class="alt" style="padding-left:0.0em"><b>Require:</b> archive URLs <i>U</i>, wanted video paths <i>W</i></span></div><div class="al"><span class="aln">1:</span><span class="alt" style="padding-left:0.0em"><b>for</b> each archive <i>u</i> ∈ <i>U</i> containing wanted classes <b>do</b></span></div><div class="al"><span class="aln">2:</span><span class="alt" style="padding-left:1.1em">read the end-of-archive record and central directory of <i>u</i> with HTTP range requests</span></div><div class="al"><span class="aln">3:</span><span class="alt" style="padding-left:1.1em"><b>for</b> each member <i>e</i> whose class folder and file name are in <i>W</i> <b>do</b></span></div><div class="al"><span class="aln">4:</span><span class="alt" style="padding-left:2.2em">fetch the local header of <i>e</i>, then its compressed bytes</span></div><div class="al"><span class="aln">5:</span><span class="alt" style="padding-left:2.2em">decompress; <b>if</b> size or CRC-32 differ <b>then</b> record a failure</span></div><div class="al"><span class="aln">6:</span><span class="alt" style="padding-left:2.2em">write the video atomically to its metadata path</span></div><div class="al"><span class="aln">7:</span><span class="alt" style="padding-left:1.1em"><b>end for</b></span></div><div class="al"><span class="aln">8:</span><span class="alt" style="padding-left:0.0em"><b>end for</b></span></div><div class="al"><span class="aln">9:</span><span class="alt" style="padding-left:0.0em">rerunning skips videos already on disk (resumable)</span></div></div></div>
-<div class="table"><div class="tcap">TABLE II<br>SELECTIVE INCLUDE DOWNLOADS</div><table><thead><tr><th>Purpose</th><th>Videos</th><th>Downloaded</th><th>Whole archives</th></tr></thead><tbody><tr><td>More data for 24 existing signs + 1</td><td>462</td><td>5.96&#8202;GB</td><td>44.7&#8202;GB</td></tr><tr><td>79 new signs + <i>home</i></td><td>1,430</td><td>18.59&#8202;GB</td><td>48.7&#8202;GB</td></tr></tbody></table></div>
-<h3>C. Continuous Sentences and Data Integrity</h3>
-<p>ISL-CSLTR has no signer identifiers either, so it is split by recording round (the index in the file name): rounds 4 and 5 form the test set (154 videos), round 2 the validation set (73) and the rest the training set (265). Table&nbsp;III summarises an integrity audit of the corpus. An MD5 audit of all 687 videos on disk found five duplicate groups, four of them with conflicting sentence labels; the nine affected files are excluded from training. The 195 videos present on disk but missing from the corpus spreadsheet were labelled from their folder names, a convention verified on all 492 listed videos.</p>
-<div class="table"><div class="tcap">TABLE III<br>ISL-CSLTR INTEGRITY AUDIT</div><table><thead><tr><th>Item</th><th>Count</th></tr></thead><tbody><tr><td>Videos on disk</td><td>687</td></tr><tr><td>Listed in the corpus spreadsheet</td><td>492</td></tr><tr><td>Unlisted, sentence identifiable from folder</td><td>195</td></tr><tr><td>Folder-name convention verified (listed videos)</td><td>492/492</td></tr><tr><td>Duplicate groups (MD5) / with conflicting labels</td><td>5 / 4</td></tr><tr><td>Files excluded from training</td><td>9</td></tr></tbody></table></div>
-<h3>D. Statistics</h3>
-<p>Comparisons between models use the same test videos, and paired differences are tested with the exact McNemar test [21]. Accuracy is top-1 accuracy over videos; macro-F1 averages the per-sign F1-scores. The gloss error rate (GER) of a sentence is the edit distance between recognised and reference gloss sequences divided by the reference length. The sign error rate (SER) of a stream counts substitutions, deletions and insertions of recognised signs relative to the reference sequence.</p>
-<figure class="fig wide"><img src="fig_architecture.png" alt=""><figcaption>Fig. 2. Kannada SignBridge architecture. Only landmark coordinates leave the browser. Top: sign to Kannada; bottom: Kannada to sign.</figcaption></figure>
-<h2>IV. System Architecture</h2>
-<p>Fig.&nbsp;2 shows the system. The browser front end (React, TypeScript) captures the webcam, runs the MediaPipe Hand and Face Landmarkers (version 0.10.21, the same models used offline for the datasets) and sends only landmark coordinates over a WebSocket to a Python FastAPI back end. The back end segments, classifies and translates; the result is shown as Kannada text with the ISL gloss and confidence, a pending-word confirmation step with alternatives, and Kannada speech through the browser's speech synthesis. In the reverse direction, Kannada text is normalised (Unicode NFC), matched against a phrase dictionary of 187 entries by longest match, converted to an ISL gloss plan in ISL word order, and played on a three.js avatar. Words without a sign are listed as unsupported and never guessed.</p>
-<h2>V. Methods</h2>
-<h3>A. Landmark Features</h3>
-<p>Each frame is encoded as a 147-dimensional vector (schema <code>hands-face-v2</code>). For each hand, 73 values describe the wrist-relative hand shape scaled by palm size (60), the position in the image (3), the position relative to the face (3), the finger direction and palm normal (6) and a presence flag (1); one value marks face visibility. A missing hand is flagged rather than filled with zeros. During dataset extraction, if the face detector fails on the full frame, it is re-run on an upper-centre crop of the original-resolution frame; this made face-relative features reliable for signs made near the face.</p>
-<p>A segment of variable length is resampled to <i>T</i> evenly spaced steps and complemented by wrist velocities and path lengths, giving an input of dimension</p>
-<div class="eq"><span><i>D</i> = 147&#8202;<i>T</i> + 6&#8202;(<i>T</i>-1) + 2</span><span class="eqn">(1)</span></div>
-<p>i.e. <i>D</i>=2,444 for <i>T</i>=16 and <i>D</i>=3,668 for <i>T</i>=24 (current models). Each model stores its own <i>T</i>, so changing the default for new models never invalidates an existing one.</p>
-<h3>B. Isolated-Sign Classifiers</h3>
-<p>Three candidates are trained: multinomial logistic regression on standardised inputs; a bidirectional GRU [16], [17] with a per-frame linear embedding (96 units), 96 units per direction, mean and max pooling over time concatenated with global motion features, and a softmax output, trained with AdamW, class-weighted loss and early stopping; and a probability ensemble of the two. Training data is augmented with five copies per sample using temporal cropping (up to 20%), landmark jitter, position jitter and left-right mirroring (for left-handed signers and mirrored videos). The candidate with the highest signer-grouped cross-validation macro-F1 is selected; for the current model this was the BiGRU (0.368, against 0.357 for the ensemble and 0.305 for logistic regression).</p>
-<h3>C. Rejection Threshold</h3>
-<p>Every development video receives an out-of-fold prediction, and the confidence threshold that maximises the F1-score of accepted words is selected, where a non-sign predicted as a sign counts as an error (Algorithm&nbsp;2). Predictions below the threshold are shown as “uncertain” with alternatives and are never added to the transcript automatically. Fig.&nbsp;3 shows precision, recall and coverage of the current model against the threshold.</p>
-<div class="algo"><div class="acap"><b>Algorithm 2</b> Threshold calibration</div><div class="abody"><div class="al"><span class="aln"></span><span class="alt" style="padding-left:0.0em"><b>Require:</b> development samples with signer groups</span></div><div class="al"><span class="aln">1:</span><span class="alt" style="padding-left:0.0em">obtain out-of-fold class probabilities with grouped cross-validation</span></div><div class="al"><span class="aln">2:</span><span class="alt" style="padding-left:0.0em"><b>for</b> τ = 0.05, 0.10, …, 0.95 <b>do</b></span></div><div class="al"><span class="aln">3:</span><span class="alt" style="padding-left:1.1em">accept predictions with confidence ≥ τ</span></div><div class="al"><span class="aln">4:</span><span class="alt" style="padding-left:1.1em">compute precision and recall of accepted words; non-signs accepted as signs count as errors</span></div><div class="al"><span class="aln">5:</span><span class="alt" style="padding-left:0.0em"><b>end for</b></span></div><div class="al"><span class="aln">6:</span><span class="alt" style="padding-left:0.0em"><b>return</b> τ with the highest F1-score</span></div></div></div>
-<figure class="fig"><img src="fig_calibration.png" alt=""><figcaption>Fig. 3. Precision, recall and coverage of accepted signs against the confidence threshold on 1,435 out-of-fold development predictions of the current model; 0.50 maximises F1.</figcaption></figure>
-<h3>D. Live Segmentation</h3>
-<p>A sign starts when hand motion exceeds a threshold and ends after a stillness period, when the hands are lowered or leave the frame for 200&#8202;ms, or after at most 4&#8202;s (Algorithm&nbsp;3). Training clips end with the hands moving, whereas live signers often hold the final position; the held-still frames at the end of a segment are therefore trimmed before classification. Replaying the 268 test videos through the live pipeline with the hold ending, this trimming raised the number of correctly recognised signs from 136 to 184. Repeated signs are kept: a duplicate is suppressed only within 600&#8202;ms of the same sign.</p>
-<div class="algo"><div class="acap"><b>Algorithm 3</b> Motion segmentation with still-tail trimming</div><div class="abody"><div class="al"><span class="aln">1:</span><span class="alt" style="padding-left:0.0em"><b>for</b> each incoming frame <i>f</i><sub><i>t</i></sub> <b>do</b></span></div><div class="al"><span class="aln">2:</span><span class="alt" style="padding-left:1.1em"><i>m</i><sub><i>t</i></sub> ← wrist motion between <i>f</i><sub><i>t</i>-1</sub> and <i>f</i><sub><i>t</i></sub></span></div><div class="al"><span class="aln">3:</span><span class="alt" style="padding-left:1.1em"><b>if</b> idle <b>and</b> hands present <b>and</b> <i>m</i><sub><i>t</i></sub> > start threshold <b>then</b></span></div><div class="al"><span class="aln">4:</span><span class="alt" style="padding-left:2.2em">start a segment</span></div><div class="al"><span class="aln">5:</span><span class="alt" style="padding-left:1.1em"><b>else if</b> in segment <b>then</b></span></div><div class="al"><span class="aln">6:</span><span class="alt" style="padding-left:2.2em">append <i>f</i><sub><i>t</i></sub></span></div><div class="al"><span class="aln">7:</span><span class="alt" style="padding-left:2.2em"><b>if</b> still for the stillness period <b>or</b> hands absent for 200&#8202;ms <b>or</b> length > 4&#8202;s <b>then</b></span></div><div class="al"><span class="aln">8:</span><span class="alt" style="padding-left:3.3000000000000003em">drop the trailing still frames; classify; return to idle</span></div><div class="al"><span class="aln">9:</span><span class="alt" style="padding-left:2.2em"><b>end if</b></span></div><div class="al"><span class="aln">10:</span><span class="alt" style="padding-left:1.1em"><b>end if</b></span></div><div class="al"><span class="aln">11:</span><span class="alt" style="padding-left:0.0em"><b>end for</b></span></div></div></div>
-<h3>E. Continuous Sentence Recognition</h3>
-<p>A two-layer BiGRU (128 units per direction) reads every second frame of a sentence and outputs, per time step, a distribution over 168 glosses plus the CTC blank [18]. Separately, a logistic-regression sentence classifier operates on the sentence resampled to 32 steps. For each corpus sentence <i>s</i> with gloss sequence <i>g</i><sub><i>s</i></sub>, the decoder scores</p>
-<div class="eq"><span>score(<i>s</i>) = log <i>P</i><sub>CTC</sub>(<i>g</i><sub><i>s</i></sub> | <i>X</i>) + λ log <i>P</i><sub>cls</sub>(<i>s</i> | <i>X</i>)</span><span class="eqn">(2)</span></div>
-<p>with λ=1.0 chosen on the validation round. The softmax of the scores gives a posterior; sentences with posterior below 0.5 (also chosen on validation) are shown as uncertain with the three best candidates. While a sentence is being signed, a greedy CTC decode of the frames so far is shown as tentative, never as a final result. The sentence results in Section&nbsp;VII refer to this decoder.</p>
-<h3>F. Meaning Layer: ISL Glosses to Kannada</h3>
-<p>ISL word order differs from Kannada, and a gloss-by-gloss rendering is often ungrammatical. Recognised gloss sequences are therefore matched against a phrase table that maps ISL gloss sequences to an English meaning and a Kannada sentence; ambiguous sequences (for example question versus statement) list both readings, and parts outside the table are shown word by word and marked as such. Section&nbsp;VII-E measures the effect of this layer.</p>
-<h3>G. Avatar Clip Generation and Continuous Signing</h3>
-<p>Each avatar clip is retargeted from a real dataset recording of the sign. Per frame, the wrist position is expressed relative to the signer's face (scaled by face width), depth is estimated from the apparent palm size, and the hand orientation (finger direction and palm normal) and the flexion of every finger joint are computed from the 21 hand landmarks; arms are assigned by image position so that mirrored videos do not cross them. The avatar solves each arm with analytic two-bone inverse kinematics. Raw landmarks are noisy and MediaPipe occasionally loses a hand for a few frames, which made the avatar's arm drop to the rest pose and jump back mid-sign. The clip builder therefore applies Algorithm&nbsp;4. For a sentence, consecutive signs are connected by a 0.2&#8202;s transition from the end of one sign to the start of the next, and the arms return to rest only once, after the last sign.</p>
-<div class="algo"><div class="acap"><b>Algorithm 4</b> Avatar clip cleaning (per hand)</div><div class="abody"><div class="al"><span class="aln"></span><span class="alt" style="padding-left:0.0em"><b>Require:</b> per-frame hand poses <i>p</i><sub>1</sub>, …, <i>p</i><sub><i>n</i></sub> (or missing)</span></div><div class="al"><span class="aln">1:</span><span class="alt" style="padding-left:0.0em"><b>if</b> the hand is present in fewer than 15% of frames <b>then</b></span></div><div class="al"><span class="aln">2:</span><span class="alt" style="padding-left:1.1em"><b>return</b> no track (detector noise)</span></div><div class="al"><span class="aln">3:</span><span class="alt" style="padding-left:0.0em"><b>end if</b></span></div><div class="al"><span class="aln">4:</span><span class="alt" style="padding-left:0.0em">interpolate gaps of at most 0.4&#8202;s between tracked frames</span></div><div class="al"><span class="aln">5:</span><span class="alt" style="padding-left:0.0em">smooth position, direction, palm normal and finger flexion with a Gaussian kernel (σ=1.5 frames) within continuous runs</span></div><div class="al"><span class="aln">6:</span><span class="alt" style="padding-left:0.0em">trim motionless frames before the first and after the last movement (keeping 0.12&#8202;s)</span></div><div class="al"><span class="aln">7:</span><span class="alt" style="padding-left:0.0em">resample to at most 15 keyframes per second</span></div></div></div>
-<h3>H. Model Governance</h3>
-<p>Every trained model is stored as a version with its metrics, its per-video test predictions and a status record. A new model becomes active only if (i) its held-out macro-F1 is at least 0.40, (ii) it is not worse than the active model by more than 0.02 on the test videos both share, and (iii) it passes a reload and live-pipeline smoke test; earlier versions remain available for rollback. Training started from the user interface for the sentence model only produces an inactive candidate, because a single training run varies by several points with the random seed (Section&nbsp;VII-D).</p>
-<h2>VI. Implementation</h2>
-<p>Table&nbsp;IV lists the main components. The application has five pages. <i>Live Recognition</i> shows the camera, a pipeline-diagnostics panel with six stages (camera, detection, features, segmentation, classification, translation), the recognised words with confidence and alternatives, the Kannada transcript and speech output. <i>Kannada to Sign</i> plays the avatar. <i>Sign Reference</i> plays the dataset recordings of each sign, so that users can see the variant the model was trained on. <i>Dataset &amp; Model</i> records or uploads data, trains models and manages the version registry. <i>About &amp; Testing</i> reports the measured results.</p>
-<div class="table"><div class="tcap">TABLE IV<br>IMPLEMENTATION STACK</div><table><thead><tr><th>Component</th><th>Technology</th></tr></thead><tbody><tr><td>Landmarks (browser and offline)</td><td>MediaPipe Tasks 0.10.21</td></tr><tr><td>Front end</td><td>React 18, TypeScript, Vite, three.js</td></tr><tr><td>Back end</td><td>Python, FastAPI, WebSocket</td></tr><tr><td>Classifiers</td><td>scikit-learn 1.9, PyTorch (CPU)</td></tr><tr><td>Kannada speech</td><td>browser speech synthesis; optional gTTS</td></tr><tr><td>Tests</td><td>160 back-end (pytest), 27 front-end (vitest)</td></tr></tbody></table></div>
-<p><i>Data collection for evaluation.</i> Users can record samples with the purpose “evaluation only”; these are stored apart from training data and never trained on. Recording conditions (speed, distance, lighting and hand position) are stored with each sample, and “guided variation” asks for a different condition on each repetition. Sign sequences can be recorded with their declared order to measure continuous performance. A live evaluation report computes accuracy, macro-F1, rejection rate, false detections of non-signs and the sign error rate of sequences, and attributes every error to a cause: the right sign not in the top three, the right sign second or third, the right sign below the threshold, a suppressed duplicate, missing face or hands, or a wrong boundary.</p>
-<p><i>Robust data handling.</i> Imports are resumable and skip processed videos; uploads are restricted to one sign per video with an explicit label, never guessed from file names; landmark extraction records its version with every sample; and dataset integrity is verified with checksums.</p>
-<h2>VII. Results</h2>
-<h3>A. Isolated Signs</h3>
-<p>Table&nbsp;V and Fig.&nbsp;4 summarise the development on the identical 268 held-out videos. Temporal modelling and face-crop extraction raised accuracy from 59.7% to 72.4%. The INCLUDE expansion then raised it to 79.9%; on the 213 videos of the two unseen Amrita signers, the most demanding subset, accuracy rose from 67.1% to 76.5%. Paired on the same 268 videos, 34 videos became correct and 13 became wrong (exact McNemar <i>p</i>=0.003). The largest gains were for the signs that received new data, such as GREY, BLACK, BIRD, DOG, FATHER, FISH and BOY. On the full 314-video test set, the selected BiGRU reaches 81.5% (macro-F1 0.800), against 70.7% (0.703) for logistic regression trained on the same data.</p>
-<div class="table"><div class="tcap">TABLE V<br>ISOLATED-SIGN ACCURACY (%) ON THE SAME HELD-OUT VIDEOS</div><table><thead><tr><th>Model (training videos)</th><th>All</th><th>Amrita</th><th>INCLUDE</th><th>Macro-</th></tr><tr><th></th><th>(268)</th><th>unseen (213)</th><th>test (55)</th><th>F1</th></tr></thead><tbody><tr><td>LogReg baseline (1,290)</td><td>59.7</td><td>54.5</td><td>80.0</td><td>0.591</td></tr><tr><td>LogReg+BiGRU, <i>T</i>=16 (1,290)</td><td>72.4</td><td>67.1</td><td>92.7</td><td>0.708</td></tr><tr><td>LogReg+BiGRU, <i>T</i>=24 (1,290)</td><td>72.0</td><td>67.1</td><td>90.9</td><td>0.707</td></tr><tr><td><b>BiGRU + INCLUDE (1,749)</b></td><td><b>79.9</b></td><td><b>76.5</b></td><td><b>92.7</b></td><td><b>0.800</b><sup>*</sup></td></tr></tbody></table><div class="tfoot"><sup>*</sup>Macro-F1 on its full 314-video test set (accuracy 81.5%).</div></div>
-<figure class="fig"><img src="fig_results.png" alt=""><figcaption>Fig. 4. Top-1 accuracy of successive models on the identical held-out videos.</figcaption></figure>
-<p><i>Model selection and seed variance.</i> Table&nbsp;VI lists the development-data variants compared when the ensemble was introduced; the configuration was chosen on validation folds only. Retraining the logistic-regression baseline and the ensemble with three random seeds (7, 11, 23) gave 62.2&#8202;±&#8202;2.1% and 70.5&#8202;±&#8202;1.3% test accuracy respectively; pooled over seeds, 102 videos were right only for the ensemble and 35 only for the baseline (McNemar <i>p</i><10<sup>-8</sup>). The improvement is therefore robust to the seed, unlike the sentence model below.</p>
-<div class="table"><div class="tcap">TABLE VI<br>VALIDATION (DEVELOPMENT DATA) COMPARISON OF VARIANTS</div><table><thead><tr><th>Variant</th><th>Accuracy</th><th>Macro-F1</th></tr></thead><tbody><tr><td>LogReg, <i>T</i>=12</td><td>0.398</td><td>0.377</td></tr><tr><td>LogReg, <i>T</i>=16</td><td>0.412</td><td>0.388</td></tr><tr><td>LogReg, <i>T</i>=24</td><td>0.413</td><td>0.385</td></tr><tr><td>LogReg, <i>T</i>=32</td><td>0.416</td><td>0.391</td></tr><tr><td>BiGRU, <i>T</i>=16</td><td>0.416</td><td>0.399</td></tr><tr><td>Ensemble 0.7 LogReg / 0.3 BiGRU</td><td>0.424</td><td>0.402</td></tr><tr><td><b>Ensemble 0.5 / 0.5 (selected)</b></td><td><b>0.437</b></td><td><b>0.420</b></td></tr><tr><td>Ensemble 0.3 LogReg / 0.7 BiGRU</td><td>0.434</td><td>0.417</td></tr></tbody></table></div>
-<p><i>Per-sign accuracy and confusions.</i> Fig.&nbsp;5 shows the F1-score of each of the 60 signs that have test videos: 26 signs reach at least 0.9, the mean is 0.80, and four signs are below 0.4. Table&nbsp;VII lists the most frequent confusions. They involve signs with similar handshape and location, for example EAT and NOSE (both at the mouth or nose) and HELLO and GOOD, or signs with similar movement, such as GOOD EVENING and GOOD MORNING.</p>
-<figure class="fig"><img src="fig_perclass.png" alt=""><figcaption>Fig. 5. Per-sign F1-score of the active model on the 314-video test set, sorted. Two signs (NAME and STOP, three test videos each) score 0 and are marked with triangles.</figcaption></figure>
-<div class="table"><div class="tcap">TABLE VII<br>MOST FREQUENT CONFUSIONS ON THE TEST SET</div><table><thead><tr><th>True sign</th><th>Predicted as</th><th>Videos</th></tr></thead><tbody><tr><td>EAT</td><td>NOSE</td><td>4</td></tr><tr><td>HELLO</td><td>GOOD</td><td>3</td></tr><tr><td>ANGRY</td><td>GIRL</td><td>2</td></tr><tr><td>BOY</td><td>ANGRY</td><td>2</td></tr><tr><td>FRIEND</td><td>WRITE</td><td>2</td></tr><tr><td>GOOD EVENING</td><td>GOOD MORNING</td><td>2</td></tr><tr><td>NAME</td><td>DRINK</td><td>2</td></tr><tr><td>STOP</td><td>UMBRELLA</td><td>2</td></tr><tr><td>TEETH</td><td>NOSE</td><td>2</td></tr><tr><td>YOU ARE PERFECT</td><td>HOW ARE YOU</td><td>2</td></tr></tbody></table></div>
-<p><i>Rejected larger vocabulary.</i> Adding 79 further INCLUDE signs (144 classes, 3,182 training videos) reached 85.2% on 210 INCLUDE test videos of the new signs, but lowered accuracy on the original signs from 81.5% to 76.1% and on unseen Amrita signers from 76.5% to 70.9%. The promotion gate rejected it. Because INCLUDE's official split reuses signers between training and test, the 85.2% likely overestimates performance for new users. The 79 signs remain available in the Kannada-to-sign direction and on the reference page.</p>
-<h3>B. Continuous Streams and Segmentation</h3>
-<p>Replaying the 314 test videos back to back through the live pipeline (segmentation, threshold and duplicate suppression) gives a sign error rate of 0.274 for the active model (54 substitutions, 8 deletions and 24 insertions over 314 signs). Table&nbsp;VIII shows the same measurement for earlier models; it was taken at training time with the pipeline settings of that time, so the differences reflect both model and segmentation changes.</p>
-<div class="table"><div class="tcap">TABLE VIII<br>LIVE-PIPELINE REPLAY OF THE TEST VIDEOS (SIGN ERROR RATE)</div><table><thead><tr><th>Model</th><th>Signs</th><th>S</th><th>D</th><th>I</th><th>SER</th></tr></thead><tbody><tr><td>LogReg baseline</td><td>268</td><td>55</td><td>74</td><td>1</td><td>0.485</td></tr><tr><td>LogReg+BiGRU, <i>T</i>=16</td><td>268</td><td>18</td><td>88</td><td>0</td><td>0.396</td></tr><tr><td>LogReg+BiGRU, <i>T</i>=24</td><td>268</td><td>50</td><td>27</td><td>2</td><td>0.295</td></tr><tr><td><b>BiGRU + INCLUDE</b></td><td>314</td><td>54</td><td>8</td><td>24</td><td><b>0.274</b></td></tr></tbody></table></div>
-<p>To evaluate segmentation separately, held-out recordings were concatenated into 50 streams of five signs with exactly known boundaries, in three conditions: a short pause with the hands lowered, back-to-back signs, and signs where the hands are never lowered. An evaluation model trained on development signers only was used; with perfect boundaries it recognises 54.3% of these recordings. Fig.&nbsp;6 compares the variants. Splitting at brief slow-downs (dip split) and a sliding window with a stability gate produce many extra words. A variant with a 600&#8202;ms pause and 400&#8202;ms absence was best on validation (mean SER 0.717 against 0.759) but worse on the test signers (0.522 against 0.474 with a pause), so the evidence does not support changing the defaults. The weak case is signing without lowering the hands (SER 0.857), where consecutive signs merge into one segment; a classifier-verified split of long segments reduced it to 0.727 but increased errors in normal signing and was rejected on validation (0.969 against 0.759).</p>
-<figure class="fig"><img src="fig_segmentation.png" alt=""><figcaption>Fig. 6. Sign error rate of segmentation variants on 50 test streams of five signs (245 signs) with known boundaries.</figcaption></figure>
-<h3>C. Robustness and Feature Parity</h3>
-<p>Fig.&nbsp;7 applies landmark-level perturbations to the 268 held-out videos with an earlier logistic-regression model (top-1 66.8% unperturbed); these are a proxy for camera variation, not webcam results. Mirroring, dropping the hand in 20–40% of the frames, speed changes of 0.67–1.5×, scale changes and landmark jitter change top-1 accuracy by at most 1.5 points. Hiding the face lowers it to 47.8%, because the face-relative position of the hands is an important cue; users are therefore asked to keep the face in view.</p>
-<figure class="fig"><img src="fig_robustness.png" alt=""><figcaption>Fig. 7. Top-1 accuracy under synthetic perturbations of real held-out recordings (earlier logistic-regression model).</figcaption></figure>
-<p>Live features must match training features. Eight dataset videos (four Amrita SLR, four INCLUDE) were played through the in-browser MediaPipe path and compared with the offline Python extraction of the same files (Table&nbsp;IX). The two paths agree closely, and seven of eight videos give the same predicted label; the remaining mismatch was traced to face detection under hand occlusion.</p>
-<div class="table"><div class="tcap">TABLE IX<br>BROWSER VERSUS OFFLINE EXTRACTION OF THE SAME VIDEOS</div><table><thead><tr><th>Measure (8 videos)</th><th>Result</th></tr></thead><tbody><tr><td>Hand presence agreement per video</td><td>91.8–100%</td></tr><tr><td>Handedness label agreement per video</td><td>81.5–100%</td></tr><tr><td>Median landmark distance (image units)</td><td>0.002–0.007</td></tr><tr><td>Same predicted label from both feature sets</td><td>7 of 8</td></tr><tr><td>Correct single word through the live pipeline</td><td>6 of 8</td></tr></tbody></table></div>
-<h3>D. Continuous Sentences</h3>
-<p>Table&nbsp;X compares decoders on the same networks and the 154 test videos of unseen recording rounds. The fused decoder reaches 29.2% exact-sentence accuracy (chance is about 1%) and the lowest gloss error rate. Of the 122 sentences shown with posterior of at least 0.5, 43 are correct; the other 32 videos are reported as uncertain. Accuracy differs strongly between the test rounds: 37.6% on round 4 (85 videos) and 18.8% on round 5 (69 videos).</p>
-<div class="table"><div class="tcap">TABLE X<br>SENTENCE DECODERS ON 154 TEST VIDEOS OF UNSEEN ROUNDS</div><table><thead><tr><th>Decoder</th><th>Sentence acc. (%)</th><th>GER</th></tr></thead><tbody><tr><td>Sentence classifier only</td><td>20.1</td><td>0.883</td></tr><tr><td>CTC greedy path → nearest sentence</td><td>18.2</td><td>0.742</td></tr><tr><td>CTC likelihood of each sentence</td><td>22.1</td><td>0.724</td></tr><tr><td><b>CTC likelihood + classifier (fused)</b></td><td><b>29.2</b></td><td><b>0.685</b></td></tr></tbody></table></div>
-<p><i>A rejected improvement attempt.</i> A candidate trained on the cleaned data plus 187 additional unlisted videos scored 22.1% and was rejected (19 test videos right only for the existing model, 8 only for the candidate; McNemar <i>p</i>=0.052). Table&nbsp;XI explains the result. Retraining the existing recipe on identical data with different seeds gives 20.1–29.2%, so the deployed 29.2% is a favourable draw; the candidate was nevertheless worse for every seed (mean -5.8 points). Adding the unlisted round-2 videos to the validation set made early stopping trigger after 27–51 epochs instead of 81–87; moving them to the training set only gave 25.3%. The lesson is that recipes should be compared by their mean over several seeds, with a fixed validation set.</p>
-<div class="table"><div class="tcap">TABLE XI<br>SENTENCE ACCURACY (%) BY TRAINING SEED, SAME 154 TEST VIDEOS</div><table><thead><tr><th>Training data</th><th>Seed 42</th><th>Seed 7</th><th>Seed 123</th></tr></thead><tbody><tr><td>Original (deployed recipe)</td><td>29.2</td><td>20.1</td><td>24.7</td></tr><tr><td>Cleaned + unlisted (candidate)</td><td>22.1</td><td>16.2</td><td>18.2</td></tr><tr><td>Cleaned only</td><td>24.7</td><td>–</td><td>–</td></tr><tr><td>Unlisted in training only</td><td>25.3</td><td>–</td><td>–</td></tr></tbody></table></div>
-<h3>E. Meaning Layer</h3>
-<p>To measure what sequence-level translation adds over word-by-word glossing, 31 phrases were rendered as 124 streams of held-out recordings and passed through recognition and the meaning layer. Recognition had a sign error rate of 0.301, and 75 of 124 streams (60.5%) were recognised exactly. The Kannada output matched the reference sentence in 60.5% of the streams through the English meaning layer, against 39.5% for word-by-word output (chrF 0.669 against 0.605). With perfect recognition, word-by-word output would match only 61.3%. The references are the phrase table's own draft sentences, which have not yet been reviewed by native speakers, so these figures show the relative benefit of the layer, not absolute Kannada quality. The layer cannot correct recognition errors: its exact matches coincide with the streams recognised perfectly.</p>
-<h3>F. Avatar Motion Quality</h3>
-<p>All 144 dataset-derived clips were rebuilt from the same source recordings, so the signs themselves are unchanged. Table&nbsp;XII reports objective motion measures; they quantify tracking artefacts, not whether a clip is correct ISL, which requires judgement by ISL users. In total 161 of the 162 vocabulary entries have an avatar clip, so any Kannada sentence composed of supported words can be signed.</p>
-<div class="table"><div class="tcap">TABLE XII<br>AVATAR CLIP MOTION QUALITY (144 DATASET-DERIVED CLIPS)</div><table><thead><tr><th>Measure</th><th>Before</th><th>After</th></tr></thead><tbody><tr><td>Clips with mid-sign arm drops</td><td>114</td><td><b>0</b></td></tr><tr><td>Arm drops in total</td><td>367</td><td><b>0</b></td></tr><tr><td>Wrist jitter (cm per frame<sup>2</sup>)</td><td>4.42</td><td><b>2.83</b></td></tr><tr><td>Mean clip duration (s)</td><td>2.36</td><td>2.23</td></tr></tbody></table></div>
-<h3>G. Latency and Resources</h3>
-<p>Table&nbsp;XIII lists the measured processing times on a laptop CPU. The back end adds 1.4&#8202;ms per frame, and classifying a completed sign takes 3.8&#8202;ms, so the response time after a sign is dominated by the stillness period that ends it, not by computation. Training the active model, including cross-validation of three candidates, took 43 minutes.</p>
-<div class="table"><div class="tcap">TABLE XIII<br>MEASURED PROCESSING TIMES (LAPTOP CPU)</div><table><thead><tr><th>Operation</th><th>Time</th></tr></thead><tbody><tr><td>Back-end processing per frame (live pipeline)</td><td>1.4&#8202;ms</td></tr><tr><td>Isolated-sign classification per sign (BiGRU)</td><td>3.8&#8202;ms</td></tr><tr><td>Greedy CTC decode of a sentence</td><td>12.3&#8202;ms</td></tr><tr><td>Fused sentence decode, mean / 95th percentile</td><td>37 / 62&#8202;ms</td></tr><tr><td>Training the active isolated model</td><td>43&#8202;min</td></tr></tbody></table></div>
-<h2>VIII. Discussion and Limitations</h2>
-<p><i>Recorded video is not live use.</i> All accuracies above are measured on recorded dataset videos of unseen signers. Live webcam accuracy depends on camera, lighting, distance and on whether the user signs the regional variant present in the training data (Kerala for Amrita SLR, Chennai for INCLUDE). The system therefore includes an evaluation-only recording mode and a live evaluation report with error attribution; these measurements are the next step and are not yet available. The reference page shows the dataset recordings of each sign so that users can see the variant the model was trained on.</p>
-<p><i>Data is the main lever.</i> The INCLUDE expansion improved accuracy on unseen signers more than any modelling change after the ensemble, and the gains concentrated on the signs that received data. Conversely, adding classes with recordings from few signers reduced accuracy on existing signs. With about 14–42 recordings per sign, recordings from more signers, ideally from Karnataka, matter more than larger models.</p>
-<p><i>Evaluation pitfalls.</i> Single training runs of the sentence model vary by about nine points with the seed, INCLUDE's official split reuses signers, and variants chosen on validation folds can perform worse on test signers. The project therefore pre-registers promotion criteria, compares models on identical videos and reports seed variance; two promising candidates were rejected this way.</p>
-<p><i>Vocabulary and grammar.</i> The sentence model is restricted to the 101 corpus sentences, so it is not open-vocabulary sign language translation. Signs performed back to back without lowering the hands can merge into one segment. Non-manual signals are only partly captured by the face-relative hand position.</p>
-<p><i>Kannada and avatar.</i> Kannada wording received an AI-assisted check only. Avatar clips retargeted from 2-D landmarks remain approximate (no elbow tracking, estimated depth, no facial grammar), and the generic 0.2&#8202;s transitions do not model ISL co-articulation; both the Kannada output and the clips require review by native Kannada speakers and ISL users before real use.</p>
-<p><i>Ethics and privacy.</i> Video never leaves the user's computer, evaluation recordings are kept separate from training data, and dataset licences (CC&nbsp;BY&nbsp;4.0) and the privacy of the recorded signers are respected. The system is a communication aid for limited vocabularies and does not replace qualified interpreters.</p>
-<h2>IX. Conclusion and Future Work</h2>
-<p>Kannada SignBridge demonstrates a complete, privacy-preserving ISL–Kannada pipeline on a CPU-only laptop, with signer-independent evaluation and a governance process that prevents regressions from reaching users. Additional real ISL data was the most effective single improvement, raising unseen-signer accuracy from 67.1% to 76.5%, and cleaning the avatar motion removed all mid-sign tracking artefacts. Future work comprises (i) live webcam evaluation sessions with several signers, (ii) recordings from Karnataka signers to cover regional variants and to support a larger recognised vocabulary, (iii) sentence-level training on larger ISL corpora such as iSign [9], (iv) arm and body pose for more accurate avatar motion, and (v) review of the Kannada output and avatar clips by the deaf community.</p>
-<h2 class="unnumbered">Acknowledgment</h2>
-<p>The authors thank the creators of the Amrita SLR, INCLUDE and ISL-CSLTR datasets and the signers who recorded them.</p>
-<h2 class="unnumbered">References</h2>
-<div class="refs"><ol><li><span>[1]</span><span>D. Li, C. Rodriguez, X. Yu, and H. Li, “Word-level deep sign language recognition from video: A new large-scale dataset and methods comparison,” in <i>Proc. IEEE/CVF Winter Conf. Applications of Computer Vision (WACV)</i>, 2020, pp. 1459–1469.</span></li><li><span>[2]</span><span>H. R. Vaezi Joze and O. Koller, “MS-ASL: A large-scale data set and benchmark for understanding American Sign Language,” in <i>Proc. British Machine Vision Conf. (BMVC)</i>, 2019.</span></li><li><span>[3]</span><span>O. Koller, J. Forster, and H. Ney, “Continuous sign language recognition: Towards large vocabulary statistical recognition systems handling multiple signers,” <i>Computer Vision and Image Understanding</i>, vol. 141, pp. 108–125, 2015.</span></li><li><span>[4]</span><span>N. C. Camgoz, S. Hadfield, O. Koller, H. Ney, and R. Bowden, “Neural sign language translation,” in <i>Proc. IEEE/CVF Conf. Computer Vision and Pattern Recognition (CVPR)</i>, 2018, pp. 7784–7793.</span></li><li><span>[5]</span><span>A. Sridhar, R. G. Ganesan, P. Kumar, and M. Khapra, “INCLUDE: A large scale dataset for Indian Sign Language recognition,” in <i>Proc. 28th ACM Int. Conf. Multimedia</i>, 2020, pp. 1366–1375, doi: 10.1145/3394171.3413528.</span></li><li><span>[6]</span><span>R. Elakkiya and B. Natarajan, “ISL-CSLTR: Indian Sign Language dataset for continuous sign language translation and recognition,” Mendeley Data, V1, 2021, doi: 10.17632/kcmpdxky7p.1.</span></li><li><span>[7]</span><span>R. Sasidharan, M. Rashmi, K. S. Nair, N. S. Heera Krishna, K. Muraleedharan, N. G. Bellamkonda, S. M. Rao, S. Avvari, P. B. Prakash, and D. T. Rao, “Amrita SLR – Real time ISL dataset,” Mendeley Data, V1, 2025, doi: 10.17632/dtg9s785v8.1.</span></li><li><span>[8]</span><span>A. Joshi, S. Agrawal, and A. Modi, “ISLTranslate: Dataset for translating Indian Sign Language,” in <i>Findings of the Association for Computational Linguistics: ACL 2023</i>, 2023.</span></li><li><span>[9]</span><span>A. Joshi, R. Mohanty, M. Kanakanti, A. Mangla, S. Choudhary, M. Barbate, and A. Modi, “iSign: A benchmark for Indian Sign Language processing,” in <i>Findings of the Association for Computational Linguistics: ACL 2024</i>, 2024.</span></li><li><span>[10]</span><span>J. Carreira and A. Zisserman, “Quo vadis, action recognition? A new model and the Kinetics dataset,” in <i>Proc. IEEE Conf. Computer Vision and Pattern Recognition (CVPR)</i>, 2017, pp. 6299–6308.</span></li><li><span>[11]</span><span>Z. Cao, G. Hidalgo, T. Simon, S.-E. Wei, and Y. Sheikh, “OpenPose: Realtime multi-person 2D pose estimation using part affinity fields,” <i>IEEE Trans. Pattern Analysis and Machine Intelligence</i>, vol. 43, no. 1, pp. 172–186, 2021.</span></li><li><span>[12]</span><span>C. Lugaresi <i>et al.</i>, “MediaPipe: A framework for building perception pipelines,” arXiv:1906.08172, 2019.</span></li><li><span>[13]</span><span>F. Zhang <i>et al.</i>, “MediaPipe Hands: On-device real-time hand tracking,” arXiv:2006.10214, 2020.</span></li><li><span>[14]</span><span>S. Jiang, B. Sun, L. Wang, Y. Bai, K. Li, and Y. Fu, “Skeleton aware multi-modal sign language recognition,” in <i>Proc. IEEE/CVF Conf. Computer Vision and Pattern Recognition Workshops (CVPRW)</i>, 2021, pp. 3413–3423.</span></li><li><span>[15]</span><span>H. Hu, W. Zhao, W. Zhou, Y. Wang, and H. Li, “SignBERT: Pre-training of hand-model-aware representation for sign language recognition,” in <i>Proc. IEEE/CVF Int. Conf. Computer Vision (ICCV)</i>, 2021, pp. 11087–11096.</span></li><li><span>[16]</span><span>K. Cho <i>et al.</i>, “Learning phrase representations using RNN encoder–decoder for statistical machine translation,” in <i>Proc. Conf. Empirical Methods in Natural Language Processing (EMNLP)</i>, 2014, pp. 1724–1734.</span></li><li><span>[17]</span><span>M. Schuster and K. K. Paliwal, “Bidirectional recurrent neural networks,” <i>IEEE Trans. Signal Processing</i>, vol. 45, no. 11, pp. 2673–2681, 1997.</span></li><li><span>[18]</span><span>A. Graves, S. Fernández, F. Gomez, and J. Schmidhuber, “Connectionist temporal classification: Labelling unsegmented sequence data with recurrent neural networks,” in <i>Proc. 23rd Int. Conf. Machine Learning (ICML)</i>, 2006, pp. 369–376.</span></li><li><span>[19]</span><span>T. Hanke, “HamNoSys – Representing sign language data in language resources and language processing contexts,” in <i>Proc. LREC Workshop on the Representation and Processing of Sign Languages</i>, 2004, pp. 1–6.</span></li><li><span>[20]</span><span>R. Wolfe, J. C. McDonald, T. Hanke, S. Ebling, D. Van Landuyt, F. Picron, V. Krausneker, E. Efthimiou, E. Fotinea, and A. Braffort, “Sign language avatars: A question of representation,” <i>Information</i>, vol. 13, no. 4, p. 206, 2022.</span></li><li><span>[21]</span><span>Q. McNemar, “Note on the sampling error of the difference between correlated proportions or percentages,” <i>Psychometrika</i>, vol. 12, no. 2, pp. 153–157, 1947.</span></li></ol></div>
-</div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEEE Format Research Paper — SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</title>
+  <style>
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman"), local("TimesNewRomanPSMT"), url("/report/fonts/LiberationSerif-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), url("/report/fonts/LiberationSerif-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), url("/report/fonts/LiberationSerif-Italic.ttf") format("truetype");
+      font-weight: 400;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"), url("/report/fonts/LiberationSerif-BoldItalic.ttf") format("truetype");
+      font-weight: 700;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman"), local("TimesNewRomanPSMT"), url("/report/fonts/LiberationSerif-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), url("/report/fonts/LiberationSerif-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), url("/report/fonts/LiberationSerif-Italic.ttf") format("truetype");
+      font-weight: 400;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"), url("/report/fonts/LiberationSerif-BoldItalic.ttf") format("truetype");
+      font-weight: 700;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Kannada";
+      src: url("/report/fonts/NotoSerifKannada-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Kannada";
+      src: url("/report/fonts/NotoSerifKannada-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #1e293b;
+      color: #000000;
+      font-size: 9.5pt;
+      line-height: 1.24;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media print {
+      html, body {
+        background: #ffffff;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .ieee-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+      .ieee-page:last-of-type {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+    }
+
+    /* Top Preview Toolbar */
+    .ieee-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #334155;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      font-size: 13px;
+    }
+    .ieee-toolbar a, .ieee-toolbar button {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .ieee-toolbar a.secondary, .ieee-toolbar button.secondary {
+      background: #334155;
+    }
+
+    /* Exact A4 IEEE Two-Column Page */
+    .ieee-page {
+      width: 210mm;
+      height: 297mm;
+      padding: 0.52in 0.55in 0.48in 0.55in;
+      margin: 20px auto;
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* Banner on Page 1 & Running Header on Pages 2-8 */
+    .ieee-top-banner, .ieee-running-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 6.2pt;
+      font-style: italic;
+      color: #1e293b;
+      border-bottom: 0.8px solid #000000;
+      padding-bottom: 2.5pt;
+      margin-bottom: 6pt;
+      flex-shrink: 0;
+      letter-spacing: 0.1px;
+    }
+    .ieee-running-header {
+      font-size: 5.5pt;
+    }
+    .ieee-running-header > span:first-child {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+    }
+    .ieee-running-header > span:last-child {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Title & 4-Author IEEE Header Block */
+    .ieee-title-area {
+      text-align: center;
+      margin-bottom: 8pt;
+      flex-shrink: 0;
+    }
+    .ieee-paper-title {
+      font-size: 15.5pt;
+      font-weight: 700;
+      line-height: 1.18;
+      margin: 2pt 0 8pt 0;
+      letter-spacing: 0.15px;
+      color: #000000;
+    }
+    .ieee-authors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6pt;
+      border-bottom: 0.6px solid #cbd5e1;
+      padding-bottom: 6pt;
+    }
+    .ieee-author-card {
+      text-align: center;
+      line-height: 1.22;
+    }
+    .ieee-author-name {
+      font-size: 10pt;
+      font-weight: 700;
+      margin-bottom: 1.5pt;
+    }
+    .ieee-author-affil {
+      font-size: 8pt;
+      font-style: italic;
+      color: #1e293b;
+    }
+    .ieee-author-id {
+      font-size: 8pt;
+      font-weight: 700;
+      margin-top: 1pt;
+    }
+
+    /* Two-Column Balanced Grid */
+    .ieee-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 0.20in;
+      flex: 1 1 auto;
+      min-height: 0;
+      align-content: start;
+      overflow: hidden;
+    }
+    .ieee-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+
+    /* Abstract & Index Terms (IEEE 9pt Bold Italic Lead-In) */
+    .ieee-abstract {
+      font-size: 8.6pt;
+      line-height: 1.22;
+      text-align: justify;
+      text-indent: 0 !important;
+      margin: 0 0 5pt 0;
+    }
+    .ieee-keywords {
+      font-size: 8.5pt;
+      line-height: 1.20;
+      text-align: justify;
+      text-indent: 0 !important;
+      margin: 0 0 6pt 0;
+    }
+
+    /* IEEE Section (Roman Numeral Centered Small-Caps) & Subsection (Italic Lettered) */
+    .ieee-sec {
+      font-size: 9.8pt;
+      font-weight: 700;
+      font-variant: small-caps;
+      text-align: center;
+      margin: 6pt 0 3pt 0;
+      letter-spacing: 0.3px;
+      color: #000000;
+    }
+    .ieee-subsec {
+      font-size: 9.2pt;
+      font-weight: 700;
+      font-style: italic;
+      text-align: left;
+      margin: 4.5pt 0 2pt 0;
+      color: #000000;
+    }
+
+    p {
+      font-size: 9.1pt;
+      line-height: 1.24;
+      text-align: justify;
+      text-indent: 1em;
+      margin: 0 0 3.5pt 0;
+    }
+
+    .ieee-list {
+      font-size: 8.9pt;
+      line-height: 1.22;
+      text-align: justify;
+      margin: 1.5pt 0 4pt 0;
+      padding-left: 13pt;
+    }
+    .ieee-list li {
+      margin-bottom: 2pt;
+    }
+
+    code {
+      font-style: normal;
+      font-size: inherit;
+    }
+
+    .ieee-math {
+      font-style: italic;
+    }
+
+    /* IEEE Equations */
+    .ieee-eq {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.2pt 6pt;
+      margin: 2.5pt 0;
+      background: #f8fafc;
+      border-left: 2px solid #0f172a;
+      font-size: 8.8pt;
+    }
+    .ieee-eq-num {
+      font-weight: 700;
+      margin-left: 8pt;
+      white-space: nowrap;
+    }
+
+    /* IEEE Tables (Caption Above, Roman Numeral, Small Caps, Top/Bottom Rules) */
+    .ieee-table-wrap {
+      margin: 4.5pt 0;
+      width: 100%;
+    }
+    .ieee-table-cap {
+      font-size: 7.8pt;
+      font-weight: 700;
+      font-variant: small-caps;
+      text-align: center;
+      line-height: 1.18;
+      margin-bottom: 2.5pt;
+      letter-spacing: 0.2px;
+    }
+    .ieee-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.8pt;
+      line-height: 1.18;
+      border-top: 1.2px solid #000000;
+      border-bottom: 1.2px solid #000000;
+    }
+    .ieee-table th {
+      border-bottom: 0.8px solid #000000;
+      padding: 2pt 3pt;
+      text-align: left;
+      font-weight: 700;
+      background: #f8fafc;
+    }
+    .ieee-table td {
+      padding: 1.8pt 3pt;
+      border-bottom: 0.4px solid #cbd5e1;
+      text-align: left;
+      vertical-align: top;
+    }
+    .ieee-table th.r, .ieee-table td.r {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .ieee-row-bold td {
+      font-weight: 700;
+      background: #f1f5f9;
+      border-top: 0.6px solid #000000;
+    }
+    .ieee-table-foot {
+      font-size: 7.2pt;
+      font-style: italic;
+      margin-top: 1.5pt;
+    }
+
+    /* IEEE Figures */
+    .ieee-fig-box {
+      margin: 4pt 0;
+      padding: 3pt;
+      border: 0.6px solid #cbd5e1;
+      background: #ffffff;
+      text-align: center;
+    }
+    .ieee-fig-box img {
+      width: 100%;
+      max-height: 138px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+    .ieee-fig-wide {
+      margin: 0 0 6pt 0;
+      padding: 3pt 6pt;
+      border: 0.6px solid #cbd5e1;
+      background: #ffffff;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .ieee-fig-cap {
+      font-size: 7.8pt;
+      line-height: 1.18;
+      text-align: justify;
+      margin-top: 2.5pt;
+    }
+
+    /* IEEE Algorithms */
+    .ieee-alg-box {
+      border-top: 1.2px solid #000000;
+      border-bottom: 1.2px solid #000000;
+      margin: 4pt 0;
+      background: #f8fafc;
+      font-size: 7.8pt;
+      line-height: 1.20;
+    }
+    .ieee-alg-title {
+      padding: 2pt 4pt;
+      border-bottom: 0.6px solid #000000;
+      background: #f1f5f9;
+    }
+    .ieee-alg-body {
+      padding: 2.5pt 5pt;
+    }
+
+    /* IEEE References */
+    .ieee-refs {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 7.6pt;
+      line-height: 1.17;
+    }
+    .ieee-refs li {
+      display: grid;
+      grid-template-columns: 18pt 1fr;
+      margin-bottom: 2.2pt;
+      text-align: justify;
+    }
+    .ieee-refs li > span:first-child {
+      font-weight: 700;
+    }
+
+    /* Page Footer */
+    .ieee-page-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 6.5pt;
+      border-top: 0.6px solid #64748b;
+      padding-top: 2.5pt;
+      margin-top: 4pt;
+      color: #1e293b;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="ieee-toolbar no-print">
+    <div>
+      <strong>IEEE Two-Column Research Paper — SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</strong>
+      <span style="margin-left:10px; color:#cbd5e1;">8 Pages · IEEEtran Standard · Times New Roman · 12 Tables · 7 Figures · 25 References</span>
+    </div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <a href="/api/paper/download-pdf" download="SILENT_BRIDGE_IEEE_Research_Paper.pdf">⬇ Download IEEE Paper PDF</a>
+      <a class="secondary" href="/api/paper/download-tex" download="SILENT_BRIDGE_IEEE_Paper.tex">⬇ Download LaTeX (.tex)</a>
+      <button class="secondary" onclick="window.print()">🖨 Print / Save as PDF</button>
+    </div>
+  </div>
+
+  
+  <section class="ieee-page" data-page="1">
+    <div class="ieee-top-banner">
+      <span>INTERNATIONAL JOURNAL OF DRUG DELIVERY TECHNOLOGIES (IJDDT) · ISSN: 0975-4415 · SCOPUS INDEXED Q3 JOURNAL · VOL. 16, NO. 7, 2026</span>
+      <span>IEEE TWO-COLUMN RESEARCH MANUSCRIPT</span>
+    </div>
+
+    <div class="ieee-title-area">
+      <h1 class="ieee-paper-title report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</h1>
+
+      <div class="ieee-authors-grid">
+        <div class="ieee-author-card">
+          <div class="ieee-author-name">Kiran M K</div>
+          <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
+          <div class="ieee-author-affil">B.M.S. College of Engineering</div>
+          <div class="ieee-author-affil">Bangalore – 560019, India</div>
+          <div class="ieee-author-id">USN: 1BM23CB068</div>
+        </div>
+        <div class="ieee-author-card">
+          <div class="ieee-author-name">Manoj G U</div>
+          <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
+          <div class="ieee-author-affil">B.M.S. College of Engineering</div>
+          <div class="ieee-author-affil">Bangalore – 560019, India</div>
+          <div class="ieee-author-id">USN: 1BM24CB401</div>
+        </div>
+        <div class="ieee-author-card">
+          <div class="ieee-author-name">H S Thanush</div>
+          <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
+          <div class="ieee-author-affil">B.M.S. College of Engineering</div>
+          <div class="ieee-author-affil">Bangalore – 560019, India</div>
+          <div class="ieee-author-id">USN: 1BM23CB066</div>
+        </div>
+        <div class="ieee-author-card">
+          <div class="ieee-author-name">Tejaswini K</div>
+          <div class="ieee-author-affil">Assistant Professor &amp; Project Guide</div>
+          <div class="ieee-author-affil">Dept. of Computer Science &amp; Business Systems</div>
+          <div class="ieee-author-affil">B.M.S. College of Engineering</div>
+          <div class="ieee-author-id">Bangalore – 560019, India</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <p class="ieee-abstract">
+          <strong><em>Abstract</em>—Deaf and hard-of-hearing citizens in Karnataka communicate primarily through Indian Sign Language (ISL), a complete visual-spatial natural language, whereas public service counters, hospitals, banks, and schools operate in spoken and written Kannada. Almost no assistive software bridges ISL and Kannada bidirectionally on commodity hardware without privacy-invasive video uploads. This paper presents <em>Silent Bridge</em>, a real-time, privacy-preserving edge-AI assistive platform that (i) recognizes isolated ISL signs and continuous ISL sentences from a standard webcam and outputs grammatical Kannada text and speech, (ii) supports user-extensible few-shot custom sign enrollment in the browser via ONNX WebAssembly, and (iii) translates Kannada text into continuous ISL signing on a procedural 3D avatar. Hand and facial landmarks (147-D schema <code>hands-face-v2</code>) are extracted entirely in the browser via MediaPipe Tasks (v0.10.21) so raw camera frames never leave the client device. Trained exclusively on checksum-verified public ISL corpora (Amrita SLR, INCLUDE, and ISL-CSLTR) and evaluated strictly on unseen signers and unseen recording rounds, a Bidirectional GRU with 3-view Test-Time Augmentation (TTA) and selective HTTP-range INCLUDE expansion improved isolated-sign accuracy on 268 identical held-out videos from 59.7% (logistic regression baseline) to 79.9% (81.5% across all 314 held-out test videos, macro-F1 0.800), and on 213 videos of two completely unseen signers from 54.5% to 76.5% (exact paired McNemar <em>p</em> = 0.003). For continuous signing, a log-likelihood fusion of a 2-layer BiGRU-CTC decoder and a sentence classifier achieves 29.2% exact-sentence accuracy (GER 0.685) across 101 corpus sentences on unseen rounds. In the reverse direction, a multi-tier Kannada Subject–Object–Verb (SOV) grammar engine and an analytic two-bone Inverse Kinematics (IK) 3D avatar pipeline with Gaussian trajectory smoothing eliminated all 367 mid-sign arm drops across 144 dataset-derived clips and reduced wrist acceleration jitter by 36.0%.</strong>
+        </p>
+        <p class="ieee-keywords">
+          <strong><em>Index Terms</em>—Indian Sign Language (ISL), Kannada translation, MediaPipe landmarks, Bidirectional GRU (BiGRU), Connectionist Temporal Classification (CTC), ONNX WebAssembly, Inverse Kinematics (IK) signing avatar, assistive technology.</strong>
+        </p>
+
+        <h2 class="ieee-sec">I. INTRODUCTION</h2>
+        <p>
+          Sign languages are independent natural languages possessing their own phonological, morphological, and syntactic structures; they are not word-for-word manual encodings of spoken languages [1], [2]. In India, over 63 million individuals experience significant auditory impairment according to World Health Organization estimates, and in Karnataka more than 300,000 deaf and hard-of-hearing citizens rely on Indian Sign Language (ISL) for daily communication. However, India has fewer than 400 certified ISL interpreters nationwide. When a deaf citizen visits a Primary Health Centre (PHC), a banking counter, a municipal office, or a classroom in Karnataka, a severe two-way linguistic barrier arises: the deaf citizen signs in ISL (which uses topic-comment spatial syntax, two-handed symmetric/asymmetric articulations, and facial Non-Manual Markers), while the hearing counter officer speaks and reads Kannada (a morphologically rich Dravidian language with Subject–Object–Verb constituent order).
+        </p>
+        <p>
+          Existing automatic Sign Language Recognition (SLR) literature focuses overwhelmingly on American Sign Language (WLASL [1], MS-ASL [2]) and German Sign Language (RWTH-PHOENIX-Weather [3], [4]), mapping visual inputs only to English or German text. Furthermore, deep 3D convolutional video networks such as I3D [10] require dedicated GPUs and transmit raw camera video to cloud servers—violating medical and financial privacy under India’s Digital Personal Data Protection (DPDP) Act 2023.
+        </p>
+      </div>
+
+      <div class="ieee-col">
+        <h3 class="ieee-subsec">A. Problem Formulation</h3>
+        <p>
+          Given a commodity CPU-only laptop or public-service kiosk equipped with an ordinary 30 fps webcam (<span class="ieee-math">V = {I<sub>1</sub>, …, I<sub>N</sub>}</span>), the engineering problem addressed by <em>Silent Bridge</em> comprises four coupled tasks:
+        </p>
+        <ol class="ieee-list">
+          <li><strong>Privacy-Preserving Feature Extraction:</strong> Map each RGB frame <span class="ieee-math">I<sub>t</sub></span> in-browser to a scale-, translation-, and orientation-normalized landmark vector <span class="ieee-math"><strong>f</strong><sub>t</sub> ∈ ℝ<sup>147</sup></span> such that zero pixel data leaves the client device.</li>
+          <li><strong>Signer-Independent Isolated &amp; Continuous Recognition:</strong> Segment active signing intervals <span class="ieee-math">[t<sub>s</sub>, t<sub>e</sub>]</span> from continuous live motion, classify isolated signs across <span class="ieee-math">C = 64</span> active classes (and 144 lexicon classes) with calibrated out-of-distribution (OOD) rejection threshold <span class="ieee-math">τ<sup>*</sup></span>, and decode unsegmented multi-sign streams over 101 continuous sentences (168 glosses).</li>
+          <li><strong>Grammatical ISL-to-Kannada Meaning Translation:</strong> Transform recognized ISL gloss sequences <span class="ieee-math"><strong>g</strong> = (g<sub>1</sub>, …, g<sub>k</sub>)</span> into natural Unicode NFC Kannada sentences and synthesized <code>kn-IN</code> speech.</li>
+          <li><strong>Reverse Kannada-to-ISL 3D Avatar Synthesis:</strong> Parse Kannada text or speech into an ISL-ordered gloss plan with Non-Manual Markers (NMMs) and drive a 60 fps Three.js humanoid avatar with analytic two-bone Inverse Kinematics (IK) and zero mid-sign arm drops.</li>
+        </ol>
+
+        <h3 class="ieee-subsec">B. Key Technical Contributions</h3>
+        <ul class="ieee-list">
+          <li><strong>End-to-End Bidirectional Edge Platform:</strong> A complete ISL <span class="ieee-math">↔</span> Kannada system executing MediaPipe Tasks v0.10.21 and ONNX Runtime WebAssembly in-browser, backed by a deterministic FastAPI verification and training engine.</li>
+          <li><strong>147-D Face-Relative Geometric Schema (<code>hands-face-v2</code>):</strong> Combines palm-scaled 3D hand coordinates, image coordinates, face-relative vectors (with upper-center high-resolution face-crop fallback), orthonormal palm-normal vectors, and temporal velocity/path features (<span class="ieee-math">D = 3,668</span> for <span class="ieee-math">T = 24</span>).</li>
+          <li><strong>Selective HTTP-Range Archive Acquisition:</strong> A bandwidth-frugal downloader that reads remote ZIP central directories via HTTP Range requests and fetches only target class videos with CRC-32 verification (downloading 5.96 GB instead of 44.7 GB of INCLUDE archives), boosting unseen-signer accuracy by +9.4 percentage points (<span class="ieee-math">p = 0.003</span>).</li>
+          <li><strong>Fused BiGRU-CTC + Sentence Classifier Decoder:</strong> Combines frame-level CTC sequence log-likelihood with a 32-step sentence classifier (<span class="ieee-math">λ = 1.0</span>), improving unseen-round sentence accuracy from 18.2% (greedy CTC) to 29.2% (GER 0.685).</li>
+          <li><strong>Statistical Promotion Gate &amp; Negative-Result Governance:</strong> Enforces paired McNemar significance testing and non-regression gates on identical held-out videos, rejecting two over-parameterized or high-variance candidates (including a 144-class model that degraded unseen-signer accuracy from 76.5% to 70.9%).</li>
+          <li><strong>Cleaned Dataset-Retargeted 3D Avatar with Analytic IK:</strong> Eliminates 100% of mid-sign arm drops (367 <span class="ieee-math">→</span> 0) across 144 real ISL clips and reduces wrist acceleration jitter by 36.0% (4.42 <span class="ieee-math">→</span> 2.83 <span class="ieee-math"><span style="font-style:normal;">cm/frame</span><sup>2</sup></span>).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>B.M.S. College of Engineering · Dept. of Computer Science and Business Systems (CSBS) · Guide: Tejaswini K · HoD: Dr. R Ashok Kumar · Principal: Dr. Beemsha Arya</span>
+      <span>Page 1 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="2">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <h2 class="ieee-sec" style="margin-top:0;">II. RELATED WORK AND COMPARATIVE ANALYSIS</h2>
+        <h3 class="ieee-subsec">A. Sign Language Benchmarks and ISL Corpora</h3>
+        <p>
+          Large-scale isolated sign benchmarks such as WLASL (2,000 ASL words) [1] and MS-ASL (1,000 ASL words) [2], along with continuous corpora such as RWTH-PHOENIX-Weather [3], have catalyzed deep learning research for Western sign languages. For Indian Sign Language, Sridhar <em>et al.</em> [5] introduced INCLUDE (4,287 videos across 263 isolated signs recorded in Chennai), Elakkiya and Natarajan [6] released ISL-CSLTR (687 sentence videos across 101 sentences and 168 glosses), and Sasidharan <em>et al.</em> [7] published the Amrita SLR dataset (isolated signs across 7 signer groups in Kerala). More recently, Joshi <em>et al.</em> introduced ISLTranslate [8] and iSign [9], providing large parallel video-to-English corpora without frame-level gloss annotations.
+        </p>
+
+        <h3 class="ieee-subsec">B. Appearance-Based vs. Landmark-Based Recognition</h3>
+        <p>
+          Appearance-based 3D CNNs (e.g., I3D [10]) and video Vision Transformers process raw RGB tensors directly, requiring gigabytes of GPU memory and exhibiting high sensitivity to background clutter, clothing, and lighting. Conversely, pose-based pipelines extract skeletal keypoints via OpenPose [11] or MediaPipe Hands/Face [12], [13], compressing each frame by over <span class="ieee-math">10<sup>3</sup>×</span>. Skeleton-aware architectures such as SAM-SLR [14] and SignBERT [15] demonstrate strong accuracy, while recurrent Gated Recurrent Units (GRUs) [16] and Bidirectional RNNs [17] trained with Connectionist Temporal Classification (CTC) [18] enable CPU-real-time sequence modeling on modest dataset sizes.
+        </p>
+
+        <h3 class="ieee-subsec">C. Signing Avatars and Identified Research Gaps</h3>
+        <p>
+          Traditional signing avatars synthesize motion from symbolic notation systems such as HamNoSys [19], which Wolfe <em>et al.</em> [20] note often appear robotic due to rigid piecewise-linear interpolation and missing Non-Manual Markers. Table I summarizes the validated ISL datasets used in this study, and Table II contrasts <em>Silent Bridge</em> against representative prior systems. Three critical gaps motivated our architecture: (i) the absence of a bidirectional ISL <span class="ieee-math">↔</span> Kannada system, (ii) widespread signer leakage in random 80/20 evaluation splits in prior ISL papers, and (iii) severe mid-sign arm drops when retargeting raw 2D/3D MediaPipe landmarks to humanoid avatars.
+        </p>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE I<br/>PUBLIC ISL CORPORA USED (AFTER CHECKSUM &amp; INTEGRITY VALIDATION)</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Dataset &amp; License</th>
+                <th>Task Scope</th>
+                <th>Validated Content Used</th>
+                <th class="r">Videos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Amrita SLR [7] (CC BY 4.0)</td>
+                <td>Isolated signs</td>
+                <td>49 signs, 7 signer groups (2 held-out)</td>
+                <td class="r">933</td>
+              </tr>
+              <tr>
+                <td>INCLUDE [5] (CC BY 4.0)</td>
+                <td>Isolated signs</td>
+                <td>42 active classes (122 total), official split</td>
+                <td class="r">816</td>
+              </tr>
+              <tr>
+                <td>ISL-CSLTR [6] (CC BY 4.0)</td>
+                <td>Sentences</td>
+                <td>101 sentences, 168 glosses, 5 rounds</td>
+                <td class="r">678</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>Combined Active Corpus</td>
+                <td>Bidirectional</td>
+                <td>64 active / 144 lexicon signs + 101 sents</td>
+                <td class="r">2,427</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ieee-col">
+        <div class="ieee-table-wrap" style="margin-top:0;">
+          <div class="ieee-table-cap">TABLE II<br/>COMPARATIVE ANALYSIS OF EXISTING SLR &amp; AVATAR SYSTEMS VS. SILENT BRIDGE</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>System / Study</th>
+                <th>Modality</th>
+                <th>Split Protocol</th>
+                <th>Kannada</th>
+                <th>3D Avatar</th>
+                <th class="r">Metric</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>WLASL I3D [1]</td>
+                <td>RGB 3D-CNN</td>
+                <td>Official ASL</td>
+                <td>No</td>
+                <td>No</td>
+                <td class="r">62.6% Top-1</td>
+              </tr>
+              <tr>
+                <td>INCLUDE Baseline [5]</td>
+                <td>Pose + BiLSTM</td>
+                <td>Official ISL</td>
+                <td>No</td>
+                <td>No</td>
+                <td class="r">85.6% (263 c)</td>
+              </tr>
+              <tr>
+                <td>ISL-CSLTR [6]</td>
+                <td>CNN-LSTM</td>
+                <td>Random 80/20</td>
+                <td>No</td>
+                <td>No</td>
+                <td class="r">24.3 BLEU</td>
+              </tr>
+              <tr>
+                <td>Amrita SLR [7]</td>
+                <td>MediaPipe+MLP</td>
+                <td>Random split</td>
+                <td>No</td>
+                <td>No</td>
+                <td class="r">88.4% (seen)</td>
+              </tr>
+              <tr>
+                <td>HamNoSys Avatar [19]</td>
+                <td>Rule notation</td>
+                <td>N/A</td>
+                <td>No</td>
+                <td>Keyframed</td>
+                <td class="r">Qualitative</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>Silent Bridge (Ours)</td>
+                <td>147-D Edge BiGRU</td>
+                <td>Unseen Signers</td>
+                <td>Yes (SOV)</td>
+                <td>IK + NMM</td>
+                <td class="r">81.5% / 76.5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="ieee-sec">III. DATASETS, SELECTIVE ARCHIVE PROTOCOL AND DATA INTEGRITY</h2>
+        <h3 class="ieee-subsec">A. Signer-Independent Isolated Sign Protocol</h3>
+        <p>
+          The active isolated-sign model is trained on 1,749 validated videos across 64 ISL signs (49 from Amrita SLR, 42 from INCLUDE, with 27 overlapping signs present in both datasets). Fig. 2 illustrates the per-sign valid recording distribution (minimum 17, median 21, maximum 45 recordings per sign). Because Amrita SLR does not provide explicit signer IDs, signer identities were reconstructed from camera metadata and file-naming conventions into 7 disjoint signer groups. All recordings of two complete Amrita signers (213 videos) plus INCLUDE’s official test split (55 initial, 101 expanded videos) form the strictly held-out test set (268 initial, 314 expanded videos). Model architecture and hyperparameters are selected exclusively via 3-fold signer-grouped cross-validation on the development set.
+        </p>
+
+        <div class="ieee-fig-box">
+          <img src="/report/fig_datadist.png" alt="Fig. 2. Valid training recordings per sign" />
+          <div class="ieee-fig-cap">Fig. 2. Valid training recordings per sign for the active 64-sign model by source dataset (Amrita SLR vs. INCLUDE).</div>
+        </div>
+
+        <h3 class="ieee-subsec">B. Selective HTTP-Range INCLUDE Archive Downloader</h3>
+        <p>
+          The INCLUDE corpus is hosted on Zenodo as monolithic multi-gigabyte category ZIP archives totaling 56.8 GB, whereas only specific vocabulary classes were required. Exploiting the ZIP specification—which stores the End-of-Central-Directory (EOCD) record in the final 64 KB of the archive—we engineered an HTTP Range-request downloader (Algorithm 1) that parses remote central directories, fetches only matching member byte ranges, and validates every extracted video against its header CRC-32 checksum. As detailed in Table IV (Page 3), this reduced network transfer from 44.7 GB to 5.96 GB (86.7% bandwidth savings) with zero corrupted files.
+        </p>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 2 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="3">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-fig-wide">
+      <img src="/report/fig_architecture.png" alt="Fig. 1. Silent Bridge End-to-End Bidirectional Architecture" style="max-height:175px; width:100%; object-fit:contain;" />
+      <div class="ieee-fig-cap">Fig. 1. Silent Bridge end-to-end bidirectional architecture. Raw camera frames remain strictly inside the browser; only 147-D MediaPipe landmark vectors cross the privacy boundary. Top path: ISL video to Kannada text and speech. Bottom path: Kannada text/voice to continuous 3D avatar signing.</div>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <div class="ieee-alg-box">
+          <div class="ieee-alg-title"><strong>Algorithm 1:</strong> Selective HTTP-Range ZIP Archive Member Acquisition</div>
+          <div class="ieee-alg-body">
+            <div><strong>Require:</strong> Remote archive URLs <span class="ieee-math">U</span>, target vocabulary class paths <span class="ieee-math">W</span></div>
+            <div><strong>Ensure:</strong> Checksum-verified local video files on disk</div>
+            <div>1: <strong>for each</strong> archive <span class="ieee-math">u ∈ U</span> containing classes in <span class="ieee-math">W</span> <strong>do</strong></div>
+            <div>2: &nbsp;&nbsp;Fetch final 65,536 bytes of <span class="ieee-math">u</span> via HTTP <code>Range: bytes=-65536</code></div>
+            <div>3: &nbsp;&nbsp;Locate EOCD signature <code>0x06054b50</code> and parse Central Directory offset</div>
+            <div>4: &nbsp;&nbsp;Fetch Central Directory byte range and enumerate member headers <span class="ieee-math">e ∈ u</span></div>
+            <div>5: &nbsp;&nbsp;<strong>for each</strong> member <span class="ieee-math">e</span> whose normalized class folder <span class="ieee-math">∈ W</span> <strong>do</strong></div>
+            <div>6: &nbsp;&nbsp;&nbsp;&nbsp;<strong>if</strong> target file already exists on disk with matching size <strong>then continue</strong></div>
+            <div>7: &nbsp;&nbsp;&nbsp;&nbsp;Fetch local header + compressed payload bytes of <span class="ieee-math">e</span> via HTTP Range</div>
+            <div>8: &nbsp;&nbsp;&nbsp;&nbsp;Decompress stream and compute <span class="ieee-math"><span style="font-style:normal;">CRC32</span>(<span style="font-style:normal;">payload</span>)</span></div>
+            <div>9: &nbsp;&nbsp;&nbsp;&nbsp;<strong>if</strong> <span class="ieee-math"><span style="font-style:normal;">CRC32</span> ≠ e.<span style="font-style:normal;">crc32</span></span> <strong>or</strong> <span class="ieee-math"><span style="font-style:normal;">len</span> ≠ e.<span style="font-style:normal;">uncompressed<sub>size</sub></span></span> <strong>then</strong></div>
+            <div>10: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Abort member write and log integrity failure</div>
+            <div>11: &nbsp;&nbsp;&nbsp;&nbsp;<strong>else</strong> write atomically via <code>.part</code> temporary file rename</div>
+            <div>12: &nbsp;&nbsp;<strong>end for</strong></div>
+            <div>13: <strong>end for</strong></div>
+          </div>
+        </div>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE IV<br/>SELECTIVE HTTP-RANGE INCLUDE DOWNLOADS &amp; BANDWIDTH SAVINGS</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Acquisition Phase &amp; Purpose</th>
+                <th class="r">Videos</th>
+                <th class="r">Fetched</th>
+                <th class="r">Full ZIPs</th>
+                <th class="r">Saved</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Phase 1: Expand 24 core signs + 1</td>
+                <td class="r">462</td>
+                <td class="r">5.96 GB</td>
+                <td class="r">44.7 GB</td>
+                <td class="r">86.7%</td>
+              </tr>
+              <tr>
+                <td>Phase 2: 79 new signs + <em>home</em></td>
+                <td class="r">1,430</td>
+                <td class="r">18.59 GB</td>
+                <td class="r">48.7 GB</td>
+                <td class="r">61.8%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="ieee-subsec">C. Continuous Sentence Split and MD5 Integrity Audit</h3>
+        <p>
+          For continuous sentence recognition on ISL-CSLTR [6], recording rounds 4 and 5 form the held-out test set (154 videos), round 2 forms the validation set (73 videos), and rounds 1 and 3 form the training set (265 listed videos). A cryptographic MD5 audit of all 687 video files on disk (Table V) uncovered 5 duplicate byte-identical file groups, 4 of which carried conflicting sentence labels across folders; all 9 conflicted files were quarantined and excluded from training.
+        </p>
+      </div>
+
+      <div class="ieee-col">
+        <div class="ieee-table-wrap" style="margin-top:0;">
+          <div class="ieee-table-cap">TABLE V<br/>ISL-CSLTR CORPUS CRYPTOGRAPHIC MD5 INTEGRITY AUDIT</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Audit Verification Metric</th>
+                <th class="r">Video Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total raw video files discovered on disk</td>
+                <td class="r">687</td>
+              </tr>
+              <tr>
+                <td>Videos listed in official corpus metadata spreadsheet</td>
+                <td class="r">492</td>
+              </tr>
+              <tr>
+                <td>Unlisted videos with verified folder-name convention</td>
+                <td class="r">195</td>
+              </tr>
+              <tr>
+                <td>Folder-name label agreement on listed videos</td>
+                <td class="r">492 / 492 (100%)</td>
+              </tr>
+              <tr>
+                <td>MD5 byte-duplicate groups / conflicting sentence labels</td>
+                <td class="r">5 groups / 4 conflicts</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>Corrupted/conflicted files excluded from training</td>
+                <td class="r">9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="ieee-sec">IV. END-TO-END BIDIRECTIONAL SYSTEM ARCHITECTURE</h2>
+        <p>
+          As depicted in Fig. 1, <em>Silent Bridge</em> is architected around a strict client-side privacy boundary:
+        </p>
+        <p>
+          <strong>1) Forward Path (ISL Video <span class="ieee-math">→</span> Kannada Text &amp; Speech):</strong> The React 18 / TypeScript client captures 30 fps webcam video and executes MediaPipe Hand Landmarker (2 hands <span class="ieee-math">×</span> 21 3D joints) and Face Landmarker (478 3D mesh points) via WebAssembly/WebGL. Only the extracted 147-D feature vector <span class="ieee-math"><strong>f</strong><sub>t</sub></span> is processed by the motion segmenter and classified either in-browser via <code>onnxruntime-web</code> (<code>sign_model.onnx</code>) with few-shot cosine prototype fusion or streamed over WebSocket to the Python FastAPI backend for BiGRU-CTC continuous decoding. Accepted glosses are translated via a 187-entry phrase meaning table and SOV grammar rules into Unicode NFC Kannada text and spoken aloud via the Web Speech API (<code>kn-IN</code>) with a server-side <code>gTTS</code> fallback.
+        </p>
+        <p>
+          <strong>2) Reverse Path (Kannada Text/Speech <span class="ieee-math">→</span> 3D ISL Avatar):</strong> Kannada input is normalized to Unicode NFC, stripped of agglutinative case suffixes (<em>-alli, -inda, -ge, -annu</em>), matched by longest-phrase priority, reordered into ISL Topic–Comment–Verb-Final constituent order, annotated with Non-Manual Markers (interrogative brow raise, wh-furrow, negation headshake), and rendered at 60 fps on a Three.js humanoid rig using dataset-retargeted keyframes and analytic two-bone Inverse Kinematics.
+        </p>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 3 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="4">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <h2 class="ieee-sec" style="margin-top:0;">V. MATHEMATICAL FORMULATION AND METHODOLOGY</h2>
+        <h3 class="ieee-subsec">A. 147-D Geometric Landmark Schema (<code>hands-face-v2</code>)</h3>
+        <p>
+          Let <span class="ieee-math"><strong>p</strong><sub>i</sub> = (x<sub>i</sub>, y<sub>i</sub>, z<sub>i</sub>) ∈ ℝ<sup>3</sup></span> denote the raw MediaPipe coordinates of hand joint <span class="ieee-math">i ∈ {0, …, 20}</span>, where <span class="ieee-math"><strong>p</strong><sub>0</sub></span> is the wrist root and <span class="ieee-math"><strong>p</strong><sub>9</sub></span> is the middle-finger MCP joint. To achieve invariance to camera distance and hand size, we normalize all 20 non-wrist joints by the apparent palm scale <span class="ieee-math">s<sub><span style="font-style:normal;">palm</span></sub> = <span style="font-style:normal;">max</span>(‖<strong>p</strong><sub>9</sub> - <strong>p</strong><sub>0</sub>‖<sub>2</sub>, 10<sup>-3</sup>)</span>:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><strong>p</strong>&#771;<sub>i</sub> = (<strong>p</strong><sub>i</sub> - <strong>p</strong><sub>0</sub>)/(s<sub><span style="font-style:normal;">palm</span></sub>),  &nbsp;&nbsp;  i ∈ {1, …, 20} ⇒ 60<span style="font-style:normal;"> dims/hand.</span></span></span>
+          <span class="ieee-eq-num">(1)</span>
+        </div>
+        <p>
+          Many ISL signs are distinguished solely by hand height relative to the head (e.g., <em>MOTHER</em> vs. <em>FATHER</em>, or <em>EAT</em> vs. <em>NOSE</em>). Given the face bounding box center <span class="ieee-math"><strong>c</strong><sub><span style="font-style:normal;">face</span></sub> = (c<sub>x</sub>, c<sub>y</sub>)</span> and dimensions <span class="ieee-math">(w<sub><span style="font-style:normal;">face</span></sub>, h<sub><span style="font-style:normal;">face</span></sub>)</span>, the face-relative wrist vector <span class="ieee-math"><strong>r</strong><sub><span style="font-style:normal;">face</span></sub> ∈ ℝ<sup>3</sup></span> is:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><strong>r</strong><sub><span style="font-style:normal;">face</span></sub> = ≤ft((p<sub>0,x</sub> - c<sub>x</sub>)/(<span style="font-style:normal;">max</span>(w<sub><span style="font-style:normal;">face</span></sub>, 10<sup>-3</sup>)),  (p<sub>0,y</sub> - c<sub>y</sub>)/(<span style="font-style:normal;">max</span>(h<sub><span style="font-style:normal;">face</span></sub>, 10<sup>-3</sup>)),  p<sub>0,z</sub> - c<sub>z</sub>).</span></span>
+          <span class="ieee-eq-num">(2)</span>
+        </div>
+        <p>
+          Three-dimensional hand rotation is captured via the unit finger-axis vector <span class="ieee-math"><strong>d</strong>&#770;</span> and unit palm-normal vector <span class="ieee-math"><strong>n</strong>&#770;</span>:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><strong>d</strong>&#770; = (<strong>p</strong><sub>9</sub> - <strong>p</strong><sub>0</sub>)/(‖<strong>p</strong><sub>9</sub> - <strong>p</strong><sub>0</sub>‖<sub>2</sub>),  &nbsp;&nbsp;  <strong>n</strong>&#770; = ((<strong>p</strong><sub>5</sub> - <strong>p</strong><sub>0</sub>) × (<strong>p</strong><sub>17</sub> - <strong>p</strong><sub>0</sub>))/(‖(<strong>p</strong><sub>5</sub> - <strong>p</strong><sub>0</sub>) × (<strong>p</strong><sub>17</sub> - <strong>p</strong><sub>0</sub>)‖<sub>2</sub>).</span></span>
+          <span class="ieee-eq-num">(3)</span>
+        </div>
+        <p>
+          Concatenating left and right hand descriptors (<span class="ieee-math">2 × 73 = 146</span>) with the binary face-visibility indicator <span class="ieee-math">v<sub><span style="font-style:normal;">face</span></sub> ∈ {0, 1}</span> yields <span class="ieee-math"><strong>f</strong><sub>t</sub> ∈ ℝ<sup>147</sup></span> (Table III). A variable-length sign segment of <span class="ieee-math">L</span> frames is temporally resampled via linear interpolation to <span class="ieee-math">T = 24</span> steps and augmented with inter-frame wrist velocities <span class="ieee-math">Δ <strong>p</strong><sub>0,t</sub> ∈ ℝ<sup>6(T-1)</sup></span> and cumulative path lengths <span class="ieee-math">ℓ<sub>L</sub>, ℓ<sub>R</sub> ∈ ℝ<sup>2</sup></span>, yielding total segment dimension:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math">D = 147&#8201;T + 6&#8201;(T - 1) + 2 = 3,668  &nbsp;&nbsp;  (<span style="font-style:normal;">for </span> T = 24).</span></span>
+          <span class="ieee-eq-num">(4)</span>
+        </div>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE III<br/>147-D LANDMARK FEATURE SCHEMA (<code>hands-face-v2</code>) PER FRAME</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Feature Sub-Block</th>
+                <th>Mathematical Definition</th>
+                <th class="r">Dims</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wrist-relative shape</td>
+                <td><span class="ieee-math">(<strong>p</strong><sub>i</sub> - <strong>p</strong><sub>0</sub>)/s<sub><span style="font-style:normal;">palm</span></sub></span> for <span class="ieee-math">i=1…20</span> (<span class="ieee-math">× 2</span> hands)</td>
+                <td class="r">120</td>
+              </tr>
+              <tr>
+                <td>Image wrist position</td>
+                <td>Normalized <span class="ieee-math">(p<sub>0,x</sub>, p<sub>0,y</sub>, p<sub>0,z</sub>)</span> (<span class="ieee-math">× 2</span> hands)</td>
+                <td class="r">6</td>
+              </tr>
+              <tr>
+                <td>Face-relative wrist</td>
+                <td><span class="ieee-math"><strong>r</strong><sub><span style="font-style:normal;">face</span></sub></span> scaled by face width/height (<span class="ieee-math">× 2</span> hands)</td>
+                <td class="r">6</td>
+              </tr>
+              <tr>
+                <td>Palm orientation</td>
+                <td>Orthonormal <span class="ieee-math">(<strong>d</strong>&#770;, <strong>n</strong>&#770;) ∈ ℝ<sup>6</sup></span> (<span class="ieee-math">× 2</span> hands)</td>
+                <td class="r">12</td>
+              </tr>
+              <tr>
+                <td>Visibility flags</td>
+                <td>Left hand <span class="ieee-math">v<sub>L</sub></span>, right hand <span class="ieee-math">v<sub>R</sub></span>, face <span class="ieee-math">v<sub><span style="font-style:normal;">face</span></sub></span></td>
+                <td class="r">3</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>Total Frame / Segment</td>
+                <td><span class="ieee-math"><strong>f</strong><sub>t</sub> ∈ ℝ<sup>147</sup></span> per frame; <span class="ieee-math"><strong>x</strong> ∈ ℝ<sup>3668</sup></span> at <span class="ieee-math">T=24</span></td>
+                <td class="r">147</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ieee-col">
+        <h3 class="ieee-subsec" style="margin-top:0;">B. BiGRU Classifier &amp; 3-View Test-Time Augmentation</h3>
+        <p>
+          Each frame <span class="ieee-math"><strong>f</strong><sub>t</sub> ∈ ℝ<sup>147</sup></span> is projected through a LayerNorm-ReLU linear embedding to <span class="ieee-math"><strong>e</strong><sub>t</sub> ∈ ℝ<sup>96</sup></span> and processed by a 2-layer Bidirectional GRU (96 hidden units per direction, <span class="ieee-math"><strong>h</strong><sub>t</sub> ∈ ℝ<sup>192</sup></span>). Temporal mean pooling and max pooling are concatenated with summary wrist velocity statistics <span class="ieee-math"><strong>s</strong><sub><span style="font-style:normal;">vel</span></sub> ∈ ℝ<sup>14</sup></span> to form <span class="ieee-math"><strong>z</strong> ∈ ℝ<sup>398</sup></span>:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><strong>z</strong> = ≤ft[(1)/(T)∑<sub>t=1</sub><sup>T</sup><strong>h</strong><sub>t</sub>  ‖  <span style="font-style:normal;">max</span><sub>1≤ t≤ T</sub><strong>h</strong><sub>t</sub>  ‖  <strong>s</strong><sub><span style="font-style:normal;">vel</span></sub>] ∈ ℝ<sup>398</sup>.</span></span>
+          <span class="ieee-eq-num">(5)</span>
+        </div>
+        <p>
+          At inference, 3-view Test-Time Augmentation (TTA) averages probabilities over the raw segment <span class="ieee-math"><strong>X</strong><sup>(1)</sup></span>, a 3-tap temporally denoised segment <span class="ieee-math"><strong>X</strong><sup>(2)</sup></span>, and an 84% central core-stroke crop <span class="ieee-math"><strong>X</strong><sup>(3)</sup></span>:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><span style="text-decoration:overline;"><strong>P</strong></span>(y | <strong>X</strong>) = (1)/(3)∑<sub>v=1</sub><sup>3</sup> <span style="font-style:normal;">Softmax</span>≤ft(<strong>W</strong><sub><span style="font-style:normal;">cls</span></sub>&#8201;<strong>z</strong>(<strong>X</strong><sup>(v)</sup>) + <strong>b</strong><sub><span style="font-style:normal;">cls</span></sub>).</span></span>
+          <span class="ieee-eq-num">(6)</span>
+        </div>
+
+        <h3 class="ieee-subsec">C. Out-of-Fold Threshold Calibration &amp; Live Segmentation</h3>
+        <p>
+          To reject non-sign gestures and ambiguous motions, we compute out-of-fold (OOF) cross-validation probabilities on all 1,435 development videos and select threshold <span class="ieee-math">τ<sup>*</sup></span> maximizing accepted-word <span class="ieee-math">F<sub>1</sub>(τ)</span>:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math">τ<sup>*</sup> = <span style="font-style:normal;">arg</span><span style="font-style:normal;">max</span><sub>τ ∈ [0.05, 0.95]</sub> (2&#8201;<span style="font-style:normal;">Prec</span>(τ)&#8201;<span style="font-style:normal;">Rec</span>(τ))/(<span style="font-style:normal;">Prec</span>(τ) + <span style="font-style:normal;">Rec</span>(τ)) = 0.50.</span></span>
+          <span class="ieee-eq-num">(7)</span>
+        </div>
+
+        <div class="ieee-fig-box">
+          <img src="/report/fig_calibration.png" alt="Fig. 3. Precision, recall, and coverage calibration curve" />
+          <div class="ieee-fig-cap">Fig. 3. Precision, recall, and coverage of accepted signs against confidence threshold <span class="ieee-math">τ</span> across 1,435 out-of-fold development predictions; <span class="ieee-math">τ<sup>*</sup> = 0.50</span> maximizes F1.</div>
+        </div>
+
+        <div class="ieee-alg-box">
+          <div class="ieee-alg-title"><strong>Algorithm 2:</strong> Motion Segmentation with Still-Tail Trimming</div>
+          <div class="ieee-alg-body">
+            <div>1: <strong>for each</strong> incoming frame <span class="ieee-math"><strong>f</strong><sub>t</sub></span> with inter-frame wrist speed <span class="ieee-math">m<sub>t</sub></span> <strong>do</strong></div>
+            <div>2: &nbsp;&nbsp;<strong>if</strong> state = IDLE <strong>and</strong> hands present <strong>and</strong> <span class="ieee-math">m<sub>t</sub> > θ<sub><span style="font-style:normal;">start</span></sub> (0.014<span style="font-style:normal;"> s</span><sup>-1</sup>)</span> <strong>then</strong></div>
+            <div>3: &nbsp;&nbsp;&nbsp;&nbsp;state <span class="ieee-math">≤ftarrow</span> ACTIVE; initialize buffer <span class="ieee-math">B ≤ftarrow [<strong>f</strong><sub>t</sub>]</span></div>
+            <div>4: &nbsp;&nbsp;<strong>else if</strong> state = ACTIVE <strong>then</strong> append <span class="ieee-math"><strong>f</strong><sub>t</sub></span> to <span class="ieee-math">B</span></div>
+            <div>5: &nbsp;&nbsp;&nbsp;&nbsp;<strong>if</strong> (<span class="ieee-math">m<sub>t</sub> < θ<sub><span style="font-style:normal;">still</span></sub></span> for <span class="ieee-math">T<sub><span style="font-style:normal;">still</span></sub></span>) <strong>or</strong> hands absent <span class="ieee-math">≥ 200<span style="font-style:normal;"> ms</span></span> <strong>or</strong> <span class="ieee-math">|B| > 4<span style="font-style:normal;"> s</span></span> <strong>then</strong></div>
+            <div>6: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trim trailing stillness tail where <span class="ieee-math">m<sub>k</sub> < θ<sub><span style="font-style:normal;">still</span></sub></span>; classify <span class="ieee-math">B</span> via Eq. (6)</div>
+            <div>7: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>if</strong> <span class="ieee-math"><span style="font-style:normal;">max</span><sub>y</sub> <span style="text-decoration:overline;">P</span>(y) ≥ τ<sup>*</sup></span> <strong>then</strong> emit Kannada word; <strong>else</strong> mark uncertain</div>
+            <div>8: &nbsp;&nbsp;&nbsp;&nbsp;<strong>end if</strong></div>
+            <div>9: &nbsp;&nbsp;<strong>end if</strong></div>
+            <div>10: <strong>end for</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 4 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="5">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <h3 class="ieee-subsec" style="margin-top:0;">D. Continuous Sentence Recognition via BiGRU-CTC Fusion</h3>
+        <p>
+          For continuous unsegmented ISL sentences, a 2-layer BiGRU (128 units per direction) processes every second frame of sequence <span class="ieee-math"><strong>X</strong></span> and outputs per-step probabilities over 168 glosses plus the CTC blank token <span class="ieee-math">ε</span> [18]. Because pure CTC decoding can produce ungrammatical gloss combinations on small corpora, we fuse the exact CTC prefix log-likelihood of each candidate corpus sentence <span class="ieee-math">s ∈ {1, …, 101}</span> (with gloss sequence <span class="ieee-math">g<sub>s</sub></span>) with a sentence-level classifier <span class="ieee-math">P<sub><span style="font-style:normal;">cls</span></sub>(s | <strong>X</strong>)</span> operating on <span class="ieee-math"><strong>X</strong></span> resampled to 32 steps:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><span style="font-style:normal;">score</span>(s) = <span style="font-style:normal;">log</span> P<sub><span style="font-style:normal;">CTC</span></sub>(g<sub>s</sub> | <strong>X</strong>) + λ <span style="font-style:normal;">log</span> P<sub><span style="font-style:normal;">cls</span></sub>(s | <strong>X</strong>),  &nbsp;&nbsp;  λ = 1.0.</span></span>
+          <span class="ieee-eq-num">(8)</span>
+        </div>
+        <p>
+          Sentences whose posterior <span class="ieee-math"><span style="font-style:normal;">Softmax</span>(<span style="font-style:normal;">score</span>(s)) < 0.50</span> are flagged as uncertain with top-3 candidates rather than silently misclassified.
+        </p>
+
+        <h3 class="ieee-subsec">E. Block-Balanced Few-Shot Custom Sign Enrollment</h3>
+        <p>
+          To allow deaf users and domain officers to enroll custom regional signs in 3–5 webcam repetitions without retraining the neural network, we compute a block-balanced cosine similarity across <span class="ieee-math">B = 5</span> semantic feature subspaces (left handshape, right handshape, face-relative position, palm orientation, and velocity trajectory) so the 120-D handshape block does not drown out the 6-D face-relative location cue:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math">S<sub><span style="font-style:normal;">block</span></sub>(<strong>u</strong>, <strong>v</strong>) = ∑<sub>b=1</sub><sup>5</sup> w<sub>b</sub> (⟨ <strong>u</strong><sup>(b)</sup>, <strong>v</strong><sup>(b)</sup> ⟩)/(‖<strong>u</strong><sup>(b)</sup>‖<sub>2</sub>&#8201;‖<strong>v</strong><sup>(b)</sup>‖<sub>2</sub> + 10<sup>-8</sup>),  &nbsp;&nbsp;  ∑<sub>b=1</sub><sup>5</sup> w<sub>b</sub> = 1.</span></span>
+          <span class="ieee-eq-num">(9)</span>
+        </div>
+
+        <h3 class="ieee-subsec">F. 3D Avatar Clip Cleaning &amp; Analytic Two-Bone Inverse Kinematics</h3>
+        <p>
+          Given upper-arm length <span class="ieee-math">L<sub>1</sub> = 0.29<span style="font-style:normal;"> m</span></span>, forearm length <span class="ieee-math">L<sub>2</sub> = 0.27<span style="font-style:normal;"> m</span></span>, shoulder position <span class="ieee-math"><strong>p</strong><sub>s</sub></span>, and target 3D wrist position <span class="ieee-math"><strong>p</strong><sub>w</sub></span> retargeted from dataset landmarks (with clamping <span class="ieee-math">d = <span style="font-style:normal;">min</span>(‖<strong>p</strong><sub>w</sub> - <strong>p</strong><sub>s</sub>‖<sub>2</sub>, 0.995(L<sub>1</sub> + L<sub>2</sub>))</span>), the interior elbow flexion angle <span class="ieee-math">θ<sub><span style="font-style:normal;">elbow</span></sub></span> is solved analytically via the Law of Cosines:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><span style="font-style:normal;">cos</span>θ<sub><span style="font-style:normal;">elbow</span></sub> = <span style="font-style:normal;">clip</span>≤ft((L<sub>1</sub><sup>2</sup> + L<sub>2</sub><sup>2</sup> - d<sup>2</sup>)/(2&#8201;L<sub>1</sub>&#8201;L<sub>2</sub>),  -1,  1).</span></span>
+          <span class="ieee-eq-num">(10)</span>
+        </div>
+        <p>
+          Consecutive signs in a sentence are joined by a <span class="ieee-math">0.20<span style="font-style:normal;"> s</span></span> minimum-jerk Quintic Hermite spline <span class="ieee-math">h(u) = 10u<sup>3</sup> - 15u<sup>4</sup> + 6u<sup>5</sup></span> (<span class="ieee-math">u ∈ [0, 1]</span>) with an outward/upward ballistic clearance arc <span class="ieee-math">Δ<strong>p</strong><sub><span style="font-style:normal;">arc</span></sub>(u) = 4u(1-u)(0, 0.035, 0.045)<span style="font-style:normal;"> m</span></span> to prevent torso mesh self-intersection:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math"><strong>p</strong><sub>w</sub>(u) = (1 - h(u))&#8201;<strong>p</strong><sub><span style="font-style:normal;">end</span></sub><sup>(k)</sup> + h(u)&#8201;<strong>p</strong><sub><span style="font-style:normal;">start</span></sub><sup>(k+1)</sup> + Δ<strong>p</strong><sub><span style="font-style:normal;">arc</span></sub>(u).</span></span>
+          <span class="ieee-eq-num">(11)</span>
+        </div>
+
+        <div class="ieee-alg-box">
+          <div class="ieee-alg-title"><strong>Algorithm 3:</strong> Avatar Landmark Trajectory Cleaning (Per Hand)</div>
+          <div class="ieee-alg-body">
+            <div><strong>Require:</strong> Raw per-frame hand poses <span class="ieee-math"><strong>p</strong><sub>1</sub>, …, <strong>p</strong><sub>n</sub></span> (or missing)</div>
+            <div>1: <strong>if</strong> hand is present in <span class="ieee-math">&lt; 15%</span> of clip frames <strong>then return</strong> no track (detector noise)</div>
+            <div>2: Linearly interpolate tracking dropout gaps of duration <span class="ieee-math">≤ 0.40<span style="font-style:normal;"> s</span></span> between valid frames</div>
+            <div>3: Apply 1D Gaussian smoothing (<span class="ieee-math">σ = 1.5</span> frames) to wrist <span class="ieee-math"><strong>p</strong><sub>w</sub></span>, <span class="ieee-math"><strong>d</strong>&#770;</span>, <span class="ieee-math"><strong>n</strong>&#770;</span>, and 15 finger curls</div>
+            <div>4: Trim leading and trailing motionless frames (retaining <span class="ieee-math">0.12<span style="font-style:normal;"> s</span></span> onset/offset context)</div>
+            <div>5: Resample trajectory to at most 15 keyframes/s and serialize compact JSON clip</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ieee-col">
+        <h3 class="ieee-subsec" style="margin-top:0;">G. Paired McNemar Test &amp; Non-Regression Promotion Gate</h3>
+        <p>
+          Every candidate model is evaluated against the active production model on the exact same held-out test videos. Let <span class="ieee-math">n<sub>10</sub></span> denote videos where only the new candidate is correct and <span class="ieee-math">n<sub>01</sub></span> denote videos where only the active model is correct. Statistical significance is evaluated via the exact two-sided McNemar test [21]:
+        </p>
+        <div class="ieee-eq">
+          <span><span class="ieee-math">p = 2 ∑<sub>k=<span style="font-style:normal;">max</span>(n<sub>10</sub>, n<sub>01</sub>)</sub><sup>n<sub>10</sub>+n<sub>01</sub></sup> C(n<sub>10</sub>+n<sub>01</sub>, k) 0.5<sup>n<sub>10</sub>+n<sub>01</sub></sup>.</span></span>
+          <span class="ieee-eq-num">(12)</span>
+        </div>
+        <p>
+          A candidate is promoted to active status only if (i) its held-out macro-F1 <span class="ieee-math">≥ 0.40</span>, (ii) its accuracy on shared test videos does not regress by more than <span class="ieee-math">0.02</span>, and (iii) it passes an automated live-pipeline smoke test.
+        </p>
+
+        <h2 class="ieee-sec">VI. FULL-STACK IMPLEMENTATION AND EDGE-WASM ENGINE</h2>
+        <p>
+          <em>Silent Bridge</em> is implemented as a modular 7-view web platform (Live Recognition, Custom Signs Studio, Kannada-to-Sign 3D Avatar, Sign Reference Dictionary, Dataset &amp; Model Governance Registry, About &amp; Testing Benchmark Suite, and CSBS/IEEE Report Viewer).
+        </p>
+        <p>
+          <strong>1) Client-Side ONNX WebAssembly Inference:</strong> The trained PyTorch BiGRU is exported to ONNX opset 17 (<code>sign_model.onnx</code>, 3.1 MB) and executed in the browser via <code>onnxruntime-web</code> WASM SIMD threads. When offline or disconnected from the Python server, the browser executes the full 6-stage pipeline—MediaPipe landmarking, 147-D feature extraction, Algorithm 2 segmentation, 3-view TTA ONNX inference, few-shot custom prototype matching, and Kannada SOV translation—locally on the client CPU.
+        </p>
+        <p>
+          <strong>2) Sovereign Kannada Linguistic Engine:</strong> In the forward direction, recognized gloss sequences are matched against a 187-entry phrase meaning table that resolves ISL topic-comment syntax into natural Kannada sentences (e.g., <code>[YOU, NAME, WHAT]</code> <span class="ieee-math">→</span> ನಿನ್ನ ಹೆಸರು ಏನು?). In the reverse direction, Kannada input undergoes Unicode NFC canonicalization, regex agglutinative suffix stripping, longest-phrase matching across 162 vocabulary entries, SOV-to-ISL reordering (placing temporal nouns first and wh-interrogatives/negations at the clause boundary), and procedural Kannada finger-spelling for out-of-vocabulary proper nouns.
+        </p>
+        <p>
+          <strong>3) Expressive 3D Avatar Rig:</strong> Built in Three.js (<code>AvatarCanvas.tsx</code>), the humanoid character features anatomical proportions, dual-hemisphere studio lighting, 55-joint hierarchical skeleton (hips, spine, neck, head, clavicles, upper/forearms, wrists, and 30 phalangeal finger joints), 6 Kannada mouth visemes, blink controller, and NMM brow/head tracks.
+        </p>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 5 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="6">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <h2 class="ieee-sec" style="margin-top:0;">VII. EXPERIMENTAL EVALUATION AND RESULTS</h2>
+        <h3 class="ieee-subsec">A. Isolated-Sign Recognition on Unseen Signers</h3>
+        <p>
+          Table VI and Fig. 4 report the progression of isolated-sign top-1 accuracy on the identical 268 held-out test videos across four major engineering iterations. Adding temporal BiGRU modeling and upper-center face-crop fallback raised accuracy from 59.7% (multinomial logistic regression baseline) to 72.4%. Expanding the training set with 462 selectively downloaded INCLUDE recordings (Algorithm 1) further boosted accuracy on the same 268 videos to <strong>79.9%</strong> (and <strong>81.5%</strong> across the full 314-video test set, macro-F1 <strong>0.800</strong>). On the most challenging subset—213 videos recorded by two completely unseen Amrita signers—accuracy rose from 54.5% to <strong>76.5%</strong> (+22.0 percentage points overall; +9.4 points from data expansion alone, with <span class="ieee-math">n<sub>10</sub>=34</span> newly correct vs. <span class="ieee-math">n<sub>01</sub>=13</span> regressed, exact paired McNemar <span class="ieee-math">p = 0.003</span>).
+        </p>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE VI<br/>ISOLATED-SIGN TOP-1 ACCURACY (%) ON IDENTICAL HELD-OUT VIDEOS</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Model Iteration (Train Videos)</th>
+                <th class="r">All (268)</th>
+                <th class="r">Amrita Unseen (213)</th>
+                <th class="r">INCLUDE Test (55)</th>
+                <th class="r">Macro-F1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LogReg Baseline (1,290)</td>
+                <td class="r">59.7</td>
+                <td class="r">54.5</td>
+                <td class="r">80.0</td>
+                <td class="r">0.591</td>
+              </tr>
+              <tr>
+                <td>LogReg + BiGRU, <span class="ieee-math">T=16</span> (1,290)</td>
+                <td class="r">72.4</td>
+                <td class="r">67.1</td>
+                <td class="r">92.7</td>
+                <td class="r">0.708</td>
+              </tr>
+              <tr>
+                <td>LogReg + BiGRU, <span class="ieee-math">T=24</span> (1,290)</td>
+                <td class="r">72.0</td>
+                <td class="r">67.1</td>
+                <td class="r">90.9</td>
+                <td class="r">0.707</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>BiGRU + INCLUDE + TTA (1,749)</td>
+                <td class="r">79.9</td>
+                <td class="r">76.5</td>
+                <td class="r">92.7</td>
+                <td class="r">0.800*</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="ieee-table-foot">*Macro-F1 on full 314-video held-out test set (overall Top-1 accuracy: 81.5%).</div>
+        </div>
+
+        <div class="ieee-fig-box">
+          <img src="/report/fig_results.png" alt="Fig. 4. Top-1 accuracy progression across model iterations" />
+          <div class="ieee-fig-cap">Fig. 4. Top-1 accuracy progression of successive models on identical held-out test videos (all 268 videos vs. 213 unseen Amrita signer videos).</div>
+        </div>
+
+        <h3 class="ieee-subsec">B. Validation Ablation &amp; Multi-Seed Stability</h3>
+        <p>
+          Table VII summarizes the 3-fold signer-grouped validation comparison used to select temporal length <span class="ieee-math">T</span> and classifier weighting prior to test evaluation. Retraining the baseline and the BiGRU ensemble across three random seeds (7, 11, 23) yielded <span class="ieee-math">62.2 ± 2.1%</span> vs. <span class="ieee-math">70.5 ± 1.3%</span> test accuracy (<span class="ieee-math">n<sub>10</sub>=102</span> vs. <span class="ieee-math">n<sub>01</sub>=35</span> pooled, McNemar <span class="ieee-math">p &lt; 10<sup>-8</sup></span>), confirming seed-invariant improvement.
+        </p>
+      </div>
+
+      <div class="ieee-col">
+        <div class="ieee-table-wrap" style="margin-top:0;">
+          <div class="ieee-table-cap">TABLE VII<br/>3-FOLD SIGNER-GROUPED VALIDATION ABLATION (DEVELOPMENT DATA)</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Architecture &amp; Resampling Variant</th>
+                <th class="r">Val Acc</th>
+                <th class="r">Val Macro-F1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Multinomial LogReg, <span class="ieee-math">T = 12</span></td>
+                <td class="r">0.398</td>
+                <td class="r">0.377</td>
+              </tr>
+              <tr>
+                <td>Multinomial LogReg, <span class="ieee-math">T = 16</span></td>
+                <td class="r">0.412</td>
+                <td class="r">0.388</td>
+              </tr>
+              <tr>
+                <td>Multinomial LogReg, <span class="ieee-math">T = 24</span></td>
+                <td class="r">0.413</td>
+                <td class="r">0.385</td>
+              </tr>
+              <tr>
+                <td>Multinomial LogReg, <span class="ieee-math">T = 32</span></td>
+                <td class="r">0.416</td>
+                <td class="r">0.391</td>
+              </tr>
+              <tr>
+                <td>Standalone BiGRU, <span class="ieee-math">T = 16</span></td>
+                <td class="r">0.416</td>
+                <td class="r">0.399</td>
+              </tr>
+              <tr>
+                <td>Ensemble (0.7 LogReg + 0.3 BiGRU)</td>
+                <td class="r">0.424</td>
+                <td class="r">0.402</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>Ensemble (0.5 LogReg + 0.5 BiGRU, selected)</td>
+                <td class="r">0.437</td>
+                <td class="r">0.420</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="ieee-subsec">C. Per-Sign F1 Distribution &amp; Rejected 144-Class Candidate</h3>
+        <p>
+          Fig. 5 plots the sorted F1-score across all 60 signs with test videos: 26 signs achieve <span class="ieee-math"><span style="font-style:normal;">F1</span> ≥ 0.90</span> (mean <span class="ieee-math">0.800</span>), while confusions concentrate among minimal pairs sharing facial location (e.g., <em>EAT</em> vs. <em>NOSE</em>, 4 videos; <em>HELLO</em> vs. <em>GOOD</em>, 3 videos). When a 144-class candidate (3,182 training videos) was trained, it achieved 85.2% on 210 INCLUDE test videos of the new classes but regressed on the original 64 signs from 81.5% to 76.1% (and from 76.5% to 70.9% on unseen Amrita signers); the promotion gate automatically rejected it from replacing the active recognizer while preserving all 144 clips for the reverse avatar direction.
+        </p>
+
+        <div class="ieee-fig-box">
+          <img src="/report/fig_perclass.png" alt="Fig. 5. Per-sign F1-score across 60 held-out test classes" />
+          <div class="ieee-fig-cap">Fig. 5. Sorted per-sign F1-scores of the active model across the 60 signs with held-out test videos (mean F1 = 0.800).</div>
+        </div>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE VIII<br/>LIVE-PIPELINE BACK-TO-BACK STREAM REPLAY (SIGN ERROR RATE)</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Model Pipeline</th>
+                <th class="r">Signs</th>
+                <th class="r">Sub (S)</th>
+                <th class="r">Del (D)</th>
+                <th class="r">Ins (I)</th>
+                <th class="r">SER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LogReg Baseline</td>
+                <td class="r">268</td>
+                <td class="r">55</td>
+                <td class="r">74</td>
+                <td class="r">1</td>
+                <td class="r">0.485</td>
+              </tr>
+              <tr>
+                <td>LogReg+BiGRU (<span class="ieee-math">T=16</span>)</td>
+                <td class="r">268</td>
+                <td class="r">18</td>
+                <td class="r">88</td>
+                <td class="r">0</td>
+                <td class="r">0.396</td>
+              </tr>
+              <tr>
+                <td>LogReg+BiGRU (<span class="ieee-math">T=24</span>)</td>
+                <td class="r">268</td>
+                <td class="r">50</td>
+                <td class="r">27</td>
+                <td class="r">2</td>
+                <td class="r">0.295</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>BiGRU + INCLUDE + Trim</td>
+                <td class="r">314</td>
+                <td class="r">54</td>
+                <td class="r">8</td>
+                <td class="r">24</td>
+                <td class="r">0.274</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 6 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="7">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <h3 class="ieee-subsec" style="margin-top:0;">D. Continuous Stream Segmentation &amp; Perturbation Robustness</h3>
+        <p>
+          Replaying all 314 held-out test videos back-to-back through the live segmenter (Algorithm 2) reduced the stream Sign Error Rate (SER) from 0.485 to <strong>0.274</strong> (Table VIII), with still-tail trimming cutting deletions from 88 to 8. Fig. 6 evaluates five segmentation strategies across 50 synthetic five-sign streams (245 signs) under three boundary regimes: short pause, back-to-back, and hands never lowered. The default stillness/absence gate (<span class="ieee-math">800/200<span style="font-style:normal;"> ms</span></span>) achieved the lowest test-signer SER (<span class="ieee-math">0.474</span>) when signers pause briefly between words.
+        </p>
+
+        <div class="ieee-fig-box">
+          <img src="/report/fig_segmentation.png" alt="Fig. 6. Sign Error Rate of segmentation variants" />
+          <div class="ieee-fig-cap">Fig. 6. Sign Error Rate (SER) of five segmentation variants on 50 test streams of five signs (245 total signs) with known ground-truth boundaries.</div>
+        </div>
+
+        <p>
+          Fig. 7 evaluates synthetic landmark perturbations across 268 held-out videos: left-right mirroring, 20–40% random frame drops, <span class="ieee-math">0.67×<span style="font-style:normal;">–</span>1.5×</span> speed scaling, <span class="ieee-math">± 15%</span> scale variation, and Gaussian coordinate noise degrade top-1 accuracy by at most <span class="ieee-math">1.5</span> percentage points. Removing face landmarks drops accuracy by <span class="ieee-math">19.0</span> points (<span class="ieee-math">66.8% → 47.8%</span>), proving the importance of the face-relative vector <span class="ieee-math"><strong>r</strong><sub><span style="font-style:normal;">face</span></sub></span> in Eq. (2).
+        </p>
+
+        <div class="ieee-fig-box">
+          <img src="/report/fig_robustness.png" alt="Fig. 7. Top-1 accuracy under synthetic landmark perturbations" />
+          <div class="ieee-fig-cap">Fig. 7. Top-1 accuracy under synthetic landmark perturbations across 268 held-out test videos; removing face landmarks causes the largest drop.</div>
+        </div>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE IX<br/>BROWSER MEDIAPIPE VS. OFFLINE PYTHON FEATURE EXTRACTION PARITY</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Cross-Runtime Parity Metric (<span class="ieee-math">N = 8</span> Reference Videos)</th>
+                <th class="r">Measured Agreement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hand presence detection agreement per video</td>
+                <td class="r">91.8% – 100.0%</td>
+              </tr>
+              <tr>
+                <td>Handedness (Left/Right) label agreement</td>
+                <td class="r">81.5% – 100.0%</td>
+              </tr>
+              <tr>
+                <td>Median 3D landmark coordinate discrepancy</td>
+                <td class="r">0.002 – 0.007 units</td>
+              </tr>
+              <tr>
+                <td>Identical top-1 predicted sign label</td>
+                <td class="r">7 / 8 (87.5%)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ieee-col">
+        <h3 class="ieee-subsec" style="margin-top:0;">E. Continuous Sentence Decoding &amp; Meaning Layer Impact</h3>
+        <p>
+          Table X compares four continuous sentence decoders on the 154 held-out test videos of unseen recording rounds (rounds 4 and 5) across 101 ISL-CSLTR sentences (~1.0% random chance). Log-likelihood fusion of the BiGRU-CTC decoder and the 32-step sentence classifier (Eq. 8) achieves <strong>29.2%</strong> exact-sentence accuracy and reduces Gloss Error Rate (GER) from 0.883 to <strong>0.685</strong>. On 124 held-out multi-sign phrase streams, the Kannada phrase meaning layer achieved 60.5% exact Kannada sentence match (chrF 0.669) compared to 39.5% (chrF 0.605) for word-by-word gloss translation.
+        </p>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE X<br/>CONTINUOUS SENTENCE DECODERS ON 154 UNSEEN-ROUND TEST VIDEOS</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Sentence Decoding Strategy (101 Classes)</th>
+                <th class="r">Exact Acc (%)</th>
+                <th class="r">GER <span class="ieee-math">↓</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>32-Step Sentence Classifier Only</td>
+                <td class="r">20.1</td>
+                <td class="r">0.883</td>
+              </tr>
+              <tr>
+                <td>BiGRU-CTC Greedy Path <span class="ieee-math">→</span> Nearest Sentence</td>
+                <td class="r">18.2</td>
+                <td class="r">0.742</td>
+              </tr>
+              <tr>
+                <td>BiGRU-CTC Prefix Likelihood Scoring Only</td>
+                <td class="r">22.1</td>
+                <td class="r">0.724</td>
+              </tr>
+              <tr class="ieee-row-bold">
+                <td>Fused BiGRU-CTC + Classifier (<span class="ieee-math">λ = 1.0</span>)</td>
+                <td class="r">29.2</td>
+                <td class="r">0.685</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="ieee-subsec">F. 3D Avatar Motion Quality &amp; Real-Time CPU Latency</h3>
+        <p>
+          Table XI quantifies the impact of Algorithm 3 across all 144 dataset-derived 3D avatar clips. Gap interpolation (<span class="ieee-math">≤ 0.40<span style="font-style:normal;"> s</span></span>) and Gaussian trajectory smoothing (<span class="ieee-math">σ = 1.5</span>) eliminated 100% of mid-sign arm drops (from 367 drops across 114 clips down to <strong>0</strong>) and reduced second-derivative wrist acceleration jitter by <strong>36.0%</strong> (<span class="ieee-math">4.42 → 2.83<span style="font-style:normal;"> cm/frame</span><sup>2</sup></span>). Table XII confirms that isolated sign classification requires only <strong>3.8 ms</strong> on a commodity CPU, well within real-time interactive budgets.
+        </p>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE XI<br/>3D AVATAR MOTION QUALITY BEFORE &amp; AFTER CLEANING (144 CLIPS)</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Objective Kinematic Metric</th>
+                <th class="r">Raw Landmarks</th>
+                <th class="r">Cleaned (Alg. 3)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Clips exhibiting mid-sign arm drops</td>
+                <td class="r">114 / 144 (79.2%)</td>
+                <td class="r"><strong>0 / 144 (0.0%)</strong></td>
+              </tr>
+              <tr>
+                <td>Total mid-sign arm drop artefacts</td>
+                <td class="r">367</td>
+                <td class="r"><strong>0 (-100%)</strong></td>
+              </tr>
+              <tr>
+                <td>Mean wrist jitter (<span class="ieee-math"><span style="font-style:normal;">cm/frame</span><sup>2</sup></span>)</td>
+                <td class="r">4.42</td>
+                <td class="r"><strong>2.83 (-36.0%)</strong></td>
+              </tr>
+              <tr>
+                <td>Mean active clip duration (s)</td>
+                <td class="r">2.36 s</td>
+                <td class="r"><strong>2.23 s</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ieee-table-wrap">
+          <div class="ieee-table-cap">TABLE XII<br/>MEASURED PROCESSING LATENCY ON COMMODITY LAPTOP CPU</div>
+          <table class="ieee-table">
+            <thead>
+              <tr>
+                <th>Pipeline Stage / Operation</th>
+                <th class="r">Measured Latency</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Per-frame feature &amp; segmenter processing</td>
+                <td class="r">1.4 ms / frame</td>
+              </tr>
+              <tr>
+                <td>Isolated-sign BiGRU inference (with 3-view TTA)</td>
+                <td class="r">3.8 ms / sign</td>
+              </tr>
+              <tr>
+                <td>Continuous greedy CTC decode per sentence</td>
+                <td class="r">12.3 ms</td>
+              </tr>
+              <tr>
+                <td>Fused CTC + classifier decode (mean / p95)</td>
+                <td class="r">37.0 / 62.0 ms</td>
+              </tr>
+              <tr>
+                <td>3D Avatar IK + Quintic co-articulation render</td>
+                <td class="r">60 fps (16.6 ms)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 7 of 8</span>
+    </div>
+  </section>
+
+  <section class="ieee-page" data-page="8">
+    <div class="ieee-running-header">
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
+      <span>IJDDT · ISSN: 0975-4415 · VOL. 16, NO. 7, 2026</span>
+    </div>
+
+    <div class="ieee-two-col">
+      <div class="ieee-col">
+        <h2 class="ieee-sec" style="margin-top:0;">VIII. PUBLIC SERVICE DEPLOYMENT, LIMITATIONS AND SDG IMPACT</h2>
+        <p>
+          <strong>1) Edge Economics &amp; Sustainable Development Goals:</strong> By executing MediaPipe landmarking and ONNX WebAssembly inference directly on existing client CPUs, <em>Silent Bridge</em> eliminates recurring cloud GPU inference costs (~₹1.80 lakh/year per kiosk) and operates offline as a Progressive Web App (PWA). A cross-subsidized social enterprise model provides the B2C community app free forever (₹0) while licensing B2G/B2B service-counter kiosks at ₹12,000/terminal/year (92% lower than on-site human interpretation costs of ₹3.60 lakh/year). The platform directly advances UN SDG 3 (Target 3.8: accessible healthcare triage), SDG 4 (Target 4.5 &amp; 4.a: bilingual ISL–Kannada deaf education), SDG 8 (Target 8.5: inclusive employment), SDG 9 (Target 9.c: frugal edge AI), and SDG 10 (Target 10.2: social and civic inclusion).
+        </p>
+        <p>
+          <strong>2) Limitations &amp; Threats to Validity:</strong> First, all reported recognition accuracies are measured on held-out recorded videos of unseen signers; live webcam accuracy depends on lighting, camera placement, and regional ISL dialect variation (Kerala in Amrita SLR, Chennai in INCLUDE vs. Karnataka). Second, continuous sentence decoding is currently closed-set over 101 corpus sentences, and single training runs exhibit seed variance (<span class="ieee-math">± 4.5%</span>). Third, avatar clips retargeted from 2D/3D hand/face landmarks estimate depth heuristically from palm scale and require formal linguistic validation by native deaf signers.
+        </p>
+
+        <h2 class="ieee-sec">IX. CONCLUSION AND FUTURE WORK</h2>
+        <p>
+          This paper presented <em>Silent Bridge</em>, a real-time, privacy-preserving bidirectional Indian Sign Language and Kannada translation platform with a procedural 3D signing avatar running on commodity CPU hardware. Through our 147-D face-relative geometric schema, motion segmentation with still-tail trimming, 3-view Test-Time Augmentation, and selective HTTP-range INCLUDE dataset expansion, unseen-signer isolated recognition rose from 54.5% to 76.5% (<span class="ieee-math">p = 0.003</span>, overall 81.5%, macro-F1 0.800), while fused BiGRU-CTC decoding achieved 29.2% exact-sentence accuracy on unseen rounds and trajectory cleaning eliminated all 367 mid-sign avatar arm drops. Future work includes (i) multi-signer live webcam clinical trials in Karnataka hospitals and civic centers, (ii) open-vocabulary Transformer-CTC translation trained on iSign [9], and (iii) full upper-body pose integration with native deaf community co-design.
+        </p>
+
+        <h2 class="ieee-sec">ACKNOWLEDGMENT</h2>
+        <p>
+          The authors express their sincere gratitude to <strong>Dr. Beemsha Arya</strong> (Principal, B.M.S. College of Engineering), <strong>Dr. R Ashok Kumar</strong> (Professor &amp; Head, Dept. of CSBS, BMSCE), and Project Guide <strong>Tejaswini K</strong> (Assistant Professor, Dept. of CSBS, BMSCE) for their guidance and institutional support. We also thank the creators and deaf signers of the open-access Amrita SLR, INCLUDE, and ISL-CSLTR corpora.
+        </p>
+      </div>
+
+      <div class="ieee-col">
+        <h2 class="ieee-sec" style="margin-top:0;">REFERENCES</h2>
+        <ol class="ieee-refs">
+          <li><span>[1]</span><span>D. Li, C. Rodriguez, X. Yu, and H. Li, “Word-level deep sign language recognition from video: A new large-scale dataset and methods comparison,” in <em>Proc. IEEE/CVF Winter Conf. Appl. Comput. Vis. (WACV)</em>, Mar. 2020, pp. 1459–1469.</span></li>
+          <li><span>[2]</span><span>H. R. Vaezi Joze and O. Koller, “MS-ASL: A large-scale data set and benchmark for understanding American Sign Language,” in <em>Proc. Brit. Mach. Vis. Conf. (BMVC)</em>, Sep. 2019, pp. 1–13.</span></li>
+          <li><span>[3]</span><span>O. Koller, J. Forster, and H. Ney, “Continuous sign language recognition: Towards large vocabulary statistical recognition systems handling multiple signers,” <em>Comput. Vis. Image Underst.</em>, vol. 141, pp. 108–125, Dec. 2015.</span></li>
+          <li><span>[4]</span><span>N. C. Camgoz, S. Hadfield, O. Koller, H. Ney, and R. Bowden, “Neural sign language translation,” in <em>Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR)</em>, Jun. 2018, pp. 7784–7793.</span></li>
+          <li><span>[5]</span><span>A. Sridhar, R. G. Ganesan, P. Kumar, and M. Khapra, “INCLUDE: A large scale dataset for Indian Sign Language recognition,” in <em>Proc. 28th ACM Int. Conf. Multimedia (ACM MM)</em>, Oct. 2020, pp. 1366–1375.</span></li>
+          <li><span>[6]</span><span>R. Elakkiya and B. Natarajan, “ISL-CSLTR: Indian Sign Language dataset for continuous sign language translation and recognition,” <em>Mendeley Data</em>, vol. 1, 2021, doi: 10.17632/kcmpdxky7p.1.</span></li>
+          <li><span>[7]</span><span>R. Sasidharan <em>et al.</em>, “Amrita SLR: Real-time Indian Sign Language dataset,” <em>Mendeley Data</em>, vol. 1, 2025, doi: 10.17632/dtg9s785v8.1.</span></li>
+          <li><span>[8]</span><span>A. Joshi, S. Agrawal, and A. Modi, “ISLTranslate: Dataset for translating Indian Sign Language,” in <em>Findings Assoc. Comput. Linguist. (ACL)</em>, Jul. 2023, pp. 10412–10428.</span></li>
+          <li><span>[9]</span><span>A. Joshi <em>et al.</em>, “iSign: A benchmark for Indian Sign Language processing,” in <em>Findings Assoc. Comput. Linguist. (ACL)</em>, Aug. 2024, pp. 8920–8938.</span></li>
+          <li><span>[10]</span><span>J. Carreira and A. Zisserman, “Quo vadis, action recognition? A new model and the Kinetics dataset,” in <em>Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)</em>, Jul. 2017, pp. 6299–6308.</span></li>
+          <li><span>[11]</span><span>Z. Cao, G. Hidalgo, T. Simon, S.-E. Wei, and Y. Sheikh, “OpenPose: Realtime multi-person 2D pose estimation using Part Affinity Fields,” <em>IEEE Trans. Pattern Anal. Mach. Intell.</em>, vol. 43, no. 1, pp. 172–186, Jan. 2021.</span></li>
+          <li><span>[12]</span><span>C. Lugaresi <em>et al.</em>, “MediaPipe: A framework for building perception pipelines,” in <em>Proc. IEEE/CVF CVPR Workshop Real-Time Comput. Vis.</em>, Jun. 2019, pp. 1–9.</span></li>
+          <li><span>[13]</span><span>F. Zhang <em>et al.</em>, “MediaPipe Hands: On-device real-time hand tracking,” in <em>Proc. IEEE/CVF CVPR Workshop Comput. Vis. AR/VR</em>, Jun. 2020, pp. 1–7.</span></li>
+          <li><span>[14]</span><span>S. Jiang, B. Sun, L. Wang, Y. Bai, K. Li, and Y. Fu, “Skeleton aware multi-modal sign language recognition,” in <em>Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. Workshops (CVPRW)</em>, Jun. 2021, pp. 3413–3423.</span></li>
+          <li><span>[15]</span><span>H. Hu, W. Zhao, W. Zhou, Y. Wang, and H. Li, “SignBERT: Pre-training of hand-model-aware representation for sign language recognition,” in <em>Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV)</em>, Oct. 2021, pp. 11087–11096.</span></li>
+          <li><span>[16]</span><span>K. Cho <em>et al.</em>, “Learning phrase representations using RNN encoder-decoder for statistical machine translation,” in <em>Proc. Conf. Empirical Methods Natural Lang. Process. (EMNLP)</em>, Oct. 2014, pp. 1724–1734.</span></li>
+          <li><span>[17]</span><span>M. Schuster and K. K. Paliwal, “Bidirectional recurrent neural networks,” <em>IEEE Trans. Signal Process.</em>, vol. 45, no. 11, pp. 2673–2681, Nov. 1997.</span></li>
+          <li><span>[18]</span><span>A. Graves, S. Fernández, F. Gomez, and J. Schmidhuber, “Connectionist temporal classification: Labelling unsegmented sequence data with recurrent neural networks,” in <em>Proc. 23rd Int. Conf. Mach. Learn. (ICML)</em>, Jun. 2006, pp. 369–376.</span></li>
+          <li><span>[19]</span><span>T. Hanke, “HamNoSys—Representing sign language data in language resources and language processing contexts,” in <em>Proc. LREC Workshop Represent. Process. Sign Lang.</em>, May 2004, pp. 1–6.</span></li>
+          <li><span>[20]</span><span>R. Wolfe <em>et al.</em>, “Sign language avatars: A question of representation,” <em>Information</em>, vol. 13, no. 4, p. 206, Apr. 2022.</span></li>
+          <li><span>[21]</span><span>Q. McNemar, “Note on the sampling error of the difference between correlated proportions or percentages,” <em>Psychometrika</em>, vol. 12, no. 2, pp. 153–157, Jun. 1947.</span></li>
+          <li><span>[22]</span><span>I. Loshchilov and F. Hutter, “Decoupled weight decay regularization,” in <em>Proc. Int. Conf. Learn. Represent. (ICLR)</em>, May 2019, pp. 1–18.</span></li>
+          <li><span>[23]</span><span>M. Popović, “chrF: Character n-gram F-score for automatic MT evaluation,” in <em>Proc. 10th Workshop Stat. Mach. Transl. (WMT)</em>, Sep. 2015, pp. 392–395.</span></li>
+          <li><span>[24]</span><span>U. Zeshan, <em>Sign Languages in Indo-Pakistan: A Description of a Signed Language</em>. Amsterdam, Netherlands: John Benjamins Publishing, 2000.</span></li>
+          <li><span>[25]</span><span>S. N. Sridhar, <em>Kannada: Descriptive Grammars</em>. London, U.K.: Routledge, 1990.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="ieee-page-footer">
+      <span>SILENT BRIDGE · Dept. of CSBS, B.M.S. College of Engineering, Bangalore · Scopus Indexed Q3 Journal (IJDDT, Vol. 16, No. 7, 2026)</span>
+      <span>Page 8 of 8</span>
+    </div>
+  </section>
+</body>
+</html>

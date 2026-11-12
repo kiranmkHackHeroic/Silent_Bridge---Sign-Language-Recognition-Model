@@ -24,15 +24,18 @@ function toDataUri(relPath, mime = "image/png") {
 
 const meta = {
   title:
-    "KANNADA SIGNBRIDGE: REAL-TIME SIGNER-INDEPENDENT INDIAN SIGN LANGUAGE RECOGNITION AND KANNADA COMMUNICATION WITH 3D SIGNING AVATAR",
-  shortTitle: "Kannada SignBridge",
+    "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR",
+  shortTitle:
+    "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR",
   students: [
-    { name: "KIRAN M K", usn: "1BM23CB025" },
+    { name: "Kiran M K", usn: "1BM23CB068" },
+    { name: "Manoj G U", usn: "1BM24CB401" },
+    { name: "H S Thanush", usn: "1BM23CB066" },
   ],
-  guideName: "Dr. Guide Name",
-  guideDesignation: "Associate Professor",
-  hodName: "Dr. HoD Name",
-  principalName: "Dr. Principal Name",
+  guideName: "Tejaswini K",
+  guideDesignation: "Assistant Professor",
+  hodName: "Dr. R Ashok Kumar",
+  principalName: "Dr. Beemsha Arya",
   academicYear: "2026-2027",
   logoSrc: toDataUri("frontend/public/report/bmsce_logo.jpg", "image/jpeg"),
 };
@@ -215,28 +218,103 @@ const fullHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSBS B.E. Project Report — Kannada SignBridge (76 Pages)</title>
+  <title>CSBS B.E. Project Report — SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR (76 Pages)</title>
   <style>
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman"), local("TimesNewRomanPSMT"), url("/report/fonts/LiberationSerif-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), url("/report/fonts/LiberationSerif-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), url("/report/fonts/LiberationSerif-Italic.ttf") format("truetype");
+      font-weight: 400;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Times New Roman";
+      src: local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"), url("/report/fonts/LiberationSerif-BoldItalic.ttf") format("truetype");
+      font-weight: 700;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman"), local("TimesNewRomanPSMT"), url("/report/fonts/LiberationSerif-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), url("/report/fonts/LiberationSerif-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), url("/report/fonts/LiberationSerif-Italic.ttf") format("truetype");
+      font-weight: 400;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Times";
+      src: local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"), url("/report/fonts/LiberationSerif-BoldItalic.ttf") format("truetype");
+      font-weight: 700;
+      font-style: italic;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Kannada";
+      src: url("/report/fonts/NotoSerifKannada-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "CSBS-Kannada";
+      src: url("/report/fonts/NotoSerifKannada-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+
     @page {
       size: A4 portrait;
       margin: 0;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
+    }
+
+    html, body, svg, svg text, svg tspan, button, input, select, textarea, code, pre, kbd, samp {
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
     }
 
     html, body {
       margin: 0;
       padding: 0;
       background: #334155;
-      font-family: "Times New Roman", Times, "Noto Serif", "Noto Sans Kannada", serif;
-      font-size: 11.5pt;
-      line-height: 1.45;
+      font-size: 12pt;
+      line-height: 1.5;
       color: #000000;
-      text-rendering: optimizeLegibility;
+      text-rendering: geometricPrecision;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -274,7 +352,7 @@ const fullHtml = `<!DOCTYPE html>
       justify-content: space-between;
       gap: 12px;
       border-bottom: 1px solid #334155;
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
       font-size: 13px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
@@ -284,8 +362,9 @@ const fullHtml = `<!DOCTYPE html>
       border: none;
       padding: 7px 15px;
       border-radius: 5px;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       text-decoration: none;
       transition: background 0.15s ease;
@@ -300,12 +379,12 @@ const fullHtml = `<!DOCTYPE html>
       background: #475569;
     }
 
-    /* Exact A4 sheet with CSBS binding margins:
-       Left: 1.25in (binding side), Right: 1.0in, Top: 0.65in, Bottom: 0.55in */
+    /* Exact A4 sheet with CSBS Guideline 1 margins:
+       Left: 1.25in (binding side), Right: 1.0in, Top: 0.75in, Bottom: 0.75in */
     .report-page {
       width: 210mm;
       height: 297mm;
-      padding: 0.62in 0.95in 0.50in 1.22in;
+      padding: 0.75in 1in 0.75in 1.25in;
       margin: 22px auto;
       background: #ffffff;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
@@ -355,15 +434,27 @@ const fullHtml = `<!DOCTYPE html>
     .page-running-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      font-size: 8.8pt;
+      align-items: baseline;
+      gap: 4pt;
+      font-size: 5.15pt;
       font-style: italic;
       color: #334155;
       border-bottom: 1px solid #1e293b;
       padding-bottom: 3pt;
-      margin-bottom: 8pt;
+      margin-bottom: 6pt;
       flex-shrink: 0;
-      letter-spacing: 0.1px;
+      letter-spacing: -0.1px;
+    }
+    .page-running-header > span:first-child {
+      font-weight: 700;
+      color: #0f172a;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .page-running-header > span:last-child {
+      white-space: nowrap;
+      text-align: right;
+      flex-shrink: 0;
     }
 
     /* Flex body wrapper between running header and page footer */
@@ -387,14 +478,14 @@ const fullHtml = `<!DOCTYPE html>
     /* CSBS Typography Hierarchy (Guideline 6.ix):
        - Chapter number: Right justified, 16pt bold
        - Chapter title: Centered, 18pt bold uppercase
-       - Section heading (X.Y): Left justified, 15.5pt–16pt bold
-       - Subsection heading (X.Y.Z): Left justified, 13.5pt–14pt bold
-       - Body text: 11.5pt–12pt Times New Roman, justified */
+       - Section heading (X.Y): Left justified, 16pt bold
+       - Subsection heading (X.Y.Z): Left justified, 14pt bold
+       - Body text: 12pt Times New Roman, 1.5 line spacing, justified */
     .chapter-num-header {
       text-align: right;
-      font-size: 15.5pt;
+      font-size: 16pt;
       font-weight: 700;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
       margin-top: 0;
       margin-bottom: 2pt;
       line-height: 1.15;
@@ -403,13 +494,13 @@ const fullHtml = `<!DOCTYPE html>
 
     .chapter-title-center {
       text-align: center;
-      font-size: 17.5pt;
+      font-size: 18pt;
       font-weight: 700;
       margin-top: 0;
-      margin-bottom: 10pt;
-      padding-bottom: 5pt;
+      margin-bottom: 8pt;
+      padding-bottom: 4pt;
       border-bottom: 1.5px double #1e293b;
-      line-height: 1.22;
+      line-height: 1.20;
       color: #000000;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -417,60 +508,57 @@ const fullHtml = `<!DOCTYPE html>
 
     .sec-h1 {
       text-align: left;
-      font-size: 14.8pt;
+      font-size: 16pt;
       font-weight: 700;
-      margin-top: 8pt;
-      margin-bottom: 3.5pt;
-      line-height: 1.22;
+      margin-top: 7pt;
+      margin-bottom: 3pt;
+      line-height: 1.20;
       color: #0f172a;
     }
 
     .sec-h2 {
       text-align: left;
-      font-size: 13pt;
+      font-size: 14pt;
       font-weight: 700;
-      margin-top: 6pt;
-      margin-bottom: 2.5pt;
-      line-height: 1.22;
+      margin-top: 5pt;
+      margin-bottom: 2pt;
+      line-height: 1.20;
       color: #1e293b;
     }
 
     p {
-      font-size: 11.2pt;
-      line-height: 1.44;
+      font-size: 12pt;
+      line-height: 1.5;
       text-align: justify;
       text-justify: inter-word;
       margin-top: 0;
-      margin-bottom: 5.5pt;
+      margin-bottom: 5pt;
       orphans: 2;
       widows: 2;
     }
 
     ul, ol {
-      font-size: 10.9pt;
-      line-height: 1.40;
+      font-size: 12pt;
+      line-height: 1.5;
       text-align: justify;
       margin-top: 2pt;
-      margin-bottom: 5.5pt;
+      margin-bottom: 5pt;
       padding-left: 17pt;
     }
 
     li {
-      margin-bottom: 2.5pt;
+      margin-bottom: 2pt;
     }
 
     code {
-      font-family: "Courier New", Courier, monospace;
-      font-size: 9.2pt;
-      background: #f1f5f9;
-      border: 0.5px solid #cbd5e1;
-      padding: 0 3px;
-      border-radius: 2px;
-      color: #0f172a;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
+      font-size: inherit;
+      font-style: normal;
+      color: #000000;
     }
 
     .math-inline {
-      font-family: "Times New Roman", Times, serif;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
       font-style: italic;
       white-space: normal;
     }
@@ -486,8 +574,8 @@ const fullHtml = `<!DOCTYPE html>
     }
 
     .figure-box {
-      margin: 5pt 0;
-      padding: 5pt 6pt;
+      margin: 4pt 0;
+      padding: 4pt 6pt;
       border: 0.75px solid #cbd5e1;
       background: #ffffff;
       border-radius: 2px;
@@ -499,8 +587,8 @@ const fullHtml = `<!DOCTYPE html>
       font-size: 9.6pt;
       font-weight: 700;
       text-align: center;
-      margin-top: 4pt;
-      line-height: 1.28;
+      margin-top: 3.5pt;
+      line-height: 1.25;
       color: #0f172a;
     }
 
@@ -508,15 +596,15 @@ const fullHtml = `<!DOCTYPE html>
       width: 100%;
       border-collapse: collapse;
       font-size: 9pt;
-      line-height: 1.26;
-      margin-bottom: 5.5pt;
+      line-height: 1.24;
+      margin-bottom: 5pt;
       border-top: 1.5px solid #0f172a;
       border-bottom: 1.5px solid #0f172a;
     }
 
     .data-table th, .data-table td {
       border: 0.6px solid #475569;
-      padding: 2.8pt 4.5pt;
+      padding: 2.5pt 4pt;
       vertical-align: top;
       text-align: left;
     }
@@ -544,30 +632,30 @@ const fullHtml = `<!DOCTYPE html>
     .toc-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 9.2pt;
-      line-height: 1.20;
+      font-size: 8.8pt;
+      line-height: 1.16;
     }
     .toc-table th {
       border-top: 1.5px solid #0f172a;
       border-bottom: 1.5px solid #0f172a;
       background: #f1f5f9;
-      padding: 2.8pt 4pt;
+      padding: 2.2pt 4pt;
       font-weight: 700;
     }
     .toc-table td {
-      padding: 1.4pt 4pt;
+      padding: 1.1pt 4pt;
       border-bottom: 0.5px dotted #94a3b8;
     }
     .toc-table tr.toc-ch td {
       font-weight: 700;
-      padding-top: 3pt;
-      padding-bottom: 2pt;
+      padding-top: 2.2pt;
+      padding-bottom: 1.5pt;
       background: #f1f5f9;
       border-top: 0.75px solid #64748b;
       border-bottom: 0.75px solid #64748b;
     }
     .toc-table td.sub {
-      padding-left: 15pt;
+      padding-left: 14pt;
     }
     .toc-table td.r {
       text-align: right;
@@ -575,7 +663,7 @@ const fullHtml = `<!DOCTYPE html>
       white-space: nowrap;
     }
 
-    /* Equations (Guideline 6.xv–xvi: right justified equation numbers) */
+    /* Equations (Guideline 6.xv–xvi: decimal form with right justified equation numbers) */
     .eq-row {
       display: flex;
       justify-content: space-between;
@@ -583,17 +671,25 @@ const fullHtml = `<!DOCTYPE html>
       background: #f8fafc;
       border: 0.6px solid #cbd5e1;
       border-left: 2.5px solid #1e3a8a;
-      padding: 3.5pt 9pt;
-      margin: 3.5pt 0;
+      padding: 3pt 9pt;
+      margin: 3pt 0;
       font-size: 10.2pt;
-      font-family: "Times New Roman", Times, serif;
+      font-family: "CSBS-Times", "CSBS-Kannada", "Times New Roman", Times, serif;
       width: 100%;
     }
     .eq-num {
       font-weight: 700;
-      margin-left: 10pt;
+      margin-left: auto;
+      padding-left: 8pt;
+      text-align: right;
       white-space: nowrap;
       color: #0f172a;
+    }
+    .eq-num::before {
+      content: ".......... ";
+      letter-spacing: 1px;
+      color: #64748b;
+      font-weight: 400;
     }
 
     /* Algorithm & Code Listings */
@@ -603,8 +699,8 @@ const fullHtml = `<!DOCTYPE html>
       border-left: 0.6px solid #94a3b8;
       border-right: 0.6px solid #94a3b8;
       background: #f8fafc;
-      padding: 5pt 8pt;
-      margin: 5pt 0;
+      padding: 4.5pt 8pt;
+      margin: 4pt 0;
       width: 100%;
     }
     .alg-title {
@@ -612,14 +708,14 @@ const fullHtml = `<!DOCTYPE html>
       font-weight: 700;
       border-bottom: 1px solid #334155;
       padding-bottom: 2pt;
-      margin-bottom: 3.5pt;
+      margin-bottom: 3pt;
       color: #0f172a;
     }
 
     .code-box {
       border: 0.8px solid #334155;
       background: #f8fafc;
-      margin: 4.5pt 0;
+      margin: 4pt 0;
       border-radius: 2px;
       overflow: hidden;
       width: 100%;
@@ -627,17 +723,17 @@ const fullHtml = `<!DOCTYPE html>
     .code-title {
       background: #e2e8f0;
       border-bottom: 0.8px solid #334155;
-      padding: 2.5pt 7pt;
+      padding: 2pt 7pt;
       font-size: 9pt;
       font-weight: 700;
       color: #0f172a;
     }
     .code-pre {
       margin: 0;
-      padding: 4.5pt 7pt;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 7.7pt;
-      line-height: 1.24;
+      padding: 4pt 7pt;
+      font-family: "CSBS-Times", "CSBS-Kannada", "Times New Roman", Times, serif;
+      font-size: 8.6pt;
+      line-height: 1.22;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -676,8 +772,8 @@ const fullHtml = `<!DOCTYPE html>
       font-size: 10pt;
       font-weight: 700;
       border-top: 0.75px solid #64748b;
-      padding-top: 3pt;
-      margin-top: 6pt;
+      padding-top: 2.5pt;
+      margin-top: 4pt;
       color: #0f172a;
       flex-shrink: 0;
       background: #ffffff;
@@ -691,7 +787,7 @@ const fullHtml = `<!DOCTYPE html>
       <span style="margin-left:10px; color:#94a3b8;">76 Pages (10 Preliminary Roman + 66 Arabic Main Pages · A4 Standard)</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
-      <a href="/report/CSBS_BE_Project_Report_Kannada_SignBridge.pdf" download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf">⬇ Download 76-Page PDF</a>
+      <a href="/api/report/download-pdf" download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf">⬇ Download 76-Page PDF</a>
       <button class="secondary" onclick="window.print()">🖨 Print / Save as PDF</button>
     </div>
   </div>
@@ -705,8 +801,8 @@ const fullHtml = `<!DOCTYPE html>
 
   <script>
     // Full-Width Precision Typographic Page-Fit Engine:
-    // Guarantees 100% horizontal width alignment across every page while adjusting vertical spacing,
-    // line-height, cell padding, and font-size so zero pages clip or collide with footers.
+    // Guarantees 100% horizontal width alignment and zero page clipping across all 76 A4 pages
+    // with exact CSBS margins (Left 1.25in, Right 1in, Top 0.75in, Bottom 0.75in).
     function calibrateReportPages() {
       const pages = document.querySelectorAll(".report-page");
       pages.forEach((page) => {
@@ -725,14 +821,15 @@ const fullHtml = `<!DOCTYPE html>
 
         // Multi-step full-width vertical compaction if a page is taller than available height
         const steps = [
-          { pFs: "10.8pt", pLh: "1.36", pMb: "4pt", tFs: "8.6pt", tLh: "1.20", cPad: "2.2pt 4pt", hScale: 0.94 },
-          { pFs: "10.3pt", pLh: "1.30", pMb: "3pt", tFs: "8.2pt", tLh: "1.16", cPad: "1.8pt 3.5pt", hScale: 0.90 },
-          { pFs: "9.8pt",  pLh: "1.24", pMb: "2.5pt", tFs: "7.8pt", tLh: "1.13", cPad: "1.5pt 3pt", hScale: 0.86 },
-          { pFs: "9.3pt",  pLh: "1.19", pMb: "2pt", tFs: "7.4pt", tLh: "1.10", cPad: "1.2pt 2.5pt", hScale: 0.82 },
+          { pFs: "11.4pt", pLh: "1.42", pMb: "3.8pt", tFs: "8.6pt", tLh: "1.18", cPad: "2pt 3.8pt", hScale: 0.96 },
+          { pFs: "10.8pt", pLh: "1.35", pMb: "3pt",   tFs: "8.2pt", tLh: "1.15", cPad: "1.6pt 3.2pt", hScale: 0.92 },
+          { pFs: "10.2pt", pLh: "1.28", pMb: "2.4pt", tFs: "7.8pt", tLh: "1.12", cPad: "1.3pt 2.8pt", hScale: 0.88 },
+          { pFs: "9.6pt",  pLh: "1.22", pMb: "1.8pt", tFs: "7.4pt", tLh: "1.09", cPad: "1.0pt 2.4pt", hScale: 0.84 },
+          { pFs: "9.0pt",  pLh: "1.16", pMb: "1.4pt", tFs: "7.0pt", tLh: "1.06", cPad: "0.8pt 2.0pt", hScale: 0.80 },
         ];
 
         for (const step of steps) {
-          if (contentH <= availH - 4) break;
+          if (contentH <= availH - 2) break;
           textBlocks.forEach((el) => {
             const tag = el.tagName.toLowerCase();
             if (tag === "p" || tag === "ul" || tag === "ol") {
@@ -740,34 +837,34 @@ const fullHtml = `<!DOCTYPE html>
               el.style.lineHeight = step.pLh;
               el.style.marginBottom = step.pMb;
             } else if (tag === "li") {
-              el.style.marginBottom = "1.2pt";
+              el.style.marginBottom = "1pt";
             }
           });
           headings.forEach((el) => {
             if (el.classList.contains("sec-h1")) {
-              el.style.marginTop = "4.5pt";
-              el.style.marginBottom = "2pt";
-              el.style.fontSize = (14.8 * step.hScale).toFixed(1) + "pt";
+              el.style.marginTop = "4pt";
+              el.style.marginBottom = "1.8pt";
+              el.style.fontSize = (16.0 * step.hScale).toFixed(1) + "pt";
             } else if (el.classList.contains("sec-h2")) {
-              el.style.marginTop = "3.5pt";
-              el.style.marginBottom = "1.5pt";
-              el.style.fontSize = (13.0 * step.hScale).toFixed(1) + "pt";
+              el.style.marginTop = "3pt";
+              el.style.marginBottom = "1.2pt";
+              el.style.fontSize = (14.0 * step.hScale).toFixed(1) + "pt";
             } else if (el.classList.contains("chapter-title-center")) {
-              el.style.marginBottom = "6pt";
-              el.style.paddingBottom = "3pt";
+              el.style.marginBottom = "5pt";
+              el.style.paddingBottom = "2.5pt";
             }
           });
           tables.forEach((t) => {
             t.style.fontSize = step.tFs;
             t.style.lineHeight = step.tLh;
-            t.style.marginBottom = "3pt";
+            t.style.marginBottom = "2.5pt";
           });
           cells.forEach((c) => {
             c.style.padding = step.cPad;
           });
           boxes.forEach((b) => {
-            b.style.margin = "2.5pt 0";
-            b.style.padding = "3pt 6pt";
+            b.style.margin = "2pt 0";
+            b.style.padding = "2.5pt 5pt";
           });
           contentH = inner.scrollHeight;
         }
@@ -786,12 +883,22 @@ const fullHtml = `<!DOCTYPE html>
           }
         }
       });
+      window.__reportCalibrated = true;
+    }
+
+    async function initCalibration() {
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (e) {}
+      }
+      calibrateReportPages();
     }
 
     if (document.readyState === "complete") {
-      calibrateReportPages();
+      initCalibration();
     } else {
-      window.addEventListener("load", calibrateReportPages);
+      window.addEventListener("load", initCalibration);
     }
   </script>
 </body>

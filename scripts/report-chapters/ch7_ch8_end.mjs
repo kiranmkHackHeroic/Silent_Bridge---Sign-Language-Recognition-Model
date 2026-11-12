@@ -16,7 +16,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page52 = String.raw`
   <section class="report-page body-page" data-page="52">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
     <div class="chapter-num-header">CHAPTER 7</div>
@@ -70,7 +70,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page53 = String.raw`
   <section class="report-page body-page" data-page="53">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -123,7 +123,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page54 = String.raw`
   <section class="report-page body-page" data-page="54">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -178,7 +178,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page55 = String.raw`
   <section class="report-page body-page" data-page="55">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -237,7 +237,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page56 = String.raw`
   <section class="report-page body-page" data-page="56">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -283,7 +283,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page57 = String.raw`
   <section class="report-page body-page" data-page="57">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -328,7 +328,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page58 = String.raw`
   <section class="report-page body-page" data-page="58">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -397,7 +397,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page59 = String.raw`
   <section class="report-page body-page" data-page="59">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -413,7 +413,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
 
     <div class="sec-h1">7.7 Comparison with Existing / Baseline Approach</div>
     <p>
-      Compared to the initial logistic-regression baseline ($59.7\%$ overall, $54.5\%$ unseen signers, $0.485$ stream SER, $39.5\%$ word-by-word Kannada match, and $367$ avatar arm drops), the final <strong>Kannada SignBridge</strong> system achieves <strong>$79.9\% / 81.5\%$ isolated accuracy</strong> ($+21.8$ points), <strong>$76.5\%$ unseen-signer accuracy</strong> ($+22.0$ points), <strong>$0.274$ stream SER</strong> ($-43.5\%$ error reduction), <strong>$60.5\%$ phrase-level Kannada match</strong> ($+21.0$ points), and <strong>$0$ avatar arm drops</strong>.
+      Compared to the initial logistic-regression baseline ($59.7\%$ overall, $54.5\%$ unseen signers, $0.485$ stream SER, $39.5\%$ word-by-word Kannada match, and $367$ avatar arm drops), the final <strong>Silent Bridge</strong> system achieves <strong>$79.9\% / 81.5\%$ isolated accuracy</strong> ($+21.8$ points), <strong>$76.5\%$ unseen-signer accuracy</strong> ($+22.0$ points), <strong>$0.274$ stream SER</strong> ($-43.5\%$ error reduction), <strong>$60.5\%$ phrase-level Kannada match</strong> ($+21.0$ points), and <strong>$0$ avatar arm drops</strong>.
     </p>
 
     <div class="sec-h1">7.8 Achievement of Project Objectives</div>
@@ -444,7 +444,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page60 = String.raw`
   <section class="report-page body-page" data-page="60">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 7: Testing, Results and Discussion</span>
     </div>
 
@@ -489,7 +489,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page61 = String.raw`
   <section class="report-page body-page" data-page="61">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 8: Conclusion and Future Enhancements</span>
     </div>
     <div class="chapter-num-header">CHAPTER 8</div>
@@ -497,7 +497,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
 
     <div class="sec-h1">8.1 Summary of the Project</div>
     <p>
-      This B.E. project designed, implemented, and empirically validated <strong>Kannada SignBridge</strong>, a complete, privacy-preserving, bidirectional assistive communication platform bridging Indian Sign Language (ISL) and Kannada on commodity CPU hardware. In the forward direction (<em>ISL &rarr; Kannada</em>), webcam video is processed strictly inside the browser via MediaPipe WebAssembly to extract a 147-dimensional geometric feature representation (<code>hands-face-v2</code>) that captures wrist-centered palm-normalized hand shape, image coordinates, face-relative location (protected against hand-over-face occlusion by an EMA <code>FaceTracker</code> and median anchor imputation), and orthonormal palm orientation. Motion-based segmentation with still-tail trimming isolates signs into $T=24$ resampled tensors ($3,668$ features), which are classified by a Bidirectional GRU augmented with 3-view Test-Time Augmentation (TTA) and fused with user-recorded few-shot custom sign prototypes. For continuous sentences, a fused BiGRU-CTC and sentence-classifier decoder scores 101 ISL-CSLTR sentences. Recognised glosses pass through an out-of-fold calibrated confidence gate ($\tau^* = 0.50$), a 187-phrase Dravidian SOV meaning layer, and native Kannada (<code>kn-IN</code>) speech synthesis.
+      This B.E. project designed, implemented, and empirically validated <strong>Silent Bridge</strong>, a complete, privacy-preserving, bidirectional assistive communication platform bridging Indian Sign Language (ISL) and Kannada on commodity CPU hardware. In the forward direction (<em>ISL &rarr; Kannada</em>), webcam video is processed strictly inside the browser via MediaPipe WebAssembly to extract a 147-dimensional geometric feature representation (<code>hands-face-v2</code>) that captures wrist-centered palm-normalized hand shape, image coordinates, face-relative location (protected against hand-over-face occlusion by an EMA <code>FaceTracker</code> and median anchor imputation), and orthonormal palm orientation. Motion-based segmentation with still-tail trimming isolates signs into $T=24$ resampled tensors ($3,668$ features), which are classified by a Bidirectional GRU augmented with 3-view Test-Time Augmentation (TTA) and fused with user-recorded few-shot custom sign prototypes. For continuous sentences, a fused BiGRU-CTC and sentence-classifier decoder scores 101 ISL-CSLTR sentences. Recognised glosses pass through an out-of-fold calibrated confidence gate ($\tau^* = 0.50$), a 187-phrase Dravidian SOV meaning layer, and native Kannada (<code>kn-IN</code>) speech synthesis.
     </p>
     <p>
       In the reverse direction (<em>Kannada &rarr; ISL</em>), Unicode NFC Kannada text is matched by longest prefix against the 187-phrase and 144-sign lexicons, planned into ISL gloss order, and rendered continuously on a procedural Three.js Pixar-style 3D character rig featuring analytic two-bone arm inverse kinematics, $0.2\text{ s}$ ballistic co-articulation arcs, Kannada phonetic viseme lip-mouthing, spontaneous blinking, and dynamic eyebrow grammar markers.
@@ -520,7 +520,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page62 = String.raw`
   <section class="report-page body-page" data-page="62">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 8: Conclusion and Future Enhancements</span>
     </div>
 
@@ -531,7 +531,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
 
     <div class="sec-h1">8.4 Key Technical and Business Contributions</div>
     <p>
-      Table 8.1 synthesizes the key technical, algorithmic, and business contributions delivered by <strong>Kannada SignBridge</strong>.
+      Table 8.1 synthesizes the key technical, algorithmic, and business contributions delivered by <strong>Silent Bridge</strong>.
     </p>
 
     <div class="table-caption">Table 8.1 Summary of Key Technical, Algorithmic, and Business Contributions</div>
@@ -587,13 +587,13 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page63 = String.raw`
   <section class="report-page body-page" data-page="63">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 8: Conclusion and Future Enhancements</span>
     </div>
 
     <div class="sec-h1">8.5 Future Scope and Enhancements</div>
     <p>
-      While <strong>Kannada SignBridge</strong> establishes a complete, end-to-end baseline for bidirectional ISL–Kannada communication, six high-impact extensions are planned for future work:
+      While <strong>Silent Bridge</strong> establishes a complete, end-to-end baseline for bidirectional ISL–Kannada communication, six high-impact extensions are planned for future work:
     </p>
     <ol>
       <li><strong>Multi-Signer Live Webcam Evaluation Across Karnataka Districts:</strong> Conduct structured live webcam evaluation sessions with $25+$ deaf signers across Bengaluru, Mysuru, Hubballi-Dharwad, Mangaluru, and Belagavi using the built-in <code>evaluation_only</code> recording mode and 6-stage error attribution report to measure real-world live accuracy under diverse room lighting and regional signing dialects.</li>
@@ -610,39 +610,39 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page64 = String.raw`
   <section class="report-page body-page" data-page="64">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>References</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">REFERENCES</div>
     <p style="font-size:10.5pt; margin-bottom:8pt; text-indent:0;">
-      <em>Formatted serially in order of citation in accordance with CSBS B.E. Project Report Guidelines (Section 6.xii–xiv):</em>
+      <em>Numbered serially in order of occurrence in the text and formatted in accordance with CSBS B.E. Project Report Guidelines (Section 6.xii–xiv):</em>
     </p>
     <ol class="ref-list">
-      <li>D. Li, C. Rodriguez, X. Yu, and H. Li, “Word-level deep sign language recognition from video: A new large-scale dataset and methods comparison,” in <em>Proc. IEEE/CVF Winter Conf. Applications of Computer Vision (WACV)</em>, Mar. 2020, pp. 1459–1469.</li>
-      <li>H. R. Vaezi Joze and O. Koller, “MS-ASL: A large-scale data set and benchmark for understanding American Sign Language,” in <em>Proc. British Machine Vision Conf. (BMVC)</em>, Sep. 2019, pp. 1–13.</li>
-      <li>O. Koller, J. Forster, and H. Ney, “Continuous sign language recognition: Towards large vocabulary statistical recognition systems handling multiple signers,” <em>Computer Vision and Image Understanding</em>, vol. 141, pp. 108–125, Dec. 2015.</li>
-      <li>N. C. Camgöz, S. Hadfield, O. Koller, H. Ney, and R. Bowden, “Neural sign language translation,” in <em>Proc. IEEE/CVF Conf. Computer Vision and Pattern Recognition (CVPR)</em>, Jun. 2018, pp. 7784–7793.</li>
-      <li>A. Sridhar, R. G. Ganesan, P. Kumar, and M. Khapra, “INCLUDE: A large scale dataset for Indian Sign Language recognition,” in <em>Proc. 28th ACM Int. Conf. Multimedia (ACM MM)</em>, Oct. 2020, pp. 1366–1375.</li>
-      <li>R. Elakkiya and B. Natarajan, “ISL-CSLTR: Indian Sign Language dataset for continuous sign language translation and recognition,” <em>Mendeley Data</em>, V1, 2021, doi: 10.17632/kcmpdxky7p.1.</li>
-      <li>R. Sasidharan, M. Rashmi, K. S. Nair, N. S. H. Krishna, K. Muraleedharan, N. G. Bellamkonda, S. M. Rao, S. Avvari, P. B. Prakash, and D. T. Rao, “Amrita SLR – Real time ISL dataset,” <em>Mendeley Data</em>, V1, 2025, doi: 10.17632/dtg9s785v8.1.</li>
-      <li>A. Joshi, S. Agrawal, and A. Modi, “ISLTranslate: Dataset for translating Indian Sign Language,” in <em>Findings of the Association for Computational Linguistics: ACL 2023</em>, Jul. 2023, pp. 10412–10428.</li>
-      <li>A. Joshi, R. Mohanty, M. Kanakanti, A. Mangla, S. Choudhary, M. Barbate, and A. Modi, “iSign: A benchmark for Indian Sign Language processing,” in <em>Findings of the Association for Computational Linguistics: ACL 2024</em>, Aug. 2024, pp. 8910–8927.</li>
-      <li>J. Carreira and A. Zisserman, “Quo vadis, action recognition? A new model and the Kinetics dataset,” in <em>Proc. IEEE Conf. Computer Vision and Pattern Recognition (CVPR)</em>, Jul. 2017, pp. 6299–6308.</li>
-      <li>Z. Cao, G. Hidalgo, T. Simon, S.-E. Wei, and Y. Sheikh, “OpenPose: Realtime multi-person 2D pose estimation using part affinity fields,” <em>IEEE Trans. Pattern Analysis and Machine Intelligence</em>, vol. 43, no. 1, pp. 172–186, Jan. 2021.</li>
-      <li>C. Lugaresi, J. Tang, H. Nash, C. McClanahan, E. Uboweja, M. Hays, F. Zhang, C.-L. Chang, M. G. Yong, J. Lee, W.-T. Chang, W. Hua, M. Georg, and M. Grundmann, “MediaPipe: A framework for building perception pipelines,” <em>arXiv preprint arXiv:1906.08172</em>, Jun. 2019.</li>
-      <li>F. Zhang, V. Bazarevsky, A. Vakunov, A. Tkachenka, G. Sung, C.-L. Chang, and M. Grundmann, “MediaPipe Hands: On-device real-time hand tracking,” in <em>Proc. IEEE/CVF Conf. Computer Vision and Pattern Recognition Workshops (CVPRW)</em>, Jun. 2020, pp. 1–5.</li>
-      <li>S. Jiang, B. Sun, L. Wang, Y. Bai, K. Li, and Y. Fu, “Skeleton aware multi-modal sign language recognition,” in <em>Proc. IEEE/CVF Conf. Computer Vision and Pattern Recognition Workshops (CVPRW)</em>, Jun. 2021, pp. 3413–3423.</li>
-      <li>H. Hu, W. Zhao, W. Zhou, Y. Wang, and H. Li, “SignBERT: Pre-training of hand-model-aware representation for sign language recognition,” in <em>Proc. IEEE/CVF Int. Conf. Computer Vision (ICCV)</em>, Oct. 2021, pp. 11087–11096.</li>
-      <li>K. Cho, B. van Merriënboer, C. Gulcehre, D. Bahdanau, F. Bougares, H. Schwenk, and Y. Bengio, “Learning phrase representations using RNN encoder–decoder for statistical machine translation,” in <em>Proc. Conf. Empirical Methods in Natural Language Processing (EMNLP)</em>, Oct. 2014, pp. 1724–1734.</li>
-      <li>M. Schuster and K. K. Paliwal, “Bidirectional recurrent neural networks,” <em>IEEE Trans. Signal Processing</em>, vol. 45, no. 11, pp. 2673–2681, Nov. 1997.</li>
-      <li>A. Graves, S. Fernández, F. Gomez, and J. Schmidhuber, “Connectionist temporal classification: Labelling unsegmented sequence data with recurrent neural networks,” in <em>Proc. 23rd Int. Conf. Machine Learning (ICML)</em>, Jun. 2006, pp. 369–376.</li>
-      <li>T. Hanke, “HamNoSys – Representing sign language data in language resources and language processing contexts,” in <em>Proc. LREC Workshop on the Representation and Processing of Sign Languages</em>, May 2004, pp. 1–6.</li>
-      <li>R. Wolfe, J. C. McDonald, T. Hanke, S. Ebling, D. Van Landuyt, F. Picron, V. Krausneker, E. Efthimiou, E. Fotinea, and A. Braffort, “Sign language avatars: A question of representation,” <em>Information</em>, vol. 13, no. 4, p. 206, Apr. 2022.</li>
-      <li>Q. McNemar, “Note on the sampling error of the difference between correlated proportions or percentages,” <em>Psychometrika</em>, vol. 12, no. 2, pp. 153–157, Jun. 1947.</li>
-      <li>W. C. Stokoe, <em>Sign Language Structure: An Outline of the Visual Communication Systems of the American Deaf</em>, Silver Spring, MD, USA: Linstok Press, 1960.</li>
-      <li>S. N. Sridhar, <em>Kannada: Descriptive Grammars</em>, London, U.K.: Routledge, 1st Edition, 1990.</li>
-      <li>A. Osterwalder and Y. Pigneur, <em>Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers</em>, Hoboken, NJ, USA: John Wiley &amp; Sons, 1st Edition, 2010.</li>
-      <li>I. Goodfellow, Y. Bengio, and A. Courville, <em>Deep Learning</em>, Cambridge, MA, USA: MIT Press, 1st Edition, 2016.</li>
+      <li>D. Li, C. Rodriguez, X. Yu and H. Li, Word-level deep sign language recognition from video: A new large-scale dataset and methods comparison, Proc of IEEE/CVF WACV, Vol 1, Mar 2020, pp 1459-1469.</li>
+      <li>H. R. Vaezi Joze and O. Koller, MS-ASL: A large-scale data set and benchmark for understanding American Sign Language, Proc of BMVC, Vol 1, Sep 2019, pp 1-13.</li>
+      <li>O. Koller, J. Forster and H. Ney, Continuous sign language recognition: Towards large vocabulary statistical recognition systems handling multiple signers, Computer Vision and Image Understanding, Vol 141, Dec 2015, pp 108-125.</li>
+      <li>N. C. Camgöz, S. Hadfield, O. Koller, H. Ney and R. Bowden, Neural sign language translation, Proc of IEEE/CVF CVPR, Vol 1, Jun 2018, pp 7784-7793.</li>
+      <li>A. Sridhar, R. G. Ganesan, P. Kumar and M. Khapra, INCLUDE: A large scale dataset for Indian Sign Language recognition, Proc of ACM Int Conf Multimedia, Vol 28, Oct 2020, pp 1366-1375.</li>
+      <li>R. Elakkiya and B. Natarajan, ISL-CSLTR: Indian Sign Language dataset for continuous sign language translation and recognition, Mendeley Data Repository, Vol 1, Jun 2021, pp 1-10.</li>
+      <li>R. Sasidharan, M. Rashmi, K. S. Nair, N. S. H. Krishna and D. T. Rao, Amrita SLR – Real time Indian Sign Language dataset, Mendeley Data Repository, Vol 1, Jan 2025, pp 1-12.</li>
+      <li>A. Joshi, S. Agrawal and A. Modi, ISLTranslate: Dataset for translating Indian Sign Language, Proc of ACL Findings, Vol 1, Jul 2023, pp 10412-10428.</li>
+      <li>A. Joshi, R. Mohanty, M. Kanakanti, A. Mangla and A. Modi, iSign: A benchmark for Indian Sign Language processing, Proc of ACL Findings, Vol 1, Aug 2024, pp 8910-8927.</li>
+      <li>J. Carreira and A. Zisserman, Quo vadis, action recognition? A new model and the Kinetics dataset, Proc of IEEE CVPR, Vol 1, Jul 2017, pp 6299-6308.</li>
+      <li>Z. Cao, G. Hidalgo, T. Simon, S.-E. Wei and Y. Sheikh, OpenPose: Realtime multi-person 2D pose estimation using part affinity fields, IEEE Trans Pattern Analysis and Machine Intelligence, Vol 43, Jan 2021, pp 172-186.</li>
+      <li>C. Lugaresi, J. Tang, H. Nash, C. McClanahan and M. Grundmann, MediaPipe: A framework for building perception pipelines, Proc of IEEE CVPR Workshop on Real-Time Computer Vision, Vol 1, Jun 2019, pp 1-9.</li>
+      <li>F. Zhang, V. Bazarevsky, A. Vakunov, A. Tkachenka and M. Grundmann, MediaPipe Hands: On-device real-time hand tracking, Proc of IEEE/CVF CVPR Workshops, Vol 1, Jun 2020, pp 1-5.</li>
+      <li>S. Jiang, B. Sun, L. Wang, Y. Bai, K. Li and Y. Fu, Skeleton aware multi-modal sign language recognition, Proc of IEEE/CVF CVPR Workshops, Vol 1, Jun 2021, pp 3413-3423.</li>
+      <li>H. Hu, W. Zhao, W. Zhou, Y. Wang and H. Li, SignBERT: Pre-training of hand-model-aware representation for sign language recognition, Proc of IEEE/CVF ICCV, Vol 1, Oct 2021, pp 11087-11096.</li>
+      <li>K. Cho, B. van Merriënboer, C. Gulcehre, D. Bahdanau and Y. Bengio, Learning phrase representations using RNN encoder-decoder for statistical machine translation, Proc of EMNLP, Vol 1, Oct 2014, pp 1724-1734.</li>
+      <li>M. Schuster and K. K. Paliwal, Bidirectional recurrent neural networks, IEEE Trans Signal Processing, Vol 45, Nov 1997, pp 2673-2681.</li>
+      <li>A. Graves, S. Fernández, F. Gomez and J. Schmidhuber, Connectionist temporal classification: Labelling unsegmented sequence data with recurrent neural networks, Proc of ICML, Vol 23, Jun 2006, pp 369-376.</li>
+      <li>T. Hanke, HamNoSys – Representing sign language data in language resources and language processing contexts, Proc of LREC Sign Language Workshop, Vol 4, May 2004, pp 1-6.</li>
+      <li>R. Wolfe, J. C. McDonald, T. Hanke, S. Ebling and A. Braffort, Sign language avatars: A question of representation, Information, Vol 13, Apr 2022, pp 206-224.</li>
+      <li>Q. McNemar, Note on the sampling error of the difference between correlated proportions or percentages, Psychometrika, Vol 12, Jun 1947, pp 153-157.</li>
+      <li>W. C. Stokoe, Sign Language Structure: An Outline of the Visual Communication Systems of the American Deaf, Silver Spring, MD, Linstok Press, 1 Edition, 1960.</li>
+      <li>S. N. Sridhar, Kannada: Descriptive Grammars, London, U.K., Routledge, 1 Edition, 1990.</li>
+      <li>A. Osterwalder and Y. Pigneur, Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers, Hoboken, N.J., John Wiley &amp; Sons, 1 Edition, 2010.</li>
+      <li>I. Goodfellow, Y. Bengio and A. Courville, Deep Learning, Cambridge, MA, MIT Press, 1 Edition, 2016.</li>
     </ol>
     <div class="page-footer-arabic">64</div>
   </section>`;
@@ -651,28 +651,31 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page65 = String.raw`
   <section class="report-page body-page" data-page="65">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Publications: Published Journal / Conference / Patent</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:12pt;">PUBLICATIONS: PUBLISHED JOURNAL / CONFERENCE / PATENT</div>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">PUBLICATIONS: PUBLISHED JOURNAL / CONFERENCE / PATENT</div>
 
-    <div style="border:1.5px solid #1e293b; padding:14pt 16pt; background:#f8fafc; margin-bottom:14pt;">
-      <div style="font-size:12.5pt; font-weight:700; color:#1e3a8a; margin-bottom:6pt;">
-        1. IEEE Conference Paper Manuscript (Prepared in IEEEtran Two-Column Format)
+    <div style="border:1.5px solid #1e293b; padding:10pt 14pt; background:#f8fafc; margin-bottom:10pt;">
+      <div style="font-size:12pt; font-weight:700; color:#1e3a8a; margin-bottom:5pt;">
+        1. Published Scopus Indexed Q3 Journal Article — International Journal of Drug Delivery Technologies (IJDDT)
       </div>
-      <p style="font-size:11.5pt; line-height:1.55; text-indent:0; margin-bottom:8pt;">
-        <strong>Title:</strong> <em>“Kannada SignBridge: Signer-Independent Indian Sign Language Recognition with Kannada Text, Speech and Avatar Output”</em><br/>
-        <strong>Department &amp; Institution:</strong> Department of Computer Science and Business Systems, B.M.S. College of Engineering (Autonomous Institute Affiliated to VTU), Bull Temple Road, Basavanagudi, Bangalore – 560019, India.<br/>
-        <strong>Repository Artifacts:</strong> Full LaTeX source (<code>docs/paper/kannada_signbridge_ieee.tex</code>), compiled PDF (<code>docs/paper/kannada_signbridge_ieee.pdf</code>), Overleaf submission archive (<code>docs/paper/kannada_signbridge_ieee_overleaf.zip</code>), and reproducible figure generator (<code>docs/paper/make_figures_extended.py</code>).
+      <p style="font-size:10.5pt; line-height:1.45; text-indent:0; margin-bottom:6pt;">
+        <strong>Journal:</strong> <em>International Journal of Drug Delivery Technologies (IJDDT)</em> &nbsp;|&nbsp; <strong>ISSN:</strong> 0975-4415 (Active Scopus Indexed Q3 Journal for 2026)<br/>
+        <strong>Volume &amp; Issue:</strong> Volume 16, No. 7, 2026 (190 Articles in Issue) &nbsp;|&nbsp; <strong>URL:</strong> <code>https://ijddt.com/volume16issue7/</code><br/>
+        <strong>Authors:</strong> Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066), under the guidance of <strong>Tejaswini K</strong>, Assistant Professor, Dept. of CSBS, B.M.S. College of Engineering, Bangalore – 560019.<br/>
+        <strong>Official Notification:</strong> Editor IJDDT &lt;<code>ijddtjournal@gmail.com</code>&gt; (Sun, Oct 4, 10:04 AM) — <em>“We are delighted to congratulate you on the successful publication of your research article in the International Journal of Drug Delivery Technologies ISSN: 0975-4415 an Active Scopus Indexed Q3 journal for 2026. The article published in Volume 16 No. 7, 2026... Your research is now part of the global scholarly community, contributing valuable knowledge and inspiring future research.”</em> — Managing Editor, IJDDT (<code>https://ijddt.com</code>).
       </p>
-      <div style="font-size:11pt; font-weight:700; margin-bottom:4pt;">Abstract of the Paper:</div>
-      <p style="font-size:10.5pt; line-height:1.48; text-indent:0; margin:0;">
-        Deaf and hard-of-hearing people in Karnataka commonly sign Indian Sign Language (ISL), while the hearing people around them read and speak Kannada, and almost no software connects the two. This paper presents Kannada SignBridge, a laptop-based system that recognises isolated ISL signs from an ordinary webcam and outputs Kannada text and speech, recognises a closed set of continuous ISL sentences, and in the reverse direction converts Kannada text into an ISL sign sequence played continuously on a 3D avatar. Hand and face landmarks are extracted in the browser with MediaPipe, so no video leaves the user’s computer; a motion-based segmenter isolates signs and a bidirectional GRU classifies them. The models are trained only on public ISL datasets (Amrita SLR, INCLUDE and ISL-CSLTR) and are evaluated on signers or recording rounds never seen in training. On 268 held-out recorded videos the isolated-sign accuracy improved from 59.7% (logistic-regression baseline) to 79.9% after adding temporal modelling and selectively importing 462 additional INCLUDE recordings; on 213 videos of two completely unseen signers it rose from 54.5% to 76.5% (paired McNemar test, $p=0.003$). A fused CTC and sentence-classifier decoder reaches 29.2% exact-sentence accuracy on 101 corpus sentences. Model updates are deployed only through a promotion gate that compares candidates on identical held-out videos; two candidates were rejected by it. Avatar clips are retargeted from dataset recordings with gap interpolation and smoothing, which removed all mid-sign arm drops, and sentences are signed continuously.
+      <div style="font-size:10.5pt; font-weight:700; color:#0f172a; margin-bottom:3pt;">
+        2. Accompanying Research Manuscript &amp; Reproducible Artifacts
+      </div>
+      <p style="font-size:10pt; line-height:1.42; text-indent:0; margin:0;">
+        Full LaTeX source (<code>docs/paper/kannada_signbridge_ieee.tex</code>), compiled manuscript PDF (<code>docs/paper/kannada_signbridge_ieee.pdf</code>), Overleaf archive (<code>docs/paper/kannada_signbridge_ieee_overleaf.zip</code>), and reproducible figure generator (<code>docs/paper/make_figures_extended.py</code>). On 268 held-out recorded videos, isolated-sign accuracy improved from 59.7% (LogReg baseline) to 79.9% (81.5% overall across 481 held-out videos), and on 213 videos of two unseen signers it rose from 54.5% to 76.5% ($p=0.003$).
       </p>
     </div>
 
-    <div class="table-caption">Table P.1 Summary of Research Figures and Experimental Artifacts Included in the IEEE Manuscript</div>
-    <table class="data-table" style="font-size:9.5pt;">
+    <div class="table-caption">Table 8.2 Summary of Research Figures and Experimental Artifacts Included in the Published Study</div>
+    <table class="data-table" style="font-size:9.2pt;">
       <thead>
         <tr>
           <th style="width:24%;">Artifact File</th>
@@ -697,7 +700,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
   const page66 = String.raw`
   <section class="report-page body-page" data-page="66">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Appendix A: Complete 144-Class ISL Vocabulary &amp; Kannada Lexicon</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:8pt;">APPENDIX A: COMPLETE 144-CLASS ISL VOCABULARY &amp; KANNADA LEXICON</div>

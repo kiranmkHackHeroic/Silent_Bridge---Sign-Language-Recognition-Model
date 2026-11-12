@@ -7,7 +7,7 @@ export function buildChapter5(figSrcs) {
   const page32 = String.raw`
   <section class="report-page body-page" data-page="32">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
     <div class="chapter-num-header">CHAPTER 5</div>
@@ -15,17 +15,17 @@ export function buildChapter5(figSrcs) {
 
     <div class="sec-h1">5.1 Proposed Solution / System Overview</div>
     <p>
-      <strong>Kannada SignBridge</strong> is architected as a modular, privacy-preserving, bidirectional translation and visualization system connecting Indian Sign Language (ISL) and Kannada. Rather than streaming high-bandwidth, privacy-sensitive webcam video to remote GPU servers, the browser front end extracts 3D hand and facial landmarks locally at $30\text{ FPS}$ using MediaPipe Tasks Vision WebAssembly. In the forward direction (<em>ISL Signer &rarr; Kannada</em>), landmark streams are segmented by motion activity, encoded into 3,668-dimensional spatio-temporal tensors, classified via a Bidirectional GRU with 3-view Test-Time Augmentation (or decoded at sentence level via fused BiGRU-CTC + sentence classification), gated by an out-of-fold calibrated threshold, translated into grammatical SOV Kannada sentences, and spoken aloud via Kannada TTS. In the reverse direction (<em>Kannada Text &rarr; 3D ISL Avatar</em>), Unicode NFC Kannada input is matched against a 187-phrase and 144-sign lexicon, planned into ISL gloss order, and rendered continuously on a procedural 3D Pixar-style character rig solved with analytic two-bone inverse kinematics, ballistic co-articulation arcs, and Kannada phonetic viseme mouthing.
+      <strong>Silent Bridge</strong> is architected as a modular, privacy-preserving, bidirectional translation and visualization system connecting Indian Sign Language (ISL) and Kannada. Rather than streaming high-bandwidth, privacy-sensitive webcam video to remote GPU servers, the browser front end extracts 3D hand and facial landmarks locally at $30\text{ FPS}$ using MediaPipe Tasks Vision WebAssembly. In the forward direction (<em>ISL Signer &rarr; Kannada</em>), landmark streams are segmented by motion activity, encoded into 3,668-dimensional spatio-temporal tensors, classified via a Bidirectional GRU with 3-view Test-Time Augmentation (or decoded at sentence level via fused BiGRU-CTC + sentence classification), gated by an out-of-fold calibrated threshold, translated into grammatical SOV Kannada sentences, and spoken aloud via Kannada TTS. In the reverse direction (<em>Kannada Text &rarr; 3D ISL Avatar</em>), Unicode NFC Kannada input is matched against a 187-phrase and 144-sign lexicon, planned into ISL gloss order, and rendered continuously on a procedural 3D Pixar-style character rig solved with analytic two-bone inverse kinematics, ballistic co-articulation arcs, and Kannada phonetic viseme mouthing.
     </p>
 
     <div class="sec-h1">5.2 System Architecture</div>
     <p>
-      Fig. 5.1 depicts the end-to-end architecture of <strong>Kannada SignBridge</strong>, highlighting the strict client-side privacy boundary across both WebSocket backend mode and 100% In-Browser ONNX WebAssembly mode.
+      Fig. 5.1 depicts the end-to-end architecture of <strong>Silent Bridge</strong>, highlighting the strict client-side privacy boundary across both WebSocket backend mode and 100% In-Browser ONNX WebAssembly mode.
     </p>
 
     <div class="figure-box">
-      <img src="${figArch}" alt="Kannada SignBridge System Architecture" style="width:100%; max-height:310px; object-fit:contain; display:block; margin:0 auto; border:1px solid #ccc; padding:4px; background:#fff;" />
-      <div class="figure-caption">Fig. 5.1 Kannada SignBridge system architecture. Camera frames never leave the browser; top path performs ISL-to-Kannada recognition and speech; bottom path performs Kannada-to-ISL 3D avatar synthesis.</div>
+      <img src="${figArch}" alt="Silent Bridge System Architecture" style="width:100%; max-height:310px; object-fit:contain; display:block; margin:0 auto; border:1px solid #ccc; padding:4px; background:#fff;" />
+      <div class="figure-caption">Fig. 5.1 Silent Bridge system architecture. Camera frames never leave the browser; top path performs ISL-to-Kannada recognition and speech; bottom path performs Kannada-to-ISL 3D avatar synthesis.</div>
     </div>
     <div class="page-footer-arabic">32</div>
   </section>`;
@@ -33,7 +33,7 @@ export function buildChapter5(figSrcs) {
   const page33 = String.raw`
   <section class="report-page body-page" data-page="33">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
@@ -100,7 +100,7 @@ export function buildChapter5(figSrcs) {
   const page34 = String.raw`
   <section class="report-page body-page" data-page="34">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
@@ -203,13 +203,13 @@ export function buildChapter5(figSrcs) {
   const page35 = String.raw`
   <section class="report-page body-page" data-page="35">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
     <div class="sec-h1">5.5 Data Design / Database Design</div>
     <p>
-      To guarantee zero-dependency portability across Windows, Linux, macOS, and offline browser environments, <strong>Kannada SignBridge</strong> uses deterministic, version-controlled JSON document stores on disk paired with browser <code>localStorage</code> for client-side custom sign prototypes. The cornerstone of the data design is the <strong>147-dimensional per-frame feature schema (<code>hands-face-v2</code>)</strong> defined identically in <code>backend/app/recognition/landmarks.py</code>, <code>backend_ts/features.ts</code>, and <code>frontend/src/services/onnxInference.ts</code> (Table 5.2).
+      To guarantee zero-dependency portability across Windows, Linux, macOS, and offline browser environments, <strong>Silent Bridge</strong> uses deterministic, version-controlled JSON document stores on disk paired with browser <code>localStorage</code> for client-side custom sign prototypes. The cornerstone of the data design is the <strong>147-dimensional per-frame feature schema (<code>hands-face-v2</code>)</strong> defined identically in <code>backend/app/recognition/landmarks.py</code>, <code>backend_ts/features.ts</code>, and <code>frontend/src/services/onnxInference.ts</code> (Table 5.2).
     </p>
 
     <div class="table-caption">Table 5.2 Exact 147-Dimensional Per-Frame Feature Vector Layout (Schema: <code>hands-face-v2</code>)</div>
@@ -289,7 +289,7 @@ export function buildChapter5(figSrcs) {
   const page36 = String.raw`
   <section class="report-page body-page" data-page="36">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
@@ -312,7 +312,7 @@ export function buildChapter5(figSrcs) {
         <text x="95" y="84" text-anchor="middle" font-family="Times New Roman" font-size="9">(External Entity)</text>
 
         <ellipse cx="380" cy="76" rx="115" ry="44" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.6"/>
-        <text x="380" y="68" text-anchor="middle" font-family="Times New Roman" font-size="11" font-weight="bold">0.0 Kannada SignBridge</text>
+        <text x="380" y="68" text-anchor="middle" font-family="Times New Roman" font-size="11" font-weight="bold">0.0 Silent Bridge</text>
         <text x="380" y="83" text-anchor="middle" font-family="Times New Roman" font-size="9.2">Bidirectional ISL &leftrightarrow; Kannada</text>
         <text x="380" y="96" text-anchor="middle" font-family="Times New Roman" font-size="8.8">Edge AI Platform</text>
 
@@ -402,7 +402,7 @@ export function buildChapter5(figSrcs) {
         <text x="385" y="438" text-anchor="middle" font-family="Times New Roman" font-size="9.2" font-weight="bold">D4: 161 Cleaned 3D Clips (captured/*.json)</text>
         <line x1="385" y1="422" x2="385" y2="403" stroke="#475569" stroke-width="1.1" marker-end="url(#dfdA)"/>
       </svg>
-      <div class="figure-caption">Fig. 5.3 (A) Level-0 Context DFD and (B) Level-1 Subsystem Data Flow Diagram of Kannada SignBridge.</div>
+      <div class="figure-caption">Fig. 5.3 (A) Level-0 Context DFD and (B) Level-1 Subsystem Data Flow Diagram of Silent Bridge.</div>
     </div>
     <div class="page-footer-arabic">36</div>
   </section>`;
@@ -410,7 +410,7 @@ export function buildChapter5(figSrcs) {
   const page37 = String.raw`
   <section class="report-page body-page" data-page="37">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
@@ -548,7 +548,7 @@ export function buildChapter5(figSrcs) {
   const page38 = String.raw`
   <section class="report-page body-page" data-page="38">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
@@ -602,13 +602,13 @@ export function buildChapter5(figSrcs) {
   const page39 = String.raw`
   <section class="report-page body-page" data-page="39">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
     <div class="sec-h2">5.7.2 BiGRU Classifier, 3-View TTA, Prototype Fusion &amp; Continuous CTC Decoding</div>
     <p>
-      For isolated sign classification, each frame $\tilde{\mathbf{f}}_\tau \in \mathbb{R}^{147}$ ($\tau = 1,\dots,T$) is projected through a linear layer with LayerNorm and dropout into a $96$-unit embedding $\mathbf{e}_\tau$, then processed by a two-direction Bidirectional GRU [16], [17] ($96$ hidden units per direction, $\mathbf{h}_\tau = [\overrightarrow{\mathbf{h}}_\tau \,\|\, \overleftarrow{\mathbf{h}}_\tau] \in \mathbb{R}^{192}$). Temporal mean pooling and max pooling are concatenated with global motion summaries $\mathbf{g}_{\text{mot}}$:
+      For isolated sign classification, each frame $\tilde{\mathbf{f}}_\tau \in \mathbb{R}^{147}$ ($\tau = 1,\dots,T$) is projected through a regularized linear layer with LayerNorm and dropout [25] into a $96$-unit embedding $\mathbf{e}_\tau$, then processed by a two-direction Bidirectional GRU [16], [17] ($96$ hidden units per direction, $\mathbf{h}_\tau = [\overrightarrow{\mathbf{h}}_\tau \,\|\, \overleftarrow{\mathbf{h}}_\tau] \in \mathbb{R}^{192}$). Temporal mean pooling and max pooling are concatenated with global motion summaries $\mathbf{g}_{\text{mot}}$:
     </p>
     <div class="eq-row">
       <span>$$\mathbf{z} = \left[\frac{1}{T}\sum_{\tau=1}^T \mathbf{h}_\tau \;\Big\|\; \max_{\tau=1}^T \mathbf{h}_\tau \;\Big\|\; \mathbf{g}_{\text{mot}}\right], \qquad \mathbf{p}_{\text{BiGRU}}(\mathbf{x}) = \mathrm{softmax}(\mathbf{W}_o \mathbf{z} + \mathbf{b}_o)$$</span>
@@ -652,7 +652,7 @@ export function buildChapter5(figSrcs) {
   const page40 = String.raw`
   <section class="report-page body-page" data-page="40">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
@@ -698,13 +698,13 @@ export function buildChapter5(figSrcs) {
   const page41 = String.raw`
   <section class="report-page body-page" data-page="41">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 
     <div class="sec-h1">5.8 User Interface and Interaction Design</div>
     <p>
-      The user interface of <strong>Kannada SignBridge</strong> is designed around six task-focused workspaces accessible from the top navigation bar, supporting both light and dark high-contrast studio themes:
+      The user interface of <strong>Silent Bridge</strong> is designed around six task-focused workspaces accessible from the top navigation bar, supporting both light and dark high-contrast studio themes:
     </p>
     <ol>
       <li><strong>Live Recognition Workspace (<code>LiveRecognition.tsx</code>):</strong> Features a mirrored camera viewport with real-time 21-point hand skeleton and face bounding-box overlays, a live facial expression and ISL non-manual grammar HUD (Statement, Yes/No Question, Wh-Question, Negation), a hero card displaying the latest recognised sign with confidence and ISL gloss, a <em>Pending Word Confirmation Bar</em> with auto-confirm countdown and top-3 clickable alternatives, an editable Unicode Kannada transcript with punctuation chips and <code>kn-IN</code> speech output, a phrase-level <em>Meaning Panel</em>, and a collapsible 6-stage <em>Pipeline Diagnostics</em> drawer.</li>
@@ -725,7 +725,7 @@ export function buildChapter5(figSrcs) {
   const page42 = String.raw`
   <section class="report-page body-page" data-page="42">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 5: System Design and Methodology</span>
     </div>
 

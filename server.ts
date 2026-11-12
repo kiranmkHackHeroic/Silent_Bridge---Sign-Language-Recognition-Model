@@ -1943,6 +1943,77 @@ async function startServer() {
     app.use("/onnx-wasm", express.static(publicOnnxPath, { setHeaders: setWasmHeaders }));
   }
 
+  // Serve the 76-page CSBS B.E. Project Report and 8-page IEEE Research Paper (PDF, LaTeX, HTML & embedded fonts)
+  // with zero caching so clicking Download always delivers the exact latest paper matching the website preview.
+  const publicReportDir = path.join(FRONTEND_DIR, "public", "report");
+  app.get("/api/report/download-pdf", (_req, res) => {
+    const pdfPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.pdf");
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
+    );
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.sendFile(pdfPath);
+  });
+  app.get("/api/paper/download-pdf", (_req, res) => {
+    const pdfPath = path.join(publicReportDir, "SILENT_BRIDGE_IEEE_Research_Paper.pdf");
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.pdf"'
+    );
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.sendFile(pdfPath);
+  });
+  app.get("/api/paper/download-tex", (_req, res) => {
+    const texPath = path.join(publicReportDir, "SILENT_BRIDGE_IEEE_Paper.tex");
+    res.setHeader("Content-Type", "application/x-tex; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_IEEE_Paper.tex"'
+    );
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.sendFile(texPath);
+  });
+  if (fs.existsSync(publicReportDir)) {
+    app.use(
+      "/report",
+      express.static(publicReportDir, {
+        etag: false,
+        lastModified: false,
+        setHeaders: (res, filePath) => {
+          res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+          if (filePath.endsWith("SILENT_BRIDGE_IEEE_Research_Paper.pdf")) {
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.pdf"'
+            );
+          } else if (filePath.endsWith(".pdf")) {
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
+            );
+          } else if (filePath.endsWith(".tex")) {
+            res.setHeader("Content-Type", "application/x-tex; charset=utf-8");
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_IEEE_Paper.tex"'
+            );
+          }
+        },
+      })
+    );
+  }
+
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({

@@ -6,7 +6,7 @@ export function buildChapters3And4() {
   const page17 = String.raw`
   <section class="report-page body-page" data-page="17">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
     <div class="chapter-num-header">CHAPTER 3</div>
@@ -19,7 +19,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">3.2 Stakeholder Identification and User Needs</div>
     <p>
-      Five primary stakeholder groups interact directly or indirectly with <strong>Kannada SignBridge</strong>. Table 3.1 summarizes their operational context, core communication pain points, and required system capabilities.
+      Five primary stakeholder groups interact directly or indirectly with <strong>Silent Bridge</strong>. Table 3.1 summarizes their operational context, core communication pain points, and required system capabilities.
     </p>
 
     <div class="table-caption">Table 3.1 Stakeholder Identification, Needs Analysis, and System Value Delivery</div>
@@ -29,7 +29,7 @@ export function buildChapters3And4() {
           <th style="width:18%;">Stakeholder Group</th>
           <th style="width:24%;">Role &amp; Operational Context</th>
           <th style="width:30%;">Primary Needs &amp; Pain Points</th>
-          <th style="width:28%;">Kannada SignBridge Solution</th>
+          <th style="width:28%;">Silent Bridge Solution</th>
         </tr>
       </thead>
       <tbody>
@@ -71,7 +71,7 @@ export function buildChapters3And4() {
   const page18 = String.raw`
   <section class="report-page body-page" data-page="18">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
 
@@ -80,7 +80,7 @@ export function buildChapters3And4() {
       From the <strong>User Perspective</strong>, existing communication workarounds—such as writing broken notes on paper, relying on family members as ad-hoc interpreters (which compromises medical and financial confidentiality), or scheduling scarce human interpreters days in advance—create chronic friction and social exclusion. A deaf user needs an instant, self-contained application that respects ISL’s visual-spatial grammar (including facial expressions and eyebrow markers) and transparently indicates when a sign is ambiguous rather than guessing blindly.
     </p>
     <p>
-      From the <strong>Business and Institutional Perspective</strong>, organizations in Karnataka face both regulatory mandates under the <em>RPwD Act 2016</em> and ESG/diversity commitments to make customer-facing counters and internal workplaces accessible. Traditional hardware solutions (specialized RGB-D cameras or wearable sensor gloves costing ₹40,000–₹1,20,000 per unit) suffer from hygiene, calibration, and maintenance failures, while cloud-hosted video AI incurs recurring GPU bandwidth costs and legal liability under India’s <em>Digital Personal Data Protection (DPDP) Act 2023</em>. <strong>Kannada SignBridge</strong> transforms any existing front-desk PC or tablet into an offline-capable ISL–Kannada communication terminal at zero marginal hardware or cloud cost.
+      From the <strong>Business and Institutional Perspective</strong>, organizations in Karnataka face both regulatory mandates under the <em>RPwD Act 2016</em> and ESG/diversity commitments to make customer-facing counters and internal workplaces accessible. Traditional hardware solutions (specialized RGB-D cameras or wearable sensor gloves costing ₹40,000–₹1,20,000 per unit) suffer from hygiene, calibration, and maintenance failures, while cloud-hosted video AI incurs recurring GPU bandwidth costs and legal liability under India’s <em>Digital Personal Data Protection (DPDP) Act 2023</em>. <strong>Silent Bridge</strong> transforms any existing front-desk PC or tablet into an offline-capable ISL–Kannada communication terminal at zero marginal hardware or cloud cost.
     </p>
 
     <div class="sec-h1">3.4 Functional Requirements</div>
@@ -104,7 +104,7 @@ export function buildChapters3And4() {
   const page19 = String.raw`
   <section class="report-page body-page" data-page="19">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
     <ul>
@@ -135,13 +135,13 @@ export function buildChapters3And4() {
   const page20 = String.raw`
   <section class="report-page body-page" data-page="20">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
 
     <div class="sec-h1">3.6 Hardware and Software Requirements</div>
     <p>
-      Because <strong>Kannada SignBridge</strong> is engineered specifically for resource-constrained public institutions, classrooms, and personal laptops across Karnataka, its hardware footprint requires no dedicated GPU. Tables 3.2 and 3.3 detail the hardware and software specifications.
+      Because <strong>Silent Bridge</strong> is engineered specifically for resource-constrained public institutions, classrooms, and personal laptops across Karnataka, its hardware footprint requires no dedicated GPU. Tables 3.2 and 3.3 detail the hardware and software specifications.
     </p>
 
     <div class="table-caption">Table 3.2 Minimum and Recommended Hardware Specifications</div>
@@ -189,7 +189,7 @@ export function buildChapters3And4() {
   const page21 = String.raw`
   <section class="report-page body-page" data-page="21">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
 
@@ -211,7 +211,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h2">3.7.2 Economic / Cost Feasibility</div>
     <p>
-      <strong>Kannada SignBridge</strong> was built using $100\%$ open-source software (React, TypeScript, Three.js, MediaPipe, PyTorch, ONNX Runtime) and open-access CC BY 4.0 datasets (Amrita SLR, INCLUDE, ISL-CSLTR). Development required zero expenditure on proprietary software licenses, zero cloud GPU training bills (full cross-validated model training completes in $43\text{ minutes}$ on a laptop CPU), and zero specialized hardware sensors. In deployment, the 100% in-browser ONNX mode reduces server hosting costs to static file serving ($₹0\text{/month}$ on institutional intranets or static CDNs), yielding exceptional economic feasibility.
+      <strong>Silent Bridge</strong> was built using $100\%$ open-source software (React, TypeScript, Three.js, MediaPipe, PyTorch, ONNX Runtime) and open-access CC BY 4.0 datasets (Amrita SLR, INCLUDE, ISL-CSLTR). Development required zero expenditure on proprietary software licenses, zero cloud GPU training bills (full cross-validated model training completes in $43\text{ minutes}$ on a laptop CPU), and zero specialized hardware sensors. In deployment, the 100% in-browser ONNX mode reduces server hosting costs to static file serving ($₹0\text{/month}$ on institutional intranets or static CDNs), yielding exceptional economic feasibility.
     </p>
 
     <div class="sec-h2">3.7.3 Operational and Schedule Feasibility</div>
@@ -224,7 +224,7 @@ export function buildChapters3And4() {
   const page22 = String.raw`
   <section class="report-page body-page" data-page="22">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
 
@@ -298,14 +298,18 @@ export function buildChapters3And4() {
   const page23 = String.raw`
   <section class="report-page body-page" data-page="23">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
 
     <div class="sec-h1">3.9 Risk Assessment and Mitigation</div>
     <p>
-      A quantitative Failure Mode and Effects Analysis (FMEA) was performed to identify technical, data, operational, and algorithmic risks, scoring each by Severity ($S \in [1,10]$), Occurrence ($O \in [1,10]$), and Detection difficulty ($D \in [1,10]$) to compute the Risk Priority Number ($\text{RPN} = S \times O \times D$). Table 3.5 documents the top eight risks and the concrete engineering mitigations implemented in the repository.
+      A quantitative Failure Mode and Effects Analysis (FMEA) was performed to identify technical, data, operational, and algorithmic risks, scoring each by Severity ($S$), Occurrence ($O$), and Detection difficulty ($D$) on a scale of $1$ to $10$ to compute the Risk Priority Number:
     </p>
+    <div class="eq-row">
+      <span>$$\mathrm{RPN} = S \times O \times D, \qquad S, O, D \in \{1, 2, \dots, 10\}$$</span>
+      <span class="eq-num">(3.1)</span>
+    </div>
 
     <div class="table-caption">Table 3.5 Risk Assessment and Mitigation Matrix (FMEA)</div>
     <table class="data-table" style="font-size:9.6pt;">
@@ -383,13 +387,13 @@ export function buildChapters3And4() {
   const page24 = String.raw`
   <section class="report-page body-page" data-page="24">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 3: Requirements Analysis and Project Planning</span>
     </div>
 
     <div class="sec-h1">3.10 Data Privacy, Security, and Compliance Requirements</div>
     <p>
-      Assistive communication systems deployed in hospitals, banks, courts, and classrooms handle sensitive personal interactions and biometric appearance data (the user’s face and hands). <strong>Kannada SignBridge</strong> enforces a comprehensive privacy, security, and legal compliance architecture aligned with India’s <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> and the <strong>Rights of Persons with Disabilities (RPwD) Act, 2016</strong>:
+      Assistive communication systems deployed in hospitals, banks, courts, and classrooms handle sensitive personal interactions and biometric appearance data (the user’s face and hands). <strong>Silent Bridge</strong> enforces a comprehensive privacy, security, and legal compliance architecture aligned with India’s <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> and the <strong>Rights of Persons with Disabilities (RPwD) Act, 2016</strong>:
     </p>
     <ol>
       <li><strong>Zero-Video-Transmission Architecture (Privacy by Design):</strong> Camera frames are captured via <code>navigator.mediaDevices.getUserMedia</code> into an in-memory HTML5 <code>&lt;video&gt;</code> element and processed locally inside the browser’s WebAssembly sandbox by MediaPipe. Raw pixel buffers are discarded immediately after each frame. Even when using the WebSocket backend mode, only normalized floating-point landmark coordinates are transmitted; when using the <strong>100% In-Browser ONNX mode</strong>, zero network packets leave the browser tab.</li>
@@ -405,7 +409,7 @@ export function buildChapters3And4() {
   const page25 = String.raw`
   <section class="report-page body-page" data-page="25">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
     <div class="chapter-num-header">CHAPTER 4</div>
@@ -413,10 +417,10 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">4.1 Introduction to the Proposed Business / Solution</div>
     <p>
-      As a flagship capstone project in the <strong>Computer Science and Business Systems (CSBS)</strong> curriculum, <strong>Kannada SignBridge</strong> is designed not merely as an isolated academic algorithm, but as an economically self-sustaining, scalable social-enterprise product. Many assistive technology prototypes fail to transition from university laboratories to real-world adoption because their unit economics depend on expensive proprietary hardware (such as ₹80,000 sensor gloves) or high-burn cloud GPU inference servers ($₹15,000\text{–}₹40,000\text{/month}$ per concurrent video stream).
+      As a flagship capstone project in the <strong>Computer Science and Business Systems (CSBS)</strong> curriculum, <strong>Silent Bridge</strong> is designed not merely as an isolated academic algorithm, but as an economically self-sustaining, scalable social-enterprise product. Many assistive technology prototypes fail to transition from university laboratories to real-world adoption because their unit economics depend on expensive proprietary hardware (such as ₹80,000 sensor gloves) or high-burn cloud GPU inference servers ($₹15,000\text{–}₹40,000\text{/month}$ per concurrent video stream).
     </p>
     <p>
-      By shifting neural inference and 3D avatar rendering entirely to the client edge via WebAssembly (<code>onnxruntime-web</code> + MediaPipe + Three.js), <strong>Kannada SignBridge</strong> achieves <strong>near-zero marginal cloud inference cost per active user</strong>. This architectural breakthrough enables a sustainable dual-engine business model: <em>100% free open-access availability for individual deaf citizens and students (B2C)</em>, cross-subsidized by <em>affordable institutional kiosk licensing, enterprise accessibility compliance suites, and custom domain vocabulary onboarding for government and corporate organizations (B2G &amp; B2B)</em>.
+      By shifting neural inference and 3D avatar rendering entirely to the client edge via WebAssembly (<code>onnxruntime-web</code> + MediaPipe + Three.js), <strong>Silent Bridge</strong> achieves <strong>near-zero marginal cloud inference cost per active user</strong>. This architectural breakthrough enables a sustainable dual-engine business model: <em>100% free open-access availability for individual deaf citizens and students (B2C)</em>, cross-subsidized by <em>affordable institutional kiosk licensing, enterprise accessibility compliance suites, and custom domain vocabulary onboarding for government and corporate organizations (B2G &amp; B2B)</em>.
     </p>
 
     <div class="sec-h1">4.2 Identification of Target Users and Customer Segments</div>
@@ -467,13 +471,13 @@ export function buildChapters3And4() {
   const page26 = String.raw`
   <section class="report-page body-page" data-page="26">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
 
     <div class="sec-h1">4.3 Customer Problem and Value Proposition</div>
     <p>
-      Using Osterwalder’s Value Proposition Design framework, we map the acute pains of both deaf citizens and institutional service providers against the concrete pain relievers and gain creators engineered into <strong>Kannada SignBridge</strong>:
+      Using Osterwalder’s Value Proposition Design framework, we map the acute pains of both deaf citizens and institutional service providers against the concrete pain relievers and gain creators engineered into <strong>Silent Bridge</strong>:
     </p>
     <ul>
       <li><strong>Customer Pains Resolved:</strong>
@@ -485,7 +489,7 @@ export function buildChapters3And4() {
         </ol>
       </li>
       <li><strong>Core Value Proposition Statement:</strong>
-        <em>“For public service counters, healthcare providers, educational institutions, and deaf citizens in Karnataka, Kannada SignBridge is the only zero-hardware, privacy-first bidirectional ISL &leftrightarrow; Kannada platform that runs 100% locally on any standard webcam laptop—delivering signer-independent recognition (81.5% accuracy), natural Kannada SOV translation and speech, instant few-shot custom sign adaptation, and an expressive 3D Pixar-style signing avatar at less than 5% of the cost of cloud or hardware alternatives.”</em>
+        <em>“For public service counters, healthcare providers, educational institutions, and deaf citizens in Karnataka, Silent Bridge is the only zero-hardware, privacy-first bidirectional ISL &leftrightarrow; Kannada platform that runs 100% locally on any standard webcam laptop—delivering signer-independent recognition (81.5% accuracy), natural Kannada SOV translation and speech, instant few-shot custom sign adaptation, and an expressive 3D Pixar-style signing avatar at less than 5% of the cost of cloud or hardware alternatives.”</em>
       </li>
     </ul>
 
@@ -495,7 +499,7 @@ export function buildChapters3And4() {
         <tr>
           <th style="width:22%;">Dimension</th>
           <th style="width:39%;">Customer Profile (Deaf Citizen &amp; Institution)</th>
-          <th style="width:39%;">Value Map (Kannada SignBridge Feature)</th>
+          <th style="width:39%;">Value Map (Silent Bridge Feature)</th>
         </tr>
       </thead>
       <tbody>
@@ -522,13 +526,13 @@ export function buildChapters3And4() {
   const page27 = String.raw`
   <section class="report-page body-page" data-page="27">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
 
     <div class="sec-h1">4.4 Business Model Canvas</div>
     <p>
-      Fig. 4.1 illustrates the complete nine-block Osterwalder <strong>Business Model Canvas (BMC)</strong> for <strong>Kannada SignBridge</strong>, integrating partnerships, activities, resources, value propositions, customer relationships, channels, segments, cost structure, and revenue streams.
+      Fig. 4.1 illustrates the complete nine-block Osterwalder <strong>Business Model Canvas (BMC)</strong> [24] for <strong>Silent Bridge</strong>, integrating partnerships, activities, resources, value propositions, customer relationships, channels, segments, cost structure, and revenue streams.
     </p>
 
     <div class="figure-box">
@@ -626,7 +630,7 @@ export function buildChapters3And4() {
         <text x="390" y="342" font-family="Times New Roman" font-size="9">• Enterprise SDK &amp; Custom Sign Pack Onboarding: ₹75,000 – ₹1,50,000 per org</text>
         <text x="390" y="357" font-family="Times New Roman" font-size="9">• CSR-Sponsored School &amp; District Bundles: ₹2,50,000 per 25-school cluster</text>
       </svg>
-      <div class="figure-caption">Fig. 4.1 Nine-block Osterwalder Business Model Canvas for Kannada SignBridge.</div>
+      <div class="figure-caption">Fig. 4.1 Nine-block Osterwalder Business Model Canvas for Silent Bridge.</div>
     </div>
     <div class="page-footer-arabic">27</div>
   </section>`;
@@ -634,13 +638,13 @@ export function buildChapters3And4() {
   const page28 = String.raw`
   <section class="report-page body-page" data-page="28">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
 
     <div class="sec-h1">4.5 Market / User Adoption Potential</div>
     <p>
-      To quantify the addressable market for <strong>Kannada SignBridge</strong> across institutional and consumer channels, a bottom-up TAM–SAM–SOM market sizing analysis was conducted:
+      To quantify the addressable market for <strong>Silent Bridge</strong> across institutional and consumer channels, a bottom-up TAM–SAM–SOM market sizing analysis was conducted:
     </p>
     <ul>
       <li><strong>Total Addressable Market (TAM — India-Wide Institutional &amp; Assistive Sector):</strong> India has over $1,50,000$ public health facilities, $1,60,000$ bank branches, $25,000$ citizen service centers, and $3,500+$ special education and inclusive vocational institutes. At an average institutional software valuation of ₹12,000/year per facility, the national TAM across Indian regional sign bridges is approximately <strong>₹408 Crore/year</strong> ($5\text{M+}$ deaf citizens).</li>
@@ -650,7 +654,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">4.6 Cost-Benefit Analysis</div>
     <p>
-      Table 4.3 compares the total annual cost of ownership (TCO) for a public hospital or bank branch operating a service desk 8 hours/day (2,000 hours/year) across three alternatives: (1) Full-time on-site human interpreter, (2) Cloud GPU video-streaming SLR API, and (3) <strong>Kannada SignBridge</strong> running in local WebAssembly ONNX mode on an existing front-desk PC.
+      Table 4.3 compares the total annual cost of ownership (TCO) for a public hospital or bank branch operating a service desk 8 hours/day (2,000 hours/year) across three alternatives: (1) Full-time on-site human interpreter, (2) Cloud GPU video-streaming SLR API, and (3) <strong>Silent Bridge</strong> running in local WebAssembly ONNX mode on an existing front-desk PC.
     </p>
 
     <div class="table-caption">Table 4.3 Annual Cost-Benefit Comparison per Service Counter (2,000 Operational Hours/Year)</div>
@@ -660,7 +664,7 @@ export function buildChapters3And4() {
           <th style="width:25%;">Cost / Benefit Dimension</th>
           <th style="width:25%;">On-Site Human Interpreter</th>
           <th style="width:25%;">Cloud GPU Video SLR System</th>
-          <th style="width:25%;">Kannada SignBridge (Proposed)</th>
+          <th style="width:25%;">Silent Bridge (Proposed)</th>
         </tr>
       </thead>
       <tbody>
@@ -677,13 +681,13 @@ export function buildChapters3And4() {
   const page29 = String.raw`
   <section class="report-page body-page" data-page="29">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
 
     <div class="sec-h1">4.7 Revenue Generation and Pricing Model</div>
     <p>
-      To maximize social impact while maintaining healthy financial margins, <strong>Kannada SignBridge</strong> employs a four-tier pricing architecture (Table 4.4). Individual deaf users, families, and students always receive the full application free of charge.
+      To maximize social impact while maintaining healthy financial margins, <strong>Silent Bridge</strong> employs a four-tier pricing architecture (Table 4.4). Individual deaf users, families, and students always receive the full application free of charge.
     </p>
 
     <div class="table-caption">Table 4.4 Multi-Tier Pricing and Packaging Architecture</div>
@@ -726,7 +730,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">4.8 Business Feasibility and Viability</div>
     <p>
-      Table 4.5 presents the conservative 3-year financial projection for spinning out <strong>Kannada SignBridge</strong> as an incubate social-enterprise startup. Because client-side WebAssembly eliminates cloud GPU servers, gross margins exceed $88\%$, and the venture reaches cash-flow break-even in <strong>Month 11 of Year 1</strong> with just $95$ kiosk licenses.
+      Table 4.5 presents the conservative 3-year financial projection for spinning out <strong>Silent Bridge</strong> as an incubate social-enterprise startup. Because client-side WebAssembly eliminates cloud GPU servers, gross margins exceed $88\%$, and the venture reaches cash-flow break-even in <strong>Month 11 of Year 1</strong> with just $95$ kiosk licenses.
     </p>
 
     <div class="table-caption">Table 4.5 Three-Year Financial Projection and Unit Economics (in INR Lakhs)</div>
@@ -756,16 +760,16 @@ export function buildChapters3And4() {
   const page30 = String.raw`
   <section class="report-page body-page" data-page="30">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
 
     <div class="sec-h1">4.9 Scalability and Long-Term Sustainability</div>
     <p>
-      Long-term technical and operational sustainability is engineered into <strong>Kannada SignBridge</strong> across four structural dimensions:
+      Long-term technical and operational sustainability is engineered into <strong>Silent Bridge</strong> across four structural dimensions:
     </p>
     <ol>
-      <li><strong>Compute Scalability via Edge WebAssembly:</strong> In conventional cloud AI startups, doubling the user base doubles the monthly GPU bill, creating a fragile cost curve for free assistive tools. In <strong>Kannada SignBridge</strong>, every new laptop or tablet brings its own CPU and WebGL GPU. Whether $100$ or $1,00,000$ concurrent users run the 100% In-Browser ONNX engine and 3D Pixar-style avatar, server compute load remains zero.</li>
+      <li><strong>Compute Scalability via Edge WebAssembly:</strong> In conventional cloud AI startups, doubling the user base doubles the monthly GPU bill, creating a fragile cost curve for free assistive tools. In <strong>Silent Bridge</strong>, every new laptop or tablet brings its own CPU and WebGL GPU. Whether $100$ or $1,00,000$ concurrent users run the 100% In-Browser ONNX engine and 3D Pixar-style avatar, server compute load remains zero.</li>
       <li><strong>Vocabulary Scalability via Few-Shot Prototype Fusion &amp; Governance:</strong> Expanding the vocabulary does not require retraining the entire neural network from scratch for every local workplace sign. Users can immediately add custom signs via 3,668-D prototype centroids (<code>CustomSigns.tsx</code> &amp; <code>ModelManager.blendWithPrototypes</code>). When batch dataset expansions are trained, the automated promotion gate (checking held-out macro-F1 and paired McNemar significance) ensures that new models never degrade existing sign accuracy.</li>
       <li><strong>Linguistic Scalability Across Dravidian &amp; Indic Languages:</strong> Because the recognition pipeline outputs canonical language-neutral ISL glosses (e.g., <code>namaskara</code>, <code>i_me</code>, <code>water</code>, <code>hospital</code>) before invoking the modular meaning layer (<code>backend_ts/translation.ts</code>), extending the platform to Tamil, Telugu, Malayalam, or Hindi requires only adding a target-language phrase table and SOV suffix rules without modifying the vision or BiGRU models.</li>
       <li><strong>Environmental Sustainability (Low-Carbon Edge AI):</strong> By executing all landmark extraction and sequence classification within a $15\text{ W}$ client CPU envelope and avoiding redundant multi-gigabyte archive downloads through HTTP <code>Range</code> requests, the system maintains a minimal carbon footprint throughout both training and multi-year kiosk operation.</li>
@@ -776,13 +780,13 @@ export function buildChapters3And4() {
   const page31 = String.raw`
   <section class="report-page body-page" data-page="31">
     <div class="page-running-header">
-      <span>Kannada SignBridge: Real-Time ISL Recognition &amp; Kannada Avatar</span>
+      <span class="report-project-title">SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR</span>
       <span>Chapter 4: Business Model and Sustainability Framework</span>
     </div>
 
     <div class="sec-h1">4.10 SDG Impact Pathway and Measurable Indicators</div>
     <p>
-      To ensure that social impact is rigorously tracked alongside financial viability, Table 4.6 defines the formal <strong>SDG Theory of Change (Inputs &rarr; Activities &rarr; Outputs &rarr; Outcomes &rarr; Long-Term Impact)</strong> and quantitative Key Performance Indicators (KPIs) for <strong>Kannada SignBridge</strong>.
+      To ensure that social impact is rigorously tracked alongside financial viability, Table 4.6 defines the formal <strong>SDG Theory of Change (Inputs &rarr; Activities &rarr; Outputs &rarr; Outcomes &rarr; Long-Term Impact)</strong> and quantitative Key Performance Indicators (KPIs) for <strong>Silent Bridge</strong>.
     </p>
 
     <div class="table-caption">Table 4.6 SDG Impact Pathway and Measurable Key Performance Indicators (KPIs)</div>
@@ -831,7 +835,7 @@ export function buildChapters3And4() {
 
     <div class="sec-h1">4.11 Summary</div>
     <p>
-      This chapter demonstrated that <strong>Kannada SignBridge</strong> combines compelling technical performance with a financially viable, ultra-lean business model. By eliminating proprietary hardware and recurring cloud GPU costs through in-browser WebAssembly, the platform reduces per-desk accessibility costs by $95.8\%$ compared to cloud alternatives, reaches financial break-even within 11 months under a B2G/B2B kiosk licensing model, and keeps the core application 100% free for every deaf citizen and student in Karnataka. Chapter 5 now presents the complete mathematical, algorithmic, and architectural design of the system.
+      This chapter demonstrated that <strong>Silent Bridge</strong> combines compelling technical performance with a financially viable, ultra-lean business model. By eliminating proprietary hardware and recurring cloud GPU costs through in-browser WebAssembly, the platform reduces per-desk accessibility costs by $95.8\%$ compared to cloud alternatives, reaches financial break-even within 11 months under a B2G/B2B kiosk licensing model, and keeps the core application 100% free for every deaf citizen and student in Karnataka. Chapter 5 now presents the complete mathematical, algorithmic, and architectural design of the system.
     </p>
     <div class="page-footer-arabic">31</div>
   </section>`;
