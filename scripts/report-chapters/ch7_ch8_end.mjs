@@ -614,7 +614,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
       <span>References</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">REFERENCES</div>
-    <p style="font-size:10.5pt; margin-bottom:8pt; text-indent:0;">
+    <p style="font-size:12pt; margin-bottom:8pt; text-indent:0;">
       <em>Numbered serially in order of occurrence in the text and formatted in accordance with CSBS B.E. Project Report Guidelines (Section 6.xii–xiv):</em>
     </p>
     <ol class="ref-list">
@@ -660,7 +660,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
       <div style="font-size:12pt; font-weight:700; color:#1e3a8a; margin-bottom:5pt;">
         1. IEEE Two-Column Format Research Manuscript (Prepared for Submission)
       </div>
-      <p style="font-size:10.5pt; line-height:1.45; text-indent:0; margin-bottom:6pt;">
+      <p style="font-size:12pt; line-height:1.45; text-indent:0; margin-bottom:6pt;">
         <strong>Title:</strong> <em>“SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR”</em><br/>
         <strong>Format:</strong> IEEEtran Two-Column Conference / Transactions Standard (8 Pages · 12 Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References)<br/>
         <strong>Authors:</strong> H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), under the guidance of <strong>Tejaswini K</strong>, Assistant Professor, Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019.<br/>
@@ -669,7 +669,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
       <div style="font-size:10.5pt; font-weight:700; color:#0f172a; margin-bottom:3pt;">
         2. Accompanying Research Manuscript &amp; Reproducible Artifacts
       </div>
-      <p style="font-size:10pt; line-height:1.42; text-indent:0; margin:0;">
+      <p style="font-size:12pt; line-height:1.42; text-indent:0; margin:0;">
         Full LaTeX source (<code>docs/paper/kannada_signbridge_ieee.tex</code>), compiled manuscript PDF (<code>docs/paper/kannada_signbridge_ieee.pdf</code>), editable Microsoft Word document (<code>SILENT_BRIDGE_IEEE_Research_Paper.docx</code>), and reproducible figure generator (<code>docs/paper/make_figures_extended.py</code>). On 268 held-out recorded videos, isolated-sign accuracy improved from 59.7% (LogReg baseline) to 79.9% (81.5% overall across 314 held-out videos), and on 213 videos of two unseen signers it rose from 54.5% to 76.5% ($p=0.003$).
       </p>
     </div>
@@ -706,7 +706,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
       <span>Appendix A: Complete 144-Class ISL Vocabulary &amp; Kannada Lexicon</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:8pt;">APPENDIX A: COMPLETE 144-CLASS ISL VOCABULARY &amp; KANNADA LEXICON</div>
-    <p style="font-size:9.5pt; margin-bottom:6pt; text-indent:0;">
+    <p style="font-size:12pt; margin-bottom:6pt; text-indent:0;">
       Complete production vocabulary defined in <code>backend/data/labels.json</code> and exported in <code>sign_model.onnx</code> (144 classes across 12 semantic domains, each mapped to Unicode NFC Kannada script, English gloss, and cleaned 3D avatar clip in <code>backend/data/animations/captured/</code>):
     </p>
     <table class="data-table" style="font-size:7.6pt; line-height:1.22;">
