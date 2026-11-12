@@ -106,7 +106,7 @@ export function buildChapters1And2() {
         <text x="673" y="163" text-anchor="middle" font-family="Times New Roman" font-size="9.5">2-Bone IK + Ballistic Arc</text>
         <text x="673" y="177" text-anchor="middle" font-family="Times New Roman" font-size="9" fill="#9a3412">Kannada Viseme Lip-Sync</text>
       </svg>
-      <div class="figure-caption">Fig. 1.1 Bidirectional ISL-to-Kannada and Kannada-to-ISL communication paradigm implemented in Silent Bridge.</div>
+      <div class="figure-caption">Fig. 1.1 Bidirectional ISL-to-Kannada dual-stream translation architecture implemented in Silent Bridge.</div>
     </div>
 
     <div class="sec-h1">1.3 Motivation</div>
@@ -292,7 +292,7 @@ export function buildChapters1And2() {
 
     <div class="sec-h2">1.9.4 Expected Social, Economic and Environmental Impact</div>
     <ul>
-      <li><strong>Social Impact:</strong> Empowers deaf citizens in Karnataka to independently conduct two-way conversations in Kannada at hospitals, banks, classrooms, and government counters while preserving personal dignity and conversational privacy.</li>
+      <li><strong>Social Impact:</strong> Enables deaf citizens in Karnataka to independently conduct two-way conversations in Kannada at hospitals, banks, classrooms, and government counters without third-party human interpreters, maintaining conversational privacy.</li>
       <li><strong>Economic Impact:</strong> Eliminates the ₹1,500–₹3,000 per hour cost of on-site human interpretation for routine front-desk interactions and removes the $₹15,000+\text{/month}$ cloud GPU hosting cost required by video-based deep learning models.</li>
       <li><strong>Environmental Impact (Green AI):</strong> Running compact landmark-based BiGRU models ($3.8\text{ ms}$ per sign on a $15\text{ W}$ laptop CPU) instead of continuous 3D-CNN/Video-Transformer inference on $300\text{ W}$ data-center GPUs reduces per-session energy consumption and carbon footprint by over $95\%$. Similarly, selective HTTP Range archive downloading saved $68.8\text{ GB}$ of redundant network transfer during dataset preparation.</li>
     </ul>
@@ -401,7 +401,7 @@ export function buildChapters1And2() {
       </tbody>
     </table>
     <p>
-      Together with the ten Roman-numbered preliminary pages (Outer Cover, Inner Title Page, Certificate, Declaration, Acknowledgement, Publication Certificate, Abstract, Table of Contents, List of Figures/Tables, Abbreviations, and Mathematical Symbols), this document comprises <strong>76 structured pages</strong>.
+      Together with the preliminary pages, this report documents the complete requirements, system architecture, implementation details, empirical test results, and deployment framework.
     </p>
     <div class="page-footer-arabic">8</div>
   </section>`;

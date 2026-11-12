@@ -298,7 +298,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
 
     <div class="sec-h2">6.3.6 Co-Articulation Ballistic Transitions &amp; Kannada Viseme Lip-Sync (lipSync.ts)</div>
     <p>
-      To make multi-sign Kannada sentences look fluid and alive on the 3D avatar, <code>frontend/src/avatar/animation.ts</code> and <code>frontend/src/avatar/lipSync.ts</code> implement two synergistic biomechanical controllers (Listing 6.5):
+      To ensure continuous multi-sign Kannada sentences transition naturally on the 3D avatar, <code>frontend/src/avatar/animation.ts</code> and <code>frontend/src/avatar/lipSync.ts</code> implement two complementary biomechanical controllers (Listing 6.5):
     </p>
     <ul>
       <li><code>coarticulatePair(a, b, u)</code>: Computes a smoothstep $s(u) = u^2(3 - 2u)$ interpolation between the terminal pose of sign $A$ and initial pose of sign $B$, adding a downward-and-forward sinusoidal arc $\sin(\pi u)\min(0.06, 0.18\,\delta)$ so the hands follow a natural human ballistic path rather than slicing linearly across the chest.</li>
