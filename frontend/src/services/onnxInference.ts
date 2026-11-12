@@ -17,6 +17,7 @@ import { matchCustomSign } from "./customSigns";
 // Configure ONNX Runtime to load local WASM binaries from /onnx-wasm/
 ort.env.wasm.wasmPaths = "/onnx-wasm/";
 ort.env.wasm.numThreads = 1;
+ort.env.logLevel = "error";
 
 const NUM_LANDMARKS = 21;
 const HAND_SHAPE_DIM = (NUM_LANDMARKS - 1) * 3; // 60

@@ -5,6 +5,7 @@ import { CustomSigns } from "./pages/CustomSigns";
 import { DatasetModel } from "./pages/DatasetModel";
 import { KannadaToSign } from "./pages/KannadaToSign";
 import { LiveRecognition } from "./pages/LiveRecognition";
+import { ProjectReport } from "./pages/ProjectReport";
 import { SignReference } from "./pages/SignReference";
 
 const PAGES: { id: PageId; label: string; icon: IconName }[] = [
@@ -14,8 +15,9 @@ const PAGES: { id: PageId; label: string; icon: IconName }[] = [
   { id: "reference", label: "Sign Reference", icon: "eye" },
   { id: "dataset", label: "Dataset & Model", icon: "database" },
   { id: "about", label: "About & Testing", icon: "flask" },
+  { id: "report", label: "BE Report (76p)", icon: "download" },
 ];
-type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "about";
+type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "about" | "report";
 
 function pageFromHash(): PageId {
   const h = location.hash.replace("#", "");
@@ -93,6 +95,7 @@ export default function App() {
         {page === "reference" && <SignReference />}
         {page === "dataset" && <DatasetModel />}
         {page === "about" && <AboutTesting />}
+        {page === "report" && <ProjectReport />}
       </main>
       <footer className="footer">
         Kannada SignBridge · final-year project prototype · camera processing stays on this computer · recognizes only trained, supported signs

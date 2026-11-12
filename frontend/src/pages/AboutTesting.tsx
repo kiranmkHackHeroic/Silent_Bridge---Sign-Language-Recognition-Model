@@ -67,6 +67,31 @@ export function AboutTesting() {
       </div>
       {error && <div style={{ marginBottom: 16 }}><Notice tone="bad">{error}</Notice></div>}
       <div className="stack">
+        <Card title="B.M.S. College of Engineering — CSBS B.E. Project Report (76 Pages · A4)" icon="download">
+          <p style={{ marginBottom: 10 }}>
+            Complete <strong>76-page structured B.E. Project Report</strong> (10 Roman-numbered preliminary pages + 66 Arabic-numbered main pages across Chapters 1–8, References, IEEE Publication Record &amp; 144-Sign Appendix) formatted strictly per BMSCE Department of Computer Science and Business Systems (CSBS) guidelines.
+          </p>
+          <div className="row" style={{ gap: 10, flexWrap: "wrap" }}>
+            <a
+              href="/report/CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
+              download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
+              className="btn btn-primary"
+              style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            >
+              <Icon name="download" size={16} />
+              <span>Download 76-Page PDF Report</span>
+            </a>
+            <a
+              href="#report"
+              className="btn"
+              style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            >
+              <Icon name="eye" size={16} />
+              <span>Open Interactive Report &amp; Cover Customizer</span>
+            </a>
+          </div>
+        </Card>
+
         <Card title="Architecture" icon="layers">
           <div className="arch">
             {ARCH.map((a) => (

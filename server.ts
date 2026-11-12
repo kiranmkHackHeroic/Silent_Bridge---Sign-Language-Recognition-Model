@@ -200,7 +200,6 @@ class ModelManager {
     } else {
       this.continuousMetrics = {};
     }
-    this.refreshPrototypes();
   }
 
   /**
@@ -209,7 +208,7 @@ class ModelManager {
    * recognition to the user's signing style via prototype-neural fusion.
    */
   refreshPrototypes(targetLabel?: string): void {
-    if (!fs.existsSync(DATASET_DIR)) return;
+    if (!targetLabel || !fs.existsSync(DATASET_DIR)) return;
     const labels = targetLabel
       ? [targetLabel]
       : fs

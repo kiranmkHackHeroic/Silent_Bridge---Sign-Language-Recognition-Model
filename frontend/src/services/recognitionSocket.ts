@@ -58,10 +58,26 @@ export class RecognitionSocket {
     const ws = this.ws;
     this.ws = null;
     if (ws) {
-      // Detach first: a late "close" event from this socket must not overwrite the
-      // status reported by a newer socket (e.g. React StrictMode remount, page switch).
-      ws.onopen = ws.onmessage = ws.onclose = ws.onerror = null;
-      ws.close();
+      // Detach handlers first so a late event from this socket cannot overwrite
+      // the status reported by a newer socket (e.g. React StrictMode remount).
+      ws.onmessage = null;
+      ws.onclose = null;
+      ws.onerror = null;
+      if (ws.readyState === WebSocket.CONNECTING) {
+        ws.onopen = () => {
+          try {
+            ws.close();
+          } catch {
+            /* ignore */
+          }
+        };
+      } else {
+        ws.onopen = null;
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.close();
+        }
+      }
     }
   }
 }
+
