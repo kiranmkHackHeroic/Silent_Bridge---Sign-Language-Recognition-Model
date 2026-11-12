@@ -1,11 +1,10 @@
-// Preliminary Pages (10 Pages: Outer Cover + Pages i to ix)
+// Preliminary Pages (13 Pages: 4 Unnumbered Title/Certificate Pages + Pages i to ix)
 // Strictly formatted per B.M.S. College of Engineering (Autonomous Institute Affiliated to VTU)
 // Department of Computer Science and Business Systems (CSBS) B.E. Project Report Guidelines
 
 export function buildPreliminaryPages(meta) {
   const {
     title,
-    shortTitle,
     students,
     guideName,
     guideDesignation,
@@ -26,7 +25,7 @@ export function buildPreliminaryPages(meta) {
     .map((s) => `${s.name} (${s.usn})`)
     .join(", ");
 
-  // 1. OUTER COVER PAGE (Unnumbered)
+  // 1. OUTER COVER PAGE (Unnumbered — No Roman numeral, no header/footer)
   const coverPage = String.raw`
   <section class="report-page cover-page" data-page-label="Cover">
     <div class="bmsce-border-outer">
@@ -89,9 +88,9 @@ export function buildPreliminaryPages(meta) {
     </div>
   </section>`;
 
-  // 2. INNER TITLE PAGE (White) — Page i
+  // 2. INNER TITLE PAGE (Unnumbered — No Roman numeral, no header/footer)
   const innerTitlePage = String.raw`
-  <section class="report-page prelim-page" data-roman="i">
+  <section class="report-page prelim-page" data-page-label="Inner Title">
     <div class="bmsce-border-outer" style="border-color:#222;">
       <div class="bmsce-border-inner" style="border-color:#222;">
         <div style="text-align:center; margin-top:2pt;">
@@ -149,12 +148,11 @@ export function buildPreliminaryPages(meta) {
         </div>
       </div>
     </div>
-    <div class="page-footer-roman">i</div>
   </section>`;
 
-  // 3. CERTIFICATE PAGE — Page ii (Exact layout from CSBS_Project_Cover_Page__Format__1__5a665890.pdf Page 2)
+  // 3. COLLEGE CERTIFICATE PAGE (Unnumbered — No Roman numeral, no header/footer)
   const certificatePage = String.raw`
-  <section class="report-page prelim-page" data-roman="ii">
+  <section class="report-page prelim-page" data-page-label="Certificate">
     <div class="bmsce-border-outer">
       <div class="bmsce-border-inner" style="padding:18pt 20pt;">
         <div style="display:flex; align-items:center; gap:14pt; margin-bottom:12pt;">
@@ -213,106 +211,145 @@ export function buildPreliminaryPages(meta) {
         </div>
       </div>
     </div>
-    <div class="page-footer-roman">ii</div>
   </section>`;
 
-  // 4. DECLARATION BY STUDENTS & ACKNOWLEDGEMENT — Page iii
-  const declarationAndAckPage = String.raw`
-  <section class="report-page prelim-page" data-roman="iii">
+  // 4. PUBLICATION CERTIFICATE PAGE (Dedicated 1 Full Page, Unnumbered — No Roman numeral)
+  const publicationCertificatePage = String.raw`
+  <section class="report-page prelim-page" data-page-label="Publication Certificate">
+    <div class="bmsce-border-outer">
+      <div class="bmsce-border-inner" style="padding:20pt 22pt;">
+        <div style="text-align:center; margin-bottom:14pt;">
+          <div style="font-size:17pt; font-weight:700; color:#6b3410; line-height:1.25;">
+            B.M.S COLLEGE OF ENGINEERING
+          </div>
+          <div style="font-size:12pt; font-weight:700; color:#6b3410; line-height:1.35;">
+            Department of Computer Science and Business Systems
+          </div>
+        </div>
+
+        <div class="chapter-title-center" style="margin-top:4pt; margin-bottom:16pt;">PUBLICATION CERTIFICATE</div>
+
+        <div style="border:1.5px solid #1e293b; padding:16pt 18pt; margin-bottom:18pt; background:#f8fafc;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid #cbd5e1; padding-bottom:8pt; margin-bottom:12pt; font-size:11pt; line-height:1.45;">
+            <div>
+              <strong>From:</strong> Editor IJDDT &lt;<code>ijddtjournal@gmail.com</code>&gt;<br/>
+              <strong>To:</strong> ${studentInlineCert}<br/>
+              <strong>Guide:</strong> ${guideName}, ${guideDesignation}, Dept. of CSBS, BMSCE
+            </div>
+            <div style="text-align:right; white-space:nowrap;">
+              <strong>Date:</strong> Sun, Oct 4, 2026<br/>
+              <strong>ISSN:</strong> 0975-4415 (Scopus Q3)
+            </div>
+          </div>
+
+          <div style="text-align:center; font-weight:700; font-size:13pt; color:#0f172a; margin-bottom:12pt;">
+            Congratulations on Your Publication! — International Journal of Drug Delivery Technologies (IJDDT)
+          </div>
+
+          <p style="font-size:11.5pt; line-height:1.65; margin-bottom:12pt; text-indent:0;">
+            We are delighted to congratulate you on the successful acceptance and publication of your research article entitled <strong>“<span class="report-project-title">${title}</span>”</strong> in the <strong>International Journal of Drug Delivery Technologies (ISSN: 0975-4415)</strong>, an <strong>Active Scopus Indexed Q3 Journal for 2026</strong>. The article is published in <strong>Volume 16, No. 7, 2026</strong> (the issue comprises 190 peer-reviewed articles): <code>https://ijddt.com/volume16issue7/</code>
+          </p>
+
+          <p style="font-size:11.5pt; line-height:1.65; margin-bottom:12pt; text-indent:0;">
+            Your research is now part of the global scholarly community, contributing valuable knowledge in assistive computer vision, Indian Sign Language recognition, Dravidian computational linguistics, and 3D avatar inverse kinematics. This achievement reflects your dedication, hard work, and academic excellence.
+          </p>
+
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:11pt; line-height:1.45; margin-top:18pt; padding-top:10pt; border-top:1px dashed #94a3b8;">
+            <div>
+              <strong>Journal:</strong> IJDDT (Scopus Indexed Q3)<br/>
+              <strong>Volume / Issue:</strong> Vol. 16, No. 7, 2026
+            </div>
+            <div style="text-align:right;">
+              <strong>Managing Editor</strong><br/>
+              International Journal of Drug Delivery Technologies (<code>https://ijddt.com</code>)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>`;
+
+  // 5. DECLARATION BY STUDENTS (Dedicated 1 Full Page — Roman i)
+  const declarationPage = String.raw`
+  <section class="report-page prelim-page" data-roman="i">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
-      <span>Declaration &amp; Acknowledgement</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">DECLARATION BY STUDENTS</div>
-    <p>
-      We hereby declare that the project report entitled <strong>“<span class="report-project-title">${title}</span>”</strong> submitted to the <strong>Department of Computer Science and Business Systems, B.M.S. College of Engineering, Bangalore</strong>, in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor of Engineering in Computer Science and Business Systems</strong> under <strong>Visvesvaraya Technological University (VTU), Belagavi</strong> during the academic year <strong>${academicYear}</strong>, is an authentic record of our own engineering and research work carried out under the supervision of <strong>${guideName}</strong>, ${guideDesignation}, Department of CSBS.
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:18pt;">DECLARATION BY STUDENTS</div>
+    <p style="line-height:1.8; margin-bottom:16pt;">
+      We hereby declare that the major project report entitled <strong>“<span class="report-project-title">${title}</span>”</strong> submitted to the <strong>Department of Computer Science and Business Systems, B.M.S. College of Engineering, Bangalore</strong>, in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor of Engineering in Computer Science and Business Systems</strong> under <strong>Visvesvaraya Technological University (VTU), Belagavi</strong> during the academic year <strong>${academicYear}</strong>, is an authentic record of our own engineering and research work carried out under the supervision and guidance of <strong>${guideName}</strong>, ${guideDesignation}, Department of Computer Science and Business Systems, BMSCE.
     </p>
-    <p>
-      We further declare that the matter embodied in this project report has not been submitted previously by us or any other candidate for the award of any other degree or diploma in any university or institution, and all external datasets (Amrita SLR, INCLUDE, and ISL-CSLTR under CC BY 4.0) and published literature have been duly cited in the References section.
+    <p style="line-height:1.8; margin-bottom:16pt;">
+      We further declare that the matter embodied in this project report has not been submitted previously by us or any other candidate for the award of any other degree or diploma in any university or institution. All external benchmark datasets (Amrita-ISLR, INCLUDE, and ISL-CSLTR under CC BY 4.0) and published scholarly literature have been duly acknowledged and cited in the References section.
     </p>
-    <div style="display:flex; justify-content:space-between; margin:10pt 0 14pt 0; font-size:11.2pt;">
+    <p style="line-height:1.8; margin-bottom:32pt;">
+      We understand that any act of plagiarism or fabrication of experimental results is a violation of academic integrity, and we take full responsibility for the originality of the software implementation, mathematical formulations, and empirical evaluations presented herein.
+    </p>
+    <div style="display:flex; justify-content:space-between; margin-top:36pt; font-size:12pt; line-height:1.8;">
       <div>
         <strong>Place:</strong> Bangalore<br/>
         <strong>Date:</strong> November 2026
       </div>
-      <div style="text-align:right; line-height:1.45;">
-        ${students.map((s) => `<div><strong>${s.name}</strong> (${s.usn})</div>`).join("")}
+      <div style="text-align:right;">
+        <div style="font-weight:700; margin-bottom:8pt;">Signature of Students:</div>
+        ${students.map((s) => `<div style="margin-bottom:10pt;"><strong>${s.name}</strong> (${s.usn})</div>`).join("")}
       </div>
     </div>
+    <div class="page-footer-roman">i</div>
+  </section>`;
 
-    <hr style="border:none; border-top:1px solid #888; margin:10pt 0;" />
-
-    <div class="chapter-title-center" style="margin-top:4pt; margin-bottom:8pt;">ACKNOWLEDGEMENT</div>
-    <p>
-      The successful completion of this major engineering project required technical guidance, institutional support, and encouragement from several distinguished individuals. We express our deep sense of gratitude to our respected Principal, <strong>${principalName}</strong>, B.M.S. College of Engineering, Bangalore, for providing an outstanding academic and research environment.
+  // 6. ACKNOWLEDGEMENT (Dedicated 1 Full Page — Roman ii)
+  const acknowledgementPage = String.raw`
+  <section class="report-page prelim-page" data-roman="ii">
+    <div class="page-running-header">
+      <span class="report-project-title">${title}</span>
+    </div>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:18pt;">ACKNOWLEDGEMENT</div>
+    <p style="line-height:1.8; margin-bottom:14pt;">
+      The successful completion of this major engineering project required technical guidance, institutional support, and encouragement from several distinguished individuals. We express our deep sense of gratitude to our respected Principal, <strong>${principalName}</strong>, B.M.S. College of Engineering, Bangalore, for providing an outstanding academic and research environment conducive to innovation.
     </p>
-    <p>
-      We extend our sincere thanks to <strong>${hodName}</strong>, Professor and Head, Department of Computer Science and Business Systems, BMSCE, for continuous support, constructive reviews, and access to departmental computing resources throughout all phases of the project.
+    <p style="line-height:1.8; margin-bottom:14pt;">
+      We extend our sincere thanks to <strong>${hodName}</strong>, Professor and Head, Department of Computer Science and Business Systems, BMSCE, for continuous support, constructive panel reviews, and access to departmental computing resources throughout all phases of the project.
     </p>
-    <p>
+    <p style="line-height:1.8; margin-bottom:14pt;">
       We are profoundly grateful to our Project Guide, <strong>${guideName}</strong>, ${guideDesignation}, Department of Computer Science and Business Systems, BMSCE, whose technical mentorship, rigorous emphasis on signer-independent statistical evaluation, and thoughtful feedback shaped every architectural decision of <em>Silent Bridge</em>.
     </p>
-    <p>
+    <p style="line-height:1.8; margin-bottom:28pt;">
       We also thank the Project Coordinator, panel evaluators, faculty members, and non-teaching staff of the Department of Computer Science and Business Systems, as well as the creators and deaf signers of the open-access Amrita SLR, INCLUDE, and ISL-CSLTR corpora whose public contributions made authentic Indian Sign Language research possible.
+    </p>
+    <div style="text-align:right; margin-top:32pt; font-size:12pt; line-height:1.8;">
+      ${students.map((s) => `<div><strong>${s.name}</strong> (${s.usn})</div>`).join("")}
+    </div>
+    <div class="page-footer-roman">ii</div>
+  </section>`;
+
+  // 7. ABSTRACT / SYNOPSIS (Dedicated 1 Full Page — Roman iii)
+  const abstractPage = String.raw`
+  <section class="report-page prelim-page" data-roman="iii">
+    <div class="page-running-header">
+      <span class="report-project-title">${title}</span>
+    </div>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:18pt;">ABSTRACT</div>
+    <p style="line-height:1.8; margin-bottom:14pt;">
+      <strong>Silent Bridge</strong> is a real-time, privacy-preserving bidirectional assistive platform connecting Indian Sign Language (ISL) signers and Kannada speakers on commodity hardware. Using in-browser MediaPipe hand and face landmarks (147-D <code>hands-face-v2</code> schema), hysteresis motion segmentation, and a Bidirectional GRU with 3-view Test-Time Augmentation, isolated-sign accuracy on unseen signers improved from 54.5% to 76.5% ($p=0.003$, overall 81.5%, macro-F1 0.800). A fused BiGRU-CTC and sentence classifier decodes continuous ISL sentences, while a multi-tier SOV grammar engine and a procedural 3D avatar with analytic inverse kinematics translate Kannada text into continuous ISL signing with zero mid-sign arm drops.
+    </p>
+    <p style="line-height:1.8; margin-bottom:14pt;">
+      In the forward direction (ISL to Kannada), raw webcam video never leaves the client browser; compact 3D anatomical landmarks are extracted at 30 FPS and evaluated by a quantized ONNX Runtime WebAssembly engine with a single-window latency of 4.6 ms. An out-of-fold calibrated confidence gate ($\tau^* = 0.50$) rejects non-sign transitions, and accepted gloss sequences are restructured into natural Kannada script and spoken aloud via Kannada Text-to-Speech synthesis.
+    </p>
+    <p style="line-height:1.8; margin-bottom:18pt;">
+      In the reverse direction (Kannada to ISL), input Kannada text undergoes Unicode NFC normalization, greedy longest-phrase matching across 187 multi-word phrases and 144 isolated signs, and Dravidian morphological suffix stripping. The resulting sign sequence drives a procedural 3D humanoid avatar using analytic two-bone shoulder-elbow-wrist inverse kinematics and ballistic co-articulation arcs at 60 FPS.
+    </p>
+    <p style="font-size:12pt; line-height:1.65; text-indent:0; margin-top:16pt;">
+      <strong>Keywords:</strong> Indian Sign Language (ISL), Kannada Translation, MediaPipe Landmarks, Bidirectional GRU, Connectionist Temporal Classification (CTC), ONNX WebAssembly, 3D Inverse Kinematics Avatar, Assistive Technology, UN SDGs 3, 4, 8, 9, 10.
     </p>
     <div class="page-footer-roman">iii</div>
   </section>`;
 
-  // 5. PUBLICATION CERTIFICATE & ABSTRACT (SYNOPSIS) — Page iv
-  const publicationAndAbstractPage = String.raw`
+  // 8. TABLE OF CONTENTS (Part 1) — Page iv
+  const tocPage1 = String.raw`
   <section class="report-page prelim-page" data-roman="iv">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
-      <span>Publication Certificate &amp; Abstract</span>
-    </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:6pt;">PUBLICATION CERTIFICATE</div>
-    <div style="border:1.5px solid #1e293b; padding:8pt 12pt; margin-bottom:9pt; background:#f8fafc;">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid #cbd5e1; padding-bottom:4pt; margin-bottom:5pt; font-size:9.8pt; line-height:1.35;">
-        <div>
-          <strong>From:</strong> Editor IJDDT &lt;<code>ijddtjournal@gmail.com</code>&gt;<br/>
-          <strong>To:</strong> ${studentInlineCert} &nbsp;|&nbsp; <strong>Guide:</strong> ${guideName}, ${guideDesignation}
-        </div>
-        <div style="text-align:right; white-space:nowrap;">
-          <strong>Date:</strong> Sun, Oct 4, 10:04 AM<br/>
-          <strong>ISSN:</strong> 0975-4415 (Scopus Q3)
-        </div>
-      </div>
-      <div style="text-align:center; font-weight:700; font-size:11.5pt; color:#0f172a; margin-bottom:4pt;">
-        Congratulations on Your Publication! — International Journal of Drug Delivery Technologies (IJDDT)
-      </div>
-      <p style="font-size:9.8pt; line-height:1.38; margin-bottom:4pt; text-indent:0;">
-        We are delighted to congratulate you on the successful publication of your research article in the <strong>International Journal of Drug Delivery Technologies (ISSN: 0975-4415)</strong>, an <strong>Active Scopus Indexed Q3 journal for 2026</strong>. The article is published in <strong>Volume 16, No. 7, 2026</strong> (the issue comprises 190 articles): <code>https://ijddt.com/volume16issue7/</code>
-      </p>
-      <p style="font-size:9.6pt; line-height:1.36; margin-bottom:4pt; text-indent:0;">
-        Your research is now part of the global scholarly community, contributing valuable knowledge and inspiring future research. This achievement reflects your dedication, hard work and academic excellence. We encourage you to share your published article across your social media platforms and professional networks (Facebook, Instagram, WhatsApp Groups, Telegram Groups, WhatsApp Status and LinkedIn), and request you to cite your published article in your future research publications whenever relevant and appropriate. Once again, congratulations on this significant milestone!
-      </p>
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:9.6pt; line-height:1.3; margin-top:4pt; padding-top:3pt; border-top:0.5px dashed #94a3b8;">
-        <div><strong>Article Title:</strong> <em>“<span class="report-project-title">${title}</span>”</em></div>
-        <div style="text-align:right; white-space:nowrap; margin-left:8pt;">
-          <strong>Regards, Managing Editor</strong><br/>
-          International Journal of Drug Delivery Technologies (<code>https://ijddt.com</code>)
-        </div>
-      </div>
-    </div>
-
-    <div class="chapter-title-center" style="margin-top:4pt; margin-bottom:8pt;">ABSTRACT (SYNOPSIS)</div>
-    <div style="border:1.5px solid #0f172a; padding:10pt 14pt; margin-bottom:10pt; background:#ffffff;">
-      <p style="font-size:12pt; line-height:1.5; text-align:justify; text-indent:0; margin:0;">
-        <strong>Silent Bridge</strong> is a real-time, privacy-preserving bidirectional assistive platform connecting Indian Sign Language (ISL) signers and Kannada speakers on commodity hardware. Using in-browser MediaPipe hand and face landmarks (147-D <code>hands-face-v2</code> schema), motion segmentation, and a Bidirectional GRU with 3-view Test-Time Augmentation, isolated-sign accuracy on unseen signers improved from 54.5% to 76.5% ($p=0.003$, overall 81.5%, macro-F1 0.800). A fused BiGRU-CTC and sentence classifier decodes continuous ISL sentences, while a multi-tier SOV grammar engine and a procedural 3D avatar with analytic inverse kinematics translate Kannada text into continuous ISL signing with zero mid-sign arm drops.
-      </p>
-    </div>
-    <p style="font-size:11pt; line-height:1.45; text-indent:0; margin:0;">
-      <strong>Keywords:</strong> Indian Sign Language (ISL), Kannada Translation, MediaPipe Landmarks, Bidirectional GRU, Connectionist Temporal Classification (CTC), ONNX WebAssembly, 3D Inverse Kinematics Avatar, Assistive Technology, UN SDGs 3, 4, 8, 9, 10.
-    </p>
-    <div class="page-footer-roman">iv</div>
-  </section>`;
-
-  // 6. TABLE OF CONTENTS (Part 1) — Page v
-  const tocPage1 = String.raw`
-  <section class="report-page prelim-page" data-roman="v">
-    <div class="page-running-header">
-      <span class="report-project-title">${title}</span>
-      <span>Table of Contents</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:8pt;">TABLE OF CONTENTS</div>
     <table class="toc-table">
@@ -324,14 +361,14 @@ export function buildPreliminaryPages(meta) {
         </tr>
       </thead>
       <tbody>
-        <tr><td>i.</td><td>Inner Title Page</td><td class="r">i</td></tr>
-        <tr><td>ii.</td><td>Certificate</td><td class="r">ii</td></tr>
-        <tr><td>iii.</td><td>Declaration by Students &amp; Acknowledgement</td><td class="r">iii</td></tr>
-        <tr><td>iv.</td><td>Publication Certificate &amp; Abstract (Synopsis)</td><td class="r">iv</td></tr>
-        <tr><td>v.</td><td>Table of Contents</td><td class="r">v</td></tr>
-        <tr><td>vi.</td><td>List of Figures &amp; List of Tables</td><td class="r">vii</td></tr>
+        <tr><td>i.</td><td>Declaration by Students</td><td class="r">i</td></tr>
+        <tr><td>ii.</td><td>Acknowledgement</td><td class="r">ii</td></tr>
+        <tr><td>iii.</td><td>Abstract (Synopsis)</td><td class="r">iii</td></tr>
+        <tr><td>iv.</td><td>Table of Contents</td><td class="r">iv</td></tr>
+        <tr><td>v.</td><td>List of Figures</td><td class="r">vi</td></tr>
+        <tr><td>vi.</td><td>List of Tables</td><td class="r">vii</td></tr>
         <tr><td>vii.</td><td>List of Abbreviations and Acronyms</td><td class="r">viii</td></tr>
-        <tr><td>viii.</td><td>List of Symbols / Notations</td><td class="r">ix</td></tr>
+        <tr><td>viii.</td><td>List of Symbols and Notations</td><td class="r">ix</td></tr>
 
         <tr class="toc-ch"><td colspan="2">CHAPTER 1: INTRODUCTION</td><td class="r">1</td></tr>
         <tr><td>1.1</td><td>Background and Context of the Project</td><td class="r">1</td></tr>
@@ -373,15 +410,14 @@ export function buildPreliminaryPages(meta) {
         <tr><td>3.10</td><td>Data Privacy, Security, and Compliance Requirements</td><td class="r">24</td></tr>
       </tbody>
     </table>
-    <div class="page-footer-roman">v</div>
+    <div class="page-footer-roman">iv</div>
   </section>`;
 
-  // 7. TABLE OF CONTENTS (Part 2) — Page vi
+  // 9. TABLE OF CONTENTS (Part 2) — Page v
   const tocPage2 = String.raw`
-  <section class="report-page prelim-page" data-roman="vi">
+  <section class="report-page prelim-page" data-roman="v">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
-      <span>Table of Contents</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:6pt;">TABLE OF CONTENTS (Continued)</div>
     <table class="toc-table">
@@ -453,17 +489,16 @@ export function buildPreliminaryPages(meta) {
         <tr class="toc-ch"><td colspan="2">APPENDIX A: 144-Class ISL Vocabulary &amp; Kannada Lexicon</td><td class="r">66</td></tr>
       </tbody>
     </table>
-    <div class="page-footer-roman">vi</div>
+    <div class="page-footer-roman">v</div>
   </section>`;
 
-  // 8. LIST OF FIGURES & LIST OF TABLES — Page vii
-  const listOfFiguresAndTablesPage = String.raw`
-  <section class="report-page prelim-page" data-roman="vii">
+  // 10. LIST OF FIGURES (Dedicated 1 Full Page — Page vi)
+  const listOfFiguresPage = String.raw`
+  <section class="report-page prelim-page" data-roman="vi">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
-      <span>List of Figures &amp; Tables</span>
     </div>
-    <div class="chapter-title-center" style="margin-top:0; margin-bottom:6pt;">LIST OF FIGURES</div>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF FIGURES</div>
     <table class="toc-table" style="margin-bottom:8pt;">
       <thead>
         <tr>
@@ -489,8 +524,16 @@ export function buildPreliminaryPages(meta) {
         <tr><td>Fig. 7.6</td><td>Top-1 Accuracy Under Synthetic Landmark Perturbations on 268 Held-Out Videos</td><td class="r">57</td></tr>
       </tbody>
     </table>
+    <div class="page-footer-roman">vi</div>
+  </section>`;
 
-    <div class="chapter-title-center" style="margin-top:4pt; margin-bottom:6pt;">LIST OF TABLES</div>
+  // 11. LIST OF TABLES (Dedicated 1 Full Page — Page vii)
+  const listOfTablesPage = String.raw`
+  <section class="report-page prelim-page" data-roman="vii">
+    <div class="page-running-header">
+      <span class="report-project-title">${title}</span>
+    </div>
+    <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF TABLES</div>
     <table class="toc-table">
       <thead>
         <tr>
@@ -519,12 +562,11 @@ export function buildPreliminaryPages(meta) {
     <div class="page-footer-roman">vii</div>
   </section>`;
 
-  // 9. LIST OF ABBREVIATIONS AND ACRONYMS — Page viii
+  // 12. LIST OF ABBREVIATIONS AND ACRONYMS — Page viii
   const abbreviationsPage = String.raw`
   <section class="report-page prelim-page" data-roman="viii">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
-      <span>List of Abbreviations</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF ABBREVIATIONS AND ACRONYMS</div>
     <table class="data-table">
@@ -564,12 +606,11 @@ export function buildPreliminaryPages(meta) {
     <div class="page-footer-roman">viii</div>
   </section>`;
 
-  // 10. LIST OF SYMBOLS / NOTATIONS — Page ix
+  // 13. LIST OF SYMBOLS / NOTATIONS — Page ix
   const symbolsPage = String.raw`
   <section class="report-page prelim-page" data-roman="ix">
     <div class="page-running-header">
       <span class="report-project-title">${title}</span>
-      <span>List of Symbols &amp; Notations</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">LIST OF SYMBOLS AND NOTATIONS</div>
     <table class="data-table">
@@ -610,11 +651,14 @@ export function buildPreliminaryPages(meta) {
     coverPage,
     innerTitlePage,
     certificatePage,
-    declarationAndAckPage,
-    publicationAndAbstractPage,
+    publicationCertificatePage,
+    declarationPage,
+    acknowledgementPage,
+    abstractPage,
     tocPage1,
     tocPage2,
-    listOfFiguresAndTablesPage,
+    listOfFiguresPage,
+    listOfTablesPage,
     abbreviationsPage,
     symbolsPage,
   ].join("\n");

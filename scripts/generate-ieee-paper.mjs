@@ -1674,7 +1674,8 @@ const fullHtml = `<!DOCTYPE html>
       <span style="margin-left:10px; color:#cbd5e1;">8 Pages · IEEEtran Standard · Times New Roman · 12 Tables · 7 Figures · 25 References</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
-      <a href="/api/paper/download-pdf" download="SILENT_BRIDGE_IEEE_Research_Paper.pdf">⬇ Download IEEE Paper PDF</a>
+      <a href="/api/paper/download-docx" download="SILENT_BRIDGE_IEEE_Research_Paper.docx">⬇ Download IEEE Word (.docx)</a>
+      <a class="secondary" href="/api/paper/download-pdf" download="SILENT_BRIDGE_IEEE_Research_Paper.pdf">⬇ Download IEEE Paper PDF</a>
       <a class="secondary" href="/api/paper/download-tex" download="SILENT_BRIDGE_IEEE_Paper.tex">⬇ Download LaTeX (.tex)</a>
       <button class="secondary" onclick="window.print()">🖨 Print / Save as PDF</button>
     </div>

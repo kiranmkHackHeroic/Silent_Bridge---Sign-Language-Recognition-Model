@@ -3,17 +3,18 @@ import { Icon } from "../components/Icon";
 import { Card, Chip } from "../components/ui";
 
 const CHAPTER_JUMPS = [
-  { label: "Cover & Certificate", pageIndex: 0 },
-  { label: "Abstract & TOC (iv–vi)", pageIndex: 4 },
-  { label: "Ch 1: Introduction (p. 1–8)", pageIndex: 10 },
-  { label: "Ch 2: Literature Review (p. 9–16)", pageIndex: 18 },
-  { label: "Ch 3: Requirements (p. 17–24)", pageIndex: 26 },
-  { label: "Ch 4: Business Model (p. 25–31)", pageIndex: 34 },
-  { label: "Ch 5: System Design (p. 32–42)", pageIndex: 41 },
-  { label: "Ch 6: Implementation (p. 43–51)", pageIndex: 52 },
-  { label: "Ch 7: Testing & Results (p. 52–60)", pageIndex: 61 },
-  { label: "Ch 8: Conclusion (p. 61–63)", pageIndex: 70 },
-  { label: "References & Appendix (p. 64–66)", pageIndex: 73 },
+  { label: "Cover & Certificate (4 Pages)", pageIndex: 0 },
+  { label: "Declaration, Ack & Abstract (i–iii)", pageIndex: 4 },
+  { label: "TOC & Lists (iv–ix)", pageIndex: 7 },
+  { label: "Ch 1: Introduction (p. 1–8)", pageIndex: 13 },
+  { label: "Ch 2: Literature Review (p. 9–16)", pageIndex: 21 },
+  { label: "Ch 3: Requirements (p. 17–24)", pageIndex: 29 },
+  { label: "Ch 4: Business Model (p. 25–31)", pageIndex: 37 },
+  { label: "Ch 5: System Design (p. 32–42)", pageIndex: 44 },
+  { label: "Ch 6: Implementation (p. 43–51)", pageIndex: 55 },
+  { label: "Ch 7: Testing & Results (p. 52–60)", pageIndex: 64 },
+  { label: "Ch 8: Conclusion (p. 61–63)", pageIndex: 73 },
+  { label: "References & Appendix (p. 64–66)", pageIndex: 76 },
 ];
 
 const IEEE_PAGE_JUMPS = [
@@ -32,7 +33,7 @@ const OFFICIAL_PROJECT_TITLE =
 
 export function ProjectReport() {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
-  const [docMode, setDocMode] = useState<"ieee" | "report">("ieee");
+  const [docMode, setDocMode] = useState<"report" | "ieee">("report");
   const [projectTitle, setProjectTitle] = useState(OFFICIAL_PROJECT_TITLE);
   const [studentList, setStudentList] = useState(
     "Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), H S Thanush (1BM23CB066)"
@@ -102,112 +103,94 @@ export function ProjectReport() {
       <div className="page-head">
         <div>
           <h2 style={{ fontFamily: '"Times New Roman", "CSBS-Times", Times, serif' }}>
-            {docMode === "ieee"
-              ? "IEEE Format Research Paper (8 Pages · Two-Column IEEEtran Standard)"
-              : "CSBS B.E. Project Report (76 Pages · VTU/BMSCE Standard)"}
+            {docMode === "report"
+              ? "CSBS B.E. Project Report (76 Pages · Word .docx & PDF · VTU/BMSCE Standard)"
+              : "IEEE Format Research Paper (8 Pages · Word .docx, PDF & LaTeX · Two-Column IEEEtran Standard)"}
           </h2>
           <p style={{ fontWeight: 600, color: "var(--fg, inherit)", marginBottom: 4 }}>
             “{projectTitle}”
           </p>
           <p>
-            {docMode === "ieee"
-              ? "Formatted in strict IEEEtran two-column standard (100% Times New Roman · 12 Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References) — Published in International Journal of Drug Delivery Technologies (IJDDT, ISSN: 0975-4415, Scopus Q3, Vol. 16, No. 7, 2026)."
-              : "Formatted strictly per B.M.S. College of Engineering (Autonomous Institute Affiliated to VTU) — Department of Computer Science and Business Systems (CSBS) guidelines."}
+            {docMode === "report"
+              ? "Formatted strictly per B.M.S. College of Engineering (Autonomous Institute Affiliated to VTU) — Department of Computer Science and Business Systems (CSBS) guidelines in 100% Times New Roman."
+              : "Formatted in strict IEEEtran two-column standard (100% Times New Roman · 12 Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References) — Published in International Journal of Drug Delivery Technologies (IJDDT, ISSN: 0975-4415, Scopus Q3, Vol. 16, No. 7, 2026)."}
           </p>
         </div>
         <div className="row" style={{ gap: 8, flexWrap: "wrap" }}>
-          <button
-            type="button"
-            className={`btn ${docMode === "ieee" ? "btn-primary" : ""}`}
-            onClick={() => setDocMode("ieee")}
-          >
-            <Icon name="text" size={16} />
-            <span>IEEE Research Paper (8 Pages · Two-Column)</span>
-          </button>
           <button
             type="button"
             className={`btn ${docMode === "report" ? "btn-primary" : ""}`}
             onClick={() => setDocMode("report")}
           >
             <Icon name="eye" size={16} />
-            <span>CSBS B.E. Project Report (76 Pages · A4)</span>
+            <span>CSBS B.E. Project Report (76 Pages · Word &amp; PDF)</span>
+          </button>
+          <button
+            type="button"
+            className={`btn ${docMode === "ieee" ? "btn-primary" : ""}`}
+            onClick={() => setDocMode("ieee")}
+          >
+            <Icon name="text" size={16} />
+            <span>IEEE Research Paper (8 Pages · Word &amp; PDF)</span>
           </button>
         </div>
       </div>
 
       <Card
         title={
-          docMode === "ieee"
-            ? "IEEE Research Manuscript — Download PDF, LaTeX (.tex) & Navigate Sections"
-            : "CSBS 76-Page B.E. Project Report — Download PDF, Print & Customize Certificate"
+          docMode === "report"
+            ? "CSBS 76-Page B.E. Project Report — Download Word (.docx), PDF & Customize Certificate"
+            : "IEEE Research Manuscript — Download Word (.docx), PDF, LaTeX (.tex) & Navigate Sections"
         }
         icon="download"
       >
         <div className="row" style={{ gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-          {docMode === "ieee" ? (
+          {docMode === "report" ? (
             <>
-              <Chip tone="ok">8 Pages · Balanced Two-Column IEEEtran</Chip>
-              <Chip tone="info">100% Times New Roman · 12 Tables · 7 Figures</Chip>
-              <Chip tone="muted">IJDDT · ISSN 0975-4415 · Vol. 16, No. 7 (2026)</Chip>
+              <Chip tone="ok">76 Pages Total (10 Roman + 66 Arabic) · Editable Word (.docx)</Chip>
+              <Chip tone="info">Left 1.25&quot; · Right 1.0&quot; · Top/Bottom 0.75&quot; · 15 Embedded Figures</Chip>
+              <Chip tone="muted">18pt / 16pt / 14pt / 12pt Times New Roman</Chip>
             </>
           ) : (
             <>
-              <Chip tone="ok">76 Pages Total (10 Roman + 66 Arabic)</Chip>
-              <Chip tone="info">Left 1.25&quot; · Right 1.0&quot; · Top/Bottom 0.75&quot;</Chip>
-              <Chip tone="muted">18pt / 16pt / 14pt / 12pt Times New Roman</Chip>
+              <Chip tone="ok">8 Pages · Balanced Two-Column IEEEtran · Editable Word (.docx)</Chip>
+              <Chip tone="info">100% Times New Roman · 12 Tables · 7 Figures</Chip>
+              <Chip tone="muted">IJDDT · ISSN 0975-4415 · Vol. 16, No. 7 (2026)</Chip>
             </>
           )}
         </div>
 
         <div className="row" style={{ gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
-          {docMode === "ieee" ? (
+          {docMode === "report" ? (
             <>
               <a
-                href="/api/paper/download-pdf"
-                download="SILENT_BRIDGE_IEEE_Research_Paper.pdf"
+                href="/api/report/download-docx"
+                download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"
                 className="btn btn-primary"
                 style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
               >
                 <Icon name="download" size={16} />
-                <span>Download IEEE Research Paper PDF (8 Pages · A4)</span>
+                <span>Download 76-Page Report Word (.docx)</span>
               </a>
 
               <a
-                href="/api/paper/download-tex"
-                download="SILENT_BRIDGE_IEEE_Paper.tex"
+                href="/api/report/download-pdf"
+                download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"
                 className="btn"
                 style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
               >
                 <Icon name="download" size={16} />
-                <span>Download IEEE LaTeX Source (.tex)</span>
+                <span>Download 76-Page Report PDF (A4)</span>
               </a>
 
-              <button type="button" className="btn" onClick={printDocument}>
-                <Icon name="check" size={16} />
-                <span>Print / Save Custom PDF</span>
-              </button>
-
               <a
-                href="/report/SILENT_BRIDGE_IEEE_Research_Paper.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-ghost"
-                style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
-              >
-                <Icon name="eye" size={16} />
-                <span>Open Full-Screen IEEE Paper</span>
-              </a>
-            </>
-          ) : (
-            <>
-              <a
-                href="/api/report/download-pdf"
-                download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"
-                className="btn btn-primary"
+                href="/api/paper/download-docx"
+                download="SILENT_BRIDGE_IEEE_Research_Paper.docx"
+                className="btn"
                 style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
               >
                 <Icon name="download" size={16} />
-                <span>Download Ready 76-Page Report PDF (A4)</span>
+                <span>Download IEEE Paper Word (.docx)</span>
               </a>
 
               <button type="button" className="btn" onClick={printDocument}>
@@ -224,6 +207,64 @@ export function ProjectReport() {
               >
                 <Icon name="eye" size={16} />
                 <span>Open Full-Screen 76-Page Report</span>
+              </a>
+            </>
+          ) : (
+            <>
+              <a
+                href="/api/paper/download-docx"
+                download="SILENT_BRIDGE_IEEE_Research_Paper.docx"
+                className="btn btn-primary"
+                style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <Icon name="download" size={16} />
+                <span>Download IEEE Research Paper Word (.docx)</span>
+              </a>
+
+              <a
+                href="/api/paper/download-pdf"
+                download="SILENT_BRIDGE_IEEE_Research_Paper.pdf"
+                className="btn"
+                style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <Icon name="download" size={16} />
+                <span>Download IEEE Paper PDF (8 Pages · A4)</span>
+              </a>
+
+              <a
+                href="/api/paper/download-tex"
+                download="SILENT_BRIDGE_IEEE_Paper.tex"
+                className="btn"
+                style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <Icon name="download" size={16} />
+                <span>Download IEEE LaTeX Source (.tex)</span>
+              </a>
+
+              <a
+                href="/api/report/download-docx"
+                download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"
+                className="btn"
+                style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <Icon name="download" size={16} />
+                <span>Download 76-Page Report Word (.docx)</span>
+              </a>
+
+              <button type="button" className="btn" onClick={printDocument}>
+                <Icon name="check" size={16} />
+                <span>Print / Save Custom PDF</span>
+              </button>
+
+              <a
+                href="/report/SILENT_BRIDGE_IEEE_Research_Paper.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost"
+                style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <Icon name="eye" size={16} />
+                <span>Open Full-Screen IEEE Paper</span>
               </a>
             </>
           )}

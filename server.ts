@@ -1943,9 +1943,14 @@ async function startServer() {
     app.use("/onnx-wasm", express.static(publicOnnxPath, { setHeaders: setWasmHeaders }));
   }
 
-  // Serve the 76-page CSBS B.E. Project Report and 8-page IEEE Research Paper (PDF, LaTeX, HTML & embedded fonts)
+  // Serve the 76-page CSBS B.E. Project Report and 8-page IEEE Research Paper (PDF, Word .docx/.doc, LaTeX, HTML & embedded fonts)
   // with zero caching so clicking Download always delivers the exact latest paper matching the website preview.
   const publicReportDir = path.join(FRONTEND_DIR, "public", "report");
+  const setNoCacheHeaders = (res: express.Response) => {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+  };
   app.get("/api/report/download-pdf", (_req, res) => {
     const pdfPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.pdf");
     res.setHeader("Content-Type", "application/pdf");
@@ -1953,10 +1958,21 @@ async function startServer() {
       "Content-Disposition",
       'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
     );
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
+    setNoCacheHeaders(res);
     res.sendFile(pdfPath);
+  });
+  app.get(["/api/report/download-docx", "/api/report/download-doc"], (_req, res) => {
+    const docxPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.docx");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"'
+    );
+    setNoCacheHeaders(res);
+    res.sendFile(docxPath);
   });
   app.get("/api/paper/download-pdf", (_req, res) => {
     const pdfPath = path.join(publicReportDir, "SILENT_BRIDGE_IEEE_Research_Paper.pdf");
@@ -1965,10 +1981,21 @@ async function startServer() {
       "Content-Disposition",
       'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.pdf"'
     );
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
+    setNoCacheHeaders(res);
     res.sendFile(pdfPath);
+  });
+  app.get(["/api/paper/download-docx", "/api/paper/download-doc"], (_req, res) => {
+    const docxPath = path.join(publicReportDir, "SILENT_BRIDGE_IEEE_Research_Paper.docx");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.docx"'
+    );
+    setNoCacheHeaders(res);
+    res.sendFile(docxPath);
   });
   app.get("/api/paper/download-tex", (_req, res) => {
     const texPath = path.join(publicReportDir, "SILENT_BRIDGE_IEEE_Paper.tex");
@@ -1977,9 +2004,7 @@ async function startServer() {
       "Content-Disposition",
       'attachment; filename="SILENT_BRIDGE_IEEE_Paper.tex"'
     );
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
+    setNoCacheHeaders(res);
     res.sendFile(texPath);
   });
   if (fs.existsSync(publicReportDir)) {
@@ -1989,7 +2014,7 @@ async function startServer() {
         etag: false,
         lastModified: false,
         setHeaders: (res, filePath) => {
-          res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+          setNoCacheHeaders(res);
           if (filePath.endsWith("SILENT_BRIDGE_IEEE_Research_Paper.pdf")) {
             res.setHeader("Content-Type", "application/pdf");
             res.setHeader(
@@ -2001,6 +2026,27 @@ async function startServer() {
             res.setHeader(
               "Content-Disposition",
               'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
+            );
+          } else if (
+            filePath.endsWith("SILENT_BRIDGE_IEEE_Research_Paper.docx") ||
+            filePath.endsWith("SILENT_BRIDGE_IEEE_Research_Paper.doc")
+          ) {
+            res.setHeader(
+              "Content-Type",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            );
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_IEEE_Research_Paper.docx"'
+            );
+          } else if (filePath.endsWith(".docx") || filePath.endsWith(".doc")) {
+            res.setHeader(
+              "Content-Type",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            );
+            res.setHeader(
+              "Content-Disposition",
+              'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"'
             );
           } else if (filePath.endsWith(".tex")) {
             res.setHeader("Content-Type", "application/x-tex; charset=utf-8");

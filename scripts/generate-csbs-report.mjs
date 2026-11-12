@@ -192,13 +192,15 @@ function wrapPageBodies(html) {
       let headerHtml = "";
       const headerMatch = rest.match(/^\s*(<div class="page-running-header">[\s\S]*?<\/div>)/);
       if (headerMatch) {
-        headerHtml = headerMatch[1];
+        headerHtml = `<div class="page-running-header"><span class="report-project-title">${meta.title}</span></div>`;
         rest = rest.slice(headerMatch[0].length);
       }
       let footerHtml = "";
-      const footerMatch = rest.match(/(<div class="page-footer-(?:roman|arabic)">[\s\S]*?<\/div>)\s*$/);
+      const footerMatch = rest.match(/<div class="(page-footer-(?:roman|arabic))">([\s\S]*?)<\/div>\s*$/);
       if (footerMatch) {
-        footerHtml = footerMatch[1];
+        const footerCls = footerMatch[1];
+        const pageNum = footerMatch[2].replace(/<[^>]+>/g, "").trim();
+        footerHtml = `<div class="${footerCls}"><span class="footer-page-num">${pageNum}</span><span class="footer-dept">Department of CSBS</span></div>`;
         rest = rest.slice(0, rest.length - footerMatch[0].length);
       }
       return `${openTag}\n${headerHtml}\n<div class="page-body-wrap"><div class="page-body-inner">${rest.trim()}</div></div>\n${footerHtml}\n${closeTag}`;
@@ -430,31 +432,24 @@ const fullHtml = `<!DOCTYPE html>
       min-height: 0;
     }
 
-    /* Running Header */
+    /* Running Header — Right-aligned project title only (no chapter name on left) */
     .page-running-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: baseline;
-      gap: 4pt;
-      font-size: 5.15pt;
+      font-size: 7.5pt;
       font-style: italic;
-      color: #334155;
+      color: #0f172a;
       border-bottom: 1px solid #1e293b;
       padding-bottom: 3pt;
       margin-bottom: 6pt;
       flex-shrink: 0;
-      letter-spacing: -0.1px;
+      text-align: right;
     }
-    .page-running-header > span:first-child {
+    .page-running-header > span {
       font-weight: 700;
       color: #0f172a;
-      text-align: left;
-      white-space: nowrap;
-    }
-    .page-running-header > span:last-child {
-      white-space: nowrap;
       text-align: right;
-      flex-shrink: 0;
     }
 
     /* Flex body wrapper between running header and page footer */
@@ -764,19 +759,31 @@ const fullHtml = `<!DOCTYPE html>
       color: #0f172a;
     }
 
-    /* Page Footers — cleanly docked at the bottom of the flex column so they never overlap body text */
+    /* Page Footers — Page number on Left, Department of CSBS on Right */
     .page-footer-roman, .page-footer-arabic {
       margin-top: auto;
       width: 100%;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 10pt;
       font-weight: 700;
       border-top: 0.75px solid #64748b;
-      padding-top: 2.5pt;
+      padding-top: 3pt;
       margin-top: 4pt;
       color: #0f172a;
       flex-shrink: 0;
       background: #ffffff;
+    }
+    .page-footer-roman .footer-page-num,
+    .page-footer-arabic .footer-page-num {
+      text-align: left;
+      font-weight: 700;
+    }
+    .page-footer-roman .footer-dept,
+    .page-footer-arabic .footer-dept {
+      text-align: right;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -784,10 +791,11 @@ const fullHtml = `<!DOCTYPE html>
   <div class="report-toolbar no-print">
     <div>
       <strong>B.M.S. College of Engineering — Dept. of CSBS B.E. Project Report</strong>
-      <span style="margin-left:10px; color:#94a3b8;">76 Pages (10 Preliminary Roman + 66 Arabic Main Pages · A4 Standard)</span>
+      <span style="margin-left:10px; color:#94a3b8;">79 Pages (4 Certificate/Title Pages + 9 Roman Prelim Pages + 66 Arabic Main Pages · A4 Standard)</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
-      <a href="/api/report/download-pdf" download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf">⬇ Download 76-Page PDF</a>
+      <a href="/api/report/download-docx" download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx">⬇ Download Word (.docx)</a>
+      <a class="secondary" href="/api/report/download-pdf" download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf">⬇ Download PDF</a>
       <button class="secondary" onclick="window.print()">🖨 Print / Save as PDF</button>
     </div>
   </div>
