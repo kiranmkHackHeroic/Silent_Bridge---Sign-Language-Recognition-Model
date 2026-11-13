@@ -88,77 +88,79 @@ function convertLatexExpr(expr) {
     return `[${content}]${isCol ? "<sup>T</sup>" : ""}`;
   });
 
-  // Escaped characters first
+  // 1. Strip sizing & spacing commands BEFORE symbol replacements so \left never collides with \le or \leftarrow
+  s = s.replace(/\\(?:left|right|Big|big)(?![a-zA-Z])\s*/g, "");
+  s = s.replace(/\\qquad/g, " &nbsp;&nbsp;&nbsp;&nbsp; ");
+  s = s.replace(/\\quad/g, " &nbsp;&nbsp; ");
+  s = s.replace(/\\[,;]/g, " ");
+  s = s.replace(/\\!/g, "");
+
+  // 2. Escaped characters
   s = s.replace(/\\_/g, "_");
   s = s.replace(/\\%/g, "%");
   s = s.replace(/\\\{/g, "&#123;");
   s = s.replace(/\\\}/g, "&#125;");
   s = s.replace(/\\\|/g, "&#8214;");
 
-  // Inner text/font macros (multiple passes for nesting)
+  // 3. Inner text/font macros (multiple passes for nested macros, keeping accents inside bold tags)
   for (let pass = 0; pass < 3; pass++) {
     s = s.replace(/\\text\{([^{}]*)\}/g, '<span style="font-style:normal;">$1</span>');
     s = s.replace(/\\mathrm\{([^{}]*)\}/g, '<span style="font-style:normal;">$1</span>');
     s = s.replace(/\\mathcal\{([^{}]*)\}/g, "<i><b>$1</b></i>");
     s = s.replace(/\\mathbb\{R\}/g, "&#8477;");
     s = s.replace(/\\mathbb\{([^{}]*)\}/g, "<b>$1</b>");
-    s = s.replace(/\\overrightarrow\{([^{}]*)\}/g, "$1&#8407;");
-    s = s.replace(/\\overleftarrow\{([^{}]*)\}/g, "$1&#8406;");
-    s = s.replace(/\\hat\{([^{}]*)\}/g, "$1&#770;");
-    s = s.replace(/\\tilde\{([^{}]*)\}/g, "$1&#771;");
     s = s.replace(/\\mathbf\{([^{}]*)\}/g, "<b>$1</b>");
+    s = s.replace(/\\overrightarrow\{<b>([^{}<>]+)<\/b>\}/g, "<b>$1&#8407;</b>");
+    s = s.replace(/\\overleftarrow\{<b>([^{}<>]+)<\/b>\}/g, "<b>$1&#8406;</b>");
+    s = s.replace(/\\hat\{<b>([^{}<>]+)<\/b>\}/g, "<b>$1&#770;</b>");
+    s = s.replace(/\\tilde\{<b>([^{}<>]+)<\/b>\}/g, "<b>$1&#771;</b>");
+    s = s.replace(/\\overrightarrow\{([^{}]+)\}/g, "$1&#8407;");
+    s = s.replace(/\\overleftarrow\{([^{}]+)\}/g, "$1&#8406;");
+    s = s.replace(/\\hat\{([^{}]+)\}/g, "$1&#770;");
+    s = s.replace(/\\tilde\{([^{}]+)\}/g, "$1&#771;");
   }
 
-  // Greek letters & operators (BEFORE \left / \right so \leftarrow isn't split!)
-  const symbols = [
-    ["\\rightarrow", "&rarr;"],
-    ["\\leftarrow", "&larr;"],
-    ["\\implies", "&rArr;"],
-    ["\\approx", "&approx;"],
-    ["\\forall", "&forall;"],
-    ["\\epsilon", "&epsilon;"],
-    ["\\lambda", "&lambda;"],
-    ["\\sigma", "&sigma;"],
-    ["\\theta", "&theta;"],
-    ["\\alpha", "&alpha;"],
-    ["\\delta", "&delta;"],
-    ["\\Delta", "&Delta;"],
-    ["\\times", "&times;"],
-    ["\\cdot", "&middot;"],
-    ["\\perp", "&perp;"],
-    ["\\dots", "&hellip;"],
-    ["\\langle", "&lang;"],
-    ["\\rangle", "&rang;"],
-    ["\\tau", "&tau;"],
-    ["\\chi", "&chi;"],
-    ["\\pi", "&pi;"],
-    ["\\ge", "&ge;"],
-    ["\\le", "&le;"],
-    ["\\pm", "&plusmn;"],
-    ["\\in", "&in;"],
-    ["\\to", "&rarr;"],
-    ["\\mid", " | "],
-    ["\\sum", "&Sigma;"],
-    ["\\max", '<span style="font-style:normal;">max</span>'],
-    ["\\min", '<span style="font-style:normal;">min</span>'],
-    ["\\log", '<span style="font-style:normal;">log</span>'],
-    ["\\cos", '<span style="font-style:normal;">cos</span>'],
-    ["\\sin", '<span style="font-style:normal;">sin</span>'],
-  ];
-  for (const [k, v] of symbols) {
-    s = s.split(k).join(v);
-  }
+  // 4. Greek letters, operators & math functions with strict command-boundary matching
+  const symbolMap = {
+    rightarrow: "&rarr;",
+    leftarrow: "&larr;",
+    implies: "&rArr;",
+    approx: "&approx;",
+    forall: "&forall;",
+    epsilon: "&epsilon;",
+    lambda: "&lambda;",
+    sigma: "&sigma;",
+    theta: "&theta;",
+    alpha: "&alpha;",
+    delta: "&delta;",
+    Delta: "&Delta;",
+    times: "&times;",
+    cdot: "&middot;",
+    perp: "&perp;",
+    dots: "&hellip;",
+    langle: "&lang;",
+    rangle: "&rang;",
+    tau: "&tau;",
+    chi: "&chi;",
+    pi: "&pi;",
+    ge: "&ge;",
+    le: "&le;",
+    pm: "&plusmn;",
+    in: "&isin;",
+    to: "&rarr;",
+    mid: " | ",
+    sum: "&Sigma;",
+    max: '<span style="font-style:normal;">max</span>',
+    min: '<span style="font-style:normal;">min</span>',
+    log: '<span style="font-style:normal;">log</span>',
+    cos: '<span style="font-style:normal;">cos</span>',
+    sin: '<span style="font-style:normal;">sin</span>',
+  };
+  s = s.replace(/\\([a-zA-Z]+)(?![a-zA-Z])/g, (full, cmd) =>
+    Object.prototype.hasOwnProperty.call(symbolMap, cmd) ? symbolMap[cmd] : full
+  );
 
-  // Sizing & spacing commands
-  s = s.replace(/\\left\s*/g, "");
-  s = s.replace(/\\right\s*/g, "");
-  s = s.replace(/\\Big\s*/g, "");
-  s = s.replace(/\\big\s*/g, "");
-  s = s.replace(/\\qquad/g, " &nbsp;&nbsp;&nbsp;&nbsp; ");
-  s = s.replace(/\\quad/g, " &nbsp;&nbsp; ");
-  s = s.replace(/\\[,;!]/g, " ");
-
-  // Subscripts and superscripts with braces _{...} and ^{...} BEFORE \frac / \widehat / \binom
+  // 5. Subscripts and superscripts with braces _{...} and ^{...} BEFORE \frac / \widehat / \binom
   for (let pass = 0; pass < 3; pass++) {
     s = s.replace(/_\{([^{}]+)\}/g, "<sub>$1</sub>");
     s = s.replace(/\^\{([^{}]+)\}/g, "<sup>$1</sup>");
@@ -167,7 +169,7 @@ function convertLatexExpr(expr) {
   s = s.replace(/_(&[a-zA-Z0-9#]+;|[a-zA-Z0-9*+-]+)/g, "<sub>$1</sub>");
   s = s.replace(/\^(&[a-zA-Z0-9#]+;|[a-zA-Z0-9*+-]+)/g, "<sup>$1</sup>");
 
-  // Now inner braces are resolved, so \widehat, \binom, and \frac match cleanly
+  // 6. Now inner braces are resolved, so \widehat, \binom, and \frac match cleanly
   for (let pass = 0; pass < 2; pass++) {
     s = s.replace(/\\widehat\{([^{}]+)\}/g, "($1)&#770;");
     s = s.replace(/\\binom\{([^{}]+)\}\{([^{}]+)\}/g, "C($1, $2)");
@@ -226,7 +228,7 @@ const fullHtml = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSBS B.E. Project Report — SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR (76 Pages)</title>
+  <title>CSBS B.E. Project Report — SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR (78 Pages)</title>
   <style>
     @font-face {
       font-family: "Times New Roman";
@@ -393,9 +395,9 @@ const fullHtml = `<!DOCTYPE html>
       width: 210mm;
       height: 297mm;
       padding: 0.75in 1in 0.75in 1.25in;
-      margin: 22px auto;
+      margin: 6px auto;
       background: #ffffff;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -684,14 +686,14 @@ const fullHtml = `<!DOCTYPE html>
       text-align: left;
     }
     .toc-title {
-      flex-shrink: 0;
-      white-space: nowrap;
+      flex: 0 1 auto;
+      min-width: 0;
     }
     .toc-leader {
-      flex: 1 1 auto;
+      flex: 1 1 12pt;
       border-bottom: 1.2px dotted #475569;
-      margin: 0 8pt 3.5pt 8pt;
-      min-width: 14pt;
+      margin: 0 6pt 3.5pt 6pt;
+      min-width: 12pt;
     }
     .toc-page {
       flex-shrink: 0;
@@ -704,34 +706,35 @@ const fullHtml = `<!DOCTYPE html>
     .leader-list-item {
       display: flex;
       align-items: baseline;
-      font-size: 11.4pt;
-      line-height: 1.68;
-      margin-bottom: 7pt;
+      font-size: 11.0pt;
+      line-height: 1.56;
+      margin-bottom: 5.5pt;
       color: #000000;
     }
     .leader-item-num {
-      width: 78pt;
+      width: 62pt;
       flex-shrink: 0;
       font-weight: 700;
       text-align: left;
       white-space: nowrap;
     }
     .leader-item-title {
-      flex-shrink: 0;
+      flex: 0 1 auto;
+      min-width: 0;
       text-align: left;
-      white-space: nowrap;
+      overflow-wrap: break-word;
     }
     .leader-item-dots {
-      flex: 1 1 auto;
+      flex: 1 1 12pt;
       border-bottom: 1.2px dotted #475569;
-      margin: 0 8pt 3.5pt 8pt;
-      min-width: 16pt;
+      margin: 0 6pt 3.5pt 6pt;
+      min-width: 12pt;
     }
     .leader-item-page {
       flex-shrink: 0;
       font-weight: 700;
       text-align: right;
-      min-width: 30pt;
+      min-width: 24pt;
     }
 
     /* Enlarged List of Abbreviations & List of Symbols (Non-Table Structured Format) */
@@ -786,28 +789,88 @@ const fullHtml = `<!DOCTYPE html>
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10pt;
       background: #f8fafc;
       border: 0.6px solid #cbd5e1;
       border-left: 2.5px solid #1e3a8a;
-      padding: 3pt 9pt;
-      margin: 3pt 0;
-      font-size: 10.2pt;
-      font-family: "CSBS-Times", "CSBS-Kannada", "Times New Roman", Times, serif;
+      padding: 4pt 8pt;
+      margin: 3.5pt 0;
+      font-size: 9.8pt;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
       width: 100%;
+    }
+    .eq-row > span:first-child {
+      flex: 1 1 auto;
+      text-align: center;
     }
     .eq-num {
       font-weight: 700;
-      margin-left: auto;
-      padding-left: 8pt;
+      flex-shrink: 0;
       text-align: right;
       white-space: nowrap;
       color: #0f172a;
     }
-    .eq-num::before {
-      content: ".......... ";
-      letter-spacing: 1px;
-      color: #64748b;
-      font-weight: 400;
+
+    /* Semantic signature & callout blocks */
+    .place-date-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12pt;
+      line-height: 1.6;
+      margin-top: 18pt;
+      margin-bottom: 18pt;
+    }
+    .sig-section-title {
+      font-size: 12pt;
+      font-weight: 700;
+      margin-bottom: 8pt;
+      color: #0f172a;
+    }
+    .sig-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18pt;
+      width: 100%;
+      font-size: 11.5pt;
+      line-height: 1.4;
+      margin-top: 4pt;
+      margin-bottom: 8pt;
+    }
+    .sig-col {
+      text-align: center;
+    }
+    .sig-space {
+      height: 36pt;
+    }
+    .sig-line {
+      border-top: 1.2px solid #000000;
+      padding-top: 5pt;
+      font-weight: 700;
+      color: #000000;
+    }
+    .sig-usn {
+      font-size: 10.8pt;
+      color: #1e293b;
+    }
+    .manuscript-box {
+      border: 1.2px solid #1e293b;
+      padding: 10pt 14pt;
+      background: #f8fafc;
+      margin-bottom: 10pt;
+    }
+    .table-note {
+      font-size: 8.5pt;
+      line-height: 1.3;
+      color: #334155;
+      text-align: left;
+      text-indent: 0;
+      margin-top: 2pt;
+      margin-bottom: 2pt;
+    }
+    .left-align-p {
+      text-align: left !important;
+      text-indent: 0;
     }
 
     /* Algorithm & Code Listings */
@@ -849,7 +912,7 @@ const fullHtml = `<!DOCTYPE html>
     .code-pre {
       margin: 0;
       padding: 4pt 7pt;
-      font-family: "CSBS-Times", "CSBS-Kannada", "Times New Roman", Times, serif;
+      font-family: "Times New Roman", "CSBS-Times", "CSBS-Kannada", Times, serif !important;
       font-size: 8.6pt;
       line-height: 1.22;
       white-space: pre-wrap;
@@ -914,11 +977,11 @@ const fullHtml = `<!DOCTYPE html>
   <div class="report-toolbar no-print">
     <div>
       <strong>B.M.S. College of Engineering — Dept. of CSBS B.E. Project Report</strong>
-      <span style="margin-left:10px; color:#94a3b8;">79 Pages (4 Certificate/Title Pages + 9 Roman Prelim Pages + 66 Arabic Main Pages · A4 Standard)</span>
+      <span style="margin-left:10px; color:#94a3b8;">78 Pages (3 Title/Certificate Pages + 9 Roman Prelim Pages + 66 Arabic Main Pages · A4 Standard)</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
-      <a href="/api/report/download-docx" download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx">⬇ Download Word (.docx)</a>
-      <a class="secondary" href="/api/report/download-pdf" download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf">⬇ Download PDF</a>
+      <a href="/api/report/download-docx" data-preload-url="/api/report/download-docx" download="SILENT_BRIDGE_CSBS_BE_Project_Report_78Pages.docx">⬇ Download Word (.docx)</a>
+      <a class="secondary" href="/api/report/download-pdf" data-preload-url="/api/report/download-pdf" download="SILENT_BRIDGE_CSBS_BE_Project_Report_78Pages.pdf">⬇ Download PDF</a>
       <button class="secondary" onclick="window.print()">🖨 Print / Save as PDF</button>
     </div>
   </div>
@@ -931,6 +994,23 @@ const fullHtml = `<!DOCTYPE html>
   ${ch7And8Html}
 
   <script>
+    (function preloadDownloadBlobs() {
+      const links = document.querySelectorAll("a[data-preload-url]");
+      links.forEach((link) => {
+        const url = link.getAttribute("data-preload-url");
+        if (!url) return;
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+          if (xhr.status >= 200 && xhr.status < 300 && xhr.response instanceof Blob && xhr.response.size > 0) {
+            link.href = URL.createObjectURL(xhr.response);
+          }
+        };
+        xhr.send();
+      });
+    })();
+
     // Full-Width Precision Typographic Page-Fit Engine:
     // Guarantees 100% horizontal width alignment and zero page clipping across all 76 A4 pages
     // with exact CSBS margins (Left 1.25in, Right 1in, Top 0.75in, Bottom 0.75in).
@@ -952,13 +1032,12 @@ const fullHtml = `<!DOCTYPE html>
         const codePres = inner.querySelectorAll(".code-pre");
         const listItems = inner.querySelectorAll(".toc-chapter-entry, .toc-section-entry, .toc-prelim-entry, .leader-list-item, .def-list-item, .sym-list-item");
 
-        // Multi-step full-width vertical compaction if a page is taller than available height
+        // Gentle, minimal multi-step vertical fit only when a page slightly exceeds available height
         const steps = [
-          { pFs: "11.4pt", pLh: "1.42", pMb: "3.8pt", tFs: "8.6pt", tLh: "1.18", cPad: "2pt 3.8pt", hScale: 0.96, codeFs: "8.4pt", codeLh: "1.22", lFs: "11.2pt", lLh: "1.34", lMb: "2.2pt" },
-          { pFs: "10.8pt", pLh: "1.35", pMb: "3pt",   tFs: "8.2pt", tLh: "1.15", cPad: "1.6pt 3.2pt", hScale: 0.92, codeFs: "8.0pt", codeLh: "1.18", lFs: "10.8pt", lLh: "1.28", lMb: "1.8pt" },
-          { pFs: "10.2pt", pLh: "1.28", pMb: "2.4pt", tFs: "7.8pt", tLh: "1.12", cPad: "1.3pt 2.8pt", hScale: 0.88, codeFs: "7.6pt", codeLh: "1.14", lFs: "10.4pt", lLh: "1.22", lMb: "1.4pt" },
-          { pFs: "9.6pt",  pLh: "1.22", pMb: "1.8pt", tFs: "7.4pt", tLh: "1.09", cPad: "1.0pt 2.4pt", hScale: 0.84, codeFs: "7.2pt", codeLh: "1.10", lFs: "10.0pt", lLh: "1.18", lMb: "1.0pt" },
-          { pFs: "9.0pt",  pLh: "1.16", pMb: "1.4pt", tFs: "7.0pt", tLh: "1.06", cPad: "0.8pt 2.0pt", hScale: 0.80, codeFs: "6.8pt", codeLh: "1.06", lFs: "9.5pt",  lLh: "1.14", lMb: "0.8pt" },
+          { pFs: "11.6pt", pLh: "1.46", pMb: "4.2pt", tFs: "8.8pt", tLh: "1.20", cPad: "2.2pt 4pt", hScale: 0.98, codeFs: "8.4pt", codeLh: "1.20", lFs: "11.0pt", lLh: "1.40", lMb: "3.0pt" },
+          { pFs: "11.2pt", pLh: "1.40", pMb: "3.5pt", tFs: "8.4pt", tLh: "1.16", cPad: "1.8pt 3.4pt", hScale: 0.95, codeFs: "8.0pt", codeLh: "1.16", lFs: "10.6pt", lLh: "1.32", lMb: "2.2pt" },
+          { pFs: "10.8pt", pLh: "1.34", pMb: "2.8pt", tFs: "8.0pt", tLh: "1.13", cPad: "1.5pt 3.0pt", hScale: 0.92, codeFs: "7.6pt", codeLh: "1.13", lFs: "10.2pt", lLh: "1.24", lMb: "1.6pt" },
+          { pFs: "10.3pt", pLh: "1.28", pMb: "2.2pt", tFs: "7.6pt", tLh: "1.10", cPad: "1.2pt 2.6pt", hScale: 0.88, codeFs: "7.2pt", codeLh: "1.10", lFs: "9.8pt",  lLh: "1.18", lMb: "1.2pt" },
         ];
 
         for (const step of steps) {

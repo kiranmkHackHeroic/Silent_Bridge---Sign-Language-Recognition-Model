@@ -197,7 +197,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
     </div>
 
     <div class="figure-box" style="margin-top:6pt;">
-      <img src="${figUiLive}" alt="Fig. 6.1 Live ISL-to-Kannada Recognition Studio Workflow" style="width:100%; max-height:285px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <img src="${figUiLive}" alt="Fig. 6.1 Live ISL-to-Kannada Recognition Studio Workflow" style="width:100%; max-height:215px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
       <div class="figure-caption">Fig. 6.1 Actual Website Workflow — Live ISL-to-Kannada Recognition Studio showing real-time camera stream status, 144-class trained model indicator, Kannada transcript editor, and SOV meaning panel.</div>
     </div>
     <div class="page-footer-arabic">45</div>
@@ -241,7 +241,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
     </p>
 
     <div class="figure-box" style="margin-top:6pt;">
-      <img src="${figUiCustom}" alt="Fig. 6.2 Few-Shot Custom Signs Studio Workflow" style="width:100%; max-height:230px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <img src="${figUiCustom}" alt="Fig. 6.2 Few-Shot Custom Signs Studio Workflow" style="width:100%; max-height:205px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
       <div class="figure-caption">Fig. 6.2 Actual Website Workflow — Custom Signs &amp; Personalization Studio for recording 3 repetitions of user-defined regional or personal signs and matching 3,668-D landmark centroids in-browser.</div>
     </div>
     <div class="page-footer-arabic">46</div>
@@ -283,7 +283,7 @@ public async classifySegmentFrames(segmentFrames: ParsedBrowserFrame[]): Promise
     </div>
 
     <div class="figure-box" style="margin-top:6pt;">
-      <img src="${figUiAvatar}" alt="Fig. 6.3 Kannada-to-Sign 3D Avatar Studio Workflow" style="width:100%; max-height:230px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+      <img src="${figUiAvatar}" alt="Fig. 6.3 Kannada-to-Sign 3D Avatar Studio Workflow" style="width:100%; max-height:205px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
       <div class="figure-caption">Fig. 6.3 Actual Website Workflow — Kannada-to-Sign 3D Avatar Studio translating Kannada text (ನಿಮ್ಮ ಹೆಸರು ಏನು?) into ordered ISL gloss sequences and rendering continuous 3D humanoid signing with analytic 2-bone IK.</div>
     </div>
     <div class="page-footer-arabic">47</div>
@@ -395,11 +395,11 @@ export function kannadaToVisemes(text: string): Viseme[] {
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8pt; margin:4pt 0;">
       <div class="figure-box" style="margin:0;">
-        <img src="${figUiReference}" alt="Fig. 6.4 Sign Reference Library Workflow" style="width:100%; max-height:145px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+        <img src="${figUiReference}" alt="Fig. 6.4 Sign Reference Library Workflow" style="width:100%; max-height:135px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
         <div class="figure-caption">Fig. 6.4 Actual Website Workflow — 144-Class Bilingual Sign Reference Library with searchable Kannada/English glosses and signing guidelines.</div>
       </div>
       <div class="figure-box" style="margin:0;">
-        <img src="${figUiDataset}" alt="Fig. 6.5 Dataset and Model Governance Workbench Workflow" style="width:100%; max-height:145px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
+        <img src="${figUiDataset}" alt="Fig. 6.5 Dataset and Model Governance Workbench Workflow" style="width:100%; max-height:135px; object-fit:contain; display:block; margin:0 auto; border:1px solid #cbd5e1;" />
         <div class="figure-caption">Fig. 6.5 Actual Website Workflow — Dataset &amp; Model Governance Workbench showing active checkpoint v20261103-195651 (144 classes, 3,182 valid samples).</div>
       </div>
     </div>

@@ -1,6 +1,15 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "../components/Icon";
 import { Card, Chip } from "../components/ui";
+
+const DOWNLOAD_ENDPOINTS = [
+  "/api/ppt/download-pptx",
+  "/api/ppt/download-pdf",
+  "/api/report/download-docx",
+  "/api/report/download-pdf",
+  "/api/paper/download-docx",
+  "/api/paper/download-pdf",
+] as const;
 
 const CHAPTER_JUMPS = [
   { label: "Cover & Certificate (3 Pages)", pageIndex: 0 },
@@ -29,16 +38,20 @@ const IEEE_PAGE_JUMPS = [
 ];
 
 const PPT_SLIDE_JUMPS = [
-  { label: "Slide 1: Title & Team", pageIndex: 0 },
-  { label: "Slide 2: Everyday Communication Challenges", pageIndex: 1 },
-  { label: "Slide 3: How Silent Bridge Connects People", pageIndex: 2 },
-  { label: "Slide 4: Step-by-Step Conversation Flow", pageIndex: 3 },
-  { label: "Slide 5: Safe & Fast Gesture Recognition", pageIndex: 4 },
-  { label: "Slide 6: Talking 3D Character for Kannada", pageIndex: 5 },
-  { label: "Slide 7: Easy-to-Use Website & Custom Signs", pageIndex: 6 },
-  { label: "Slide 8: Real-World Testing & High Accuracy", pageIndex: 7 },
-  { label: "Slide 9: Helping People in Everyday Places", pageIndex: 8 },
-  { label: "Slide 10: Summary & What We Plan Next", pageIndex: 9 },
+  { label: "Slide 1: Title Slide (BMSCE & Team)", pageIndex: 0 },
+  { label: "Slide 2: Content Table (Agenda)", pageIndex: 1 },
+  { label: "Slide 3: Abstract", pageIndex: 2 },
+  { label: "Slide 4: Introduction & Topic Selection", pageIndex: 3 },
+  { label: "Slide 5: Problem Statement & Objectives", pageIndex: 4 },
+  { label: "Slide 6: Literature Survey", pageIndex: 5 },
+  { label: "Slide 7: System Architecture & Pipeline", pageIndex: 6 },
+  { label: "Slide 8: Hardware & Software Requirements", pageIndex: 7 },
+  { label: "Slide 9: 147-D Feature Extraction Schema", pageIndex: 8 },
+  { label: "Slide 10: Module Implementation (How & Why)", pageIndex: 9 },
+  { label: "Slide 11: Parameters & Comparison Table", pageIndex: 10 },
+  { label: "Slide 12: Results & Named Graphs", pageIndex: 11 },
+  { label: "Slide 13: Conclusion & Future Work", pageIndex: 12 },
+  { label: "Slide 14: Research Paper & Importance", pageIndex: 13 },
 ];
 
 const OFFICIAL_PROJECT_TITLE =
@@ -49,6 +62,7 @@ type DocMode = "ppt" | "report" | "ieee";
 function initialDocMode(): DocMode {
   const h = location.hash.replace("#", "");
   if (h === "paper") return "ieee";
+  if (h === "report") return "report";
   if (h === "ppt") return "ppt";
   return "ppt";
 }
@@ -66,6 +80,38 @@ export function ProjectReport() {
   const [principalName, setPrincipalName] = useState("Dr. Beemsha Arya");
   const [academicYear, setAcademicYear] = useState("2026-2027");
   const [appliedMsg, setAppliedMsg] = useState<string | null>(null);
+  const [downloadStatus, setDownloadStatus] = useState<string | null>(null);
+  const [blobUrls, setBlobUrls] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const createdUrls: string[] = [];
+    const xhrs: XMLHttpRequest[] = [];
+
+    DOWNLOAD_ENDPOINTS.forEach((endpoint) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", endpoint, true);
+      xhr.responseType = "blob";
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300 && xhr.response instanceof Blob && xhr.response.size > 0) {
+          const objectUrl = URL.createObjectURL(xhr.response);
+          createdUrls.push(objectUrl);
+          setBlobUrls((prev) => ({ ...prev, [endpoint]: objectUrl }));
+        }
+      };
+      xhr.send();
+      xhrs.push(xhr);
+    });
+
+    return () => {
+      xhrs.forEach((xhr) => xhr.abort());
+      createdUrls.forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, []);
+
+  const notifyDownload = (filename: string) => {
+    setDownloadStatus(`Downloading ${filename}...`);
+    setTimeout(() => setDownloadStatus(null), 4000);
+  };
 
   const jumpToPage = (pageIndex: number) => {
     const doc = iframeRef.current?.contentDocument;
@@ -92,7 +138,7 @@ export function ProjectReport() {
       docMode === "ieee" ? ".ieee-page" : docMode === "ppt" ? ".ppt-slide" : ".report-page";
     const pagesToUpdate = Array.from(doc.querySelectorAll(selector)).slice(
       0,
-      docMode === "ieee" ? 8 : docMode === "ppt" ? 10 : 5
+      docMode === "ieee" ? 8 : docMode === "ppt" ? 14 : 5
     );
     for (const p of pagesToUpdate) {
       let html = p.innerHTML;
@@ -109,10 +155,10 @@ export function ProjectReport() {
     }
     setAppliedMsg(
       docMode === "ppt"
-        ? "Updated Project Title, Sorted Student USNs & Guide Details across the 10-Slide Presentation preview."
+        ? "Updated Project Title, Sorted Student USNs & Guide Details across the 14-Slide Presentation preview."
         : docMode === "ieee"
           ? "Updated Project Title, Author Details & Institutional Acknowledgment across the IEEE Paper preview."
-          : "Updated Project Title, Cover, Inner Title, Certificate, Declaration & Publication pages in the 76-page Report preview."
+          : "Updated Project Title, Cover, Inner Title, Certificate, Declaration & Publication pages in the 78-page Report preview."
     );
     setTimeout(() => setAppliedMsg(null), 5000);
   };
@@ -133,14 +179,14 @@ export function ProjectReport() {
     docMode === "ppt" ? PPT_SLIDE_JUMPS : docMode === "ieee" ? IEEE_PAGE_JUMPS : CHAPTER_JUMPS;
 
   return (
-    <div className="stack" style={{ fontFamily: '"Times New Roman", "CSBS-Times", Times, serif' }}>
+    <div className="stack report-font-scope">
       <div className="page-head">
         <div>
-          <h2 style={{ fontFamily: '"Times New Roman", "CSBS-Times", Times, serif' }}>
+          <h2>
             {docMode === "ppt"
-              ? "10-Slide Project Presentation (PowerPoint .pptx & Widescreen PDF · Simple Visual Diagrams)"
+              ? "14-Slide Project Presentation (Referenced from 78-Page CSBS B.E. Report · .pptx & PDF)"
               : docMode === "report"
-                ? "CSBS B.E. Project Report (76 Pages · Word .docx & PDF · VTU/BMSCE Standard)"
+                ? "CSBS B.E. Project Report (78 Pages · Word .docx & PDF · VTU/BMSCE Standard)"
                 : "IEEE Format Research Paper (8 Pages · Word .docx, PDF & LaTeX · Two-Column IEEEtran Standard)"}
           </h2>
           <p style={{ fontWeight: 600, color: "var(--fg, inherit)", marginBottom: 4 }}>
@@ -148,7 +194,7 @@ export function ProjectReport() {
           </p>
           <p>
             {docMode === "ppt"
-              ? "10 clean widescreen (16:9) slides with simple visual block diagrams, two-lane pipeline charts, live studio screenshots, and student USNs in increasing order (1BM23CB066, 1BM23CB068, 1BM24CB401)."
+              ? "14 widescreen (16:9) slides covering Title, Agenda Table, Abstract, Introduction & Topic Selection, Problem Statement & 4 Objectives, Literature Survey, Report System Architecture & Arrow Pipelines, Hardware/Software Requirements, 147-D Features, Module-Wise Implementation (How & Why), Evaluation Parameters & Comparison Table, Named Graphs, Conclusion & Future Work, and Research Paper Publication."
               : docMode === "report"
                 ? "Formatted strictly per B.M.S. College of Engineering (Autonomous Institute Affiliated to VTU) — Department of Computer Science and Business Systems (CSBS) guidelines in 100% Times New Roman."
                 : "Formatted in strict IEEEtran two-column standard (100% Times New Roman · 12 Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References) — Department of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore."}
@@ -157,15 +203,15 @@ export function ProjectReport() {
         <div className="row" style={{ gap: 8, flexWrap: "wrap" }}>
           <button
             type="button"
-            className={`btn ${docMode === "ppt" ? "btn-primary" : ""}`}
+            className={`btn btn-md ${docMode === "ppt" ? "btn-primary" : ""}`}
             onClick={() => setDocMode("ppt")}
           >
             <Icon name="eye" size={16} />
-            <span>10-Slide PPT Presentation (.pptx &amp; PDF)</span>
+            <span>14-Slide PPT Presentation (.pptx &amp; PDF)</span>
           </button>
           <button
             type="button"
-            className={`btn ${docMode === "report" ? "btn-primary" : ""}`}
+            className={`btn btn-md ${docMode === "report" ? "btn-primary" : ""}`}
             onClick={() => setDocMode("report")}
           >
             <Icon name="download" size={16} />
@@ -173,7 +219,7 @@ export function ProjectReport() {
           </button>
           <button
             type="button"
-            className={`btn ${docMode === "ieee" ? "btn-primary" : ""}`}
+            className={`btn btn-md ${docMode === "ieee" ? "btn-primary" : ""}`}
             onClick={() => setDocMode("ieee")}
           >
             <Icon name="text" size={16} />
@@ -185,7 +231,7 @@ export function ProjectReport() {
       <Card
         title={
           docMode === "ppt"
-            ? "10-Slide Widescreen Presentation Deck — Download PowerPoint (.pptx), PDF & Jump to Slides"
+            ? "14-Slide Widescreen Presentation Deck — Download PowerPoint (.pptx), PDF & Jump to Slides"
             : docMode === "report"
               ? "CSBS B.E. Project Report — Download Word (.docx), PDF & Customize Certificate"
               : "IEEE Research Manuscript — Download Word (.docx), PDF, LaTeX (.tex) & Navigate Sections"
@@ -195,9 +241,9 @@ export function ProjectReport() {
         <div className="row" style={{ gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
           {docMode === "ppt" ? (
             <>
-              <Chip tone="ok">10 Slides (16:9 Widescreen) · Editable PowerPoint (.pptx) &amp; PDF</Chip>
+              <Chip tone="ok">14 Slides (16:9 Widescreen) · Referenced from Ch 1–8 of Report</Chip>
               <Chip tone="info">USNs Sorted: 1BM23CB066 · 1BM23CB068 · 1BM24CB401</Chip>
-              <Chip tone="muted">Simple Visual Flows, Architecture Diagrams &amp; Website Screenshots</Chip>
+              <Chip tone="muted">Agenda · Lit Survey · Architecture · Modules (How/Why) · Metrics · Publication</Chip>
             </>
           ) : docMode === "report" ? (
             <>
@@ -216,49 +262,54 @@ export function ProjectReport() {
 
         <div className="row" style={{ gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
           <a
-            href="/api/ppt/download-pptx"
-            download="SILENT_BRIDGE_Presentation_10Slides.pptx"
-            className={`btn ${docMode === "ppt" ? "btn-primary" : ""}`}
+            href={blobUrls["/api/ppt/download-pptx"] || "/api/ppt/download-pptx"}
+            download="SILENT_BRIDGE_Presentation.pptx"
+            onClick={() => notifyDownload("SILENT_BRIDGE_Presentation.pptx")}
+            className={`btn btn-md ${docMode === "ppt" ? "btn-primary" : ""}`}
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <Icon name="download" size={16} />
-            <span>Download 10-Slide PPT (.pptx)</span>
+            <span>Download 14-Slide PPT (.pptx)</span>
           </a>
 
           <a
-            href="/api/ppt/download-pdf"
-            download="SILENT_BRIDGE_Presentation_10Slides.pdf"
-            className="btn"
+            href={blobUrls["/api/ppt/download-pdf"] || "/api/ppt/download-pdf"}
+            download="SILENT_BRIDGE_Presentation.pdf"
+            onClick={() => notifyDownload("SILENT_BRIDGE_Presentation.pdf")}
+            className="btn btn-md"
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <Icon name="download" size={16} />
-            <span>Download 10-Slide PPT (PDF)</span>
+            <span>Download 14-Slide PPT (PDF)</span>
           </a>
 
           <a
-            href="/api/report/download-docx"
-            download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.docx"
-            className={`btn ${docMode === "report" ? "btn-primary" : ""}`}
+            href={blobUrls["/api/report/download-docx"] || "/api/report/download-docx"}
+            download="CSBS_BE_Project_Report_Kannada_SignBridge.docx"
+            onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.docx")}
+            className={`btn btn-md ${docMode === "report" ? "btn-primary" : ""}`}
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <Icon name="download" size={16} />
-            <span>Download 76-Page Report Word (.docx)</span>
+            <span>Download 78-Page Report Word (.docx)</span>
           </a>
 
           <a
-            href="/api/report/download-pdf"
-            download="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"
-            className="btn"
+            href={blobUrls["/api/report/download-pdf"] || "/api/report/download-pdf"}
+            download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
+            onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.pdf")}
+            className="btn btn-md"
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <Icon name="download" size={16} />
-            <span>Download 76-Page Report PDF</span>
+            <span>Download 78-Page Report PDF</span>
           </a>
 
           <a
-            href="/api/paper/download-docx"
+            href={blobUrls["/api/paper/download-docx"] || "/api/paper/download-docx"}
             download="SILENT_BRIDGE_IEEE_Research_Paper.docx"
-            className={`btn ${docMode === "ieee" ? "btn-primary" : ""}`}
+            onClick={() => notifyDownload("SILENT_BRIDGE_IEEE_Research_Paper.docx")}
+            className={`btn btn-md ${docMode === "ieee" ? "btn-primary" : ""}`}
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <Icon name="download" size={16} />
@@ -266,37 +317,38 @@ export function ProjectReport() {
           </a>
 
           <a
-            href="/api/paper/download-pdf"
+            href={blobUrls["/api/paper/download-pdf"] || "/api/paper/download-pdf"}
             download="SILENT_BRIDGE_IEEE_Research_Paper.pdf"
-            className="btn"
+            onClick={() => notifyDownload("SILENT_BRIDGE_IEEE_Research_Paper.pdf")}
+            className="btn btn-md"
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
           >
             <Icon name="download" size={16} />
             <span>Download IEEE Paper PDF</span>
           </a>
 
-          <button type="button" className="btn" onClick={printDocument}>
+          <button type="button" className="btn btn-md" onClick={printDocument}>
             <Icon name="check" size={16} />
             <span>Print / Save Custom PDF</span>
           </button>
-
-          <a
-            href={activeIframeSrc}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-ghost"
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
-          >
-            <Icon name="eye" size={16} />
-            <span>
-              {docMode === "ppt"
-                ? "Open Full-Screen 10-Slide Deck"
-                : docMode === "ieee"
-                  ? "Open Full-Screen IEEE Paper"
-                  : "Open Full-Screen 76-Page Report"}
-            </span>
-          </a>
         </div>
+
+        {downloadStatus && (
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "8px 14px",
+              borderRadius: 6,
+              background: "rgba(16, 185, 129, 0.14)",
+              border: "1px solid rgba(16, 185, 129, 0.45)",
+              color: "var(--fg, #f8fafc)",
+              fontWeight: 700,
+              fontSize: 13,
+            }}
+          >
+            ✓ {downloadStatus}
+          </div>
+        )}
 
         <details style={{ marginBottom: 12 }}>
           <summary style={{ cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
@@ -379,10 +431,10 @@ export function ProjectReport() {
           src={activeIframeSrc}
           title={
             docMode === "ppt"
-              ? "10-Slide Project Presentation — Silent Bridge"
+              ? "14-Slide Project Presentation — Silent Bridge"
               : docMode === "ieee"
                 ? "IEEE Format Research Paper — Silent Bridge (8 Pages)"
-                : "CSBS B.E. Project Report — Silent Bridge (76 Pages)"
+                : "CSBS B.E. Project Report — Silent Bridge (78 Pages)"
           }
           style={{ width: "100%", height: "100%", border: "none" }}
         />

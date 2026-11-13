@@ -17,7 +17,7 @@ export function buildPreliminaryPages(meta) {
   const studentLinesCover = students
     .map(
       (s) =>
-        `<div style="font-size:12.5pt; font-weight:700; margin:2px 0; color:#111;">${s.name} &ndash; ${s.usn}</div>`
+        `<div style="font-size:13pt; font-weight:700; margin:7pt 0; color:#000000;">${s.name} (${s.usn})</div>`
     )
     .join("");
 
@@ -25,60 +25,62 @@ export function buildPreliminaryPages(meta) {
     .map((s) => `${s.name} (${s.usn})`)
     .join(", ");
 
-  // 1. OUTER COVER PAGE (Unnumbered — No Roman numeral, no header/footer)
-  const coverPage = String.raw`
-  <section class="report-page cover-page" data-page-label="Cover">
+  const buildCoverOrTitleLayout = (isCover) => String.raw`
+  <section class="report-page ${isCover ? "cover-page" : "prelim-page"}" data-page-label="${isCover ? "Cover" : "Inner Title"}">
     <div class="bmsce-border-outer">
-      <div class="bmsce-border-inner">
-        <div style="text-align:center; margin-top:2pt;">
-          <div style="font-size:20.5pt; font-weight:700; color:#6b3410; letter-spacing:0.4px; line-height:1.22;">
+      <div class="bmsce-border-inner" style="padding:26pt 22pt 20pt 22pt;">
+        <div style="text-align:center; margin-top:4pt;">
+          <div style="font-size:22pt; font-weight:700; color:#6B3400; letter-spacing:0.3px; line-height:1.22;">
             B.M.S COLLEGE OF ENGINEERING
           </div>
-          <div style="font-size:13pt; font-weight:700; color:#6b3410; line-height:1.32; margin-top:2pt;">
+          <div style="font-size:14.5pt; font-weight:700; color:#6B3400; line-height:1.38; margin-top:4pt;">
             (Autonomous Institute Affiliated to VTU)<br/>
             Bull Temple Road, Basavanagudi, Bangalore – 560019
           </div>
         </div>
 
-        <div style="text-align:center; margin:12pt 0 10pt 0;">
+        <div style="text-align:center; margin:18pt 0 12pt 0;">
           <img src="${logoSrc}" alt="BMSCE Emblem" style="width:82px; height:82px; object-fit:contain; display:inline-block;" />
         </div>
 
-        <div style="text-align:center; font-size:12.5pt; margin-bottom:6pt;">
+        <div style="text-align:center; font-size:12.5pt; margin-bottom:10pt; color:#000000;">
           A Project Report on
         </div>
 
-        <div style="text-align:center; font-size:14.2pt; font-weight:700; line-height:1.34; margin:0 8pt 12pt 8pt; color:#000; text-transform:uppercase;">
-          “<span class="report-project-title">${title}</span>”
+        <div style="text-align:center; font-size:18.5pt; font-weight:700; line-height:1.28; margin:0 6pt 14pt 6pt; color:#000000;">
+          <span class="report-project-title">Silent Bridge: Real-Time Bidirectional Indian Sign<br/>Language And Kannada Translation With 3D Avatar</span>
         </div>
 
-        <div style="text-align:center; font-size:11.5pt; line-height:1.4; margin-bottom:8pt;">
-          Submitted in partial fulfillment of the requirements for the award of degree<br/>
+        <div style="text-align:center; font-size:12.5pt; line-height:1.38; margin:0 16pt 10pt 16pt; color:#000000;">
+          Submitted in partial fulfillment of the requirements for the award of degree
+        </div>
+
+        <div style="text-align:center; font-size:12.5pt; margin-bottom:10pt; color:#000000;">
           of
         </div>
 
-        <div style="text-align:center; font-size:13pt; font-weight:700; line-height:1.35; margin-bottom:12pt; letter-spacing:0.2px;">
+        <div style="text-align:center; font-size:13pt; font-weight:700; line-height:1.38; margin-bottom:22pt; color:#000000;">
           BACHELOR OF ENGINEERING<br/>
           IN<br/>
-          COMPUTER SCIENCE AND BUSINESS SYSTEMS
+          <div style="margin-top:8pt;">COMPUTER SCIENCE AND BUSINESS SYSTEMS</div>
         </div>
 
-        <div style="text-align:center; margin-bottom:12pt;">
-          <div style="font-size:11.5pt; margin-bottom:4pt;">Submitted by</div>
+        <div style="text-align:center; margin-bottom:22pt;">
+          <div style="font-size:12.5pt; margin-bottom:8pt; color:#000000;">Submitted by</div>
           ${studentLinesCover}
         </div>
 
-        <div style="text-align:center; margin-bottom:12pt;">
-          <div style="font-size:11.5pt; margin-bottom:3pt;">Under the guidance of</div>
-          <div style="font-size:13pt; font-weight:700;">${guideName}</div>
-          <div style="font-size:11.5pt;">${guideDesignation}</div>
+        <div style="text-align:center; margin-bottom:20pt; color:#000000;">
+          <div style="font-size:12.5pt; margin-bottom:3pt;">Under the guidance of</div>
+          <div style="font-size:12pt; margin-bottom:3pt;">Prof. <strong>${guideName}</strong></div>
+          <div style="font-size:12.5pt;">${guideDesignation}</div>
         </div>
 
-        <div style="text-align:center; margin-top:auto; padding-top:4pt;">
-          <div style="font-size:13pt; font-weight:700; color:#c87a19; line-height:1.32;">
+        <div style="text-align:center; margin-top:auto; padding-top:8pt;">
+          <div style="font-size:14pt; font-weight:700; color:#C25E00; line-height:1.35; margin-bottom:3pt;">
             Department of Computer Science and Business Systems
           </div>
-          <div style="font-size:12pt; font-weight:700; color:#000; line-height:1.36;">
+          <div style="font-size:13pt; font-weight:700; color:#000000; line-height:1.42;">
             B.M.S College of Engineering, Bull Temple Road, Basavanagudi,<br/>
             Bangalore - 560019<br/>
             ${academicYear}
@@ -88,67 +90,11 @@ export function buildPreliminaryPages(meta) {
     </div>
   </section>`;
 
-  // 2. INNER TITLE PAGE (Unnumbered — No Roman numeral, no header/footer)
-  const innerTitlePage = String.raw`
-  <section class="report-page prelim-page" data-page-label="Inner Title">
-    <div class="bmsce-border-outer" style="border-color:#222;">
-      <div class="bmsce-border-inner" style="border-color:#222;">
-        <div style="text-align:center; margin-top:2pt;">
-          <div style="font-size:19.5pt; font-weight:700; color:#111; letter-spacing:0.4px; line-height:1.22;">
-            B.M.S COLLEGE OF ENGINEERING
-          </div>
-          <div style="font-size:12.5pt; font-weight:700; color:#222; line-height:1.32; margin-top:2pt;">
-            (Autonomous Institute Affiliated to VTU)<br/>
-            Bull Temple Road, Basavanagudi, Bangalore – 560019
-          </div>
-        </div>
+  // 1. OUTER COVER PAGE
+  const coverPage = buildCoverOrTitleLayout(true);
 
-        <div style="text-align:center; margin:10pt 0 8pt 0;">
-          <img src="${logoSrc}" alt="BMSCE Emblem" style="width:76px; height:76px; object-fit:contain; display:inline-block;" />
-        </div>
-
-        <div style="text-align:center; font-size:12pt; font-style:italic; margin-bottom:5pt;">
-          Inner Title Page
-        </div>
-
-        <div style="text-align:center; font-size:13.8pt; font-weight:700; line-height:1.34; margin:0 8pt 10pt 8pt; color:#000; text-transform:uppercase;">
-          “<span class="report-project-title">${title}</span>”
-        </div>
-
-        <div style="text-align:center; font-size:11.5pt; line-height:1.4; margin-bottom:8pt;">
-          A Major Project Report submitted in partial fulfillment of the requirements for the award of the degree of
-        </div>
-
-        <div style="text-align:center; font-size:12.5pt; font-weight:700; line-height:1.35; margin-bottom:12pt;">
-          BACHELOR OF ENGINEERING<br/>
-          IN<br/>
-          COMPUTER SCIENCE AND BUSINESS SYSTEMS
-        </div>
-
-        <div style="text-align:center; margin-bottom:12pt;">
-          <div style="font-size:11.5pt; margin-bottom:4pt;">Submitted by</div>
-          ${studentLinesCover}
-        </div>
-
-        <div style="text-align:center; margin-bottom:12pt;">
-          <div style="font-size:11.5pt; margin-bottom:3pt;">Under the guidance of</div>
-          <div style="font-size:12.5pt; font-weight:700;">${guideName}</div>
-          <div style="font-size:11.5pt;">${guideDesignation}, Department of CSBS, BMSCE</div>
-        </div>
-
-        <div style="text-align:center; margin-top:auto;">
-          <div style="font-size:12.5pt; font-weight:700; color:#111; line-height:1.32;">
-            Department of Computer Science and Business Systems
-          </div>
-          <div style="font-size:11.5pt; font-weight:700; color:#111; line-height:1.36;">
-            B.M.S College of Engineering, Bull Temple Road, Basavanagudi,<br/>
-            Bangalore - 560019<br/>
-            ${academicYear}
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>`;
+  // 2. INNER TITLE PAGE
+  const innerTitlePage = buildCoverOrTitleLayout(false);
 
   // 3. COLLEGE CERTIFICATE PAGE (Unnumbered — No Roman numeral, no header/footer)
   const certificatePage = String.raw`
@@ -158,43 +104,43 @@ export function buildPreliminaryPages(meta) {
         <div style="display:flex; align-items:center; gap:14pt; margin-bottom:12pt;">
           <img src="${logoSrc}" alt="BMSCE Emblem" style="width:76px; height:76px; object-fit:contain; flex-shrink:0;" />
           <div style="text-align:left;">
-            <div style="font-size:16.5pt; font-weight:700; color:#6b3410; line-height:1.25;">
+            <div style="font-size:16.5pt; font-weight:700; color:#0f172a; line-height:1.25;">
               B.M.S COLLEGE OF ENGINEERING
             </div>
-            <div style="font-size:12.5pt; font-weight:700; color:#6b3410; line-height:1.35;">
+            <div style="font-size:12.5pt; font-weight:700; color:#1e3a8a; line-height:1.35;">
               (Autonomous Institute Affiliated to VTU) Bull Temple Road,<br/>
               Basavanagudi, Bangalore – 560019
             </div>
           </div>
         </div>
 
-        <div style="text-align:center; font-size:14.5pt; font-weight:700; color:#4f81bd; margin:10pt 0 16pt 0;">
+        <div style="text-align:center; font-size:14.5pt; font-weight:700; color:#1e3a8a; margin:8pt 0 14pt 0;">
           Department of Computer Science and Business Systems
         </div>
 
-        <div style="text-align:center; font-size:15pt; font-weight:700; letter-spacing:6px; margin-bottom:16pt; color:#000;">
+        <div style="text-align:center; font-size:15pt; font-weight:700; letter-spacing:6px; margin-bottom:14pt; color:#000000;">
           CERTIFICATE
         </div>
 
-        <p style="font-size:11.5pt; line-height:1.75; text-align:justify; text-indent:0; margin-bottom:24pt;">
+        <p style="font-size:11.5pt; line-height:1.72; text-align:justify; text-indent:0; margin-bottom:20pt;">
           This is to certify that the Project work entitled <strong>“<span class="report-project-title">${title}</span>”</strong> is a bona-fide work carried out by <strong>${studentInlineCert}</strong> in partial fulfillment for the award of degree of Bachelor of Engineering in <strong>Computer Science and Business Systems</strong> from <strong>Visvesvaraya Technological University, Belgaum</strong> during the year <strong>${academicYear}</strong>. It is certified that all corrections/suggestions indicated for internal assessment have been incorporated in the report deposited in the department library. The Project has been approved as it satisfies the academic requirements in respect of Project work prescribed for the Bachelor of Engineering Degree.
         </p>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14pt; margin-top:24pt; margin-bottom:28pt; font-size:11.5pt; line-height:1.45;">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14pt; margin-top:42pt; margin-bottom:24pt; font-size:11.2pt; line-height:1.45;">
           <div>
-            <div style="border-top:1.5px solid #000; padding-top:6pt; font-weight:700;">${guideName}</div>
+            <div style="border-top:1.4px solid #000; padding-top:6pt; font-weight:700;">${guideName}</div>
             <div>${guideDesignation} &amp; Guide,</div>
             <div>Dept. of CSBS,</div>
             <div>BMSCE, Bangalore</div>
           </div>
           <div>
-            <div style="border-top:1.5px solid #000; padding-top:6pt; font-weight:700;">${hodName}</div>
+            <div style="border-top:1.4px solid #000; padding-top:6pt; font-weight:700;">${hodName}</div>
             <div>Professor &amp; Head,</div>
             <div>Dept. of CSBS,</div>
             <div>BMSCE, Bangalore</div>
           </div>
           <div>
-            <div style="border-top:1.5px solid #000; padding-top:6pt; font-weight:700;">${principalName}</div>
+            <div style="border-top:1.4px solid #000; padding-top:6pt; font-weight:700;">${principalName}</div>
             <div>Professor and Principal,</div>
             <div>BMSCE, Bangalore</div>
           </div>
@@ -222,31 +168,28 @@ export function buildPreliminaryPages(meta) {
       <span class="report-project-title">${title}</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:18pt;">DECLARATION BY STUDENTS</div>
-    <p style="line-height:1.8; margin-bottom:16pt;">
+    <p style="line-height:1.75; margin-bottom:14pt;">
       We hereby declare that the major project report entitled <strong>“<span class="report-project-title">${title}</span>”</strong> submitted to the <strong>Department of Computer Science and Business Systems, B.M.S. College of Engineering, Bangalore</strong>, in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor of Engineering in Computer Science and Business Systems</strong> under <strong>Visvesvaraya Technological University (VTU), Belagavi</strong> during the academic year <strong>${academicYear}</strong>, is an authentic record of our own engineering and research work carried out under the supervision and guidance of <strong>${guideName}</strong>, ${guideDesignation}, Department of Computer Science and Business Systems, BMSCE.
     </p>
-    <p style="line-height:1.8; margin-bottom:16pt;">
+    <p style="line-height:1.75; margin-bottom:14pt;">
       We further declare that the matter embodied in this project report has not been submitted previously by us or any other candidate for the award of any other degree or diploma in any university or institution. All external benchmark datasets (Amrita-ISLR, INCLUDE, and ISL-CSLTR under CC BY 4.0) and published scholarly literature have been duly acknowledged and cited in the References section.
     </p>
-    <p style="line-height:1.8; margin-bottom:32pt;">
+    <p style="line-height:1.75; margin-bottom:20pt;">
       We understand that any act of plagiarism or fabrication of experimental results is a violation of academic integrity, and we take full responsibility for the originality of the software implementation, mathematical formulations, and empirical evaluations presented herein.
     </p>
-    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:28pt; font-size:12pt;">
-      <div style="line-height:2.0; padding-bottom:12pt;">
-        <strong>Place:</strong> Bangalore<br/>
-        <strong>Date:</strong> November 2026
-      </div>
-      <div style="text-align:right;">
-        <div style="font-weight:700; margin-bottom:16pt;">Signature of the Students:</div>
-        ${students.map((s) => `
-          <div style="margin-bottom:18pt; text-align:right;">
-            <div style="height:26pt;"></div>
-            <div>_____________________________</div>
-            <div style="font-weight:700; margin-top:2pt;">${s.name}</div>
-            <div style="font-size:11pt; color:#1e293b;">(${s.usn})</div>
-          </div>
-        `).join("")}
-      </div>
+    <div class="place-date-row">
+      <span><strong>Place:</strong> Bangalore</span>
+      <span><strong>Date:</strong> November 2026</span>
+    </div>
+    <div class="sig-section-title">Signature of the Students:</div>
+    <div class="sig-grid-3">
+      ${students.map((s) => `
+        <div class="sig-col">
+          <div class="sig-space"></div>
+          <div class="sig-line">${s.name}</div>
+          <div class="sig-usn">(${s.usn})</div>
+        </div>
+      `).join("")}
     </div>
     <div class="page-footer-roman">i</div>
   </section>`;
@@ -258,30 +201,27 @@ export function buildPreliminaryPages(meta) {
       <span class="report-project-title">${title}</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:18pt;">ACKNOWLEDGEMENT</div>
-    <p style="line-height:1.75; margin-bottom:12pt;">
+    <p style="line-height:1.72; margin-bottom:13pt;">
       The successful completion of this major engineering project required technical guidance, institutional support, and encouragement from several distinguished individuals. We express our deep sense of gratitude to our respected Principal, <strong>${principalName}</strong>, B.M.S. College of Engineering, Bangalore, for providing an outstanding academic and research environment conducive to innovation.
     </p>
-    <p style="line-height:1.75; margin-bottom:12pt;">
+    <p style="line-height:1.72; margin-bottom:13pt;">
       We extend our sincere thanks to <strong>${hodName}</strong>, Professor and Head, Department of Computer Science and Business Systems, BMSCE, for continuous support, constructive panel reviews, and access to departmental computing resources throughout all phases of the project.
     </p>
-    <p style="line-height:1.75; margin-bottom:12pt;">
+    <p style="line-height:1.72; margin-bottom:13pt;">
       We express our sincere gratitude to our Project Guide, <strong>${guideName}</strong>, ${guideDesignation}, Department of Computer Science and Business Systems, BMSCE, whose technical mentorship, emphasis on signer-independent statistical evaluation, and thoughtful feedback guided the architectural decisions of <em>Silent Bridge</em>.
     </p>
-    <p style="line-height:1.75; margin-bottom:20pt;">
+    <p style="line-height:1.72; margin-bottom:24pt;">
       We also thank the Project Coordinator, panel evaluators, faculty members, and non-teaching staff of the Department of Computer Science and Business Systems, as well as the creators and deaf signers of the open-access Amrita SLR, INCLUDE, and ISL-CSLTR corpora whose public contributions made authentic Indian Sign Language research possible.
     </p>
-    <div style="display:flex; justify-content:flex-end; margin-top:20pt; font-size:12pt;">
-      <div style="text-align:right;">
-        <div style="font-weight:700; margin-bottom:14pt;">Signature of the Students:</div>
-        ${students.map((s) => `
-          <div style="margin-bottom:16pt; text-align:right;">
-            <div style="height:24pt;"></div>
-            <div>_____________________________</div>
-            <div style="font-weight:700; margin-top:2pt;">${s.name}</div>
-            <div style="font-size:11pt; color:#1e293b;">(${s.usn})</div>
-          </div>
-        `).join("")}
-      </div>
+    <div class="sig-section-title">Signature of the Students:</div>
+    <div class="sig-grid-3">
+      ${students.map((s) => `
+        <div class="sig-col">
+          <div class="sig-space"></div>
+          <div class="sig-line">${s.name}</div>
+          <div class="sig-usn">(${s.usn})</div>
+        </div>
+      `).join("")}
     </div>
     <div class="page-footer-roman">ii</div>
   </section>`;
@@ -473,48 +413,52 @@ export function buildPreliminaryPages(meta) {
       <span class="report-project-title">${title}</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:8pt;">LIST OF TABLES</div>
-    <div class="prelim-list-container" style="font-size:8.15pt; line-height:1.18;">
-      <div class="prelim-list-header" style="font-size:9pt; font-weight:700; margin-bottom:3pt; border-bottom:1.5px solid #0f172a; padding-bottom:2pt;">
+    <div class="prelim-list-container" style="font-size:9.3pt; line-height:1.28;">
+      <div class="prelim-list-header" style="font-size:10.5pt; font-weight:700; margin-bottom:5pt; border-bottom:1.5px solid #0f172a; padding-bottom:3pt;">
         <span>TABLE NO. &amp; TITLE</span>
         <span>PAGE NO.</span>
       </div>
 
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 1.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Alignment of Project Objectives with UN SDG Targets</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">6</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 1.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Chapter-Wise Structural Summary of the B.E. Project Report</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">8</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 2.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Comparative Analysis of Existing SLR &amp; Avatar Systems vs. Silent Bridge</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">13</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 2.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Feature-Level Architectural Comparison Across 12 Studies</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">14</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 3.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Stakeholder Identification, Core Needs, and Value Delivery</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">17</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 3.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Minimum and Recommended Hardware Specifications</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">20</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 3.3</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Software and Library Stack Specifications</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">20</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 3.4</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">11-Phase Project Engineering Schedule, Milestones, and Deliverables</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">22</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 3.5</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Risk Assessment and Mitigation Matrix (FMEA Analysis)</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">23</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 4.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Target Customer Segments and Acquisition Channels</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">25</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 4.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Value Proposition Canvas Alignment (Customer Pains vs. Features)</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">26</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 4.3</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Annual Cost-Benefit Comparison per Service Counter (2,000 Hours/Year)</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">28</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 4.4</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Tiered Packaging and Pricing Architecture</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">29</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 4.5</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Three-Year Financial Projection and Unit Economics (in INR Lakhs)</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">30</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 4.6</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">SDG Theory of Change Pathway and Measurable Impact KPIs</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">31</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 5.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Core Subsystem Modules, Source Files, and Technical Responsibilities</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">33</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 5.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Exact 147-Dimensional Per-Frame Feature Vector Layout (hands-face-v2)</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">35</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 6.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Production Technology Stack Across Frontend, Runtime, and Backend</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">43</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 6.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Core REST API Endpoints and WebSocket Protocol Specification</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">49</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 6.3</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Summary of Major Engineering Challenges and Verified Solutions</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">51</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Validated ISL Datasets Used in Training and Evaluation</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">52</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">ISL-CSLTR MD5 Checksum Forensic and Integrity Audit</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">52</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.3</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Representative Automated Unit, Algorithmic, and System Test Cases</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">53</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.4</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Browser MediaPipe vs. Offline Python Feature Extraction Parity</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">54</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.5</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Measured Processing Latencies on Commodity Laptop CPU</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">54</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.6</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Isolated-Sign Top-1 Accuracy (%) on Identical Held-Out Videos</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">55</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.7</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Development Fold Model Variant Selection</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">55</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.8</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Top Confusions on Held-Out Test Set</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">56</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.9</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Continuous Stream Replay Evaluation (Sign Error Rate)</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">57</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.10</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Sentence Decoder Exact Match Accuracy and Gloss Error Rate</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">58</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.11</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Multi-Seed Random Initialization Evaluation for Sentence Models</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">58</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.12</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Objective 3D Avatar Motion Quality and Arm Trajectory Smoothness</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">59</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.13</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Verification of Project Objectives Against Empirical Results</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">60</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 7.14</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Measured SDG Quantitative Impact Outcomes</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">60</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 8.1</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Summary of Key Technical, Algorithmic, and Business Contributions</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">62</span></div>
-      <div class="leader-list-item" style="margin:0.8pt 0; font-size:8.15pt; line-height:1.18;"><span class="leader-item-num" style="width:52pt; flex-shrink:0; font-weight:700;">Table 8.2</span><span class="leader-item-title" style="flex-shrink:0; max-width:75%;">Summary of Figures, Workflow Screenshots, and Test Artifacts</span><span class="leader-item-dots" style="flex-grow:1; border-bottom:1px dotted #444; margin:0 3pt; height:0.85em;"></span><span class="leader-item-page" style="width:24pt; text-align:right; flex-shrink:0;">65</span></div>
+      ${[
+        ["Table 1.1", "Alignment of Project Objectives with UN SDG Targets", "6"],
+        ["Table 1.2", "Chapter-Wise Structural Summary of the B.E. Project Report", "8"],
+        ["Table 2.1", "Comparative Analysis of Existing SLR &amp; Avatar Systems vs. Silent Bridge", "13"],
+        ["Table 2.2", "Feature-Level Architectural Comparison Across 12 Studies", "14"],
+        ["Table 3.1", "Stakeholder Identification, Core Needs, and Value Delivery", "17"],
+        ["Table 3.2", "Minimum and Recommended Hardware Specifications", "20"],
+        ["Table 3.3", "Software and Library Stack Specifications", "20"],
+        ["Table 3.4", "11-Phase Project Engineering Schedule, Milestones, and Deliverables", "22"],
+        ["Table 3.5", "Risk Assessment and Mitigation Matrix (FMEA Analysis)", "23"],
+        ["Table 4.1", "Target Customer Segments and Acquisition Channels", "25"],
+        ["Table 4.2", "Value Proposition Canvas Alignment (Customer Pains vs. Features)", "26"],
+        ["Table 4.3", "Annual Cost-Benefit Comparison per Service Counter (2,000 Hours/Year)", "28"],
+        ["Table 4.4", "Tiered Packaging and Pricing Architecture", "29"],
+        ["Table 4.5", "Three-Year Financial Projection and Unit Economics (in INR Lakhs)", "29"],
+        ["Table 4.6", "SDG Theory of Change Pathway and Measurable Impact KPIs", "31"],
+        ["Table 5.1", "Core Subsystem Modules, Source Files, and Technical Responsibilities", "33"],
+        ["Table 5.2", "Exact 147-Dimensional Per-Frame Feature Vector Layout (hands-face-v2)", "35"],
+        ["Table 6.1", "Production Technology Stack Across Frontend, Runtime, and Backend", "43"],
+        ["Table 6.2", "Core REST API Endpoints and WebSocket Protocol Specification", "49"],
+        ["Table 6.3", "Summary of Major Engineering Challenges and Verified Solutions", "51"],
+        ["Table 7.1", "Validated ISL Datasets Used in Training and Evaluation", "52"],
+        ["Table 7.2", "ISL-CSLTR MD5 Checksum Forensic and Integrity Audit", "52"],
+        ["Table 7.3", "Representative Automated Unit, Algorithmic, and System Test Cases", "53"],
+        ["Table 7.4", "Browser MediaPipe vs. Offline Python Feature Extraction Parity", "54"],
+        ["Table 7.5", "Measured Processing Latencies on Commodity Laptop CPU", "54"],
+        ["Table 7.6", "Isolated-Sign Top-1 Accuracy (%) on Identical Held-Out Videos", "55"],
+        ["Table 7.7", "Development Fold Model Variant Selection", "55"],
+        ["Table 7.8", "Top Confusions on Held-Out Test Set", "56"],
+        ["Table 7.9", "Continuous Stream Replay Evaluation (Sign Error Rate)", "57"],
+        ["Table 7.10", "Sentence Decoder Exact Match Accuracy and Gloss Error Rate", "58"],
+        ["Table 7.11", "Multi-Seed Random Initialization Evaluation for Sentence Models", "58"],
+        ["Table 7.12", "Objective 3D Avatar Motion Quality and Arm Trajectory Smoothness", "58"],
+        ["Table 7.13", "Verification of Project Objectives Against Empirical Results", "59"],
+        ["Table 7.14", "Measured SDG Quantitative Impact Outcomes", "60"],
+        ["Table 8.1", "Summary of Key Technical, Algorithmic, and Business Contributions", "62"],
+        ["Table 8.2", "Summary of Figures, Workflow Screenshots, and Experimental Artifacts", "65"],
+      ].map(([num, name, pg]) =>
+        `<div class="leader-list-item" style="margin:1.3pt 0; font-size:9.3pt; line-height:1.28;"><span class="leader-item-num" style="width:56pt;">${num}</span><span class="leader-item-title">${name}</span><span class="leader-item-dots"></span><span class="leader-item-page">${pg}</span></div>`
+      ).join("\n      ")}
     </div>
     <div class="page-footer-roman">vii</div>
   </section>`;

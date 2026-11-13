@@ -142,6 +142,9 @@ const NAMED_ENTITIES = {
   Phi: "Φ",
   Psi: "Ψ",
   Omega: "Ω",
+  lang: "⟨",
+  rang: "⟩",
+  perp: "⊥",
   deg: "°",
   copy: "©",
   reg: "®",
@@ -298,10 +301,11 @@ function parseHtmlFragmentToRuns(htmlFragment, defaultOpts = {}) {
           boldStack[boldStack.length - 1] ||
           /^<(strong|b|th)\b/i.test(lower) ||
           /font-weight\s*:\s*(700|800|900|bold)/i.test(lower);
-        const isItalic =
-          italicStack[italicStack.length - 1] ||
-          /^<(em|i)\b/i.test(lower) ||
-          /math-inline|ieee-math|font-style\s*:\s*italic/i.test(lower);
+        const isItalic = /font-style\s*:\s*normal/i.test(lower)
+          ? false
+          : italicStack[italicStack.length - 1] ||
+            /^<(em|i)\b/i.test(lower) ||
+            /math-inline|ieee-math|font-style\s*:\s*italic/i.test(lower);
         const isSup = supStack[supStack.length - 1] || /^<sup\b/i.test(lower);
         const isSub = subStack[subStack.length - 1] || /^<sub\b/i.test(lower);
         boldStack.push(isBold);
@@ -457,17 +461,18 @@ function buildPrelimCoverOrTitleElements(pageHtml, isInnerTitle = false) {
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: { before: 40, after: 40, line: 280 },
-      children: [makeTextRun("B.M.S COLLEGE OF ENGINEERING", { bold: true, size: 36 })],
+      children: [makeTextRun("B.M.S COLLEGE OF ENGINEERING", { bold: true, size: 42, color: "6B3400" })],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { before: 0, after: 120, line: 280 },
+      spacing: { before: 0, after: 140, line: 300 },
       children: [
-        makeTextRun("(Autonomous Institute Affiliated to VTU)", { bold: true, size: 24 }),
-        new TextRun({ text: "", font: "Times New Roman", size: 24, break: 1 }),
+        makeTextRun("(Autonomous Institute Affiliated to VTU)", { bold: true, size: 28, color: "6B3400" }),
+        new TextRun({ text: "", font: "Times New Roman", size: 28, break: 1 }),
         makeTextRun("Bull Temple Road, Basavanagudi, Bangalore – 560019", {
           bold: true,
-          size: 24,
+          size: 28,
+          color: "6B3400",
         }),
       ],
     })
@@ -480,90 +485,70 @@ function buildPrelimCoverOrTitleElements(pageHtml, isInnerTitle = false) {
       elements.push(
         new Paragraph({
           alignment: AlignmentType.CENTER,
-          spacing: { before: 40, after: 120 },
-          children: [makeImageRun(imgObj, 96, 96)],
+          spacing: { before: 60, after: 140 },
+          children: [makeImageRun(imgObj, 90, 90)],
         })
       );
     }
   }
 
-  if (isInnerTitle) {
-    elements.push(
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 60 },
-        children: [makeTextRun("Inner Title Page", { italics: true, size: 24 })],
-      }),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { before: 40, after: 140, line: 300 },
-        children: [makeTextRun(`“${TITLE}”`, { bold: true, size: 28 })],
-      }),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 80 },
-        children: [
-          makeTextRun(
-            "A Major Project Report submitted in partial fulfillment of the requirements for the award of the degree of",
-            { size: 24 }
-          ),
-        ],
-      })
-    );
-  } else {
-    elements.push(
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 60 },
-        children: [makeTextRun("A Project Report on", { size: 24 })],
-      }),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { before: 40, after: 140, line: 300 },
-        children: [makeTextRun(`“${TITLE}”`, { bold: true, size: 28 })],
-      }),
-      new Paragraph({
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 80 },
-        children: [
-          makeTextRun(
-            "Submitted in partial fulfillment of the requirements for the award of degree of",
-            { size: 24 }
-          ),
-        ],
-      })
-    );
-  }
-
   elements.push(
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 140, line: 300 },
+      spacing: { after: 80 },
+      children: [makeTextRun("A Project Report on", { size: 25 })],
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 40, after: 160, line: 310 },
+      children: [makeTextRun(TITLE, { bold: true, size: 32 })],
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 100 },
       children: [
-        makeTextRun("BACHELOR OF ENGINEERING", { bold: true, size: 28 }),
-        new TextRun({ text: "", font: "Times New Roman", size: 28, break: 1 }),
-        makeTextRun("IN", { bold: true, size: 28 }),
-        new TextRun({ text: "", font: "Times New Roman", size: 28, break: 1 }),
-        makeTextRun("COMPUTER SCIENCE AND BUSINESS SYSTEMS", { bold: true, size: 28 }),
+        makeTextRun(
+          "Submitted in partial fulfillment of the requirements for the award of degree",
+          { size: 25 }
+        ),
       ],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 40 },
-      children: [makeTextRun("Submitted by", { bold: true, italics: true, size: 24 })],
+      spacing: { after: 100 },
+      children: [makeTextRun("of", { size: 25 })],
+    })
+  );
+
+  elements.push(
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 220, line: 320 },
+      children: [
+        makeTextRun("BACHELOR OF ENGINEERING", { bold: true, size: 26 }),
+        new TextRun({ text: "", font: "Times New Roman", size: 26, break: 1 }),
+        makeTextRun("IN", { bold: true, size: 26 }),
+        new TextRun({ text: "", font: "Times New Roman", size: 26, break: 1 }),
+        makeTextRun("COMPUTER SCIENCE AND BUSINESS SYSTEMS", { bold: true, size: 26 }),
+      ],
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 100 },
+      children: [makeTextRun("Submitted by", { size: 25 })],
     })
   );
 
   for (const student of [
-    "H S Thanush – 1BM23CB066",
-    "Kiran M K – 1BM23CB068",
-    "Manoj G U – 1BM24CB401",
+    "H S Thanush (1BM23CB066)",
+    "Kiran M K (1BM23CB068)",
+    "Manoj G U (1BM24CB401)",
   ]) {
     elements.push(
       new Paragraph({
         alignment: AlignmentType.CENTER,
-        spacing: { after: 30, line: 260 },
-        children: [makeTextRun(student, { bold: true, size: 24 })],
+        spacing: { after: 80, line: 280 },
+        children: [makeTextRun(student, { bold: true, size: 26 })],
       })
     );
   }
@@ -571,39 +556,45 @@ function buildPrelimCoverOrTitleElements(pageHtml, isInnerTitle = false) {
   elements.push(
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { before: 100, after: 30 },
-      children: [makeTextRun("Under the guidance of", { bold: true, italics: true, size: 24 })],
+      spacing: { before: 160, after: 40 },
+      children: [makeTextRun("Under the guidance of", { size: 25 })],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 20 },
-      children: [makeTextRun("Tejaswini K", { bold: true, size: 26 })],
+      spacing: { after: 40 },
+      children: [
+        makeTextRun("Prof. ", { size: 24 }),
+        makeTextRun("Tejaswini K", { bold: true, size: 24 }),
+      ],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 140 },
-      children: [makeTextRun("Assistant Professor, Department of CSBS, BMSCE", { size: 24 })],
+      spacing: { after: 220 },
+      children: [makeTextRun("Assistant Professor", { size: 25 })],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 30 },
+      spacing: { after: 50 },
       children: [
         makeTextRun("Department of Computer Science and Business Systems", {
           bold: true,
-          size: 26,
+          size: 28,
+          color: "C25E00",
         }),
       ],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { after: 60, line: 280 },
+      spacing: { after: 80, line: 300 },
       children: [
         makeTextRun(
-          "B.M.S College of Engineering, Bull Temple Road, Basavanagudi, Bangalore - 560019",
-          { bold: true, size: 24 }
+          "B.M.S College of Engineering, Bull Temple Road, Basavanagudi,",
+          { bold: true, size: 26 }
         ),
-        new TextRun({ text: "", font: "Times New Roman", size: 24, break: 1 }),
-        makeTextRun("2026-2027", { bold: true, size: 24 }),
+        new TextRun({ text: "", font: "Times New Roman", size: 26, break: 1 }),
+        makeTextRun("Bangalore - 560019", { bold: true, size: 26 }),
+        new TextRun({ text: "", font: "Times New Roman", size: 26, break: 1 }),
+        makeTextRun("2026-2027", { bold: true, size: 26 }),
       ],
     })
   );
@@ -720,7 +711,7 @@ function buildCertificatePageElements(pageHtml) {
 function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = false) {
   const out = [];
   const tokenRe =
-    /(<div\s+class="chapter-num-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="chapter-title-center"[^>]*>[\s\S]*?<\/div>|<h1[^>]*>[\s\S]*?<\/h1>|<h2[^>]*>[\s\S]*?<\/h2>|<h3[^>]*>[\s\S]*?<\/h3>|<div\s+class="sec-h1"[^>]*>[\s\S]*?<\/div>|<div\s+class="sec-h2"[^>]*>[\s\S]*?<\/div>|<div\s+class="prelim-list-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-chapter-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-section-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-prelim-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="leader-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="def-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="sym-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="table-caption"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-cap"[^>]*>[\s\S]*?<\/div>|<table[^>]*>[\s\S]*?<\/table>|<div\s+class="figure-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-wide"[^>]*>[\s\S]*?<\/div>|<div\s+class="eq-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-eq"[^>]*>[\s\S]*?<\/div>|<div\s+class="alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="code-box"[^>]*>[\s\S]*?<\/div>|<ol[^>]*>[\s\S]*?<\/ol>|<ul[^>]*>[\s\S]*?<\/ul>|<p[^>]*>[\s\S]*?<\/p>)/gi;
+    /(<div\s+class="chapter-num-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="chapter-title-center"[^>]*>[\s\S]*?<\/div>|<h1[^>]*>[\s\S]*?<\/h1>|<h2[^>]*>[\s\S]*?<\/h2>|<h3[^>]*>[\s\S]*?<\/h3>|<div\s+class="sec-h1"[^>]*>[\s\S]*?<\/div>|<div\s+class="sec-h2"[^>]*>[\s\S]*?<\/div>|<div\s+class="place-date-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="sig-section-title"[^>]*>[\s\S]*?<\/div>|<div\s+class="sig-grid-3"[^>]*>[\s\S]*?<\/div>\s*(?=<div\s+class="page-footer-roman")|<div\s+class="manuscript-box"[^>]*>[\s\S]*?<\/div>\s*(?=<div\s+class="table-caption")|<div\s+class="prelim-list-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-chapter-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-section-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-prelim-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="leader-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="def-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="sym-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="table-caption"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-cap"[^>]*>[\s\S]*?<\/div>|<table[^>]*>[\s\S]*?<\/table>|<div\s+class="figure-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-wide"[^>]*>[\s\S]*?<\/div>|<div\s+class="eq-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-eq"[^>]*>[\s\S]*?<\/div>|<div\s+class="alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="code-box"[^>]*>[\s\S]*?<\/div>|<ol[^>]*>[\s\S]*?<\/ol>|<ul[^>]*>[\s\S]*?<\/ul>|<p[^>]*>[\s\S]*?<\/p>)/gi;
 
   const bodySz = isIeee ? 20 : 24;
   const lineSp = isIeee ? 276 : 360;
@@ -728,6 +719,144 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
   for (const m of innerHtml.matchAll(tokenRe)) {
     const block = m[0];
     const bLower = block.toLowerCase();
+
+    if (bLower.includes('class="place-date-row"')) {
+      const spans = [...block.matchAll(/<span[^>]*>([\s\S]*?)<\/span>/gi)].map((s) =>
+        s[1].trim()
+      );
+      if (spans.length >= 2) {
+        out.push(
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            tabStops: [{ type: TabStopType.RIGHT, position: 8666 }],
+            spacing: { before: 120, after: 160, line: 300 },
+            children: [
+              ...parseHtmlFragmentToRuns(spans[0], { size: bodySz }),
+              makeTextRun("\t", { size: bodySz }),
+              ...parseHtmlFragmentToRuns(spans[1], { size: bodySz }),
+            ].filter(Boolean),
+          })
+        );
+      }
+      continue;
+    }
+
+    if (bLower.includes('class="sig-section-title"')) {
+      const inner = block.replace(/^<div[^>]*>|<\/div>$/gis, "").trim();
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          keepNext: true,
+          spacing: { before: 80, after: 40, line: 280 },
+          children: parseHtmlFragmentToRuns(inner, { size: bodySz, bold: true }),
+        })
+      );
+      continue;
+    }
+
+    if (bLower.includes('class="sig-grid-3"')) {
+      const cols = [...block.matchAll(/<div\s+class="sig-col"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/gi)];
+      // Fallback extraction matching sig-line and sig-usn across columns
+      const names = [...block.matchAll(/<div\s+class="sig-line"[^>]*>([\s\S]*?)<\/div>/gi)].map((x) =>
+        decodeHtmlEntities(x[1].replace(/<[^>]+>/g, "").trim())
+      );
+      const usns = [...block.matchAll(/<div\s+class="sig-usn"[^>]*>([\s\S]*?)<\/div>/gi)].map((x) =>
+        decodeHtmlEntities(x[1].replace(/<[^>]+>/g, "").trim())
+      );
+      if (names.length === 3) {
+        const sigTabs = [
+          { type: TabStopType.CENTER, position: 1440 },
+          { type: TabStopType.CENTER, position: 4333 },
+          { type: TabStopType.CENTER, position: 7226 },
+        ];
+        out.push(
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            tabStops: sigTabs,
+            keepNext: true,
+            spacing: { before: 420, after: 40, line: 260 },
+            children: [
+              makeTextRun("\t_____________________\t_____________________\t_____________________", {
+                size: 22,
+              }),
+            ].filter(Boolean),
+          }),
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            tabStops: sigTabs,
+            keepNext: true,
+            spacing: { before: 0, after: 20, line: 260 },
+            children: [
+              makeTextRun(`\t${names[0]}\t${names[1]}\t${names[2]}`, { size: 22, bold: true }),
+            ].filter(Boolean),
+          }),
+          new Paragraph({
+            alignment: AlignmentType.LEFT,
+            tabStops: sigTabs,
+            spacing: { before: 0, after: 120, line: 260 },
+            children: [
+              makeTextRun(
+                `\t${usns[0] || ""}\t${usns[1] || ""}\t${usns[2] || ""}`,
+                { size: 21 }
+              ),
+            ].filter(Boolean),
+          })
+        );
+      }
+      void cols;
+      continue;
+    }
+
+    if (bLower.includes('class="manuscript-box"')) {
+      const inner = block
+        .replace(/^<div\s+class="manuscript-box"[^>]*>/i, "")
+        .replace(/<\/div>\s*$/i, "")
+        .trim();
+      const boxElems = convertHtmlBlocksToDocxElements(inner, svgCounterRef, isIeee);
+      const innerSubTokens = [
+        ...inner.matchAll(/<div\s+class="sec-h2"[^>]*>([\s\S]*?)<\/div>|<p([^>]*)>([\s\S]*?)<\/p>/gi),
+      ];
+      if (innerSubTokens.length > 0) {
+        for (const st of innerSubTokens) {
+          const isH = st[0].toLowerCase().startsWith("<div");
+          if (isH) {
+            out.push(
+              new Paragraph({
+                alignment: AlignmentType.LEFT,
+                keepNext: true,
+                shading: { type: ShadingType.CLEAR, color: "auto", fill: "F8FAFC" },
+                border: {
+                  left: { style: BorderStyle.SINGLE, size: 12, space: 6, color: "1E3A8A" },
+                },
+                spacing: { before: 80, after: 40, line: 280 },
+                children: parseHtmlFragmentToRuns(st[1].trim(), {
+                  size: 24,
+                  bold: true,
+                  color: "1E3A8A",
+                }),
+              })
+            );
+          } else {
+            const pAttrs = st[2] || "";
+            const isLeft = /left-align-p/i.test(pAttrs);
+            out.push(
+              new Paragraph({
+                alignment: isLeft ? AlignmentType.LEFT : AlignmentType.JUSTIFIED,
+                shading: { type: ShadingType.CLEAR, color: "auto", fill: "F8FAFC" },
+                border: {
+                  left: { style: BorderStyle.SINGLE, size: 12, space: 6, color: "1E3A8A" },
+                },
+                spacing: { before: 20, after: 80, line: 300 },
+                children: parseHtmlFragmentToRuns(st[3].trim(), { size: 21 }),
+              })
+            );
+          }
+        }
+      } else {
+        out.push(...boxElems);
+      }
+      continue;
+    }
 
     if (bLower.includes('class="chapter-num-header"')) {
       // User Request: Align left to chapters ("CHAPTER 1", etc., 16pt bold)
@@ -986,13 +1115,21 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
         );
       }
     } else if (bLower.includes('class="eq-row"') || bLower.includes('class="ieee-eq"')) {
-      const inner = block
+      const eqNumM = block.match(/<span\s+class="(?:eq-num|ieee-eq-num)"[^>]*>([\s\S]*?)<\/span>/i);
+      const eqNum = eqNumM ? decodeHtmlEntities(eqNumM[1].replace(/<[^>]+>/g, "").trim()) : "";
+      const eqBody = block
         .replace(/^<div[^>]*>|<\/div>$/gis, "")
-        .replace(/<\/?span[^>]*>/gi, " ")
+        .replace(/<span\s+class="(?:eq-num|ieee-eq-num)"[^>]*>[\s\S]*?<\/span>/gi, "")
         .trim();
       out.push(
         new Paragraph({
-          alignment: AlignmentType.CENTER,
+          alignment: eqNum ? AlignmentType.LEFT : AlignmentType.CENTER,
+          tabStops: eqNum
+            ? [
+                { type: TabStopType.CENTER, position: 4333 },
+                { type: TabStopType.RIGHT, position: 8666 },
+              ]
+            : undefined,
           spacing: { before: 60, after: 60, line: 280 },
           shading: { type: ShadingType.CLEAR, color: "auto", fill: "F8FAFC" },
           border: {
@@ -1001,7 +1138,13 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
             left: { style: BorderStyle.SINGLE, size: 12, space: 6, color: "0F172A" },
             right: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
           },
-          children: parseHtmlFragmentToRuns(inner, { size: bodySz, italics: true }),
+          children: eqNum
+            ? [
+                makeTextRun("\t", { size: bodySz }),
+                ...parseHtmlFragmentToRuns(eqBody, { size: bodySz, italics: true }),
+                makeTextRun(`\t${eqNum}`, { size: bodySz, bold: true }),
+              ].filter(Boolean)
+            : parseHtmlFragmentToRuns(eqBody, { size: bodySz, italics: true }),
         })
       );
     } else if (
@@ -1010,11 +1153,32 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
       bLower.includes('class="code-box"')
     ) {
       const lineMatches = [
-        ...block.matchAll(/<div[^>]*>([\s\S]*?)<\/div>|<pre[^>]*>([\s\S]*?)<\/pre>/gi),
+        ...block.matchAll(/<div[^>]*>([\s\S]*?)<\/div>|<pre[^>]*>([\s\S]*?)<\/pre>|<li[^>]*>([\s\S]*?)<\/li>/gi),
       ];
+      let liStep = 0;
       lineMatches.forEach((lm, idxL) => {
-        const content = lm[1] || lm[2] || "";
-        if (/<div\b/i.test(content)) return;
+        const isListItem = lm[3] !== undefined;
+        const content = lm[1] || lm[2] || lm[3] || "";
+        if (!isListItem && /<div\b/i.test(content)) return;
+        if (isListItem) {
+          liStep += 1;
+          const cleanStep = content.replace(/\s+/g, " ").trim();
+          if (cleanStep) {
+            out.push(
+              new Paragraph({
+                alignment: AlignmentType.LEFT,
+                indent: { left: 260, hanging: 260 },
+                spacing: { before: 15, after: 25, line: 250 },
+                shading: { type: ShadingType.CLEAR, color: "auto", fill: "F8FAFC" },
+                children: [
+                  makeTextRun(`${liStep}. `, { size: 20, bold: true }),
+                  ...parseHtmlFragmentToRuns(cleanStep, { size: 20 }),
+                ].filter(Boolean),
+              })
+            );
+          }
+          return;
+        }
         for (const subline of content.split("\n")) {
           const cleanLine = subline.trim();
           if (!cleanLine) continue;
@@ -1047,17 +1211,34 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
         );
       });
     } else if (bLower.startsWith("<p")) {
+      const openTagM = block.match(/^<p([^>]*)>/i);
+      const pAttrs = openTagM ? openTagM[1] : "";
       const inner = block.replace(/^<p[^>]*>|<\/p>$/gis, "").trim();
-      const runs = parseHtmlFragmentToRuns(inner, { size: bodySz });
-      if (runs.length > 0) {
-        out.push(
-          new Paragraph({
-            alignment: AlignmentType.JUSTIFIED,
-            spacing: { before: 0, after: 80, line: lineSp },
-            indent: { firstLine: 360 },
-            children: runs,
-          })
-        );
+      if (/class="[^"]*\btable-note\b/i.test(pAttrs)) {
+        const runs = parseHtmlFragmentToRuns(inner, { size: 17, italics: true, color: "475569" });
+        if (runs.length > 0) {
+          out.push(
+            new Paragraph({
+              alignment: AlignmentType.LEFT,
+              spacing: { before: 20, after: 80, line: 240 },
+              children: runs,
+            })
+          );
+        }
+      } else {
+        const isLeft = /class="[^"]*\bleft-align-p\b/i.test(pAttrs);
+        const noIndent = isLeft || /text-indent\s*:\s*0/i.test(pAttrs);
+        const runs = parseHtmlFragmentToRuns(inner, { size: bodySz });
+        if (runs.length > 0) {
+          out.push(
+            new Paragraph({
+              alignment: isLeft ? AlignmentType.LEFT : AlignmentType.JUSTIFIED,
+              spacing: { before: 0, after: 80, line: lineSp },
+              indent: noIndent ? undefined : { firstLine: 360 },
+              children: runs,
+            })
+          );
+        }
       }
     }
   }

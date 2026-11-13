@@ -126,14 +126,14 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
   assert.equal(res.hasIjddt, false, "IEEE paper must NOT contain IJDDT / Drug Delivery Technologies");
 });
 
-test("10-Slide PowerPoint .pptx & HTML deck have valid 10-slide OOXML structure and student USNs in increasing order", () => {
+test("14-Slide PowerPoint .pptx & HTML deck have valid 14-slide OOXML structure and student USNs in increasing order", () => {
   const pptxPath = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.pptx");
   const pptHtmlPath = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.html");
   const reportHtmlPath = path.join(REPORT_DIR, "CSBS_BE_Project_Report_Kannada_SignBridge.html");
   const ieeeHtmlPath = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.html");
 
-  assert.equal(fs.existsSync(pptxPath), true, "10-slide .pptx must exist");
-  assert.equal(fs.existsSync(pptHtmlPath), true, "10-slide .html must exist");
+  assert.equal(fs.existsSync(pptxPath), true, "14-slide .pptx must exist");
+  assert.equal(fs.existsSync(pptHtmlPath), true, "14-slide .html must exist");
 
   const pyCheck = execFileSync("python3", [
     "-c",
@@ -156,7 +156,7 @@ with zipfile.ZipFile(${JSON.stringify(pptxPath)}, "r") as zf:
   ]).toString().trim();
 
   const res = JSON.parse(pyCheck);
-  assert.equal(res.slideCount, 10, "PowerPoint .pptx must contain exactly 10 slides");
+  assert.equal(res.slideCount, 14, "PowerPoint .pptx must contain 14 slides");
   assert.equal(res.usnIncreasingOnSlide1, true, "Slide 1 in .pptx must list USNs in increasing order: 1BM23CB066, 1BM23CB068, 1BM24CB401");
 
   for (const file of [pptHtmlPath, reportHtmlPath, ieeeHtmlPath]) {

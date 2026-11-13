@@ -197,6 +197,9 @@ export function buildChapter5(figSrcs) {
       </svg>
       <div class="figure-caption">Fig. 5.2 Detailed process flowcharts for (A) Forward ISL-to-Kannada recognition and (B) Reverse Kannada-to-ISL 3D avatar synthesis.</div>
     </div>
+    <p style="margin-top:6pt;">
+      Both pipelines operate asynchronously around a strict deterministic gate: low-confidence segments ($p &lt; 0.50$) route to the 3-choice confirmation tray rather than polluting the Kannada transcript, while unmapped Kannada tokens in the reverse pipeline are flagged explicitly rather than hallucinated on the 3D character rig.
+    </p>
     <div class="page-footer-arabic">34</div>
   </section>`;
 
@@ -404,6 +407,9 @@ export function buildChapter5(figSrcs) {
       </svg>
       <div class="figure-caption">Fig. 5.3 (A) Level-0 Context DFD and (B) Level-1 Subsystem Data Flow Diagram of Silent Bridge.</div>
     </div>
+    <p style="margin-top:6pt;">
+      The Level-1 data flow separates immutable training/registry artifacts (<code>D2</code>, <code>D3</code>, <code>D4</code>) from per-user browser prototype storage (<code>D1</code>), allowing offline clinics and schools to register local signs via Process <code>P3.0</code> without altering the verified baseline ONNX checkpoint.
+    </p>
     <div class="page-footer-arabic">36</div>
   </section>`;
 
@@ -542,6 +548,9 @@ export function buildChapter5(figSrcs) {
       </svg>
       <div class="figure-caption">Fig. 5.4 (A) UML Use Case diagram, (B) Entity-Relationship schema diagram, and (C) Runtime sequence diagram.</div>
     </div>
+    <p style="margin-top:6pt;">
+      As detailed in the ER schema and sequence flow, every vocabulary entry in <code>labels.json</code> maintains a 1:1 link to its cleaned 3D keyframe clip and 1:N landmark sample records, keeping browser ONNX inference ($3.8\text{ ms}$) decoupled from asynchronous confirmation and speech playback.
+    </p>
     <div class="page-footer-arabic">37</div>
   </section>`;
 

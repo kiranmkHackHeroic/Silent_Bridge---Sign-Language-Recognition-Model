@@ -202,7 +202,7 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
             <tr><td><strong>BiGRU + INCLUDE (1,749)</strong></td><td class="r"><strong>79.9</strong></td><td class="r"><strong>76.5</strong></td><td class="r"><strong>92.7</strong></td><td class="r"><strong>0.800*</strong></td></tr>
           </tbody>
         </table>
-        <div style="font-size:8pt; color:#444; margin-top:2pt;">*Macro-F1 on its full 314-video test set (top-1 accuracy 81.5%).</div>
+        <p class="table-note">*Macro-F1 on its full 314-video test set (top-1 accuracy 81.5%).</p>
       </div>
 
       <div>
@@ -656,8 +656,8 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:10pt;">RESEARCH MANUSCRIPT &amp; REPRODUCIBLE ARTIFACTS</div>
 
-    <div style="border:1.5px solid #1e293b; padding:10pt 14pt; background:#f8fafc; margin-bottom:10pt;">
-      <div style="font-size:12pt; font-weight:700; color:#1e3a8a; margin-bottom:5pt;">
+    <div class="manuscript-box">
+      <div class="sec-h2" style="margin-top:0; font-size:12pt; color:#1e3a8a;">
         1. IEEE Two-Column Format Research Manuscript (Prepared for Submission)
       </div>
       <p style="font-size:10.5pt; line-height:1.45; text-indent:0; margin-bottom:6pt;">
@@ -666,10 +666,10 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
         <strong>Authors:</strong> H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), under the guidance of <strong>Tejaswini K</strong>, Assistant Professor, Dept. of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore – 560019.<br/>
         <strong>Department Leadership:</strong> <strong>Dr. R Ashok Kumar</strong> (Professor &amp; Head, Dept. of CSBS, BMSCE) and <strong>Dr. Beemsha Arya</strong> (Professor &amp; Principal, BMSCE).
       </p>
-      <div style="font-size:10.5pt; font-weight:700; color:#0f172a; margin-bottom:3pt;">
+      <div class="sec-h2" style="font-size:11pt; color:#0f172a; margin-top:4pt; margin-bottom:3pt;">
         2. Accompanying Research Manuscript &amp; Reproducible Artifacts
       </div>
-      <p style="font-size:10pt; line-height:1.42; text-indent:0; margin:0;">
+      <p class="left-align-p" style="font-size:10pt; line-height:1.42; margin:0;">
         Full LaTeX source (<code>docs/paper/kannada_signbridge_ieee.tex</code>), compiled manuscript PDF (<code>docs/paper/kannada_signbridge_ieee.pdf</code>), editable Microsoft Word document (<code>SILENT_BRIDGE_IEEE_Research_Paper.docx</code>), and reproducible figure generator (<code>docs/paper/make_figures_extended.py</code>). On 268 held-out recorded videos, isolated-sign accuracy improved from 59.7% (LogReg baseline) to 79.9% (81.5% overall across 314 held-out videos), and on 213 videos of two unseen signers it rose from 54.5% to 76.5% ($p=0.003$).
       </p>
     </div>
@@ -706,10 +706,10 @@ export function buildChapters7And8AndBackMatter(figSrcs) {
       <span>Appendix A: Complete 144-Class ISL Vocabulary &amp; Kannada Lexicon</span>
     </div>
     <div class="chapter-title-center" style="margin-top:0; margin-bottom:8pt;">APPENDIX A: COMPLETE 144-CLASS ISL VOCABULARY &amp; KANNADA LEXICON</div>
-    <p style="font-size:9.5pt; margin-bottom:6pt; text-indent:0;">
+    <p style="font-size:10.5pt; margin-bottom:6pt; text-indent:0;">
       Complete production vocabulary defined in <code>backend/data/labels.json</code> and exported in <code>sign_model.onnx</code> (144 classes across 12 semantic domains, each mapped to Unicode NFC Kannada script, English gloss, and cleaned 3D avatar clip in <code>backend/data/animations/captured/</code>):
     </p>
-    <table class="data-table" style="font-size:7.6pt; line-height:1.22;">
+    <table class="data-table" style="font-size:8.8pt; line-height:1.28;">
       <thead>
         <tr>
           <th style="width:16%;">Category</th>

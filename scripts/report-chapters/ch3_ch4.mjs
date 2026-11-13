@@ -632,6 +632,9 @@ export function buildChapters3And4() {
       </svg>
       <div class="figure-caption">Fig. 4.1 Nine-block Osterwalder Business Model Canvas for Silent Bridge.</div>
     </div>
+    <p style="margin-top:8pt;">
+      As shown in Blocks 8 and 9 of Fig. 4.1, executing MediaPipe landmark extraction, 3-view TTA BiGRU classification, and Three.js avatar synthesis directly inside the user's browser reduces per-session server GPU compute to zero. Because each additional free community user adds negligible bandwidth cost, institutional B2G/B2B kiosk licenses (Rs. 12,000 per counter annually) cross-subsidize unrestricted offline PWA access for deaf students, families, and community clinics without degrading unit margins.
+    </p>
     <div class="page-footer-arabic">27</div>
   </section>`;
 

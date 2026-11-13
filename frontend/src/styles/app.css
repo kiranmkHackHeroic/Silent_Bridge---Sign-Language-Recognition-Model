@@ -1891,3 +1891,10 @@ tr.selected td { background: var(--accent-soft); }
     transition: none !important;
   }
 }
+
+/* ---------------- Scoped Times New Roman for Project Report Viewer ---------------- */
+.report-font-scope,
+.report-font-scope * {
+  font-family: "Times New Roman", "CSBS-Times", Times, serif;
+}
+
