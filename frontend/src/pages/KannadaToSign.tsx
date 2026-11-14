@@ -276,21 +276,17 @@ export function KannadaToSign() {
           <Card
             title="3D Human Sign Avatar"
             icon="face"
+            subtitle="Interactive 60 FPS Analytic IK · Follows cursor gaze"
             actions={
-              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                <Chip tone="ok" icon="eye" title="Avatar eyes and head follow your mouse cursor">
-                  Interactive Gaze
-                </Chip>
-                <Btn
-                  size="sm"
-                  variant="ghost"
-                  icon="hand"
-                  onClick={() => avatarRef.current?.greet()}
-                  title="Say hello to the avatar"
-                >
-                  Greet
-                </Btn>
-              </div>
+              <Btn
+                size="sm"
+                variant="ghost"
+                icon="hand"
+                onClick={() => avatarRef.current?.greet()}
+                title="Say hello to the avatar"
+              >
+                Greet
+              </Btn>
             }
           >
             <div className="avatar-stage">

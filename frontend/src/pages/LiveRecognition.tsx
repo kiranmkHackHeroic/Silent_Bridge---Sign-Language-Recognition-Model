@@ -426,9 +426,15 @@ export function LiveRecognition() {
           <h2>Live Recognition</h2>
           <p>Sign continuously in front of the camera. Each completed sign from the trained vocabulary is added once to the Kannada transcript.</p>
         </div>
-        <div className="status-row">
-          <span className="status-item"><StatusDot tone={socketStatus === "open" ? "ok" : socketStatus === "connecting" ? "warn" : "bad"} /> Backend {socketStatus === "open" ? "connected" : socketStatus}</span>
-          {sourceChip}
+        <div className="meta-line">
+          <span className="meta-item">
+            <StatusDot tone={socketStatus === "open" ? "ok" : socketStatus === "connecting" ? "warn" : "bad"} />
+            Backend {socketStatus === "open" ? "connected" : socketStatus}
+          </span>
+          <span className="meta-sep" aria-hidden="true">·</span>
+          <span className="meta-item">
+            {demo ? "Simulated demo" : modelLoaded ? `Trained model (${model?.num_classes} classes)` : "No trained model"}
+          </span>
         </div>
       </div>
 
@@ -441,38 +447,10 @@ export function LiveRecognition() {
       <div className="live-layout">
         <div className="stack">
           <Card
-            title="Camera"
+            title="Camera Input"
             icon="camera"
             actions={
-              <label
-                className="switch"
-                title="Toggle camera stream on/off for privacy and energy control"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  fontSize: "0.85rem",
-                  cursor: "pointer",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  role="switch"
-                  aria-label="Toggle camera stream"
-                  checked={vision.camera === "on" || vision.camera === "starting"}
-                  disabled={vision.camera === "starting"}
-                  onChange={(e) => {
-                    if (e.target.checked) vision.start();
-                    else vision.stop();
-                  }}
-                />
-                <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
-                  <Icon name={vision.camera === "on" ? "camera" : "cameraOff"} size={13} />
-                  <span>
-                    Stream: <strong>{vision.camera === "on" ? "ON" : vision.camera === "starting" ? "Starting…" : "OFF"}</strong>
-                  </span>
-                </span>
-              </label>
+              <Btn icon="refresh" size="sm" variant="ghost" onClick={resetRecognition}>Reset buffers</Btn>
             }
           >
             <CameraPanel
@@ -510,7 +488,7 @@ export function LiveRecognition() {
                 ) : undefined
               }
               controls={
-                <Btn icon={paused ? "play" : "pause"} onClick={togglePause} disabled={demo}>
+                <Btn icon={paused ? "play" : "pause"} size="sm" onClick={togglePause} disabled={demo}>
                   {paused ? "Resume" : "Pause"}
                 </Btn>
               }
@@ -627,7 +605,7 @@ export function LiveRecognition() {
         </div>
 
         <div className="stack">
-          <Card title="Current sign" icon="hand" actions={sourceChip}>
+          <Card title="Current sign" icon="hand">
             {!modelLoaded && socketStatus === "open" && !demo && (
               <Notice tone="warn" title="No trained sign model">
                 The camera and sign segmentation work, but signs cannot be classified until you record samples and train on <strong>Dataset &amp; Model</strong>.
@@ -721,18 +699,20 @@ export function LiveRecognition() {
               </>
             }
           >
-            <div className="context-pills-bar" aria-label="Detected emotion and grammatical tone context">
-              <div className="context-pills-group">
-                <span className="xs muted" style={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Context &amp; Tone</span>
-                <span className="emotion-pill">
+            <div className="context-meta-bar" aria-label="Detected emotion and grammatical tone context">
+              <div className="meta-line">
+                <span className="meta-item">
                   <Icon name="face" size={13} />
-                  {exprEnabled ? (expression ? EXPRESSION_TEXT[expression.label] : "Neutral / Ready") : "Expression Off"}
+                  <strong>Expression:</strong> {exprEnabled ? (expression ? EXPRESSION_TEXT[expression.label] : "Neutral / Ready") : "Off"}
                 </span>
-                <Chip tone={nonManualState && nonManualState.marker !== "statement" ? (nonManualState.marker === "negation" ? "bad" : "info") : "accent"}>
-                  {nonManualState ? nonManualState.label : "Statement · ಸಾಮಾನ್ಯ ವಾಕ್ಯ"}
-                </Chip>
+                <span className="meta-sep" aria-hidden="true">·</span>
+                <span className="meta-item">
+                  <strong>Grammar:</strong> {nonManualState ? nonManualState.label : "Statement · ಸಾಮಾನ್ಯ ವಾಕ್ಯ"}
+                </span>
               </div>
-              <Chip tone={hasKnVoice ? "ok" : "muted"}>{hasKnVoice ? "Kannada TTS Ready" : "Browser TTS"}</Chip>
+              <span className="meta-item muted xs">
+                {hasKnVoice ? "Kannada TTS Ready" : "Browser TTS"}
+              </span>
             </div>
             {pending.length > 0 && (
               <div className="pending-box" aria-label="Words waiting for confirmation">

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "../components/Icon";
-import { Card, Chip } from "../components/ui";
+import { Card } from "../components/ui";
 
 const DOWNLOAD_ENDPOINTS = [
   "/api/ppt/download-pptx",
@@ -179,51 +179,75 @@ export function ProjectReport() {
     docMode === "ppt" ? PPT_SLIDE_JUMPS : docMode === "ieee" ? IEEE_PAGE_JUMPS : CHAPTER_JUMPS;
 
   return (
-    <div className="stack report-font-scope">
+    <div className="stack">
       <div className="page-head">
         <div>
           <h2>
             {docMode === "ppt"
-              ? "14-Slide Project Presentation (Referenced from 78-Page CSBS B.E. Report · .pptx & PDF)"
+              ? "14-Slide Project Presentation"
               : docMode === "report"
-                ? "CSBS B.E. Project Report (78 Pages · Word .docx & PDF · VTU/BMSCE Standard)"
-                : "IEEE Format Research Paper (8 Pages · Word .docx, PDF & LaTeX · Two-Column IEEEtran Standard)"}
+                ? "CSBS B.E. Project Report (78 Pages)"
+                : "IEEE Format Research Paper (8 Pages)"}
           </h2>
-          <p style={{ fontWeight: 600, color: "var(--fg, inherit)", marginBottom: 4 }}>
+          <p style={{ fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
             “{projectTitle}”
           </p>
-          <p>
-            {docMode === "ppt"
-              ? "14 widescreen (16:9) slides covering Title, Agenda Table, Abstract, Introduction & Topic Selection, Problem Statement & 4 Objectives, Literature Survey, Report System Architecture & Arrow Pipelines, Hardware/Software Requirements, 147-D Features, Module-Wise Implementation (How & Why), Evaluation Parameters & Comparison Table, Named Graphs, Conclusion & Future Work, and Research Paper Publication."
-              : docMode === "report"
-                ? "Formatted strictly per B.M.S. College of Engineering (Autonomous Institute Affiliated to VTU) — Department of Computer Science and Business Systems (CSBS) guidelines in 100% Times New Roman."
-                : "Formatted in strict IEEEtran two-column standard (100% Times New Roman · 12 Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References) — Department of Computer Science and Business Systems (CSBS), B.M.S. College of Engineering, Bangalore."}
+          <p className="meta-line">
+            {docMode === "ppt" ? (
+              <>
+                <span>14 Widescreen (16:9) Slides</span>
+                <span className="meta-sep">·</span>
+                <span>Referenced from Ch 1–8</span>
+                <span className="meta-sep">·</span>
+                <span>USNs: 1BM23CB066 · 1BM23CB068 · 1BM24CB401</span>
+              </>
+            ) : docMode === "report" ? (
+              <>
+                <span>78 Pages (3 Title + 9 Roman + 66 Arabic)</span>
+                <span className="meta-sep">·</span>
+                <span>VTU / BMSCE CSBS Standard</span>
+                <span className="meta-sep">·</span>
+                <span>100% Times New Roman</span>
+              </>
+            ) : (
+              <>
+                <span>8 Pages · Two-Column IEEEtran</span>
+                <span className="meta-sep">·</span>
+                <span>12 Tables · 7 Figures · 25 Refs</span>
+                <span className="meta-sep">·</span>
+                <span>Dept. of CSBS, BMSCE</span>
+              </>
+            )}
           </p>
         </div>
-        <div className="row" style={{ gap: 8, flexWrap: "wrap" }}>
+
+        <div className="seg" role="tablist" aria-label="Document type">
           <button
             type="button"
-            className={`btn btn-md ${docMode === "ppt" ? "btn-primary" : ""}`}
+            role="tab"
+            aria-selected={docMode === "ppt"}
+            className={docMode === "ppt" ? "on" : ""}
             onClick={() => setDocMode("ppt")}
           >
-            <Icon name="eye" size={16} />
-            <span>14-Slide PPT Presentation (.pptx &amp; PDF)</span>
+            14-Slide PPT
           </button>
           <button
             type="button"
-            className={`btn btn-md ${docMode === "report" ? "btn-primary" : ""}`}
+            role="tab"
+            aria-selected={docMode === "report"}
+            className={docMode === "report" ? "on" : ""}
             onClick={() => setDocMode("report")}
           >
-            <Icon name="download" size={16} />
-            <span>CSBS B.E. Project Report (Word &amp; PDF)</span>
+            78-Page Report
           </button>
           <button
             type="button"
-            className={`btn btn-md ${docMode === "ieee" ? "btn-primary" : ""}`}
+            role="tab"
+            aria-selected={docMode === "ieee"}
+            className={docMode === "ieee" ? "on" : ""}
             onClick={() => setDocMode("ieee")}
           >
-            <Icon name="text" size={16} />
-            <span>IEEE Research Paper (8 Pages · Word &amp; PDF)</span>
+            IEEE Paper
           </button>
         </div>
       </div>
@@ -231,45 +255,29 @@ export function ProjectReport() {
       <Card
         title={
           docMode === "ppt"
-            ? "14-Slide Widescreen Presentation Deck — Download PowerPoint (.pptx), PDF & Jump to Slides"
+            ? "Download Presentation & Jump to Slides"
             : docMode === "report"
-              ? "CSBS B.E. Project Report — Download Word (.docx), PDF & Customize Certificate"
-              : "IEEE Research Manuscript — Download Word (.docx), PDF, LaTeX (.tex) & Navigate Sections"
+              ? "Download CSBS Report & Customize Certificate"
+              : "Download IEEE Manuscript & Navigate Sections"
         }
         icon="download"
+        actions={
+          <button type="button" className="btn btn-sm" onClick={printDocument}>
+            <Icon name="check" size={14} />
+            <span>Print / Save Custom PDF</span>
+          </button>
+        }
       >
-        <div className="row" style={{ gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-          {docMode === "ppt" ? (
-            <>
-              <Chip tone="ok">14 Slides (16:9 Widescreen) · Referenced from Ch 1–8 of Report</Chip>
-              <Chip tone="info">USNs Sorted: 1BM23CB066 · 1BM23CB068 · 1BM24CB401</Chip>
-              <Chip tone="muted">Agenda · Lit Survey · Architecture · Modules (How/Why) · Metrics · Publication</Chip>
-            </>
-          ) : docMode === "report" ? (
-            <>
-              <Chip tone="ok">78 Pages Total (3 Cert/Title + 9 Roman + 66 Arabic) · Editable Word (.docx)</Chip>
-              <Chip tone="info">USNs Sorted: 1BM23CB066 · 1BM23CB068 · 1BM24CB401</Chip>
-              <Chip tone="muted">18pt / 16pt / 14pt / 12pt Times New Roman</Chip>
-            </>
-          ) : (
-            <>
-              <Chip tone="ok">8 Pages · Balanced Two-Column IEEEtran · Editable Word (.docx)</Chip>
-              <Chip tone="info">USNs Sorted: 1BM23CB066 · 1BM23CB068 · 1BM24CB401</Chip>
-              <Chip tone="muted">Dept. of CSBS · B.M.S. College of Engineering, Bangalore</Chip>
-            </>
-          )}
-        </div>
-
-        <div className="row" style={{ gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
+        <div className="download-grid">
           <a
             href={blobUrls["/api/ppt/download-pptx"] || "/api/ppt/download-pptx"}
             download="SILENT_BRIDGE_Presentation.pptx"
             onClick={() => notifyDownload("SILENT_BRIDGE_Presentation.pptx")}
             className={`btn btn-md ${docMode === "ppt" ? "btn-primary" : ""}`}
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            style={{ textDecoration: "none" }}
           >
-            <Icon name="download" size={16} />
-            <span>Download 14-Slide PPT (.pptx)</span>
+            <Icon name="download" size={15} />
+            <span>PPT (.pptx)</span>
           </a>
 
           <a
@@ -277,10 +285,10 @@ export function ProjectReport() {
             download="SILENT_BRIDGE_Presentation.pdf"
             onClick={() => notifyDownload("SILENT_BRIDGE_Presentation.pdf")}
             className="btn btn-md"
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            style={{ textDecoration: "none" }}
           >
-            <Icon name="download" size={16} />
-            <span>Download 14-Slide PPT (PDF)</span>
+            <Icon name="download" size={15} />
+            <span>PPT (PDF)</span>
           </a>
 
           <a
@@ -288,10 +296,10 @@ export function ProjectReport() {
             download="CSBS_BE_Project_Report_Kannada_SignBridge.docx"
             onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.docx")}
             className={`btn btn-md ${docMode === "report" ? "btn-primary" : ""}`}
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            style={{ textDecoration: "none" }}
           >
-            <Icon name="download" size={16} />
-            <span>Download 78-Page Report Word (.docx)</span>
+            <Icon name="download" size={15} />
+            <span>Report Word (.docx)</span>
           </a>
 
           <a
@@ -299,10 +307,10 @@ export function ProjectReport() {
             download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
             onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.pdf")}
             className="btn btn-md"
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            style={{ textDecoration: "none" }}
           >
-            <Icon name="download" size={16} />
-            <span>Download 78-Page Report PDF</span>
+            <Icon name="download" size={15} />
+            <span>Report PDF</span>
           </a>
 
           <a
@@ -310,10 +318,10 @@ export function ProjectReport() {
             download="SILENT_BRIDGE_IEEE_Research_Paper.docx"
             onClick={() => notifyDownload("SILENT_BRIDGE_IEEE_Research_Paper.docx")}
             className={`btn btn-md ${docMode === "ieee" ? "btn-primary" : ""}`}
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            style={{ textDecoration: "none" }}
           >
-            <Icon name="download" size={16} />
-            <span>Download IEEE Paper Word (.docx)</span>
+            <Icon name="download" size={15} />
+            <span>IEEE Word (.docx)</span>
           </a>
 
           <a
@@ -321,16 +329,11 @@ export function ProjectReport() {
             download="SILENT_BRIDGE_IEEE_Research_Paper.pdf"
             onClick={() => notifyDownload("SILENT_BRIDGE_IEEE_Research_Paper.pdf")}
             className="btn btn-md"
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+            style={{ textDecoration: "none" }}
           >
-            <Icon name="download" size={16} />
-            <span>Download IEEE Paper PDF</span>
+            <Icon name="download" size={15} />
+            <span>IEEE Paper PDF</span>
           </a>
-
-          <button type="button" className="btn btn-md" onClick={printDocument}>
-            <Icon name="check" size={16} />
-            <span>Print / Save Custom PDF</span>
-          </button>
         </div>
 
         {downloadStatus && (
