@@ -67,22 +67,22 @@ export function AboutTesting() {
       </div>
       {error && <div style={{ marginBottom: 16 }}><Notice tone="bad">{error}</Notice></div>}
       <div className="stack">
-        <Card title="B.M.S. College of Engineering — CSBS B.E. Project Report (78 Pages · A4)" icon="download">
+        <Card title="B.M.S. College of Engineering — Final CSBS B.E. Project Report (79 Pages · iThenticate Verified)" icon="download">
           <p style={{ fontWeight: 700, marginBottom: 6 }}>
             Project Title: “SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR”
           </p>
           <p style={{ marginBottom: 10 }}>
-            Complete <strong>78-page structured B.E. Project Report</strong> (3 Cover/Certificate pages + 9 Roman-numbered preliminary pages + 66 Arabic-numbered main pages across Chapters 1–8, References, IEEE Publication Record &amp; 144-Sign Appendix) formatted strictly per BMSCE Department of Computer Science and Business Systems (CSBS) guidelines.
+            Complete <strong>79-page final merged B.E. Project Report</strong> (Cover with Name &amp; USN table, Certificate, Declaration, Acknowledgement, Abstract, TOC, Chapters 1–8, References, Appendix A, plus the <strong>2-page iThenticate AI Writing Report: 6% detected as AI</strong> across 27,910 words).
           </p>
           <div className="row" style={{ gap: 10, flexWrap: "wrap" }}>
             <a
               href="/api/report/download-pdf"
-              download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
+              download="SILENT_BRIDGE_Final_Project_Report_79Pages.pdf"
               className="btn btn-md btn-primary"
               style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
             >
               <Icon name="download" size={16} />
-              <span>Download 78-Page PDF Report</span>
+              <span>Download Final 79-Page PDF</span>
             </a>
             <a
               href="#report"
@@ -90,7 +90,7 @@ export function AboutTesting() {
               style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
             >
               <Icon name="eye" size={16} />
-              <span>Open Report, IEEE Paper &amp; 14-Slide PPT</span>
+              <span>View Embedded PDF, IEEE Paper &amp; PPT</span>
             </a>
           </div>
         </Card>

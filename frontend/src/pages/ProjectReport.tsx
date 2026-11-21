@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "../components/Icon";
+import { PdfViewer } from "../components/PdfViewer";
 import { Card } from "../components/ui";
 
 const DOWNLOAD_ENDPOINTS = [
@@ -10,6 +11,25 @@ const DOWNLOAD_ENDPOINTS = [
   "/api/paper/download-docx",
   "/api/paper/download-pdf",
 ] as const;
+
+const FINAL_PDF_URL = "/assets/aistudio/ilovepdf_merged_50241507.pdf";
+
+const FINAL_PDF_JUMPS = [
+  { label: "p. 1: Cover Page", pageIndex: 1 },
+  { label: "p. 2: Certificate", pageIndex: 2 },
+  { label: "p. 3–5: Decl, Ack & Abstract", pageIndex: 3 },
+  { label: "p. 6–11: TOC & Lists", pageIndex: 6 },
+  { label: "p. 12: Ch 1 Intro", pageIndex: 12 },
+  { label: "p. 20: Ch 2 Literature", pageIndex: 20 },
+  { label: "p. 28: Ch 3 Requirements", pageIndex: 28 },
+  { label: "p. 36: Ch 4 Business Model", pageIndex: 36 },
+  { label: "p. 43: Ch 5 System Design", pageIndex: 43 },
+  { label: "p. 54: Ch 6 Implementation", pageIndex: 54 },
+  { label: "p. 63: Ch 7 Testing & Results", pageIndex: 63 },
+  { label: "p. 72: Ch 8 Conclusion", pageIndex: 72 },
+  { label: "p. 75–77: Refs & Appendix", pageIndex: 75 },
+  { label: "p. 78–79: iThenticate Report (6% AI)", pageIndex: 78 },
+];
 
 const CHAPTER_JUMPS = [
   { label: "Cover & Certificate (3 Pages)", pageIndex: 0 },
@@ -57,27 +77,27 @@ const PPT_SLIDE_JUMPS = [
 const OFFICIAL_PROJECT_TITLE =
   "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR";
 
-type DocMode = "ppt" | "report" | "ieee";
+type DocMode = "final_pdf" | "ppt" | "report" | "ieee";
 
 function initialDocMode(): DocMode {
   const h = location.hash.replace("#", "");
   if (h === "paper") return "ieee";
-  if (h === "report") return "report";
   if (h === "ppt") return "ppt";
-  return "ppt";
+  return "final_pdf";
 }
 
 export function ProjectReport() {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [docMode, setDocMode] = useState<DocMode>(initialDocMode);
+  const [pdfPage, setPdfPage] = useState<number>(1);
   const [projectTitle, setProjectTitle] = useState(OFFICIAL_PROJECT_TITLE);
   const [studentList, setStudentList] = useState(
     "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401)"
   );
-  const [guideName, setGuideName] = useState("Tejaswini K");
+  const [guideName, setGuideName] = useState("Prof. Tejaswini K");
   const [guideDesig, setGuideDesig] = useState("Assistant Professor");
-  const [hodName, setHodName] = useState("Dr. R Ashok Kumar");
-  const [principalName, setPrincipalName] = useState("Dr. Beemsha Arya");
+  const [hodName, setHodName] = useState("Dr. Ashok Kumar R");
+  const [principalName, setPrincipalName] = useState("Dr. Bheemsha Arya");
   const [academicYear, setAcademicYear] = useState("2026-2027");
   const [appliedMsg, setAppliedMsg] = useState<string | null>(null);
   const [downloadStatus, setDownloadStatus] = useState<string | null>(null);
@@ -114,6 +134,10 @@ export function ProjectReport() {
   };
 
   const jumpToPage = (pageIndex: number) => {
+    if (docMode === "final_pdf") {
+      setPdfPage(pageIndex);
+      return;
+    }
     const doc = iframeRef.current?.contentDocument;
     if (!doc) return;
     const selector =
@@ -126,6 +150,7 @@ export function ProjectReport() {
   };
 
   const applyCustomDetails = () => {
+    if (docMode === "final_pdf") return;
     const doc = iframeRef.current?.contentDocument;
     if (!doc || !doc.body) return;
 
@@ -158,7 +183,7 @@ export function ProjectReport() {
         ? "Updated Project Title, Sorted Student USNs & Guide Details across the 14-Slide Presentation preview."
         : docMode === "ieee"
           ? "Updated Project Title, Author Details & Institutional Acknowledgment across the IEEE Paper preview."
-          : "Updated Project Title, Cover, Inner Title, Certificate, Declaration & Publication pages in the 78-page Report preview."
+          : "Updated Project Title, Cover, Inner Title, Certificate, Declaration & Publication pages in the HTML Report preview."
     );
     setTimeout(() => setAppliedMsg(null), 5000);
   };
@@ -169,31 +194,51 @@ export function ProjectReport() {
   };
 
   const activeIframeSrc =
-    docMode === "ppt"
-      ? "/report/SILENT_BRIDGE_Presentation_10Slides.html"
-      : docMode === "ieee"
-        ? "/report/SILENT_BRIDGE_IEEE_Research_Paper.html"
-        : "/report/CSBS_BE_Project_Report_Kannada_SignBridge.html";
+    docMode === "final_pdf"
+      ? `${FINAL_PDF_URL}#page=${pdfPage}&view=FitH`
+      : docMode === "ppt"
+        ? "/report/SILENT_BRIDGE_Presentation_10Slides.html"
+        : docMode === "ieee"
+          ? "/report/SILENT_BRIDGE_IEEE_Research_Paper.html"
+          : "/report/CSBS_BE_Project_Report_Kannada_SignBridge.html";
 
   const activeJumps =
-    docMode === "ppt" ? PPT_SLIDE_JUMPS : docMode === "ieee" ? IEEE_PAGE_JUMPS : CHAPTER_JUMPS;
+    docMode === "final_pdf"
+      ? FINAL_PDF_JUMPS
+      : docMode === "ppt"
+        ? PPT_SLIDE_JUMPS
+        : docMode === "ieee"
+          ? IEEE_PAGE_JUMPS
+          : CHAPTER_JUMPS;
 
   return (
     <div className="stack">
       <div className="page-head">
         <div>
           <h2>
-            {docMode === "ppt"
-              ? "14-Slide Project Presentation"
-              : docMode === "report"
-                ? "CSBS B.E. Project Report (78 Pages)"
-                : "IEEE Format Research Paper (8 Pages)"}
+            {docMode === "final_pdf"
+              ? "Final CSBS B.E. Project Report & iThenticate PDF (79 Pages)"
+              : docMode === "ppt"
+                ? "14-Slide Project Presentation"
+                : docMode === "report"
+                  ? "Interactive HTML Report Preview"
+                  : "IEEE Format Research Paper (8 Pages)"}
           </h2>
           <p style={{ fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
             “{projectTitle}”
           </p>
           <p className="meta-line">
-            {docMode === "ppt" ? (
+            {docMode === "final_pdf" ? (
+              <>
+                <span>79 Pages (77p Final Report + 2p iThenticate Report)</span>
+                <span className="meta-sep">·</span>
+                <span>27,910 Words</span>
+                <span className="meta-sep">·</span>
+                <span>iThenticate: 6% AI Detected</span>
+                <span className="meta-sep">·</span>
+                <span>Submission ID: trn:oid:::3618:158338407</span>
+              </>
+            ) : docMode === "ppt" ? (
               <>
                 <span>14 Widescreen (16:9) Slides</span>
                 <span className="meta-sep">·</span>
@@ -203,7 +248,7 @@ export function ProjectReport() {
               </>
             ) : docMode === "report" ? (
               <>
-                <span>78 Pages (3 Title + 9 Roman + 66 Arabic)</span>
+                <span>Editable HTML Preview</span>
                 <span className="meta-sep">·</span>
                 <span>VTU / BMSCE CSBS Standard</span>
                 <span className="meta-sep">·</span>
@@ -225,6 +270,15 @@ export function ProjectReport() {
           <button
             type="button"
             role="tab"
+            aria-selected={docMode === "final_pdf"}
+            className={docMode === "final_pdf" ? "on" : ""}
+            onClick={() => setDocMode("final_pdf")}
+          >
+            Final PDF (79p)
+          </button>
+          <button
+            type="button"
+            role="tab"
             aria-selected={docMode === "ppt"}
             className={docMode === "ppt" ? "on" : ""}
             onClick={() => setDocMode("ppt")}
@@ -238,7 +292,7 @@ export function ProjectReport() {
             className={docMode === "report" ? "on" : ""}
             onClick={() => setDocMode("report")}
           >
-            78-Page Report
+            HTML Report
           </button>
           <button
             type="button"
@@ -254,21 +308,58 @@ export function ProjectReport() {
 
       <Card
         title={
-          docMode === "ppt"
-            ? "Download Presentation & Jump to Slides"
-            : docMode === "report"
-              ? "Download CSBS Report & Customize Certificate"
-              : "Download IEEE Manuscript & Navigate Sections"
+          docMode === "final_pdf"
+            ? "Downloads & Page Navigation"
+            : docMode === "ppt"
+              ? "Download Presentation & Jump to Slides"
+              : docMode === "report"
+                ? "Download CSBS Report & Customize Certificate"
+                : "Download IEEE Manuscript & Navigate Sections"
         }
         icon="download"
         actions={
-          <button type="button" className="btn btn-sm" onClick={printDocument}>
-            <Icon name="check" size={14} />
-            <span>Print / Save Custom PDF</span>
-          </button>
+          docMode === "final_pdf" ? (
+            <a
+              href={FINAL_PDF_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-sm"
+              style={{ textDecoration: "none" }}
+            >
+              <Icon name="eye" size={14} />
+              <span>Open PDF</span>
+            </a>
+          ) : (
+            <button type="button" className="btn btn-sm" onClick={printDocument}>
+              <Icon name="check" size={14} />
+              <span>Print / Save Custom PDF</span>
+            </button>
+          )
         }
       >
         <div className="download-grid">
+          <a
+            href={blobUrls["/api/report/download-pdf"] || "/api/report/download-pdf"}
+            download="SILENT_BRIDGE_Final_Project_Report_79Pages.pdf"
+            onClick={() => notifyDownload("SILENT_BRIDGE_Final_Project_Report_79Pages.pdf")}
+            className={`btn btn-md ${docMode === "final_pdf" ? "btn-primary" : ""}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Icon name="download" size={15} />
+            <span>Final PDF (79p)</span>
+          </a>
+
+          <a
+            href={blobUrls["/api/report/download-docx"] || "/api/report/download-docx"}
+            download="CSBS_BE_Project_Report_Kannada_SignBridge.docx"
+            onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.docx")}
+            className={`btn btn-md ${docMode === "report" ? "btn-primary" : ""}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Icon name="download" size={15} />
+            <span>Report Word (.docx)</span>
+          </a>
+
           <a
             href={blobUrls["/api/ppt/download-pptx"] || "/api/ppt/download-pptx"}
             download="SILENT_BRIDGE_Presentation.pptx"
@@ -289,28 +380,6 @@ export function ProjectReport() {
           >
             <Icon name="download" size={15} />
             <span>PPT (PDF)</span>
-          </a>
-
-          <a
-            href={blobUrls["/api/report/download-docx"] || "/api/report/download-docx"}
-            download="CSBS_BE_Project_Report_Kannada_SignBridge.docx"
-            onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.docx")}
-            className={`btn btn-md ${docMode === "report" ? "btn-primary" : ""}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Icon name="download" size={15} />
-            <span>Report Word (.docx)</span>
-          </a>
-
-          <a
-            href={blobUrls["/api/report/download-pdf"] || "/api/report/download-pdf"}
-            download="CSBS_BE_Project_Report_Kannada_SignBridge.pdf"
-            onClick={() => notifyDownload("CSBS_BE_Project_Report_Kannada_SignBridge.pdf")}
-            className="btn btn-md"
-            style={{ textDecoration: "none" }}
-          >
-            <Icon name="download" size={15} />
-            <span>Report PDF</span>
           </a>
 
           <a
@@ -353,62 +422,64 @@ export function ProjectReport() {
           </div>
         )}
 
-        <details style={{ marginBottom: 12 }}>
-          <summary style={{ cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
-            Customize Project Title, Sorted Student USNs ({studentList}), Guide ({guideName}), HoD ({hodName}) &amp; Principal ({principalName})
-          </summary>
-          <div style={{ marginTop: 10, padding: 12, background: "var(--bg-muted, rgba(148,163,184,0.08))", borderRadius: 8 }}>
-            <label className="field" style={{ marginBottom: 10 }}>
-              <span>Official Project &amp; Paper Title</span>
-              <input value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} />
-            </label>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
-                gap: 10,
-              }}
-            >
-              <label className="field">
-                <span>Authors / Student Name(s) &amp; USN(s) (Increasing Order)</span>
-                <input value={studentList} onChange={(e) => setStudentList(e.target.value)} />
+        {docMode !== "final_pdf" && (
+          <details style={{ marginBottom: 12 }}>
+            <summary style={{ cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
+              Customize Project Title, Sorted Student USNs ({studentList}), Guide ({guideName}), HoD ({hodName}) &amp; Principal ({principalName})
+            </summary>
+            <div style={{ marginTop: 10, padding: 12, background: "var(--bg-muted, rgba(148,163,184,0.08))", borderRadius: 8 }}>
+              <label className="field" style={{ marginBottom: 10 }}>
+                <span>Official Project &amp; Paper Title</span>
+                <input value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} />
               </label>
-              <label className="field">
-                <span>Guide Name</span>
-                <input value={guideName} onChange={(e) => setGuideName(e.target.value)} />
-              </label>
-              <label className="field">
-                <span>Guide Designation</span>
-                <input value={guideDesig} onChange={(e) => setGuideDesig(e.target.value)} />
-              </label>
-              <label className="field">
-                <span>HoD Name</span>
-                <input value={hodName} onChange={(e) => setHodName(e.target.value)} />
-              </label>
-              <label className="field">
-                <span>Principal Name</span>
-                <input value={principalName} onChange={(e) => setPrincipalName(e.target.value)} />
-              </label>
-              <label className="field">
-                <span>Academic Year</span>
-                <input value={academicYear} onChange={(e) => setAcademicYear(e.target.value)} />
-              </label>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+                  gap: 10,
+                }}
+              >
+                <label className="field">
+                  <span>Authors / Student Name(s) &amp; USN(s) (Increasing Order)</span>
+                  <input value={studentList} onChange={(e) => setStudentList(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Guide Name</span>
+                  <input value={guideName} onChange={(e) => setGuideName(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Guide Designation</span>
+                  <input value={guideDesig} onChange={(e) => setGuideDesig(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>HoD Name</span>
+                  <input value={hodName} onChange={(e) => setHodName(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Principal Name</span>
+                  <input value={principalName} onChange={(e) => setPrincipalName(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Academic Year</span>
+                  <input value={academicYear} onChange={(e) => setAcademicYear(e.target.value)} />
+                </label>
+              </div>
             </div>
-          </div>
-          <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 10 }}>
-            <button type="button" className="btn btn-sm btn-primary" onClick={applyCustomDetails}>
-              Apply to Live Preview
-            </button>
-            {appliedMsg && <span style={{ fontSize: 12, color: "var(--ok, #16a34a)" }}>{appliedMsg}</span>}
-          </div>
-        </details>
+            <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 10 }}>
+              <button type="button" className="btn btn-sm btn-primary" onClick={applyCustomDetails}>
+                Apply to Live Preview
+              </button>
+              {appliedMsg && <span style={{ fontSize: 12, color: "var(--ok, #16a34a)" }}>{appliedMsg}</span>}
+            </div>
+          </details>
+        )}
 
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {activeJumps.map((item) => (
             <button
               key={item.label}
               type="button"
-              className="btn btn-sm btn-ghost"
+              className={`btn btn-sm ${docMode === "final_pdf" && pdfPage === item.pageIndex ? "btn-primary" : "btn-ghost"}`}
               onClick={() => jumpToPage(item.pageIndex)}
             >
               {item.label}
@@ -417,31 +488,39 @@ export function ProjectReport() {
         </div>
       </Card>
 
-      <div
-        style={{
-          width: "100%",
-          height: "82vh",
-          minHeight: 680,
-          border: "1px solid var(--border, #334155)",
-          borderRadius: 10,
-          overflow: "hidden",
-          background: "#334155",
-        }}
-      >
-        <iframe
-          key={docMode}
-          ref={iframeRef}
-          src={activeIframeSrc}
-          title={
-            docMode === "ppt"
-              ? "14-Slide Project Presentation — Silent Bridge"
-              : docMode === "ieee"
-                ? "IEEE Format Research Paper — Silent Bridge (8 Pages)"
-                : "CSBS B.E. Project Report — Silent Bridge (78 Pages)"
-          }
-          style={{ width: "100%", height: "100%", border: "none" }}
+      {docMode === "final_pdf" ? (
+        <PdfViewer
+          url={FINAL_PDF_URL}
+          targetPage={pdfPage}
+          onPageChange={setPdfPage}
         />
-      </div>
+      ) : (
+        <div
+          style={{
+            width: "100%",
+            height: "82vh",
+            minHeight: 680,
+            border: "1px solid var(--border, #334155)",
+            borderRadius: 10,
+            overflow: "hidden",
+            background: "#334155",
+          }}
+        >
+          <iframe
+            key={docMode}
+            ref={iframeRef}
+            src={activeIframeSrc}
+            title={
+              docMode === "ppt"
+                ? "14-Slide Project Presentation — Silent Bridge"
+                : docMode === "ieee"
+                  ? "IEEE Format Research Paper — Silent Bridge (8 Pages)"
+                  : "CSBS B.E. Project Report — Silent Bridge (HTML Preview)"
+            }
+            style={{ width: "100%", height: "100%", border: "none" }}
+          />
+        </div>
+      )}
     </div>
   );
 }

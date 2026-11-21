@@ -1952,8 +1952,25 @@ async function startServer() {
     app.use("/mediapipe-wasm", express.static(publicMpPath, { setHeaders: setWasmHeaders }));
   }
 
-  // Serve the 76-page CSBS B.E. Project Report and 8-page IEEE Research Paper (PDF, Word .docx/.doc, LaTeX, HTML & embedded fonts)
-  // with zero caching so clicking Download always delivers the exact latest paper matching the website preview.
+  // Serve uploaded static assets (including the 79-page merged Final Project Report + iThenticate PDF) inline
+  const workspaceAssetsDir = path.join(__dirname, "public", "assets", "aistudio");
+  const finalMergedPdfPath = path.join(workspaceAssetsDir, "ilovepdf_merged_50241507.pdf");
+  if (fs.existsSync(workspaceAssetsDir)) {
+    app.use(
+      "/assets/aistudio",
+      express.static(workspaceAssetsDir, {
+        setHeaders: (res, filePath) => {
+          if (filePath.endsWith(".pdf")) {
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader("Content-Disposition", "inline");
+          }
+        },
+      })
+    );
+  }
+
+  // Serve the CSBS B.E. Project Report (including the 79-page merged PDF with iThenticate report),
+  // 8-page IEEE Research Paper, and 14-slide PPT with zero caching.
   const publicReportDir = path.join(FRONTEND_DIR, "public", "report");
   const setNoCacheHeaders = (res: express.Response) => {
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
@@ -1963,14 +1980,18 @@ async function startServer() {
   app.get(
     [
       "/api/report/download-pdf",
+      "/api/report/download-final-pdf",
       "/report/SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf",
+      "/report/SILENT_BRIDGE_Final_Project_Report_79Pages.pdf",
     ],
     (_req, res) => {
-      const pdfPath = path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.pdf");
+      const pdfPath = fs.existsSync(finalMergedPdfPath)
+        ? finalMergedPdfPath
+        : path.join(publicReportDir, "CSBS_BE_Project_Report_Kannada_SignBridge.pdf");
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
-        'attachment; filename="SILENT_BRIDGE_CSBS_BE_Project_Report_76Pages.pdf"'
+        'attachment; filename="SILENT_BRIDGE_Final_Project_Report_79Pages.pdf"'
       );
       setNoCacheHeaders(res);
       res.sendFile(pdfPath);

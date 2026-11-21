@@ -25,7 +25,7 @@ const PAGES: NavItem[] = [
   { id: "reference", label: "Sign Reference", hint: "144 Dataset Clips", icon: "eye", group: "Corpus & Evaluation" },
   { id: "dataset", label: "Dataset & Model", hint: "Train & Calibrate", icon: "database", group: "Corpus & Evaluation" },
   { id: "about", label: "About & Testing", hint: "Metrics & Protocol", icon: "flask", group: "Corpus & Evaluation" },
-  { id: "report", label: "Report, Paper & PPT", hint: "78p · IEEE · 14-Slide", icon: "download", group: "Academic Deliverables" },
+  { id: "report", label: "Report, Paper & PPT", hint: "79p Final PDF · IEEE · PPT", icon: "download", group: "Academic Deliverables" },
 ];
 
 const NAV_GROUPS: NavItem["group"][] = [
