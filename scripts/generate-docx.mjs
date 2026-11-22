@@ -711,10 +711,10 @@ function buildCertificatePageElements(pageHtml) {
 function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = false) {
   const out = [];
   const tokenRe =
-    /(<div\s+class="chapter-num-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="chapter-title-center"[^>]*>[\s\S]*?<\/div>|<h1[^>]*>[\s\S]*?<\/h1>|<h2[^>]*>[\s\S]*?<\/h2>|<h3[^>]*>[\s\S]*?<\/h3>|<div\s+class="sec-h1"[^>]*>[\s\S]*?<\/div>|<div\s+class="sec-h2"[^>]*>[\s\S]*?<\/div>|<div\s+class="place-date-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="sig-section-title"[^>]*>[\s\S]*?<\/div>|<div\s+class="sig-grid-3"[^>]*>[\s\S]*?<\/div>\s*(?=<div\s+class="page-footer-roman")|<div\s+class="manuscript-box"[^>]*>[\s\S]*?<\/div>\s*(?=<div\s+class="table-caption")|<div\s+class="prelim-list-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-chapter-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-section-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-prelim-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="leader-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="def-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="sym-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="table-caption"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-cap"[^>]*>[\s\S]*?<\/div>|<table[^>]*>[\s\S]*?<\/table>|<div\s+class="figure-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-wide"[^>]*>[\s\S]*?<\/div>|<div\s+class="eq-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-eq"[^>]*>[\s\S]*?<\/div>|<div\s+class="alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="code-box"[^>]*>[\s\S]*?<\/div>|<ol[^>]*>[\s\S]*?<\/ol>|<ul[^>]*>[\s\S]*?<\/ul>|<p[^>]*>[\s\S]*?<\/p>)/gi;
+    /(<div\s+class="chapter-num-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="chapter-title-center"[^>]*>[\s\S]*?<\/div>|<h1[^>]*>[\s\S]*?<\/h1>|<h2[^>]*>[\s\S]*?<\/h2>|<h3[^>]*>[\s\S]*?<\/h3>|<div\s+class="sec-h1"[^>]*>[\s\S]*?<\/div>|<div\s+class="sec-h2"[^>]*>[\s\S]*?<\/div>|<div\s+class="place-date-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="sig-section-title"[^>]*>[\s\S]*?<\/div>|<div\s+class="sig-grid-3"[^>]*>[\s\S]*?<\/div>\s*(?=<div\s+class="page-footer-roman")|<div\s+class="manuscript-box"[^>]*>[\s\S]*?<\/div>\s*(?=<div\s+class="table-caption")|<div\s+class="prelim-list-header"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-chapter-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-section-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="toc-prelim-entry"[^>]*>[\s\S]*?<\/div>|<div\s+class="leader-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="def-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="sym-list-item"[^>]*>[\s\S]*?<\/div>|<div\s+class="table-caption"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-cap[^"]*"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-table-foot"[^>]*>[\s\S]*?<\/div>|<table[^>]*>[\s\S]*?<\/table>|<div\s+class="figure-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-box[^"]*"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-fig-wide[^"]*"[^>]*>[\s\S]*?<\/div>|<div\s+class="eq-row"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-eq[^"]*"[^>]*>[\s\S]*?<\/div>|<div\s+class="alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="ieee-alg-box"[^>]*>[\s\S]*?<\/div>|<div\s+class="code-box"[^>]*>[\s\S]*?<\/div>|<ol[^>]*>[\s\S]*?<\/ol>|<ul[^>]*>[\s\S]*?<\/ul>|<p[^>]*>[\s\S]*?<\/p>)/gi;
 
-  const bodySz = isIeee ? 20 : 24;
-  const lineSp = isIeee ? 276 : 360;
+  const bodySz = 24;
+  const lineSp = isIeee ? 240 : 360;
 
   for (const m of innerHtml.matchAll(tokenRe)) {
     const block = m[0];
@@ -883,9 +883,9 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
       const inner = block.replace(/^<(?:div|h2)[^>]*>|<\/(?:div|h2)>$/gis, "").trim();
       out.push(
         new Paragraph({
-          alignment: isIeee ? AlignmentType.CENTER : AlignmentType.LEFT,
+          alignment: AlignmentType.LEFT,
           keepNext: true,
-          spacing: { before: 140, after: 60, line: 280 },
+          spacing: { before: isIeee ? 160 : 140, after: 60, line: isIeee ? 240 : 280 },
           children: parseHtmlFragmentToRuns(inner, { size: isIeee ? 24 : 32, bold: true }),
         })
       );
@@ -895,11 +895,11 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
         new Paragraph({
           alignment: AlignmentType.LEFT,
           keepNext: true,
-          spacing: { before: 100, after: 40, line: 280 },
+          spacing: { before: isIeee ? 120 : 100, after: 40, line: isIeee ? 240 : 280 },
           children: parseHtmlFragmentToRuns(inner, {
-            size: isIeee ? 22 : 28,
+            size: isIeee ? 24 : 28,
             bold: true,
-            italics: isIeee,
+            italics: false,
           }),
         })
       );
@@ -1057,23 +1057,32 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
           ].filter(Boolean),
         })
       );
-    } else if (bLower.includes('class="table-caption"') || bLower.includes('class="ieee-table-cap"')) {
+    } else if (bLower.includes('class="table-caption"') || bLower.includes('class="ieee-table-cap')) {
       const inner = block.replace(/^<div[^>]*>|<\/div>$/gis, "").trim();
       out.push(
         new Paragraph({
           alignment: AlignmentType.CENTER,
           keepNext: true,
-          spacing: { before: 100, after: 40, line: 260 },
-          children: parseHtmlFragmentToRuns(inner, { size: 20, bold: true }),
+          spacing: { before: 100, after: 40, line: isIeee ? 240 : 260 },
+          children: parseHtmlFragmentToRuns(inner, { size: isIeee ? 22 : 20, bold: true }),
+        })
+      );
+    } else if (bLower.includes('class="ieee-table-foot"')) {
+      const inner = block.replace(/^<div[^>]*>|<\/div>$/gis, "").trim();
+      out.push(
+        new Paragraph({
+          alignment: AlignmentType.LEFT,
+          spacing: { before: 20, after: 80, line: 240 },
+          children: parseHtmlFragmentToRuns(inner, { size: 19, italics: true }),
         })
       );
     } else if (bLower.startsWith("<table")) {
-      const tbl = parseHtmlTableToDocx(block, isIeee ? 18 : 20);
+      const tbl = parseHtmlTableToDocx(block, isIeee ? 20 : 20);
       if (tbl) out.push(tbl);
     } else if (
       bLower.includes('class="figure-box"') ||
-      bLower.includes('class="ieee-fig-box"') ||
-      bLower.includes('class="ieee-fig-wide"')
+      bLower.includes('class="ieee-fig-box') ||
+      bLower.includes('class="ieee-fig-wide')
     ) {
       const imgM = block.match(/<img[^>]+>/i);
       let imgObj = null;
@@ -1093,28 +1102,28 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
           new Paragraph({
             alignment: AlignmentType.CENTER,
             keepNext: true,
-            spacing: { before: 80, after: 40 },
-            children: [makeImageRun(imgObj, isIeee ? 420 : 530)],
+            spacing: { before: 100, after: 40 },
+            children: [makeImageRun(imgObj, isIeee ? 470 : 530)],
           })
         );
       }
       const capM = block.match(
-        /<div\s+class="(?:figure-caption|ieee-fig-cap)"[^>]*>([\s\S]*?)<\/div>/i
+        /<div\s+class="(?:figure-caption|ieee-fig-cap)[^"]*"[^>]*>([\s\S]*?)<\/div>/i
       );
       if (capM) {
         out.push(
           new Paragraph({
             alignment: AlignmentType.CENTER,
-            spacing: { before: 20, after: 100, line: 260 },
+            spacing: { before: 20, after: 100, line: isIeee ? 240 : 260 },
             children: parseHtmlFragmentToRuns(capM[1].trim(), {
-              size: 20,
-              bold: true,
-              italics: true,
+              size: isIeee ? 22 : 20,
+              bold: isIeee ? false : true,
+              italics: isIeee ? false : true,
             }),
           })
         );
       }
-    } else if (bLower.includes('class="eq-row"') || bLower.includes('class="ieee-eq"')) {
+    } else if (bLower.includes('class="eq-row"') || bLower.includes('class="ieee-eq')) {
       const eqNumM = block.match(/<span\s+class="(?:eq-num|ieee-eq-num)"[^>]*>([\s\S]*?)<\/span>/i);
       const eqNum = eqNumM ? decodeHtmlEntities(eqNumM[1].replace(/<[^>]+>/g, "").trim()) : "";
       const eqBody = block
@@ -1126,25 +1135,27 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
           alignment: eqNum ? AlignmentType.LEFT : AlignmentType.CENTER,
           tabStops: eqNum
             ? [
-                { type: TabStopType.CENTER, position: 4333 },
-                { type: TabStopType.RIGHT, position: 8666 },
+                { type: TabStopType.CENTER, position: isIeee ? 4536 : 4333 },
+                { type: TabStopType.RIGHT, position: isIeee ? 9071 : 8666 },
               ]
             : undefined,
-          spacing: { before: 60, after: 60, line: 280 },
-          shading: { type: ShadingType.CLEAR, color: "auto", fill: "F8FAFC" },
-          border: {
-            top: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
-            bottom: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
-            left: { style: BorderStyle.SINGLE, size: 12, space: 6, color: "0F172A" },
-            right: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
-          },
+          spacing: { before: 60, after: 60, line: isIeee ? 240 : 280 },
+          shading: isIeee ? undefined : { type: ShadingType.CLEAR, color: "auto", fill: "F8FAFC" },
+          border: isIeee
+            ? undefined
+            : {
+                top: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
+                bottom: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
+                left: { style: BorderStyle.SINGLE, size: 12, space: 6, color: "0F172A" },
+                right: { style: BorderStyle.SINGLE, size: 4, space: 4, color: "334155" },
+              },
           children: eqNum
             ? [
-                makeTextRun("\t", { size: bodySz }),
-                ...parseHtmlFragmentToRuns(eqBody, { size: bodySz, italics: true }),
-                makeTextRun(`\t${eqNum}`, { size: bodySz, bold: true }),
+                makeTextRun("\t", { size: isIeee ? 22 : bodySz }),
+                ...parseHtmlFragmentToRuns(eqBody, { size: isIeee ? 22 : bodySz, italics: true }),
+                makeTextRun(`\t${eqNum}`, { size: isIeee ? 22 : bodySz, bold: !isIeee }),
               ].filter(Boolean)
-            : parseHtmlFragmentToRuns(eqBody, { size: bodySz, italics: true }),
+            : parseHtmlFragmentToRuns(eqBody, { size: isIeee ? 22 : bodySz, italics: true }),
         })
       );
     } else if (
@@ -1194,18 +1205,20 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
       });
     } else if (bLower.startsWith("<ol") || bLower.startsWith("<ul")) {
       const isOrdered = bLower.startsWith("<ol");
+      const isNcdteRefs = isIeee && bLower.includes("ncdte-refs");
       const items = [...block.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)];
       items.forEach((im, idxItem) => {
-        const prefix = isOrdered ? `[${idxItem + 1}] ` : "• ";
+        const prefix = isOrdered ? (isNcdteRefs ? `${idxItem + 1}. ` : `[${idxItem + 1}] `) : "• ";
         const liClean = im[1].replace(/<\/?span[^>]*>/gi, " ").trim();
         const runs = [
-          makeTextRun(prefix, { bold: true, size: bodySz }),
+          makeTextRun(prefix, { bold: !isNcdteRefs, size: bodySz }),
           ...parseHtmlFragmentToRuns(liClean, { size: bodySz }),
         ].filter(Boolean);
         out.push(
           new Paragraph({
             alignment: AlignmentType.JUSTIFIED,
-            spacing: { before: 20, after: 40, line: lineSp },
+            indent: isNcdteRefs ? { left: 360, hanging: 360 } : undefined,
+            spacing: { before: isNcdteRefs ? 0 : 20, after: isNcdteRefs ? 40 : 40, line: lineSp },
             children: runs,
           })
         );
@@ -1227,14 +1240,23 @@ function convertHtmlBlocksToDocxElements(innerHtml, svgCounterRef, isIeee = fals
         }
       } else {
         const isLeft = /class="[^"]*\bleft-align-p\b/i.test(pAttrs);
-        const noIndent = isLeft || /text-indent\s*:\s*0/i.test(pAttrs);
+        const isNoIndent =
+          isLeft ||
+          /class="[^"]*\bncdte-noindent\b/i.test(pAttrs) ||
+          /text-indent\s*:\s*0/i.test(pAttrs);
+        const isAbstract = /class="[^"]*\bncdte-abstract\b/i.test(pAttrs);
+        const isKeywords = /class="[^"]*\bncdte-keywords\b/i.test(pAttrs);
         const runs = parseHtmlFragmentToRuns(inner, { size: bodySz });
         if (runs.length > 0) {
           out.push(
             new Paragraph({
               alignment: isLeft ? AlignmentType.LEFT : AlignmentType.JUSTIFIED,
-              spacing: { before: 0, after: 80, line: lineSp },
-              indent: noIndent ? undefined : { firstLine: 360 },
+              spacing: {
+                before: 0,
+                after: isIeee ? (isAbstract ? 120 : isKeywords ? 160 : 0) : 80,
+                line: lineSp,
+              },
+              indent: isNoIndent ? undefined : { firstLine: isIeee ? 624 : 360 },
               children: runs,
             })
           );
@@ -1449,60 +1471,104 @@ async function generateCsbsReportDocx() {
   );
 }
 
+const NCDTE_PAGE_MARGIN = {
+  top: 1417, // 2.5 cm
+  bottom: 1134, // 2.0 cm
+  left: 1417, // 2.5 cm
+  right: 1417, // 2.5 cm
+  header: 567,
+  footer: 567,
+};
+
+function makeNcdteFooter() {
+  return new Footer({
+    children: [
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        spacing: { before: 0, after: 0 },
+        children: [
+          new TextRun({
+            children: [PageNumber.CURRENT],
+            font: "Times New Roman",
+            size: 22,
+            color: "000000",
+          }),
+        ],
+      }),
+    ],
+  });
+}
+
 async function generateIeeePaperDocx() {
   const htmlPath = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.html");
   const html = fs.readFileSync(htmlPath, "utf-8");
-  const pages = [...html.matchAll(/<section class="ieee-page"[^>]*>[\s\S]*?<\/section>/gi)].map(
+  const pages = [...html.matchAll(/<section class="ieee-page[^"]*"[^>]*>[\s\S]*?<\/section>/gi)].map(
     (m) => m[0]
   );
+
+  const ncdteTitle =
+    "Silent Bridge: Real-Time Bidirectional Indian Sign Language and Kannada Translation with 3D Avatar";
 
   const svgCounterRef = { count: 0 };
   const allChildren = [
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { before: 0, after: 60 },
-      border: {
-        bottom: { style: BorderStyle.SINGLE, size: 6, space: 2, color: "1E293B" },
-      },
+      spacing: { before: 0, after: 140, line: 260 },
+      children: [makeTextRun(ncdteTitle, { bold: true, size: 28 })],
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 0, after: 40, line: 240 },
       children: [
+        makeTextRun("H S Thanush", { size: 22 }),
+        new TextRun({ text: "1", font: "Times New Roman", size: 22, superScript: true, color: "000000" }),
+        makeTextRun(", Kiran M K", { size: 22 }),
+        new TextRun({ text: "2", font: "Times New Roman", size: 22, superScript: true, color: "000000" }),
+        makeTextRun(", Manoj G U", { size: 22 }),
+        new TextRun({ text: "3", font: "Times New Roman", size: 22, superScript: true, color: "000000" }),
+        makeTextRun(", Tejaswini K", { size: 22 }),
+        new TextRun({ text: "4", font: "Times New Roman", size: 22, superScript: true, color: "000000" }),
+      ],
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 0, after: 20, line: 240 },
+      children: [
+        new TextRun({ text: "1,2,3", font: "Times New Roman", size: 22, italics: true, superScript: true, color: "000000" }),
         makeTextRun(
-          "B.M.S. COLLEGE OF ENGINEERING · DEPARTMENT OF COMPUTER SCIENCE AND BUSINESS SYSTEMS (CSBS) · IEEE TWO-COLUMN RESEARCH MANUSCRIPT",
-          { bold: true, italics: true, size: 18 }
+          "Dept. of CSBS, B.M.S. College of Engineering, Bangalore, Karnataka, India (USNs: 1BM23CB066, 1BM23CB068, 1BM24CB401)",
+          { italics: true, size: 22 }
         ),
       ],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { before: 60, after: 100, line: 280 },
-      children: [makeTextRun(TITLE, { bold: true, size: 32 })],
-    }),
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      spacing: { before: 0, after: 30 },
+      spacing: { before: 0, after: 20, line: 240 },
       children: [
+        new TextRun({ text: "4", font: "Times New Roman", size: 22, italics: true, superScript: true, color: "000000" }),
         makeTextRun(
-          "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), and Tejaswini K (Assistant Professor & Project Guide)",
-          { bold: true, size: 20 }
+          "Assistant Professor & Guide, Dept. of CSBS, B.M.S. College of Engineering, Bangalore, Karnataka, India",
+          { italics: true, size: 22 }
         ),
       ],
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      spacing: { before: 0, after: 120 },
-      border: {
-        bottom: { style: BorderStyle.SINGLE, size: 6, space: 2, color: "1E293B" },
-      },
+      spacing: { before: 0, after: 140, line: 240 },
       children: [
-        makeTextRun(
-          "Department of Computer Science and Business Systems, B.M.S. College of Engineering, Bangalore – 560019, India",
-          { italics: true, size: 18 }
-        ),
+        makeTextRun("Corresponding Author Mail id: kiranmk628@gmail.com*", {
+          italics: true,
+          size: 22,
+        }),
       ],
     }),
   ];
 
   pages.forEach((pageHtml, idx) => {
-    allChildren.push(...convertHtmlBlocksToDocxElements(pageHtml, svgCounterRef, true));
+    const cleanedHtml = pageHtml
+      .replace(/<div class="ncdte-header-block">[\s\S]*?<\/div>\s*/i, "")
+      .replace(/<div class="ncdte-page-num">[\s\S]*?<\/div>/gi, "");
+    allChildren.push(...convertHtmlBlocksToDocxElements(cleanedHtml, svgCounterRef, true));
     if (idx < pages.length - 1) {
       allChildren.push(
         new Paragraph({
@@ -1514,13 +1580,13 @@ async function generateIeeePaperDocx() {
 
   const doc = new Document({
     creator: "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401)",
-    title: TITLE,
-    description: `${TITLE} — Department of CSBS, BMSCE`,
+    title: ncdteTitle,
+    description: `${ncdteTitle} — NCDTE Conference Paper, Dept. of CSBS, BMSCE`,
     styles: {
       default: {
         document: {
-          run: { font: "Times New Roman", size: 20, color: "000000" },
-          paragraph: { spacing: { line: 276, lineRule: LineRuleType.AUTO, after: 80 } },
+          run: { font: "Times New Roman", size: 24, color: "000000" },
+          paragraph: { spacing: { line: 240, lineRule: LineRuleType.AUTO, before: 0, after: 0 } },
         },
       },
     },
@@ -1529,14 +1595,14 @@ async function generateIeeePaperDocx() {
         properties: {
           page: {
             size: { width: 11906, height: 16838 },
-            margin: A4_PAGE_MARGIN,
+            margin: NCDTE_PAGE_MARGIN,
           },
         },
         headers: {
-          default: makeRunningHeader(),
+          default: new Header({ children: [] }),
         },
         footers: {
-          default: makeRunningFooter(),
+          default: makeNcdteFooter(),
         },
         children: allChildren,
       },
@@ -1547,11 +1613,14 @@ async function generateIeeePaperDocx() {
 
   const out1 = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.docx");
   fs.writeFileSync(out1, buffer);
+  const outDocs = path.join(DOCS_PAPER_DIR, "kannada_signbridge_ieee.docx");
+  fs.mkdirSync(DOCS_PAPER_DIR, { recursive: true });
+  fs.writeFileSync(outDocs, buffer);
   const aliasDoc = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.doc");
   try { if (fs.existsSync(aliasDoc) || fs.lstatSync(aliasDoc)) fs.unlinkSync(aliasDoc); } catch {}
   try { fs.symlinkSync("SILENT_BRIDGE_IEEE_Research_Paper.docx", aliasDoc); } catch {}
   console.log(
-    `[generate-docx] Wrote 8-page IEEE Research Paper .docx (${pages.length} pages, ${buffer.length} bytes) -> ${out1}`
+    `[generate-docx] Wrote 6-page NCDTE Conference Paper .docx (${pages.length} pages, ${buffer.length} bytes) -> ${out1}`
   );
 }
 

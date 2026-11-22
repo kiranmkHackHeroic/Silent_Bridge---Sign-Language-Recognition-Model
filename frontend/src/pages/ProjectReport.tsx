@@ -47,31 +47,27 @@ const CHAPTER_JUMPS = [
 ];
 
 const IEEE_PAGE_JUMPS = [
-  { label: "p. 1: Title, Authors, Abstract & Intro", pageIndex: 0 },
-  { label: "p. 2: Related Work & Datasets (Tables I–II)", pageIndex: 1 },
-  { label: "p. 3: Architecture & Alg. 1 (Fig. 1, Tables IV–V)", pageIndex: 2 },
-  { label: "p. 4: 147-D Math Schema & Calibration (Eqs. 1–7)", pageIndex: 3 },
-  { label: "p. 5: Continuous CTC, Avatar IK & Alg. 3 (Eqs. 8–12)", pageIndex: 4 },
-  { label: "p. 6: Isolated Results & Ablation (Tables VI–VIII)", pageIndex: 5 },
-  { label: "p. 7: Robustness, Parity, Continuous & Latency (Tables IX–XII)", pageIndex: 6 },
-  { label: "p. 8: SDG Impact, Conclusion, Ack & 25 IEEE Refs", pageIndex: 7 },
+  { label: "p. 1: Title, Authors, Abstract, Intro & Fig. 1", pageIndex: 0 },
+  { label: "p. 2: Literature, Datasets (Table 1) & 147-D Schema", pageIndex: 1 },
+  { label: "p. 3: BiGRU, Calibration (Fig. 2), CTC & Avatar IK", pageIndex: 2 },
+  { label: "p. 4: Isolated 64→144 (Table 2, Fig. 3) & Robustness (Fig. 4)", pageIndex: 3 },
+  { label: "p. 5: Sentences, Avatar Audit, Latency & Scalability", pageIndex: 4 },
+  { label: "p. 6: Deaf Study Protocol, Conclusion & 15 References", pageIndex: 5 },
 ];
 
 const PPT_SLIDE_JUMPS = [
-  { label: "Slide 1: Title Slide (BMSCE & Team)", pageIndex: 0 },
-  { label: "Slide 2: Content Table (Agenda)", pageIndex: 1 },
-  { label: "Slide 3: Abstract", pageIndex: 2 },
-  { label: "Slide 4: Introduction & Topic Selection", pageIndex: 3 },
-  { label: "Slide 5: Problem Statement & Objectives", pageIndex: 4 },
-  { label: "Slide 6: Literature Survey", pageIndex: 5 },
-  { label: "Slide 7: System Architecture & Pipeline", pageIndex: 6 },
-  { label: "Slide 8: Hardware & Software Requirements", pageIndex: 7 },
-  { label: "Slide 9: 147-D Feature Extraction Schema", pageIndex: 8 },
-  { label: "Slide 10: Module Implementation (How & Why)", pageIndex: 9 },
-  { label: "Slide 11: Parameters & Comparison Table", pageIndex: 10 },
-  { label: "Slide 12: Results & Named Graphs", pageIndex: 11 },
-  { label: "Slide 13: Conclusion & Future Work", pageIndex: 12 },
-  { label: "Slide 14: Research Paper & Importance", pageIndex: 13 },
+  { label: "S1: Title & Highlights", pageIndex: 0 },
+  { label: "S2: Problem & Objectives", pageIndex: 1 },
+  { label: "S3: Literature Survey", pageIndex: 2 },
+  { label: "S4: Architecture Diagram", pageIndex: 3 },
+  { label: "S5: 147-D & Pipelines", pageIndex: 4 },
+  { label: "S6: GRU / BiGRU / CTC", pageIndex: 5 },
+  { label: "S7: Stack & 16 Modules", pageIndex: 6 },
+  { label: "S8: Live UI Showcase", pageIndex: 7 },
+  { label: "S9: Results 1/2 (64→144)", pageIndex: 8 },
+  { label: "S10: Results 2/2 & Audit", pageIndex: 9 },
+  { label: "S11: Comparison & #study", pageIndex: 10 },
+  { label: "S12: Deliverables & End", pageIndex: 11 },
 ];
 
 const OFFICIAL_PROJECT_TITLE =
@@ -163,7 +159,7 @@ export function ProjectReport() {
       docMode === "ieee" ? ".ieee-page" : docMode === "ppt" ? ".ppt-slide" : ".report-page";
     const pagesToUpdate = Array.from(doc.querySelectorAll(selector)).slice(
       0,
-      docMode === "ieee" ? 8 : docMode === "ppt" ? 14 : 5
+      docMode === "ieee" ? 6 : docMode === "ppt" ? 12 : 5
     );
     for (const p of pagesToUpdate) {
       let html = p.innerHTML;
@@ -180,7 +176,7 @@ export function ProjectReport() {
     }
     setAppliedMsg(
       docMode === "ppt"
-        ? "Updated Project Title, Sorted Student USNs & Guide Details across the 14-Slide Presentation preview."
+        ? "Updated Project Title, Sorted Student USNs & Guide Details across the 12-Slide Executive Presentation preview."
         : docMode === "ieee"
           ? "Updated Project Title, Author Details & Institutional Acknowledgment across the IEEE Paper preview."
           : "Updated Project Title, Cover, Inner Title, Certificate, Declaration & Publication pages in the HTML Report preview."
@@ -219,10 +215,10 @@ export function ProjectReport() {
             {docMode === "final_pdf"
               ? "Final CSBS B.E. Project Report & iThenticate PDF (79 Pages)"
               : docMode === "ppt"
-                ? "14-Slide Project Presentation"
+                ? "12-Slide Executive Project Presentation"
                 : docMode === "report"
                   ? "Interactive HTML Report Preview"
-                  : "IEEE Format Research Paper (8 Pages)"}
+                  : "NCDTE Conference Paper (6 Pages)"}
           </h2>
           <p style={{ fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
             “{projectTitle}”
@@ -240,11 +236,11 @@ export function ProjectReport() {
               </>
             ) : docMode === "ppt" ? (
               <>
-                <span>14 Widescreen (16:9) Slides</span>
+                <span>12 Widescreen (16:9) Bold Executive Slides</span>
                 <span className="meta-sep">·</span>
-                <span>Referenced from Ch 1–8</span>
+                <span>Architecture Diagram, Live UI, 144-Sign Results &amp; NCDTE Revisions</span>
                 <span className="meta-sep">·</span>
-                <span>USNs: 1BM23CB066 · 1BM23CB068 · 1BM24CB401</span>
+                <span>PPTX &amp; 12-Page PDF Ready</span>
               </>
             ) : docMode === "report" ? (
               <>
@@ -256,9 +252,9 @@ export function ProjectReport() {
               </>
             ) : (
               <>
-                <span>8 Pages · Two-Column IEEEtran</span>
+                <span>6 Pages · Single-Column NCDTE Template</span>
                 <span className="meta-sep">·</span>
-                <span>12 Tables · 7 Figures · 25 Refs</span>
+                <span>12pt Times New Roman · 5 Tables · 4 Figures · 15 Refs</span>
                 <span className="meta-sep">·</span>
                 <span>Dept. of CSBS, BMSCE</span>
               </>
@@ -283,7 +279,7 @@ export function ProjectReport() {
             className={docMode === "ppt" ? "on" : ""}
             onClick={() => setDocMode("ppt")}
           >
-            14-Slide PPT
+            12-Slide PPT
           </button>
           <button
             type="button"
@@ -301,7 +297,7 @@ export function ProjectReport() {
             className={docMode === "ieee" ? "on" : ""}
             onClick={() => setDocMode("ieee")}
           >
-            IEEE Paper
+            Conference Paper
           </button>
         </div>
       </div>
@@ -314,7 +310,7 @@ export function ProjectReport() {
               ? "Download Presentation & Jump to Slides"
               : docMode === "report"
                 ? "Download CSBS Report & Customize Certificate"
-                : "Download IEEE Manuscript & Navigate Sections"
+                : "Download NCDTE Conference Paper & Navigate Pages"
         }
         icon="download"
         actions={
@@ -390,7 +386,7 @@ export function ProjectReport() {
             style={{ textDecoration: "none" }}
           >
             <Icon name="download" size={15} />
-            <span>IEEE Word (.docx)</span>
+            <span>Paper Word (.docx)</span>
           </a>
 
           <a
@@ -401,7 +397,7 @@ export function ProjectReport() {
             style={{ textDecoration: "none" }}
           >
             <Icon name="download" size={15} />
-            <span>IEEE Paper PDF</span>
+            <span>Paper PDF (6p)</span>
           </a>
         </div>
 
@@ -512,9 +508,9 @@ export function ProjectReport() {
             src={activeIframeSrc}
             title={
               docMode === "ppt"
-                ? "14-Slide Project Presentation — Silent Bridge"
+                ? "12-Slide Executive Presentation — Silent Bridge"
                 : docMode === "ieee"
-                  ? "IEEE Format Research Paper — Silent Bridge (8 Pages)"
+                  ? "IEEE Conference Paper — Silent Bridge (6 Pages)"
                   : "CSBS B.E. Project Report — Silent Bridge (HTML Preview)"
             }
             style={{ width: "100%", height: "100%", border: "none" }}

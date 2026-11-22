@@ -186,7 +186,7 @@ export class FaceTracker {
   private readonly alpha: number;
   private readonly maxMissing: number;
 
-  constructor(alpha = 0.35, maxMissing = 45) {
+  constructor(alpha = 0.55, maxMissing = 120) {
     this.alpha = alpha;
     this.maxMissing = maxMissing;
   }
@@ -343,10 +343,12 @@ export function stabilizeSingleHandSlots(matrix: Float32Array[]): void {
   const altSlot = 1 - domSlot;
   const domCount = domSlot === 0 ? only0 : only1;
   const altCount = domSlot === 0 ? only1 : only0;
-  if (domCount / active < 0.72 || altCount === 0 || altCount > 3) return;
+  const maxFlips = Math.max(4, Math.floor(active * 0.25));
+  if (domCount / active < 0.68 || altCount === 0 || altCount > maxFlips) return;
 
   const domBase = domSlot * HAND_DIM;
   const altBase = altSlot * HAND_DIM;
+  const maxSearchDist = Math.min(matrix.length - 1, Math.max(4, maxFlips + 2));
 
   for (let i = 0; i < matrix.length; i++) {
     const row = matrix[i];
@@ -355,7 +357,7 @@ export function stabilizeSingleHandSlots(matrix: Float32Array[]): void {
     if (!domPres && altPres) {
       // Find nearest frame with dominant slot present to verify spatial continuity
       let refRow: Float32Array | null = null;
-      for (let d = 1; d <= 3; d++) {
+      for (let d = 1; d <= maxSearchDist; d++) {
         if (i - d >= 0 && matrix[i - d][domBase + PRESENCE_OFFSET] > 0.5) {
           refRow = matrix[i - d];
           break;
@@ -368,7 +370,7 @@ export function stabilizeSingleHandSlots(matrix: Float32Array[]): void {
       if (refRow) {
         const dx = row[altBase + POS_OFFSET] - refRow[domBase + POS_OFFSET];
         const dy = row[altBase + POS_OFFSET + 1] - refRow[domBase + POS_OFFSET + 1];
-        if (Math.hypot(dx, dy) < 0.45) {
+        if (Math.hypot(dx, dy) < 0.55) {
           for (let c = 0; c < HAND_DIM; c++) {
             row[domBase + c] = row[altBase + c];
             row[altBase + c] = 0;
@@ -506,6 +508,43 @@ export function cleanSequence(
   return kept;
 }
 
+function median3(a: number, b: number, c: number): number {
+  if (a > b) {
+    if (b > c) return b;
+    return a > c ? c : a;
+  }
+  if (a > c) return a;
+  return b > c ? c : b;
+}
+
+/**
+ * 3-frame per-coordinate median filter across active hand frames.
+ * Eliminates isolated 1-frame MediaPipe landmark teleportation spikes
+ * without blunting fast lexical sign trajectories.
+ */
+export function despikeSequenceMatrix(matrix: Float32Array[]): Float32Array[] {
+  const n = matrix.length;
+  if (n < 3) return matrix.map((r) => new Float32Array(r));
+  const out = matrix.map((r) => new Float32Array(r));
+  for (let slot = 0; slot < 2; slot++) {
+    const base = slot * HAND_DIM;
+    const pIdx = base + PRESENCE_OFFSET;
+    for (let t = 1; t < n - 1; t++) {
+      if (matrix[t - 1][pIdx] > 0.5 && matrix[t][pIdx] > 0.5 && matrix[t + 1][pIdx] > 0.5) {
+        const prev = matrix[t - 1];
+        const cur = matrix[t];
+        const next = matrix[t + 1];
+        const dst = out[t];
+        for (let c = base; c < pIdx; c++) {
+          dst[c] = median3(prev[c], cur[c], next[c]);
+        }
+        renormalizeSlotOrientation(dst, slot);
+      }
+    }
+  }
+  return out;
+}
+
 /**
  * Zero-phase 3-tap symmetric temporal filter [0.20, 0.60, 0.20] across active hand
  * frames to suppress high-frequency MediaPipe landmark jitter while preserving sign speed.
@@ -593,18 +632,60 @@ export function resampleSequence(matrix: Float32Array[], targetLen: number): Flo
     const row = new Float32Array(FRAME_DIM);
     const a = matrix[lo];
     const b = matrix[hi];
-    for (let c = 0; c < FRAME_DIM; c++) {
-      row[c] = (1 - w) * a[c] + w * b[c];
-    }
-    // Match Python sequence_features.py: zero entire hand slot when interpolated presence < 0.5
+
+    // Boundary-safe per-slot resampling: never blend an active hand with zeros
+    // from an absent frame (which shrinks landmarks & breaks unit orientation vectors).
     for (let slot = 0; slot < 2; slot++) {
-      const col = slot * HAND_DIM + PRESENCE_OFFSET;
-      if (row[col] < 0.5) {
-        row.fill(0, slot * HAND_DIM, (slot + 1) * HAND_DIM);
-      } else {
-        row[col] = 1.0;
+      const sBase = slot * HAND_DIM;
+      const pCol = sBase + PRESENCE_OFFSET;
+      const aPres = a[pCol] > 0.5;
+      const bPres = b[pCol] > 0.5;
+      if (aPres && bPres) {
+        for (let c = sBase; c < pCol; c++) {
+          row[c] = (1 - w) * a[c] + w * b[c];
+        }
+        row[pCol] = 1.0;
+        renormalizeSlotOrientation(row, slot);
+      } else if (aPres || bPres) {
+        const interpPres = (1 - w) * a[pCol] + w * b[pCol];
+        if (interpPres >= 0.5) {
+          const src = aPres ? a : b;
+          for (let c = sBase; c < sBase + HAND_DIM; c++) {
+            row[c] = src[c];
+          }
+          row[pCol] = 1.0;
+        }
       }
     }
+
+    const aFace = a[FACE_FLAG_INDEX] > 0.5;
+    const bFace = b[FACE_FLAG_INDEX] > 0.5;
+    if (aFace && bFace) {
+      row[FACE_FLAG_INDEX] = 1.0;
+    } else if (aFace || bFace) {
+      const interpFace = (1 - w) * a[FACE_FLAG_INDEX] + w * b[FACE_FLAG_INDEX];
+      row[FACE_FLAG_INDEX] = interpFace >= 0.5 ? 1.0 : 0.0;
+      // Preserve clean face-relative values from the face-present endpoint when present
+      if (row[FACE_FLAG_INDEX] > 0.5) {
+        const src = aFace ? a : b;
+        for (let slot = 0; slot < 2; slot++) {
+          const sBase = slot * HAND_DIM;
+          if (row[sBase + PRESENCE_OFFSET] > 0.5 && src[sBase + PRESENCE_OFFSET] > 0.5) {
+            row[sBase + FACEREL_OFFSET] = src[sBase + FACEREL_OFFSET];
+            row[sBase + FACEREL_OFFSET + 1] = src[sBase + FACEREL_OFFSET + 1];
+            row[sBase + FACEREL_OFFSET + 2] = src[sBase + FACEREL_OFFSET + 2];
+          }
+        }
+      } else {
+        for (let slot = 0; slot < 2; slot++) {
+          const sBase = slot * HAND_DIM;
+          row[sBase + FACEREL_OFFSET] = 0;
+          row[sBase + FACEREL_OFFSET + 1] = 0;
+          row[sBase + FACEREL_OFFSET + 2] = 0;
+        }
+      }
+    }
+
     out.push(row);
   }
   return out;
@@ -664,17 +745,19 @@ export function framesToVector(
 }
 
 export interface TTAView {
-  view: "full" | "denoised" | "core";
+  view: "full" | "despiked" | "denoised" | "core" | "shifted";
   weight: number;
   vector: Float32Array;
 }
 
 /**
- * Generates up to 3 complementary temporal views of a sign sequence for Test-Time
+ * Generates up to 5 complementary temporal views of a sign sequence for Test-Time
  * Augmentation (TTA) ensemble classification:
- *  1. "full" (0.50): Standard cleaned + face-imputed sequence
- *  2. "denoised" (0.30): Temporally smoothed + idle-end trimmed sequence
- *  3. "core" (0.20): Tighter 84% central stroke crop (when sequence has >= 10 frames)
+ *  1. "full"     (0.32): Standard cleaned + face-imputed sequence (training parity)
+ *  2. "despiked" (0.24): 3-frame median despiked + 3-tap smoothed sequence
+ *  3. "denoised" (0.20): Despiked + smoothed + idle-end trimmed lexical stroke
+ *  4. "core"     (0.12): Central 86% stroke crop (drops preparation/retraction)
+ *  5. "shifted"  (0.12): Slightly late-shifted crop focusing on active hold/stroke peak
  */
 export function framesToVectorsTTA(
   frames: FrameFeatures[],
@@ -684,23 +767,38 @@ export function framesToVectorsTTA(
   if (!cleaned) return null;
 
   const fullVec = matrixToVector(cleaned, cfg);
-  const smoothed = smoothSequenceMatrix(cleaned);
+  const despiked = despikeSequenceMatrix(cleaned);
+  const smoothed = smoothSequenceMatrix(despiked);
+  const despikedVec = matrixToVector(smoothed, cfg);
   const trimmed = trimIdleEnds(smoothed, cfg);
   const denoisedVec = matrixToVector(trimmed, cfg);
 
   const views: TTAView[] = [
-    { view: "full", weight: 0.5, vector: fullVec },
-    { view: "denoised", weight: 0.3, vector: denoisedVec },
+    { view: "full", weight: 0.32, vector: fullVec },
+    { view: "despiked", weight: 0.24, vector: despikedVec },
+    { view: "denoised", weight: 0.20, vector: denoisedVec },
   ];
 
   if (smoothed.length >= 10) {
-    const margin = Math.max(1, Math.floor(smoothed.length * 0.08));
+    const margin = Math.max(1, Math.floor(smoothed.length * 0.07));
     const coreSlice = smoothed.slice(margin, smoothed.length - margin);
     if (coreSlice.length >= cfg.min_hand_frames) {
       views.push({
         view: "core",
-        weight: 0.2,
+        weight: 0.12,
         vector: matrixToVector(coreSlice, cfg),
+      });
+    }
+  }
+
+  if (smoothed.length >= 12) {
+    const leadTrim = Math.max(1, Math.floor(smoothed.length * 0.10));
+    const shiftedSlice = smoothed.slice(leadTrim);
+    if (shiftedSlice.length >= cfg.min_hand_frames) {
+      views.push({
+        view: "shifted",
+        weight: 0.12,
+        vector: matrixToVector(shiftedSlice, cfg),
       });
     }
   }
@@ -709,6 +807,225 @@ export function framesToVectorsTTA(
   const wSum = views.reduce((acc, v) => acc + v.weight, 0);
   for (const v of views) v.weight /= wSum;
   return views;
+}
+
+/**
+ * Normalizes raw model probability outputs so they always form a valid simplex
+ * distribution summing to 1.0. Critical fix for fused multi-seed ONNX exports
+ * whose unnormalized probability sums equal N_seeds (e.g. 3.0 instead of 1.0).
+ */
+export function normalizeProbabilities(raw: Float32Array | number[]): Float32Array {
+  const n = raw.length;
+  const out = new Float32Array(n);
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    const v = Number(raw[i]);
+    if (Number.isFinite(v) && v > 0) {
+      out[i] = v;
+      sum += v;
+    }
+  }
+  if (sum > 1e-9) {
+    for (let i = 0; i < n; i++) out[i] /= sum;
+  }
+  return out;
+}
+
+export interface AggregatedPrediction {
+  probabilities: Float32Array;
+  bestIndex: number;
+  confidence: number;
+  secondConfidence: number;
+  margin: number;
+  viewAgreement: number;
+  normalizedEntropy: number;
+}
+
+/**
+ * Combines probability distributions from multiple TTA views using hybrid
+ * arithmetic (0.75) + log-linear geometric (0.25) probability pooling.
+ * Geometric pooling rewards classes consistently supported across all views
+ * and suppresses isolated single-view false positives.
+ */
+export function aggregateTTAProbabilities(
+  viewOutputs: Array<{ probs: Float32Array | number[]; weight: number }>
+): AggregatedPrediction {
+  const numClasses = viewOutputs[0]?.probs.length ?? 0;
+  if (numClasses === 0) {
+    return {
+      probabilities: new Float32Array(0),
+      bestIndex: -1,
+      confidence: 0,
+      secondConfidence: 0,
+      margin: 0,
+      viewAgreement: 0,
+      normalizedEntropy: 1,
+    };
+  }
+
+  const totalWeight = viewOutputs.reduce((acc, v) => acc + v.weight, 0) || 1;
+  const arith = new Float64Array(numClasses);
+  const logSum = new Float64Array(numClasses);
+  const viewTopIndices: number[] = [];
+  const eps = 1e-6;
+
+  for (const v of viewOutputs) {
+    const w = v.weight / totalWeight;
+    const norm = normalizeProbabilities(v.probs);
+    let topIdx = 0;
+    let topVal = -1;
+    for (let i = 0; i < numClasses; i++) {
+      const p = norm[i];
+      arith[i] += w * p;
+      logSum[i] += w * Math.log(Math.max(p, eps));
+      if (p > topVal) {
+        topVal = p;
+        topIdx = i;
+      }
+    }
+    viewTopIndices.push(topIdx);
+  }
+
+  // Convert weighted log-probabilities into a normalized geometric-mean distribution
+  const geom = new Float64Array(numClasses);
+  let maxLog = Number.NEGATIVE_INFINITY;
+  for (let i = 0; i < numClasses; i++) {
+    if (logSum[i] > maxLog) maxLog = logSum[i];
+  }
+  let geomSum = 0;
+  for (let i = 0; i < numClasses; i++) {
+    const g = Math.exp(logSum[i] - maxLog);
+    geom[i] = g;
+    geomSum += g;
+  }
+  if (geomSum > 1e-12) {
+    for (let i = 0; i < numClasses; i++) geom[i] /= geomSum;
+  }
+
+  // Hybrid fusion: 75% arithmetic mean + 25% geometric mean
+  const fused = new Float32Array(numClasses);
+  let fusedSum = 0;
+  for (let i = 0; i < numClasses; i++) {
+    fused[i] = 0.75 * arith[i] + 0.25 * geom[i];
+    fusedSum += fused[i];
+  }
+  if (fusedSum > 1e-9) {
+    for (let i = 0; i < numClasses; i++) fused[i] /= fusedSum;
+  }
+
+  let bestIndex = 0;
+  let confidence = -1;
+  let secondConfidence = 0;
+  let entropy = 0;
+  for (let i = 0; i < numClasses; i++) {
+    const p = fused[i];
+    if (p > confidence) {
+      secondConfidence = Math.max(0, confidence);
+      confidence = p;
+      bestIndex = i;
+    } else if (p > secondConfidence) {
+      secondConfidence = p;
+    }
+    if (p > 1e-9) {
+      entropy -= p * Math.log(p);
+    }
+  }
+
+  const maxEntropy = numClasses > 1 ? Math.log(numClasses) : 1;
+  const normalizedEntropy = clamp(entropy / maxEntropy, 0, 1);
+  const agreeing = viewTopIndices.filter((idx) => idx === bestIndex).length;
+  const viewAgreement = viewTopIndices.length > 0 ? agreeing / viewTopIndices.length : 1;
+
+  return {
+    probabilities: fused,
+    bestIndex,
+    confidence: Math.max(0, confidence),
+    secondConfidence: Math.max(0, secondConfidence),
+    margin: Math.max(0, confidence - secondConfidence),
+    viewAgreement,
+    normalizedEntropy,
+  };
+}
+
+/**
+ * Calibrated acceptance gate that strictly respects the user's threshold while
+ * rejecting high-entropy noise and allowing narrow high-agreement consensus rescues.
+ */
+export function evaluateAcceptanceGate(
+  metrics: {
+    confidence: number;
+    margin: number;
+    viewAgreement: number;
+    normalizedEntropy: number;
+  },
+  threshold: number
+): { accepted: boolean; reason: string } {
+  const { confidence, margin, viewAgreement, normalizedEntropy } = metrics;
+
+  // Reject diffuse, high-entropy noise unless clearly above threshold with margin
+  if (normalizedEntropy > 0.75 && margin < 0.12 && confidence < threshold + 0.1) {
+    return {
+      accepted: false,
+      reason: `high uncertainty (entropy ${normalizedEntropy.toFixed(2)}, margin ${margin.toFixed(2)})`,
+    };
+  }
+
+  // Primary threshold check: requires clear margin when right on the threshold boundary
+  if (confidence >= threshold) {
+    if (margin >= 0.06 || confidence >= Math.min(0.85, threshold + 0.12)) {
+      return { accepted: true, reason: "threshold_met" };
+    }
+    return {
+      accepted: false,
+      reason: `ambiguous top-2 competition (margin ${margin.toFixed(2)} < 0.06)`,
+    };
+  }
+
+  // Narrow consensus rescue: only when threshold isn't set ultra-strict (<= 0.65),
+  // nearly all TTA views agree (>= 80%), entropy is low, and top-1 leads cleanly.
+  if (
+    threshold <= 0.65 &&
+    confidence >= Math.max(0.38, threshold - 0.1) &&
+    margin >= 0.22 &&
+    viewAgreement >= 0.8 &&
+    normalizedEntropy <= 0.45
+  ) {
+    return { accepted: true, reason: "high_consensus_rescue" };
+  }
+
+  return {
+    accepted: false,
+    reason: `confidence ${confidence.toFixed(2)} below threshold ${threshold.toFixed(2)}`,
+  };
+}
+
+/**
+ * Computes an outlier-resistant consensus-weighted centroid across multiple
+ * 3668-D feature vectors (down-weighting noisy outlier recordings when N >= 3).
+ */
+export function averageFeatureVectors(samples: Float32Array[]): Float32Array | null {
+  if (samples.length === 0) return null;
+  const dim = samples[0].length;
+  const mean = new Float32Array(dim);
+  for (const s of samples) {
+    for (let i = 0; i < dim; i++) mean[i] += s[i];
+  }
+  for (let i = 0; i < dim; i++) mean[i] /= samples.length;
+  if (samples.length < 3) return mean;
+
+  const weights = samples.map((s) =>
+    Math.pow(Math.max(0.1, blockBalancedCosineSimilarity(s, mean)), 2)
+  );
+  const wSum = weights.reduce((a, b) => a + b, 0);
+  if (wSum <= 1e-9) return mean;
+
+  const refined = new Float32Array(dim);
+  for (let k = 0; k < samples.length; k++) {
+    const w = weights[k] / wSum;
+    const s = samples[k];
+    for (let i = 0; i < dim; i++) refined[i] += w * s[i];
+  }
+  return refined;
 }
 
 /**
@@ -780,6 +1097,7 @@ export function blockBalancedCosineSimilarity(
 export interface RecognitionSettings {
   mode: "segment" | "sliding" | "sentence";
   confidence_threshold: number;
+  use_tta: boolean;
   motion_start: number;
   motion_still: number;
   still_ms: number;
@@ -807,6 +1125,7 @@ export function defaultRecognitionSettings(threshold = 0.55): RecognitionSetting
   return {
     mode: "segment",
     confidence_threshold: threshold,
+    use_tta: true,
     motion_start: 0.008,
     motion_still: 0.003,
     still_ms: 650,

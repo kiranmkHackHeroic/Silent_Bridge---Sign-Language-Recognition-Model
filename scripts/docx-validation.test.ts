@@ -85,9 +85,11 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
   assert.equal(res.hasIjddt, false, "Must NOT contain International Journal of Drug Delivery Technologies (IJDDT)");
 });
 
-test("8-Page IEEE Research Paper .docx has 100% Microsoft Word-compliant OOXML structure and no IJDDT reference", () => {
+test("6-Page NCDTE Conference Paper .docx has 100% Microsoft Word-compliant OOXML structure, exact NCDTE margins/typography, and reviewer revisions", () => {
   const docxPath = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.docx");
+  const texPath = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Paper.tex");
   assert.equal(fs.existsSync(docxPath), true);
+  assert.equal(fs.existsSync(texPath), true);
 
   const pyCheck = execFileSync("python3", [
     "-c",
@@ -98,12 +100,21 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
     for xml_part in [n for n in names if n.endswith(".xml") or n.endswith(".rels")]:
         ET.fromstring(zf.read(xml_part))
     doc_xml = zf.read("word/document.xml").decode("utf-8")
+    styles_xml = zf.read("word/styles.xml").decode("utf-8")
     media_files = [n for n in names if n.startswith("word/media/")]
     page_breaks = doc_xml.count('w:type="page"')
     doc_pr_ids = re.findall(r'wp:docPr\\s+id="(\\d+)"', doc_xml)
     tbl_count = doc_xml.count("<w:tbl>")
     grid_count = doc_xml.count("<w:tblGrid>")
+    plain_text = re.sub(r"<[^>]+>", " ", doc_xml)
+    word_count = len(plain_text.split())
     has_ijddt = "Drug Delivery" in doc_xml or "IJDDT" in doc_xml or "0975-4415" in doc_xml
+    has_144_promoted = "87.2%" in doc_xml and "81.7%" in doc_xml
+    has_deaf_protocol = "pre-register" in doc_xml.lower() and "zero fabricated" in doc_xml.lower()
+    has_ncdte_margins = 'w:top="1417"' in doc_xml and 'w:bottom="1134"' in doc_xml and 'w:left="1417"' in doc_xml and 'w:right="1417"' in doc_xml
+    has_12pt_body = 'w:sz w:val="24"' in styles_xml and 'w:sz w:val="24"' in doc_xml
+    has_1_1cm_indent = 'w:firstLine="624"' in doc_xml
+    has_numbered_refs = "1. " in plain_text and "15. " in plain_text
     print(json.dumps({
         "mediaCount": len(media_files),
         "pageBreaks": page_breaks,
@@ -111,29 +122,43 @@ with zipfile.ZipFile(${JSON.stringify(docxPath)}, "r") as zf:
         "uniqueDocPrCount": len(set(doc_pr_ids)),
         "tblCount": tbl_count,
         "gridCount": grid_count,
-        "hasIjddt": has_ijddt
+        "wordCount": word_count,
+        "hasIjddt": has_ijddt,
+        "has144Promoted": has_144_promoted,
+        "hasDeafProtocol": has_deaf_protocol,
+        "hasNcdteMargins": has_ncdte_margins,
+        "has12ptBody": has_12pt_body,
+        "has11cmIndent": has_1_1cm_indent,
+        "hasNumberedRefs": has_numbered_refs
     }))
 `,
   ]).toString().trim();
 
   const res = JSON.parse(pyCheck);
-  assert.equal(res.mediaCount, 7, "IEEE paper should embed all 7 benchmark research figures");
-  assert.equal(res.pageBreaks, 7, "8 pages should have 7 explicit page breaks");
-  assert.equal(res.docPrCount, 7);
-  assert.equal(res.uniqueDocPrCount, 7);
-  assert.equal(res.tblCount, 12);
-  assert.equal(res.gridCount, 12);
-  assert.equal(res.hasIjddt, false, "IEEE paper must NOT contain IJDDT / Drug Delivery Technologies");
+  assert.equal(res.mediaCount, 4, "6-page NCDTE paper should embed all 4 core research figures");
+  assert.equal(res.pageBreaks, 5, "6 pages should have 5 explicit page breaks");
+  assert.equal(res.docPrCount, 4);
+  assert.equal(res.uniqueDocPrCount, 4);
+  assert.equal(res.tblCount, 5, "6-page NCDTE paper should have 5 structured tables");
+  assert.equal(res.gridCount, 5);
+  assert.equal(res.wordCount <= 3500, true, `6-page NCDTE paper should fit single-column 12pt budget (got ${res.wordCount} words)`);
+  assert.equal(res.hasNcdteMargins, true, "NCDTE paper must use 2.5cm top/left/right and 2.0cm bottom margins (1417/1134 twips)");
+  assert.equal(res.has12ptBody, true, "NCDTE paper must use 12pt Times New Roman body text");
+  assert.equal(res.has11cmIndent, true, "NCDTE paper must use 1.1cm first-line indent (624 twips)");
+  assert.equal(res.hasNumberedRefs, true, "NCDTE paper must use numbered 1. .. 15. references");
+  assert.equal(res.hasIjddt, false, "Conference paper must NOT contain IJDDT / Drug Delivery Technologies");
+  assert.equal(res.has144Promoted, true, "Conference paper must include verified promoted 144-sign 3-seed BiGRU results (87.2% / 81.7%)");
+  assert.equal(res.hasDeafProtocol, true, "Conference paper must include pre-registered Deaf ISL user study protocol with zero fabricated scores");
 });
 
-test("14-Slide PowerPoint .pptx & HTML deck have valid 14-slide OOXML structure and student USNs in increasing order", () => {
+test("12-Slide Bold PowerPoint .pptx & HTML deck have valid 12-slide OOXML structure, embedded figures, and student USNs in increasing order", () => {
   const pptxPath = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.pptx");
   const pptHtmlPath = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.html");
   const reportHtmlPath = path.join(REPORT_DIR, "CSBS_BE_Project_Report_Kannada_SignBridge.html");
   const ieeeHtmlPath = path.join(REPORT_DIR, "SILENT_BRIDGE_IEEE_Research_Paper.html");
 
-  assert.equal(fs.existsSync(pptxPath), true, "14-slide .pptx must exist");
-  assert.equal(fs.existsSync(pptHtmlPath), true, "14-slide .html must exist");
+  assert.equal(fs.existsSync(pptxPath), true, "12-slide .pptx must exist");
+  assert.equal(fs.existsSync(pptHtmlPath), true, "12-slide .html must exist");
 
   const pyCheck = execFileSync("python3", [
     "-c",
@@ -144,19 +169,22 @@ with zipfile.ZipFile(${JSON.stringify(pptxPath)}, "r") as zf:
     for xml_part in [n for n in names if n.endswith(".xml") or n.endswith(".rels")]:
         ET.fromstring(zf.read(xml_part))
     slide_files = sorted([n for n in names if n.startswith("ppt/slides/slide") and n.endswith(".xml")])
+    media_files = [n for n in names if n.startswith("ppt/media/")]
     slide1_xml = zf.read("ppt/slides/slide1.xml").decode("utf-8")
     idx_66 = slide1_xml.find("1BM23CB066")
     idx_68 = slide1_xml.find("1BM23CB068")
     idx_401 = slide1_xml.find("1BM24CB401")
     print(json.dumps({
         "slideCount": len(slide_files),
+        "mediaCount": len(media_files),
         "usnIncreasingOnSlide1": 0 <= idx_66 < idx_68 < idx_401
     }))
 `,
   ]).toString().trim();
 
   const res = JSON.parse(pyCheck);
-  assert.equal(res.slideCount, 14, "PowerPoint .pptx must contain 14 slides");
+  assert.equal(res.slideCount, 12, "PowerPoint .pptx must contain 12 slides");
+  assert.equal(res.mediaCount >= 6, true, `PowerPoint .pptx must embed logo, architecture diagram, UI screens & charts (got ${res.mediaCount})`);
   assert.equal(res.usnIncreasingOnSlide1, true, "Slide 1 in .pptx must list USNs in increasing order: 1BM23CB066, 1BM23CB068, 1BM24CB401");
 
   for (const file of [pptHtmlPath, reportHtmlPath, ieeeHtmlPath]) {

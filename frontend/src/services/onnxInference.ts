@@ -14,8 +14,9 @@ import * as ort from "onnxruntime-web/wasm";
 import type { Candidate, LandmarkFrame } from "./types";
 import { matchCustomSign } from "./customSigns";
 
-// Configure ONNX Runtime to load WASM binaries from jsdelivr CDN with local server fallback
-ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/";
+// Load exact matching ONNX Runtime Web WASM binaries from our local server route
+// (/onnx-wasm/ -> node_modules/onnxruntime-web/dist) to prevent CDN version mismatches
+ort.env.wasm.wasmPaths = "/onnx-wasm/";
 ort.env.wasm.numThreads = 1;
 ort.env.logLevel = "error";
 
@@ -36,8 +37,12 @@ const MIN_FACE = 0.02;
 export interface OnnxPrediction {
   label: string;
   confidence: number;
+  accepted: boolean;
   top: Candidate[];
   latency_ms: number;
+  views_used?: number;
+  view_agreement?: number;
+  margin?: number;
 }
 
 interface ParsedBrowserFrame {
@@ -69,11 +74,11 @@ export class OnnxInferenceEngine {
   private lastT: number | null = null;
   public motionEma = 0;
 
-  // Session-level face anchor memory (survives up to 45 frames of hand-over-face occlusion)
+  // Session-level face anchor memory (survives up to 120 frames / ~4s of hand-over-face occlusion)
   private faceCurrent: [number, number, number] | null = null;
   private faceMissingCount = 0;
 
-  public threshold = 0.45;
+  public threshold = 0.55;
   public motionStart = 0.008;
   public motionStill = 0.003;
   public stillMs = 650;
@@ -273,6 +278,7 @@ export class OnnxInferenceEngine {
       return {
         label: customMatch.sign.name,
         confidence: Math.round(customMatch.similarity * 1000) / 1000,
+        accepted: true,
         top: [
           {
             label: customMatch.sign.name,
@@ -282,26 +288,38 @@ export class OnnxInferenceEngine {
           },
         ],
         latency_ms: latency,
+        views_used: 1,
+        view_agreement: 1,
+        margin: customMatch.similarity,
       };
     }
 
     try {
-      // 2. Build Multi-View Test-Time Augmentation (TTA) ensemble inputs
+      // 2. Build 5-View Test-Time Augmentation (TTA) ensemble inputs
       const views: Array<{ vec: Float32Array; weight: number }> = [];
       if (this.useTTA) {
-        const smoothed = this.smoothSequenceMatrix(cleaned);
+        const despiked = this.despikeSequenceMatrix(cleaned);
+        const smoothed = this.smoothSequenceMatrix(despiked);
+        const despikedVec = this.matrixToVector(smoothed);
         const trimmed = this.trimIdleEnds(smoothed);
         const denoisedVec = this.matrixToVector(trimmed);
-        views.push({ vec: fullVec, weight: 0.5 });
-        if (denoisedVec) {
-          views.push({ vec: denoisedVec, weight: 0.3 });
-        }
+        views.push({ vec: fullVec, weight: 0.32 });
+        if (despikedVec) views.push({ vec: despikedVec, weight: 0.24 });
+        if (denoisedVec) views.push({ vec: denoisedVec, weight: 0.20 });
         if (smoothed.length >= 10) {
-          const margin = Math.max(1, Math.floor(smoothed.length * 0.08));
+          const margin = Math.max(1, Math.floor(smoothed.length * 0.07));
           const coreSlice = smoothed.slice(margin, smoothed.length - margin);
           if (coreSlice.length >= 6) {
             const coreVec = this.matrixToVector(coreSlice);
-            if (coreVec) views.push({ vec: coreVec, weight: 0.2 });
+            if (coreVec) views.push({ vec: coreVec, weight: 0.12 });
+          }
+        }
+        if (smoothed.length >= 12) {
+          const leadTrim = Math.max(1, Math.floor(smoothed.length * 0.10));
+          const shiftedSlice = smoothed.slice(leadTrim);
+          if (shiftedSlice.length >= 6) {
+            const shiftedVec = this.matrixToVector(shiftedSlice);
+            if (shiftedVec) views.push({ vec: shiftedVec, weight: 0.12 });
           }
         }
         const wSum = views.reduce((acc, v) => acc + v.weight, 0);
@@ -310,20 +328,76 @@ export class OnnxInferenceEngine {
         views.push({ vec: fullVec, weight: 1.0 });
       }
 
-      const ensembleProbs = new Float32Array(this.classes.length);
+      const numClasses = this.classes.length;
+      const arith = new Float64Array(numClasses);
+      const logSum = new Float64Array(numClasses);
+      const viewTopIndices: number[] = [];
+      const eps = 1e-6;
+
       for (const v of views) {
         const tensor = new ort.Tensor("float32", v.vec, [1, 3668]);
         const results = await this.session.run({ features: tensor });
         const probsTensor = results.probabilities || Object.values(results)[0];
-        const probs = probsTensor.data as Float32Array;
-        for (let i = 0; i < probs.length && i < ensembleProbs.length; i++) {
-          ensembleProbs[i] += v.weight * probs[i];
+        const rawProbs = probsTensor.data as Float32Array;
+
+        // CRITICAL: Normalize fused 3-seed ONNX output (sums to 3.0) back to valid simplex (sum = 1.0)
+        let rawSum = 0;
+        for (let i = 0; i < rawProbs.length && i < numClasses; i++) {
+          if (Number.isFinite(rawProbs[i]) && rawProbs[i] > 0) rawSum += rawProbs[i];
         }
+        const invSum = rawSum > 1e-9 ? 1 / rawSum : 0;
+
+        let topIdx = 0;
+        let topVal = -1;
+        for (let i = 0; i < rawProbs.length && i < numClasses; i++) {
+          const p = rawProbs[i] > 0 ? rawProbs[i] * invSum : 0;
+          arith[i] += v.weight * p;
+          logSum[i] += v.weight * Math.log(Math.max(p, eps));
+          if (p > topVal) {
+            topVal = p;
+            topIdx = i;
+          }
+        }
+        viewTopIndices.push(topIdx);
+      }
+
+      // Hybrid arithmetic (0.75) + log-linear geometric (0.25) probability pooling
+      let maxLog = Number.NEGATIVE_INFINITY;
+      for (let i = 0; i < numClasses; i++) {
+        if (logSum[i] > maxLog) maxLog = logSum[i];
+      }
+      const geom = new Float64Array(numClasses);
+      let geomSum = 0;
+      for (let i = 0; i < numClasses; i++) {
+        const g = Math.exp(logSum[i] - maxLog);
+        geom[i] = g;
+        geomSum += g;
+      }
+      if (geomSum > 1e-12) {
+        for (let i = 0; i < numClasses; i++) geom[i] /= geomSum;
+      }
+
+      const ensembleProbs = new Float32Array(numClasses);
+      let ensSum = 0;
+      for (let i = 0; i < numClasses; i++) {
+        ensembleProbs[i] = 0.75 * arith[i] + 0.25 * geom[i];
+        ensSum += ensembleProbs[i];
+      }
+      if (ensSum > 1e-9) {
+        for (let i = 0; i < numClasses; i++) ensembleProbs[i] /= ensSum;
       }
 
       const ranked: Candidate[] = [];
-      for (let i = 0; i < ensembleProbs.length; i++) {
+      let entropy = 0;
+      let bestIdx = 0;
+      let bestP = -1;
+      for (let i = 0; i < numClasses; i++) {
         const p = ensembleProbs[i];
+        if (p > bestP) {
+          bestP = p;
+          bestIdx = i;
+        }
+        if (p > 1e-9) entropy -= p * Math.log(p);
         if (p > 0.002) {
           ranked.push({
             label: this.classes[i] || `class_${i}`,
@@ -343,19 +417,35 @@ export class OnnxInferenceEngine {
       }
 
       const margin = top3.length > 1 ? top3[0].confidence - top3[1].confidence : top3[0].confidence;
-      const isConfident =
-        best.confidence >= this.threshold ||
-        (best.confidence >= 0.30 && margin >= 0.16);
+      const viewAgreement =
+        viewTopIndices.length > 0
+          ? viewTopIndices.filter((idx) => idx === bestIdx).length / viewTopIndices.length
+          : 1;
+      const maxEntropy = numClasses > 1 ? Math.log(numClasses) : 1;
+      const normalizedEntropy = Math.max(0, Math.min(1, entropy / maxEntropy));
 
-      if (!isConfident) {
-        return null;
-      }
+      const highEntropyNoise =
+        normalizedEntropy > 0.75 && margin < 0.12 && best.confidence < this.threshold + 0.1;
+      const meetsThreshold =
+        best.confidence >= this.threshold &&
+        (margin >= 0.06 || best.confidence >= Math.min(0.85, this.threshold + 0.12));
+      const consensusRescue =
+        this.threshold <= 0.65 &&
+        best.confidence >= Math.max(0.38, this.threshold - 0.1) &&
+        margin >= 0.22 &&
+        viewAgreement >= 0.8 &&
+        normalizedEntropy <= 0.45;
+      const accepted = !highEntropyNoise && (meetsThreshold || consensusRescue);
 
       return {
         label: best.label,
         confidence: Math.round(best.confidence * 1000) / 1000,
+        accepted,
         top: top3,
         latency_ms: latency,
+        views_used: views.length,
+        view_agreement: Math.round(viewAgreement * 1000) / 1000,
+        margin: Math.round(margin * 1000) / 1000,
       };
     } catch (e) {
       console.error("[OnnxInferenceEngine] Inference error:", e);
@@ -373,7 +463,7 @@ export class OnnxInferenceEngine {
     }
     const cleaned = this.cleanSequence(rawMat);
     if (!cleaned) return null;
-    const smoothed = this.smoothSequenceMatrix(cleaned);
+    const smoothed = this.smoothSequenceMatrix(this.despikeSequenceMatrix(cleaned));
     return this.matrixToVector(this.trimIdleEnds(smoothed));
   }
 
@@ -384,7 +474,7 @@ export class OnnxInferenceEngine {
       if (this.faceCurrent === null) {
         this.faceCurrent = [rawFace[0], rawFace[1], rawFace[2]];
       } else {
-        const a = 0.35;
+        const a = 0.55;
         this.faceCurrent = [
           a * rawFace[0] + (1 - a) * this.faceCurrent[0],
           a * rawFace[1] + (1 - a) * this.faceCurrent[1],
@@ -394,7 +484,7 @@ export class OnnxInferenceEngine {
       return this.faceCurrent;
     }
     this.faceMissingCount += 1;
-    if (this.faceCurrent !== null && this.faceMissingCount <= 45) {
+    if (this.faceCurrent !== null && this.faceMissingCount <= 120) {
       return this.faceCurrent;
     }
     this.faceCurrent = null;
@@ -623,14 +713,16 @@ export class OnnxInferenceEngine {
         const altSlot = 1 - domSlot;
         const domCount = domSlot === 0 ? only0 : only1;
         const altCount = domSlot === 0 ? only1 : only0;
-        if (domCount / active >= 0.72 && altCount > 0 && altCount <= 3) {
+        const maxFlips = Math.max(4, Math.floor(active * 0.25));
+        if (domCount / active >= 0.68 && altCount > 0 && altCount <= maxFlips) {
           const domBase = domSlot * HAND_DIM;
           const altBase = altSlot * HAND_DIM;
+          const maxSearchDist = Math.min(trimmed.length - 1, Math.max(4, maxFlips + 2));
           for (let i = 0; i < trimmed.length; i++) {
             const row = trimmed[i];
             if (row[domBase + PRESENCE_OFFSET] <= 0.5 && row[altBase + PRESENCE_OFFSET] > 0.5) {
               let refRow: number[] | null = null;
-              for (let d = 1; d <= 3; d++) {
+              for (let d = 1; d <= maxSearchDist; d++) {
                 if (i - d >= 0 && trimmed[i - d][domBase + PRESENCE_OFFSET] > 0.5) {
                   refRow = trimmed[i - d];
                   break;
@@ -643,7 +735,7 @@ export class OnnxInferenceEngine {
               if (refRow) {
                 const dx = row[altBase + POS_OFFSET] - refRow[domBase + POS_OFFSET];
                 const dy = row[altBase + POS_OFFSET + 1] - refRow[domBase + POS_OFFSET + 1];
-                if (Math.hypot(dx, dy) < 0.45) {
+                if (Math.hypot(dx, dy) < 0.55) {
                   for (let c = 0; c < HAND_DIM; c++) {
                     row[domBase + c] = row[altBase + c];
                     row[altBase + c] = 0;
@@ -740,6 +832,27 @@ export class OnnxInferenceEngine {
     const kept = trimmed.filter(handPresent);
     if (kept.length < 6) return null;
     return kept;
+  }
+
+  private despikeSequenceMatrix(mat: number[][]): number[][] {
+    const n = mat.length;
+    if (n < 3) return mat.map((r) => [...r]);
+    const out = mat.map((r) => [...r]);
+    const median3 = (a: number, b: number, c: number) =>
+      a > b ? (b > c ? b : a > c ? c : a) : a > c ? a : b > c ? c : b;
+    for (let slot = 0; slot < 2; slot++) {
+      const base = slot * HAND_DIM;
+      const pIdx = base + PRESENCE_OFFSET;
+      for (let t = 1; t < n - 1; t++) {
+        if (mat[t - 1][pIdx] > 0.5 && mat[t][pIdx] > 0.5 && mat[t + 1][pIdx] > 0.5) {
+          for (let c = base; c < pIdx; c++) {
+            out[t][c] = median3(mat[t - 1][c], mat[t][c], mat[t + 1][c]);
+          }
+          this.renormalizeOrientation(out[t], slot);
+        }
+      }
+    }
+    return out;
   }
 
   private smoothSequenceMatrix(mat: number[][]): number[][] {
@@ -848,19 +961,61 @@ export class OnnxInferenceEngine {
       const low = Math.floor(t);
       const high = Math.min(srcLen - 1, low + 1);
       const frac = t - low;
-      const row = new Array<number>(FRAME_DIM);
+      const row = new Array<number>(FRAME_DIM).fill(0);
+      const a = mat[low];
+      const b = mat[high];
 
-      for (let j = 0; j < FRAME_DIM; j++) {
-        row[j] = mat[low][j] + (mat[high][j] - mat[low][j]) * frac;
-      }
+      // Boundary-safe per-slot resampling (avoids zero-blending shrinkage & preserves unit orientations)
       for (let slot = 0; slot < 2; slot++) {
-        const pCol = slot * HAND_DIM + PRESENCE_OFFSET;
-        if (row[pCol] < 0.5) {
-          for (let k = slot * HAND_DIM; k < (slot + 1) * HAND_DIM; k++) row[k] = 0;
-        } else {
+        const sBase = slot * HAND_DIM;
+        const pCol = sBase + PRESENCE_OFFSET;
+        const aPres = a[pCol] > 0.5;
+        const bPres = b[pCol] > 0.5;
+        if (aPres && bPres) {
+          for (let c = sBase; c < pCol; c++) {
+            row[c] = a[c] + (b[c] - a[c]) * frac;
+          }
           row[pCol] = 1.0;
+          this.renormalizeOrientation(row, slot);
+        } else if (aPres || bPres) {
+          const interpPres = a[pCol] + (b[pCol] - a[pCol]) * frac;
+          if (interpPres >= 0.5) {
+            const src = aPres ? a : b;
+            for (let c = sBase; c < sBase + HAND_DIM; c++) {
+              row[c] = src[c];
+            }
+            row[pCol] = 1.0;
+          }
         }
       }
+
+      const aFace = a[FACE_FLAG_INDEX] > 0.5;
+      const bFace = b[FACE_FLAG_INDEX] > 0.5;
+      if (aFace && bFace) {
+        row[FACE_FLAG_INDEX] = 1.0;
+      } else if (aFace || bFace) {
+        const interpFace = a[FACE_FLAG_INDEX] + (b[FACE_FLAG_INDEX] - a[FACE_FLAG_INDEX]) * frac;
+        row[FACE_FLAG_INDEX] = interpFace >= 0.5 ? 1.0 : 0.0;
+        if (row[FACE_FLAG_INDEX] > 0.5) {
+          const src = aFace ? a : b;
+          for (let slot = 0; slot < 2; slot++) {
+            const sBase = slot * HAND_DIM;
+            if (row[sBase + PRESENCE_OFFSET] > 0.5 && src[sBase + PRESENCE_OFFSET] > 0.5) {
+              row[sBase + FACEREL_OFFSET] = src[sBase + FACEREL_OFFSET];
+              row[sBase + FACEREL_OFFSET + 1] = src[sBase + FACEREL_OFFSET + 1];
+              row[sBase + FACEREL_OFFSET + 2] = src[sBase + FACEREL_OFFSET + 2];
+            }
+          }
+        } else {
+          for (let slot = 0; slot < 2; slot++) {
+            const sBase = slot * HAND_DIM;
+            row[sBase + FACEREL_OFFSET] = 0;
+            row[sBase + FACEREL_OFFSET + 1] = 0;
+            row[sBase + FACEREL_OFFSET + 2] = 0;
+          }
+        }
+      }
+
       out.push(row);
     }
     return out;

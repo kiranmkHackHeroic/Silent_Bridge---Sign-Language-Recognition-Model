@@ -9,16 +9,20 @@ import { WebSocket, WebSocketServer } from "ws";
 
 import {
   ActivitySegmenter,
+  aggregateTTAProbabilities,
+  averageFeatureVectors,
   blockBalancedCosineSimilarity,
   computeMotion,
   DEFAULT_FEATURE_CONFIG,
   defaultRecognitionSettings,
+  evaluateAcceptanceGate,
   FaceTracker,
   frameDiag,
   FrameFeatures,
   framesToVector,
   framesToVectorsTTA,
   NONE_LABEL,
+  normalizeProbabilities,
   parseFrame,
   ProbabilitySmoother,
   RecognitionSettings,
@@ -200,15 +204,18 @@ class ModelManager {
     } else {
       this.continuousMetrics = {};
     }
+
+    // Always restore user-recorded prototype centroids on startup/reload
+    this.refreshPrototypes();
   }
 
   /**
-   * Builds or updates 3668-D prototype centroids from user-recorded samples in DATASET_DIR.
-   * Recording even 1-5 samples on the Dataset & Model page immediately adapts live
-   * recognition to the user's signing style via prototype-neural fusion.
+   * Builds or updates 3668-D outlier-resistant prototype centroids from user-recorded
+   * samples in DATASET_DIR. Recording even 1-5 samples on the Dataset & Model page
+   * immediately adapts live recognition to the user's signing style via prototype-neural fusion.
    */
-  refreshPrototypes(targetLabel?: string): void {
-    if (!targetLabel || !fs.existsSync(DATASET_DIR)) return;
+  refreshPrototypes(targetLabel?: string): { classes: number; samples: number } {
+    if (!fs.existsSync(DATASET_DIR)) return { classes: this.prototypes.size, samples: 0 };
     const labels = targetLabel
       ? [targetLabel]
       : fs
@@ -216,6 +223,7 @@ class ModelManager {
           .filter((d) => d.isDirectory())
           .map((d) => d.name);
 
+    let totalSamples = 0;
     for (const label of labels) {
       const folder = path.join(DATASET_DIR, label);
       if (!fs.existsSync(folder)) {
@@ -225,7 +233,7 @@ class ModelManager {
       const files = fs
         .readdirSync(folder)
         .filter((f) => f.endsWith(".json"))
-        .slice(-15); // up to 15 most recent recordings per class
+        .slice(-20); // up to 20 most recent recordings per class
       const vecs: Float32Array[] = [];
       for (const f of files) {
         const doc = readJsonSafe(path.join(folder, f), null);
@@ -249,15 +257,14 @@ class ModelManager {
       if (vecs.length === 0) {
         this.prototypes.delete(label);
       } else {
-        const dim = vecs[0].length;
-        const mean = new Float32Array(dim);
-        for (const v of vecs) {
-          for (let i = 0; i < dim; i++) mean[i] += v[i];
+        const centroid = averageFeatureVectors(vecs);
+        if (centroid) {
+          this.prototypes.set(label, centroid);
+          totalSamples += vecs.length;
         }
-        for (let i = 0; i < dim; i++) mean[i] /= vecs.length;
-        this.prototypes.set(label, mean);
       }
     }
+    return { classes: this.prototypes.size, samples: totalSamples };
   }
 
   async initOnnx(): Promise<void> {
@@ -280,7 +287,9 @@ class ModelManager {
     const tensor = new ort.Tensor("float32", vector, [1, vector.length]);
     const results = await this.onnxSession.run({ [inputName]: tensor });
     const outputName = this.onnxSession.outputNames[0] ?? "probabilities";
-    return results[outputName].data as Float32Array;
+    const raw = results[outputName].data as Float32Array;
+    // CRITICAL: Normalize fused 3-seed ONNX output (sums to 3.0) back to a valid simplex (sum = 1.0)
+    return normalizeProbabilities(raw);
   }
 
   private blendWithPrototypes(probs: Record<string, number>, queryVec: Float32Array): void {
@@ -364,30 +373,44 @@ class ModelManager {
 
   /**
    * Multi-View Test-Time Augmentation (TTA) ensemble prediction on a sequence of frames.
-   * Combines predictions across full, temporally denoised/trimmed, and core-stroke crops.
+   * Combines normalized probabilities across up to 5 temporal views using hybrid
+   * arithmetic + geometric probability pooling and reports consensus/entropy metrics.
    */
-  async predictFramesTTA(frames: FrameFeatures[]): Promise<{
+  async predictFramesTTA(
+    frames: FrameFeatures[],
+    useTTA = true
+  ): Promise<{
     label: string;
     confidence: number;
     probabilities: Record<string, number>;
     latency_ms: number;
     views_used: number;
+    view_agreement: number;
+    margin: number;
+    normalized_entropy: number;
   } | null> {
     if (!this.onnxSession || this.classes.length === 0) return null;
-    const views = framesToVectorsTTA(frames);
+    const views = useTTA
+      ? framesToVectorsTTA(frames)
+      : (() => {
+          const v = framesToVector(frames);
+          return v ? [{ view: "full" as const, weight: 1.0, vector: v }] : null;
+        })();
     if (!views || views.length === 0) return null;
 
     const t0 = performance.now();
     try {
-      const probabilities: Record<string, number> = {};
-      for (const c of this.classes) probabilities[c] = 0;
-
+      const viewOutputs: Array<{ probs: Float32Array; weight: number }> = [];
       for (const v of views) {
-        const raw = await this.runRawVector(v.vector);
-        if (!raw) return null;
-        for (let i = 0; i < this.classes.length; i++) {
-          probabilities[this.classes[i]] += v.weight * Number(raw[i] ?? 0);
-        }
+        const probs = await this.runRawVector(v.vector);
+        if (!probs) return null;
+        viewOutputs.push({ probs, weight: v.weight });
+      }
+
+      const agg = aggregateTTAProbabilities(viewOutputs);
+      const probabilities: Record<string, number> = {};
+      for (let i = 0; i < this.classes.length; i++) {
+        probabilities[this.classes[i]] = Number(agg.probabilities[i] ?? 0);
       }
 
       // Fuse with any user-recorded prototype centroids
@@ -395,19 +418,26 @@ class ModelManager {
 
       let bestLabel = this.classes[0] ?? "_none";
       let bestProb = -1;
+      let secondProb = 0;
       for (const c of this.classes) {
         const p = probabilities[c] ?? 0;
         if (p > bestProb) {
+          secondProb = Math.max(0, bestProb);
           bestProb = p;
           bestLabel = c;
+        } else if (p > secondProb) {
+          secondProb = p;
         }
       }
       return {
         label: bestLabel,
-        confidence: bestProb,
+        confidence: Math.max(0, bestProb),
         probabilities,
         latency_ms: Math.round((performance.now() - t0) * 100) / 100,
         views_used: views.length,
+        view_agreement: Math.round(agg.viewAgreement * 1000) / 1000,
+        margin: Math.max(0, bestProb - secondProb),
+        normalized_entropy: Math.round(agg.normalizedEntropy * 1000) / 1000,
       };
     } catch {
       return null;
@@ -734,7 +764,7 @@ class LiveSession {
   public lastLatencyMs: number | null = null;
   public tentative: Record<string, any> | null = null;
   private prev: FrameFeatures | null = null;
-  private faceTracker = new FaceTracker(0.35, 45);
+  private faceTracker = new FaceTracker();
   private diag: Record<string, any> | null = null;
   private sinceEval = 0;
   private splitLabel: string | null = null;
@@ -875,7 +905,7 @@ class LiveSession {
     this.sinceEval = 0;
     if (this.buffer.handFraction() < 0.6) return [];
 
-    const pred = await modelManager.predictFramesTTA(this.buffer.frames());
+    const pred = await modelManager.predictFramesTTA(this.buffer.frames(), this.settings.use_tta);
     if (!pred) return [];
     this.lastLatencyMs = pred.latency_ms;
     const smoothed = this.smoother.update(pred.probabilities);
@@ -932,7 +962,7 @@ class LiveSession {
   }
 
   private async trySplit(): Promise<Array<Record<string, any>>> {
-    const pred = await modelManager.predictFramesTTA(this.segmenter.frames);
+    const pred = await modelManager.predictFramesTTA(this.segmenter.frames, this.settings.use_tta);
     if (
       !pred ||
       pred.label === NONE_LABEL ||
@@ -1048,7 +1078,7 @@ class LiveSession {
       ];
     }
 
-    const pred = await modelManager.predictFramesTTA(seg.frames);
+    const pred = await modelManager.predictFramesTTA(seg.frames, this.settings.use_tta);
     if (!pred) {
       return [
         {
@@ -1079,11 +1109,16 @@ class LiveSession {
       ];
     }
 
-    const margin = top.length > 1 ? top[0].confidence - top[1].confidence : top[0].confidence;
-    const isConfident =
-      pred.confidence >= this.settings.confidence_threshold ||
-      (pred.confidence >= 0.3 && margin >= 0.16);
-    if (!isConfident) {
+    const gate = evaluateAcceptanceGate(
+      {
+        confidence: pred.confidence,
+        margin: pred.margin,
+        viewAgreement: pred.view_agreement,
+        normalizedEntropy: pred.normalized_entropy,
+      },
+      this.settings.confidence_threshold
+    );
+    if (!gate.accepted) {
       return [
         {
           type: "uncertain",
@@ -1091,7 +1126,7 @@ class LiveSession {
           top,
           diagnosis: {
             stage: "classification",
-            detail: `best guess '${pred.label}' ${pred.confidence.toFixed(2)} (margin ${margin.toFixed(2)}) is below the threshold ${this.settings.confidence_threshold.toFixed(2)}`,
+            detail: `best guess '${pred.label}' ${pred.confidence.toFixed(2)} (margin ${pred.margin.toFixed(2)}, agreement ${Math.round(pred.view_agreement * 100)}%, entropy ${pred.normalized_entropy.toFixed(2)}): ${gate.reason}`,
           },
         },
       ];
@@ -1259,10 +1294,11 @@ async function startServer() {
   });
 
   app.post("/api/model/finetune", (_req, res) => {
+    const protoSummary = modelManager.refreshPrototypes();
     res.status(202).json({
       id: "ft_" + Date.now().toString(36),
       type: "finetune",
-      title: "Personal fine-tuning",
+      title: "Personal prototype adaptation",
       params: {},
       reason: "started from the Dataset & Model page",
       state: "done",
@@ -1272,10 +1308,23 @@ async function startServer() {
       result: {
         version: modelManager.activeVersion,
         promoted: true,
+        adapted_classes: protoSummary.classes,
+        adapted_samples: protoSummary.samples,
       },
       created_at: new Date().toISOString(),
       started_at: new Date().toISOString(),
       finished_at: new Date().toISOString(),
+    });
+  });
+
+  app.get("/api/model/prototypes", (_req, res) => {
+    const items: Record<string, number[]> = {};
+    for (const [label, vec] of modelManager.prototypes.entries()) {
+      items[label] = Array.from(vec);
+    }
+    res.json({
+      count: modelManager.prototypes.size,
+      prototypes: items,
     });
   });
 

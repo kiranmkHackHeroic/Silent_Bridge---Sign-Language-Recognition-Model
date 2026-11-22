@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 /**
- * Generates the 14-Slide Widescreen (16:9) B.E. Major Project Presentation Deck
- * referenced from the 78-Page B.M.S. College of Engineering (CSBS) Project Report:
- *   Slide 1:  Title Slide (College Name, Logo, Project Title, Team & Guide — Clean Academic Format)
- *   Slide 2:  Table of Contents (Presentation Agenda)
- *   Slide 3:  Abstract
- *   Slide 4:  Introduction & Why We Selected This Topic (Domain Context Only — No Solution Claims)
- *   Slide 5:  Problem Statement & Objectives (4 Clear Objectives — No "Target Met" Claims)
- *   Slide 6:  Literature Survey (Existing Research Papers & Limitations Only — No Our Solution)
- *   Slide 7:  System Architecture & Bidirectional Pipeline (Report Fig. 5.1 + Arrow Flowcharts)
- *   Slide 8:  System Requirements: Hardware & Software Specifications
- *   Slide 9:  Feature Extraction Schema (147-D Hand, Face & Motion Features + 441-D Pooling)
- *   Slide 10: Module-Wise Implementation (Explaining All Modules: What, How & Why)
- *   Slide 11: Evaluation Parameters (Accuracy, Precision, Recall, F1) & Comparison with Existing Results
- *   Slide 12: Experimental Results & Named Performance Graphs
- *   Slide 13: Conclusion & Future Work (Dedicated Slide — Objective "What Was Done" Tone)
- *   Slide 14: Research Paper Publication & Its Importance (Final Slide)
+ * Generates the Bold & Impressive 12-Slide Widescreen (16:9) Executive Presentation Deck
+ * for SILENT BRIDGE: Real-Time Bidirectional Indian Sign Language and Kannada Translation
+ * with 3D Avatar (B.M.S. College of Engineering — Department of CSBS).
+ *
+ * Covers ALL project & research contents in a crisp, varied 12-slide layout:
+ *  1. Bold Cover Slide (Deep Navy Executive Hero + Headline KPIs + Sorted Team USNs)
+ *  2. Motivation, Problem Statement & Engineering Objectives
+ *  3. Literature Survey & Research Gap Matrix
+ *  4. End-to-End System Architecture (Full-Width Architectural Diagram + 3-Tier Breakdown)
+ *  5. Proposed Methodology: 147-D hands-face-v2 Schema & Dual Bidirectional Pipelines
+ *  6. Deep Learning Architecture: GRU, BiGRU & CTC (Isolated vs. Continuous Distinction)
+ *  7. Software/Hardware Stack, Audited Datasets & 16 Implementation Modules
+ *  8. Live Application Showcase (Dual UI Gallery: Live ISL->Kannada & 3D Avatar)
+ *  9. Quantitative Results (1/2): Isolated Sign Accuracy (64-Sign -> Promoted 144-Sign)
+ * 10. Quantitative Results (2/2): Per-Class F1, Confusions, Ablation, Latency & Avatar Audit
+ * 11. Comparison with Existing Research, 5-Axis Scalability & Deaf ISL User Study (#study)
+ * 12. Academic Deliverables (6p NCDTE Paper & 79p Report), Conclusion & Thank You
  */
 
 import fs from "node:fs";
@@ -29,37 +30,28 @@ const ROOT = path.resolve(__dirname, "..");
 const REPORT_DIR = path.join(ROOT, "frontend", "public", "report");
 const DOCS_PAPER_DIR = path.join(ROOT, "docs", "paper");
 
-const FONT = "Times New Roman";
-const TOTAL_SLIDES = 14;
+const FONT_DISPLAY = "Georgia";
+const FONT_BODY = "Calibri";
+const FONT_MONO = "Consolas";
+const TOTAL_SLIDES = 12;
 
-const COLORS = {
-  navy: "0F172A",
-  darkBlue: "1E3A8A",
-  blue: "2563EB",
-  lightBlue: "EFF6FF",
-  borderBlue: "93C5FD",
-  teal: "065F46",
-  emerald: "047857",
-  lightGreen: "ECFDF5",
-  borderGreen: "6EE7B7",
-  amber: "B45309",
-  lightAmber: "FFFBEB",
-  borderAmber: "FCD34D",
-  purple: "581C87",
-  violet: "6D28D9",
-  lightPurple: "F5F3FF",
-  borderPurple: "C4B5FD",
-  crimson: "B91C1C",
-  lightRed: "FEF2F2",
-  borderRed: "FCA5A5",
-  bronze: "6B3400",
-  orangeBrown: "C25E00",
-  slate: "334155",
+const PALETTE = {
+  navy: "0B192C",
+  navyMid: "162C46",
+  lapis: "1E3A8A",
+  teal: "0F766E",
+  tealLight: "F0FDFA",
+  gold: "D97706",
+  goldSoft: "FEF3C7",
+  ink: "0F172A",
+  body: "1E293B",
   muted: "475569",
-  lightGray: "F8FAFC",
-  borderGray: "CBD5E1",
+  subtle: "64748B",
+  surface: "F8FAFC",
+  surfaceAlt: "F1F5F9",
+  border: "CBD5E1",
+  borderLight: "E2E8F0",
   white: "FFFFFF",
-  gold: "F59E0B",
 };
 
 function readImageDataUri(filePath) {
@@ -73,202 +65,195 @@ function readImageDataUri(filePath) {
 const IMAGES = {
   logo: readImageDataUri(path.join(REPORT_DIR, "bmsce_logo.jpg")),
   figArchitecture: readImageDataUri(path.join(REPORT_DIR, "fig_architecture.png")),
-  figDatadist: readImageDataUri(path.join(REPORT_DIR, "fig_datadist.png")),
   figResults: readImageDataUri(path.join(REPORT_DIR, "fig_results.png")),
-  figCalibration: readImageDataUri(path.join(REPORT_DIR, "fig_calibration.png")),
   figPerclass: readImageDataUri(path.join(REPORT_DIR, "fig_perclass.png")),
-  figSegmentation: readImageDataUri(path.join(REPORT_DIR, "fig_segmentation.png")),
   figRobustness: readImageDataUri(path.join(REPORT_DIR, "fig_robustness.png")),
-  uiLive: readImageDataUri(path.join(REPORT_DIR, "fig_ui_live.png")),
-  uiCustom: readImageDataUri(path.join(REPORT_DIR, "fig_ui_custom.png")),
-  uiAvatar: readImageDataUri(path.join(REPORT_DIR, "fig_ui_avatar.png")),
-  uiReference: readImageDataUri(path.join(REPORT_DIR, "fig_ui_reference.png")),
-  uiDataset: readImageDataUri(path.join(REPORT_DIR, "fig_ui_dataset.png")),
-  uiTesting: readImageDataUri(path.join(REPORT_DIR, "fig_ui_testing.png")),
+  figUiLive: readImageDataUri(path.join(REPORT_DIR, "fig_ui_live.png")),
+  figUiAvatar: readImageDataUri(path.join(REPORT_DIR, "fig_ui_avatar.png")),
 };
 
-function addMasterChrome(slide, pptx, slideNumber, title, subtitle, chapterRef) {
-  slide.background = { color: COLORS.white };
+function addBoldHeader(slide, pptx, slideNum, kicker, title, subtitle) {
+  slide.background = { color: PALETTE.white };
 
-  // Top dark navy header bar
+  // Crisp 0.08 in top institutional accent stripe
   slide.addShape(pptx.ShapeType.rect, {
     x: 0,
     y: 0,
     w: 13.333,
-    h: 1.0,
-    fill: { color: COLORS.navy },
-    line: { color: COLORS.navy, width: 0 },
+    h: 0.08,
+    fill: { color: PALETTE.navy },
+    line: { color: PALETTE.navy, width: 0 },
   });
-
-  // Accent bottom stripe under header
+  // Gold accent segment on top stripe proportional to progress
   slide.addShape(pptx.ShapeType.rect, {
     x: 0,
-    y: 1.0,
-    w: 13.333,
-    h: 0.05,
-    fill: { color: COLORS.blue },
-    line: { color: COLORS.blue, width: 0 },
+    y: 0,
+    w: Number(((13.333 * slideNum) / TOTAL_SLIDES).toFixed(3)),
+    h: 0.08,
+    fill: { color: PALETTE.teal },
+    line: { color: PALETTE.teal, width: 0 },
   });
 
-  // Slide number badge
-  slide.addShape(pptx.ShapeType.roundRect, {
-    x: 0.32,
-    y: 0.18,
-    w: 1.18,
-    h: 0.62,
-    fill: { color: COLORS.blue },
-    line: { color: "93C5FD", width: 1 },
-    rectRadius: 0.08,
-  });
-
-  slide.addText(`Slide ${slideNumber}/${TOTAL_SLIDES}`, {
-    x: 0.32,
-    y: 0.18,
-    w: 1.18,
-    h: 0.62,
-    fontFace: FONT,
-    fontSize: 12.5,
+  // Kicker text (clean unboxed metadata)
+  slide.addText(`${String(slideNum).padStart(2, "0")}  /  ${kicker}`, {
+    x: 0.55,
+    y: 0.2,
+    w: 9.5,
+    h: 0.22,
+    fontFace: FONT_BODY,
+    fontSize: 9.5,
     bold: true,
-    color: COLORS.white,
-    align: "center",
+    color: PALETTE.teal,
     valign: "middle",
   });
 
-  // Slide Title & Subtitle
+  // Slide title
   slide.addText(title, {
-    x: 1.62,
-    y: 0.1,
-    w: 8.85,
-    h: 0.48,
-    fontFace: FONT,
-    fontSize: 20,
+    x: 0.55,
+    y: 0.42,
+    w: 11.5,
+    h: 0.42,
+    fontFace: FONT_DISPLAY,
+    fontSize: 21,
     bold: true,
-    color: COLORS.white,
+    color: PALETTE.navy,
     valign: "middle",
   });
 
-  slide.addText(subtitle, {
-    x: 1.62,
-    y: 0.56,
-    w: 8.85,
-    h: 0.34,
-    fontFace: FONT,
-    fontSize: 11.5,
-    italic: true,
-    color: "93C5FD",
-    valign: "middle",
-  });
-
-  // Chapter Reference Badge on right of header
-  slide.addShape(pptx.ShapeType.roundRect, {
-    x: 10.55,
-    y: 0.2,
-    w: 2.45,
-    h: 0.56,
-    fill: { color: "1E293B" },
-    line: { color: "60A5FA", width: 1 },
-    rectRadius: 0.08,
-  });
-
-  slide.addText(chapterRef, {
-    x: 10.55,
-    y: 0.2,
-    w: 2.45,
-    h: 0.56,
-    fontFace: FONT,
-    fontSize: 10.5,
-    bold: true,
-    color: "DBEAFE",
-    align: "center",
-    valign: "middle",
-  });
-
-  // Bottom footer bar
-  slide.addShape(pptx.ShapeType.rect, {
-    x: 0,
-    y: 7.14,
-    w: 13.333,
-    h: 0.36,
-    fill: { color: "F1F5F9" },
-    line: { color: COLORS.borderGray, width: 0.75 },
-  });
-
-  slide.addText(
-    "Department of CSBS · B.M.S. College of Engineering, Bangalore · Silent Bridge B.E. Major Project (2026–2027)",
-    {
-      x: 0.38,
-      y: 7.15,
-      w: 9.2,
-      h: 0.32,
-      fontFace: FONT,
-      fontSize: 10,
-      bold: true,
-      color: COLORS.slate,
+  // Subtitle
+  if (subtitle) {
+    slide.addText(subtitle, {
+      x: 0.55,
+      y: 0.84,
+      w: 12.2,
+      h: 0.24,
+      fontFace: FONT_BODY,
+      fontSize: 10.5,
+      color: PALETTE.muted,
       valign: "middle",
-    }
-  );
+    });
+  }
 
-  slide.addText(`Slide ${slideNumber} of ${TOTAL_SLIDES}`, {
-    x: 10.8,
-    y: 7.15,
-    w: 2.15,
-    h: 0.32,
-    fontFace: FONT,
-    fontSize: 10,
+  // Subtle hairline rule
+  slide.addShape(pptx.ShapeType.line, {
+    x: 0.55,
+    y: 1.12,
+    w: 12.23,
+    h: 0,
+    line: { color: PALETTE.border, width: 0.8 },
+  });
+
+  // Quiet bottom institutional footer + slide number
+  slide.addShape(pptx.ShapeType.line, {
+    x: 0.55,
+    y: 7.08,
+    w: 12.23,
+    h: 0,
+    line: { color: PALETTE.borderLight, width: 0.6 },
+  });
+  slide.addText("SILENT BRIDGE · Real-Time Bidirectional ISL & Kannada Translation · Dept. of CSBS, BMSCE", {
+    x: 0.55,
+    y: 7.12,
+    w: 10.2,
+    h: 0.24,
+    fontFace: FONT_BODY,
+    fontSize: 8.5,
+    color: PALETTE.subtle,
+    valign: "middle",
+  });
+  slide.addText(`${slideNum} / ${TOTAL_SLIDES}`, {
+    x: 11.6,
+    y: 7.12,
+    w: 1.18,
+    h: 0.24,
+    fontFace: FONT_BODY,
+    fontSize: 9.5,
     bold: true,
-    color: COLORS.darkBlue,
+    color: PALETTE.navy,
     align: "right",
     valign: "middle",
   });
 }
 
-function addCard(slide, pptx, opts) {
-  const {
+function addSectionLabel(slide, pptx, x, y, w, text, color = PALETTE.navy) {
+  slide.addText(text, {
     x,
     y,
     w,
-    h,
-    headerText,
-    headerFill = COLORS.darkBlue,
-    bodyFill = COLORS.lightGray,
-    borderColor = COLORS.borderGray,
-    headerHeight = 0.38,
-  } = opts;
-
-  slide.addShape(pptx.ShapeType.roundRect, {
-    x,
-    y,
-    w,
-    h,
-    fill: { color: bodyFill },
-    line: { color: borderColor, width: 1.4 },
-    rectRadius: 0.05,
+    h: 0.26,
+    fontFace: FONT_DISPLAY,
+    fontSize: 12.5,
+    bold: true,
+    color,
+    valign: "middle",
   });
+  slide.addShape(pptx.ShapeType.line, {
+    x,
+    y: y + 0.27,
+    w,
+    h: 0,
+    line: { color: PALETTE.border, width: 0.75 },
+  });
+}
 
-  if (headerText) {
-    slide.addShape(pptx.ShapeType.roundRect, {
-      x,
-      y,
-      w,
-      h: headerHeight,
-      fill: { color: headerFill },
-      line: { color: headerFill, width: 0 },
-      rectRadius: 0.05,
-    });
-
-    slide.addText(headerText, {
-      x: x + 0.08,
-      y,
-      w: w - 0.16,
-      h: headerHeight,
-      fontFace: FONT,
-      fontSize: 12.5,
-      bold: true,
-      color: COLORS.white,
-      align: "center",
+function addKpiCard(slide, pptx, x, y, w, h, value, label, sub, dark = false) {
+  slide.addShape(pptx.ShapeType.rect, {
+    x,
+    y,
+    w,
+    h,
+    fill: { color: dark ? PALETTE.navy : PALETTE.surface },
+    line: { color: dark ? PALETTE.navyMid : PALETTE.border, width: 0.8 },
+  });
+  slide.addText(value, {
+    x: x + 0.14,
+    y: y + 0.08,
+    w: w - 0.28,
+    h: 0.36,
+    fontFace: FONT_DISPLAY,
+    fontSize: 19,
+    bold: true,
+    color: dark ? PALETTE.white : PALETTE.navy,
+    valign: "middle",
+  });
+  slide.addText(label, {
+    x: x + 0.14,
+    y: y + 0.44,
+    w: w - 0.28,
+    h: 0.22,
+    fontFace: FONT_BODY,
+    fontSize: 9.5,
+    bold: true,
+    color: dark ? "5EEAD4" : PALETTE.teal,
+    valign: "middle",
+  });
+  if (sub) {
+    slide.addText(sub, {
+      x: x + 0.14,
+      y: y + 0.65,
+      w: w - 0.28,
+      h: 0.22,
+      fontFace: FONT_BODY,
+      fontSize: 8.2,
+      color: dark ? "CBD5E1" : PALETTE.muted,
       valign: "middle",
     });
   }
+}
+
+function hCell(text) {
+  return {
+    text,
+    options: {
+      bold: true,
+      fill: { color: PALETTE.navy },
+      color: PALETTE.white,
+    },
+  };
+}
+
+function bCell(text, color = PALETTE.ink) {
+  return { text, options: { bold: true, color } };
 }
 
 async function generatePptxFile() {
@@ -276,2961 +261,2926 @@ async function generatePptxFile() {
   pptx.layout = "LAYOUT_WIDE"; // 13.333 x 7.5 in
   pptx.author = "H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401)";
   pptx.company = "B.M.S. College of Engineering — Department of CSBS";
-  pptx.subject = "B.E. Major Project Presentation (Referenced from 78-Page CSBS Project Report)";
+  pptx.subject = "Silent Bridge — 12-Slide Executive Presentation";
   pptx.title =
     "SILENT BRIDGE: REAL-TIME BIDIRECTIONAL INDIAN SIGN LANGUAGE AND KANNADA TRANSLATION WITH 3D AVATAR";
 
   // =========================================================================
-  // SLIDE 1: CLEAN ACADEMIC TITLE SLIDE (COLLEGE NAME, TITLE, TEAM & GUIDE)
+  // SLIDE 1: BOLD EXECUTIVE COVER SLIDE (DEEP NAVY HERO)
   // =========================================================================
   {
-    const s1 = pptx.addSlide();
-    s1.background = { color: COLORS.white };
+    const s = pptx.addSlide();
+    s.background = { color: PALETTE.navy };
 
-    // Outer & inner formal border matching the BMSCE report cover page
-    s1.addShape(pptx.ShapeType.rect, {
-      x: 0.35,
-      y: 0.28,
-      w: 12.63,
-      h: 6.94,
-      fill: { color: COLORS.white },
-      line: { color: "000000", width: 2.2 },
+    // Left vertical geometric accent band (subtle structural depth)
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0,
+      y: 0,
+      w: 0.22,
+      h: 7.5,
+      fill: { color: PALETTE.teal },
+      line: { color: PALETTE.teal, width: 0 },
     });
-    s1.addShape(pptx.ShapeType.rect, {
-      x: 0.43,
-      y: 0.36,
-      w: 12.47,
-      h: 6.78,
-      fill: { color: COLORS.white },
-      line: { color: "000000", width: 0.8 },
+    // Top subtle gold hairline
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.72,
+      y: 0.56,
+      w: 1.4,
+      h: 0.05,
+      fill: { color: PALETTE.gold },
+      line: { color: PALETTE.gold, width: 0 },
     });
 
-    // College Header in BMSCE Bronze (#6B3400)
-    s1.addText("B.M.S. COLLEGE OF ENGINEERING", {
-      x: 0.8,
-      y: 0.5,
-      w: 11.73,
-      h: 0.48,
-      fontFace: FONT,
-      fontSize: 24,
+    // Institution header
+    s.addText("B.M.S. COLLEGE OF ENGINEERING, BENGALURU", {
+      x: 0.72,
+      y: 0.72,
+      w: 9.8,
+      h: 0.34,
+      fontFace: FONT_BODY,
+      fontSize: 13,
       bold: true,
-      color: COLORS.bronze,
-      align: "center",
+      color: "E2E8F0",
+      charSpacing: 1.5,
+    });
+    s.addText("Department of Computer Science and Business Systems  ·  B.E. Final Year Project & NCDTE Conference Research", {
+      x: 0.72,
+      y: 1.05,
+      w: 10.0,
+      h: 0.26,
+      fontFace: FONT_BODY,
+      fontSize: 10.5,
+      color: "94A3B8",
     });
 
-    s1.addText(
-      "(Autonomous Institute Affiliated to VTU)\nBull Temple Road, Basavanagudi, Bangalore – 560019",
-      {
-        x: 0.8,
-        y: 0.98,
-        w: 11.73,
-        h: 0.56,
-        fontFace: FONT,
-        fontSize: 13.5,
-        bold: true,
-        color: COLORS.bronze,
-        align: "center",
-        lineSpacingMultiple: 1.15,
-      }
-    );
-
+    // BMSCE Emblem framed cleanly on top-right
     if (IMAGES.logo) {
-      s1.addImage({
-        data: IMAGES.logo,
-        x: 6.18,
-        y: 1.62,
-        w: 0.96,
-        h: 0.96,
+      s.addShape(pptx.ShapeType.rect, {
+        x: 11.45,
+        y: 0.52,
+        w: 1.24,
+        h: 1.24,
+        fill: { color: PALETTE.white },
+        line: { color: "334155", width: 1 },
       });
+      s.addImage({ data: IMAGES.logo, x: 11.55, y: 0.62, w: 1.04, h: 1.04 });
     }
 
-    s1.addText("A Major Project Presentation on", {
-      x: 0.8,
-      y: 2.66,
-      w: 11.73,
-      h: 0.3,
-      fontFace: FONT,
-      fontSize: 13,
-      italic: true,
-      color: "000000",
-      align: "center",
+    // Dominant Hero Title
+    s.addText("SILENT BRIDGE", {
+      x: 0.72,
+      y: 1.68,
+      w: 11.8,
+      h: 0.78,
+      fontFace: FONT_DISPLAY,
+      fontSize: 42,
+      bold: true,
+      color: PALETTE.white,
+    });
+    s.addText("Real-Time Bidirectional Indian Sign Language and\nKannada Translation with 3D Avatar", {
+      x: 0.72,
+      y: 2.52,
+      w: 11.5,
+      h: 1.05,
+      fontFace: FONT_DISPLAY,
+      fontSize: 22,
+      color: "CBD5E1",
+      lineSpacingMultiple: 1.2,
     });
 
-    s1.addText(
-      "Silent Bridge: Real-Time Bidirectional Indian Sign Language And Kannada Translation With 3D Avatar",
-      {
-        x: 0.9,
-        y: 3.0,
-        w: 11.53,
-        h: 0.85,
-        fontFace: FONT,
-        fontSize: 20.5,
-        bold: true,
-        color: "000000",
-        align: "center",
-        valign: "middle",
-      }
-    );
-
-    s1.addText(
-      "BACHELOR OF ENGINEERING IN COMPUTER SCIENCE AND BUSINESS SYSTEMS",
-      {
-        x: 0.8,
+    // 4-Metric Proof Strip right below hero title
+    const coverStats = [
+      ["87.2%", "Promoted 144-Sign Accuracy", "81.7% unseen Amrita · F1 0.850"],
+      ["147-D", "Browser-Local Landmarks", "Zero raw video leaves device"],
+      ["161 Clips", "3D Analytic IK Avatar", "367 → 0 arm drops · 60 fps"],
+      ["6p + 79p", "NCDTE Paper & CSBS Report", "6% AI iThenticate · #study live"],
+    ];
+    coverStats.forEach(([val, lbl, sub], i) => {
+      const cx = 0.72 + i * 3.04;
+      s.addShape(pptx.ShapeType.rect, {
+        x: cx,
         y: 3.92,
-        w: 11.73,
-        h: 0.34,
-        fontFace: FONT,
-        fontSize: 13,
+        w: 2.86,
+        h: 1.06,
+        fill: { color: PALETTE.navyMid },
+        line: { color: "26415E", width: 1 },
+      });
+      s.addText(val, {
+        x: cx + 0.16,
+        y: 4.02,
+        w: 2.54,
+        h: 0.4,
+        fontFace: FONT_DISPLAY,
+        fontSize: 21,
         bold: true,
-        color: COLORS.darkBlue,
-        align: "center",
-      }
-    );
-
-    // Bottom Left: Submitted By (USNs in strictly increasing order)
-    s1.addShape(pptx.ShapeType.roundRect, {
-      x: 0.85,
-      y: 4.4,
-      w: 5.65,
-      h: 1.75,
-      fill: { color: COLORS.lightGray },
-      line: { color: COLORS.borderGray, width: 1 },
-      rectRadius: 0.05,
+        color: "5EEAD4",
+      });
+      s.addText(lbl, {
+        x: cx + 0.16,
+        y: 4.44,
+        w: 2.54,
+        h: 0.24,
+        fontFace: FONT_BODY,
+        fontSize: 10,
+        bold: true,
+        color: PALETTE.white,
+      });
+      s.addText(sub, {
+        x: cx + 0.16,
+        y: 4.68,
+        w: 2.54,
+        h: 0.22,
+        fontFace: FONT_BODY,
+        fontSize: 8.5,
+        color: "94A3B8",
+      });
     });
 
-    s1.addText("Submitted by:", {
-      x: 1.05,
-      y: 4.48,
-      w: 5.25,
-      h: 0.3,
-      fontFace: FONT,
-      fontSize: 12.5,
-      italic: true,
+    // Bottom horizontal divider
+    s.addShape(pptx.ShapeType.line, {
+      x: 0.72,
+      y: 5.34,
+      w: 11.96,
+      h: 0,
+      line: { color: "26415E", width: 1 },
+    });
+
+    // Bottom Left: Guidance & Leadership
+    s.addText("UNDER THE GUIDANCE OF", {
+      x: 0.72,
+      y: 5.5,
+      w: 5.6,
+      h: 0.22,
+      fontFace: FONT_BODY,
+      fontSize: 9,
       bold: true,
-      color: COLORS.slate,
-      align: "center",
+      color: "F59E0B",
+      charSpacing: 1.2,
     });
-
-    s1.addText(
-      "H S Thanush (1BM23CB066)\nKiran M K (1BM23CB068)\nManoj G U (1BM24CB401)",
-      {
-        x: 1.05,
-        y: 4.82,
-        w: 5.25,
-        h: 1.22,
-        fontFace: FONT,
-        fontSize: 14.5,
-        bold: true,
-        color: "000000",
-        align: "center",
-        lineSpacingMultiple: 1.28,
-      }
-    );
-
-    // Bottom Right: Under the Guidance of
-    s1.addShape(pptx.ShapeType.roundRect, {
-      x: 6.83,
-      y: 4.4,
-      w: 5.65,
-      h: 1.75,
-      fill: { color: COLORS.lightGray },
-      line: { color: COLORS.borderGray, width: 1 },
-      rectRadius: 0.05,
-    });
-
-    s1.addText("Under the guidance of:", {
-      x: 7.03,
-      y: 4.48,
-      w: 5.25,
-      h: 0.3,
-      fontFace: FONT,
-      fontSize: 12.5,
-      italic: true,
-      bold: true,
-      color: COLORS.slate,
-      align: "center",
-    });
-
-    s1.addText(
-      "Prof. Tejaswini K\nAssistant Professor, Dept. of CSBS\nHoD: Dr. R Ashok Kumar  |  Principal: Dr. Beemsha Arya",
-      {
-        x: 7.03,
-        y: 4.82,
-        w: 5.25,
-        h: 1.22,
-        fontFace: FONT,
-        fontSize: 13.5,
-        bold: true,
-        color: "000000",
-        align: "center",
-        lineSpacingMultiple: 1.28,
-      }
-    );
-
-    // Department Footer matching screenshot
-    s1.addText("Department of Computer Science and Business Systems", {
-      x: 0.8,
-      y: 6.26,
-      w: 11.73,
+    s.addText("Prof. Tejaswini K", {
+      x: 0.72,
+      y: 5.75,
+      w: 5.6,
       h: 0.32,
-      fontFace: FONT,
-      fontSize: 14,
+      fontFace: FONT_DISPLAY,
+      fontSize: 15,
       bold: true,
-      color: COLORS.orangeBrown,
-      align: "center",
+      color: PALETTE.white,
+    });
+    s.addText("Assistant Professor, Department of CSBS\nHoD: Dr. R Ashok Kumar  ·  Principal: Dr. Bheemsha Arya", {
+      x: 0.72,
+      y: 6.08,
+      w: 5.8,
+      h: 0.56,
+      fontFace: FONT_BODY,
+      fontSize: 10,
+      color: "CBD5E1",
+      lineSpacingMultiple: 1.3,
     });
 
-    s1.addText(
-      "B.M.S. College of Engineering, Bull Temple Road, Basavanagudi, Bangalore – 560019  ·  2026–2027",
+    // Bottom Right: Student Team (strictly increasing USN order)
+    s.addText("PRESENTED BY (TEAM CSBS)", {
+      x: 6.9,
+      y: 5.5,
+      w: 5.78,
+      h: 0.22,
+      fontFace: FONT_BODY,
+      fontSize: 9,
+      bold: true,
+      color: "F59E0B",
+      align: "right",
+      charSpacing: 1.2,
+    });
+    s.addText(
+      "H S Thanush  —  1BM23CB066\nKiran M K  —  1BM23CB068\nManoj G U  —  1BM24CB401",
       {
-        x: 0.8,
-        y: 6.58,
-        w: 11.73,
-        h: 0.32,
-        fontFace: FONT,
+        x: 6.9,
+        y: 5.75,
+        w: 5.78,
+        h: 0.92,
+        fontFace: FONT_BODY,
         fontSize: 12.5,
         bold: true,
-        color: "000000",
-        align: "center",
+        color: PALETTE.white,
+        align: "right",
+        lineSpacingMultiple: 1.32,
       }
     );
+
+    s.addText("Academic Year 2026–2027", {
+      x: 0.72,
+      y: 7.05,
+      w: 5.0,
+      h: 0.26,
+      fontFace: FONT_BODY,
+      fontSize: 9.5,
+      color: "94A3B8",
+    });
+    s.addText(`1 / ${TOTAL_SLIDES}`, {
+      x: 11.6,
+      y: 7.05,
+      w: 1.08,
+      h: 0.26,
+      fontFace: FONT_BODY,
+      fontSize: 9.5,
+      bold: true,
+      color: "94A3B8",
+      align: "right",
+    });
   }
 
   // =========================================================================
-  // SLIDE 2: CONTENT TABLE (PRESENTATION AGENDA)
+  // SLIDE 2: MOTIVATION, PROBLEM STATEMENT & OBJECTIVES
   // =========================================================================
   {
-    const s2 = pptx.addSlide();
-    addMasterChrome(
-      s2,
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
       pptx,
       2,
-      "Table of Contents (Presentation Agenda)",
-      "Structured Sequence of Topics Covered in This Presentation",
-      "Report Table of Contents"
+      "CONTEXT & SCOPE",
+      "Motivation, Problem Statement & Core Objectives",
+      "Bridging the Real-Time Indian Sign Language and Regional Kannada Communication Divide"
     );
 
-    addCard(s2, pptx, {
-      x: 0.45,
-      y: 1.2,
-      w: 12.43,
-      h: 5.7,
-      headerText: "Presentation Outline & Report Chapter Mapping",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
+    // Left Column: Problem Statement & Regional Context
+    addSectionLabel(s, pptx, 0.55, 1.26, 6.0, "The Communication & Technical Gap");
+    s.addText(
+      "Over 63 million people in India experience hearing loss, yet public counters (hospitals, banks, railway desks) in Karnataka lack certified ISL interpreters. Existing sign tools target English ASL only, require cloud GPUs, or evaluate only on seen signers.",
+      {
+        x: 0.55,
+        y: 1.62,
+        w: 6.0,
+        h: 0.9,
+        fontFace: FONT_BODY,
+        fontSize: 10.5,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.25,
+      }
+    );
+
+    const gaps = [
+      ["One-Way & English-Only", "Most research outputs raw English glosses, excluding Kannada speakers."],
+      ["Signer Overfitting", "Random frame/clip splits leak signer identity and fail on new users."],
+      ["Missing Facial Cues", "Hands-only models misclassify location- and expression-dependent signs."],
+      ["Cloud Privacy Risk", "Streaming raw webcam video to remote servers compromises user privacy."],
+      ["Unnatural Avatars", "Raw retargeted clips suffer shoulder drops and frozen arm artifacts."],
+    ];
+    s.addTable(
+      [[hCell("Core Bottleneck"), hCell("Real-World Impact")], ...gaps.map(([a, b]) => [bCell(a, PALETTE.navy), b])],
+      {
+        x: 0.55,
+        y: 2.58,
+        w: 6.0,
+        colW: [1.95, 4.05],
+        fontFace: FONT_BODY,
+        fontSize: 9.4,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.44, 0.44, 0.44, 0.44, 0.44],
+        margin: [0.04, 0.08, 0.04, 0.08],
+        valign: "middle",
+      }
+    );
+
+    // Right Column: 4 Numbered Engineering Objectives
+    addSectionLabel(s, pptx, 6.85, 1.26, 5.93, "Four Engineering & Accessibility Objectives", PALETTE.teal);
+    const objs = [
+      ["01", "Signer-Independent ISL Recognition", "Build a lightweight 147-D BiGRU recognizer (64 → 144 signs) with unseen-signer splits, temperature calibration, and zero-retraining custom signs."],
+      ["02", "Bidirectional Kannada SOV & Speech", "Translate ISL gloss streams into natural Kannada Subject-Object-Verb sentences with kn-IN Web Speech synthesis and reverse Kannada gloss planning."],
+      ["03", "Real-Time 3D Analytic IK Avatar", "Retarget 161 cleaned dataset motion clips onto a Three.js humanoid rig at 60 fps, eliminating shoulder/arm drop artifacts (367 → 0 drops)."],
+      ["04", "Privacy-First Edge & Rigorous Validation", "Keep all raw webcam frames browser-local (MediaPipe WASM + ONNX Runtime Web), governed by MD5 audits, McNemar tests, and live Deaf study harness (#study)."],
+    ];
+    objs.forEach(([num, head, desc], i) => {
+      const oy = 1.65 + i * 1.05;
+      s.addShape(pptx.ShapeType.rect, {
+        x: 6.85,
+        y: oy,
+        w: 5.93,
+        h: 0.94,
+        fill: { color: i % 2 === 0 ? PALETTE.surface : PALETTE.white },
+        line: { color: PALETTE.border, width: 0.7 },
+      });
+      s.addShape(pptx.ShapeType.rect, {
+        x: 6.85,
+        y: oy,
+        w: 0.62,
+        h: 0.94,
+        fill: { color: PALETTE.navy },
+        line: { color: PALETTE.navy, width: 0 },
+      });
+      s.addText(num, {
+        x: 6.85,
+        y: oy,
+        w: 0.62,
+        h: 0.94,
+        fontFace: FONT_DISPLAY,
+        fontSize: 16,
+        bold: true,
+        color: "5EEAD4",
+        align: "center",
+        valign: "middle",
+      });
+      s.addText(head, {
+        x: 7.6,
+        y: oy + 0.08,
+        w: 5.05,
+        h: 0.24,
+        fontFace: FONT_BODY,
+        fontSize: 11,
+        bold: true,
+        color: PALETTE.navy,
+      });
+      s.addText(desc, {
+        x: 7.6,
+        y: oy + 0.34,
+        w: 5.05,
+        h: 0.54,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.15,
+      });
     });
 
-    const agendaRows = [
-      [
-        { text: "Slide No.", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Presentation Section", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Key Contents Covered", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Report Reference", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      ["Slide 03", "Abstract", "Project scope, methodology overview, dataset & bidirectional workflow", "Preliminaries (p. iii)"],
-      ["Slide 04", "Introduction & Topic Selection", "Domain background, ISL in Karnataka, and motivation for selecting this topic", "Chapter 1 (pp. 1–4)"],
-      ["Slide 05", "Problem Statement & Objectives", "Core communication challenges and 4 concise project objectives", "Chapter 1 (pp. 5–8)"],
-      ["Slide 06", "Literature Survey", "Review of existing research papers, methodologies, and limitations", "Chapter 2 (pp. 9–17)"],
-      ["Slide 07", "System Architecture & Pipeline", "Report architecture diagram (Fig. 5.1) and arrow-connected pipelines", "Chapter 5 (pp. 32–35)"],
-      ["Slide 08", "Hardware & Software Requirements", "Hardware configuration and full-stack software dependencies", "Chapter 3 (pp. 18–25)"],
-      ["Slide 09", "Feature Extraction Schema", "147-D hand, facial & motion feature representation and 441-D pooling", "Chapter 5 (pp. 35–38)"],
-      ["Slide 10", "Module-Wise Implementation", "Detailed explanation of all 6 modules (What, How & Why) + UI views", "Chapter 6 (pp. 45–54)"],
-      ["Slide 11", "Evaluation Parameters & Comparison", "Precision, Recall, F1, Accuracy formulas & comparison with existing works", "Chapter 7 (pp. 55–59)"],
-      ["Slide 12", "Experimental Results & Named Graphs", "Named evaluation graphs: Accuracy, Calibration, Per-Class F1 & SER", "Chapter 7 (pp. 60–63)"],
-      ["Slide 13", "Conclusion & Future Work", "Summary of work completed and directions for future expansion", "Chapter 8 (pp. 64–66)"],
-      ["Slide 14", "Research Paper Publication", "IEEE paper manuscript details and academic/social importance", "Appendix B (p. 72)"],
+    // Bottom Summary Band
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 5.96,
+      w: 12.23,
+      h: 0.92,
+      fill: { color: PALETTE.navy },
+      line: { color: PALETTE.navy, width: 0 },
+    });
+    const band = [
+      ["Forward", "ISL Video → 147-D → BiGRU / CTC → Kannada SOV + kn-IN Speech"],
+      ["Reverse", "Kannada Text/Voice → Morphological Stemmer → ISL Gloss → 3D Avatar"],
+      ["Deployment", "Standard Laptop CPU · Zero Cloud GPU · Browser-Local Privacy"],
     ];
-
-    s2.addTable(agendaRows, {
-      x: 0.65,
-      y: 1.68,
-      w: 12.03,
-      colW: [1.15, 2.85, 5.88, 2.15],
-      fontFace: FONT,
-      fontSize: 11,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.37,
+    band.forEach(([k, v], i) => {
+      const bx = 0.75 + i * 4.02;
+      s.addText(k.toUpperCase(), {
+        x: bx,
+        y: 6.06,
+        w: 3.85,
+        h: 0.22,
+        fontFace: FONT_BODY,
+        fontSize: 8.5,
+        bold: true,
+        color: "5EEAD4",
+        charSpacing: 1,
+      });
+      s.addText(v, {
+        x: bx,
+        y: 6.3,
+        w: 3.85,
+        h: 0.48,
+        fontFace: FONT_BODY,
+        fontSize: 9.8,
+        color: PALETTE.white,
+        lineSpacingMultiple: 1.2,
+      });
     });
   }
 
   // =========================================================================
-  // SLIDE 3: ABSTRACT
+  // SLIDE 3: LITERATURE SURVEY & RESEARCH GAP
   // =========================================================================
   {
-    const s3 = pptx.addSlide();
-    addMasterChrome(
-      s3,
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
       pptx,
       3,
-      "Abstract",
-      "Overview of Bidirectional Indian Sign Language (ISL) and Kannada Translation System",
-      "Report Abstract (Page iii)"
+      "LITERATURE SURVEY",
+      "Prior Research Landscape & Silent Bridge Differentiation",
+      "Comparative Analysis of ISL Recognition, Continuous SLR, Regional NLP & 3D Sign Avatars"
     );
-
-    addCard(s3, pptx, {
-      x: 0.45,
-      y: 1.22,
-      w: 12.43,
-      h: 3.15,
-      headerText: "Project Abstract",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.lightBlue,
-      borderColor: COLORS.blue,
-    });
-
-    s3.addText(
-      "Communication between Deaf and Hard-of-Hearing (DHH) citizens who use Indian Sign Language (ISL) and hearing individuals who speak Kannada remains a major challenge in hospitals, banks, classrooms, and public offices across Karnataka. Most existing automated sign language tools focus exclusively on one-way American Sign Language (ASL) to English translation or rely on wearable sensor gloves and cloud-based raw video processing.\n\nThis project develops Silent Bridge, a browser-executable, bidirectional translation framework connecting Indian Sign Language and Kannada. In the forward path (ISL to Kannada), webcam video is processed locally using MediaPipe Holistic to extract a 147-dimensional scale-invariant anatomical feature vector comprising dual 21-point hand skeletons, facial landmarks, and hand-to-face spatial anchors. A 3-state Hysteresis Motion Segmenter isolates continuous sign boundaries, and a hybrid Multilayer Perceptron (MLP) and Bidirectional Gated Recurrent Unit with Connectionist Temporal Classification (BiGRU-CTC) model classifies gestures via ONNX Runtime Web to synthesize grammatical Kannada text and speech. In the reverse path (Kannada to ISL), a rule-based Kannada morphological stemmer strips agglutinative suffixes, reorders clauses from Subject-Object-Verb (SOV) to ISL topological order, and drives a 60 FPS Three.js 3D humanoid avatar using a closed-form two-bone Analytic Inverse Kinematics (IK) solver with parabolic co-articulation trajectories.",
-      {
-        x: 0.7,
-        y: 1.68,
-        w: 11.93,
-        h: 2.58,
-        fontFace: FONT,
-        fontSize: 12.5,
-        color: COLORS.navy,
-        align: "justify",
-        valign: "middle",
-        lineSpacingMultiple: 1.2,
-      }
-    );
-
-    const pillars = [
-      {
-        x: 0.45,
-        head: "Forward Direction (ISL ➔ Kannada)",
-        fill: COLORS.blue,
-        bg: COLORS.white,
-        text: "• Local webcam landmark tracking (30 FPS)\n• 147-D hand + face spatial encoding\n• Hysteresis continuous motion segmentation\n• ONNX browser inference & Kannada TTS",
-      },
-      {
-        x: 4.65,
-        head: "Reverse Direction (Kannada ➔ ISL)",
-        fill: COLORS.teal,
-        bg: COLORS.white,
-        text: "• Kannada text & speech input processing\n• 3-tier agglutinative suffix stemming\n• SOV-to-ISL clause reordering engine\n• 2-bone Analytic IK 3D Avatar (60 FPS)",
-      },
-      {
-        x: 8.85,
-        head: "Datasets & Evaluation Scope",
-        fill: COLORS.purple,
-        bg: COLORS.white,
-        text: "• Harmonized Amrita-ISLR, INCLUDE & ISL-CSLTR\n• 144 vocabulary signs & 187 phrases\n• Signer-independent validation split\n• Client-side Few-Shot custom sign trainer",
-      },
-    ];
-
-    pillars.forEach((p) => {
-      addCard(s3, pptx, {
-        x: p.x,
-        y: 4.55,
-        w: 4.03,
-        h: 2.32,
-        headerText: p.head,
-        headerFill: p.fill,
-        bodyFill: p.bg,
-        borderColor: COLORS.borderGray,
-      });
-      s3.addText(p.text, {
-        x: p.x + 0.16,
-        y: 5.0,
-        w: 3.7,
-        h: 1.75,
-        fontFace: FONT,
-        fontSize: 12,
-        bold: true,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.25,
-      });
-    });
-  }
-
-  // =========================================================================
-  // SLIDE 4: INTRODUCTION & WHY WE SELECTED THIS TOPIC (NO SOLUTION CLAIMS)
-  // =========================================================================
-  {
-    const s4 = pptx.addSlide();
-    addMasterChrome(
-      s4,
-      pptx,
-      4,
-      "Introduction & Rationale for Topic Selection",
-      "Domain Context of Indian Sign Language (ISL) and Regional Accessibility Needs in Karnataka",
-      "Report Ch. 1, Sec. 1.1 (pp. 1–4)"
-    );
-
-    addCard(s4, pptx, {
-      x: 0.45,
-      y: 1.22,
-      w: 6.1,
-      h: 5.65,
-      headerText: "1. Domain Introduction: Indian Sign Language (ISL)",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.blue,
-    });
-
-    s4.addText(
-      "• Visual-Spatial Natural Language:\n  Indian Sign Language (ISL) is a complete natural language with its own phonological, morphological, and syntactic structure distinct from spoken languages.\n\n• Multi-Channel Articulation:\n  Meaning in ISL is conveyed simultaneously through manual parameters (handshape, palm orientation, location, movement) and non-manual facial grammar (eyebrow movement, mouth aperture, head tilt).\n\n• Distinct Grammar from Kannada & English:\n  While spoken Kannada follows an agglutinative Subject–Object–Verb (SOV) structure with case suffixes, ISL follows a Topic–Comment / Temporal-First spatial syntax without inflectional word endings.\n\n• Demographics:\n  According to WHO and Census estimates, over 63 million individuals in India experience hearing or speech impairments, including a large population across Karnataka whose household and civic language is Kannada.",
-      {
-        x: 0.65,
-        y: 1.72,
-        w: 5.7,
-        h: 4.95,
-        fontFace: FONT,
-        fontSize: 12.2,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.18,
-      }
-    );
-
-    addCard(s4, pptx, {
-      x: 6.78,
-      y: 1.22,
-      w: 6.1,
-      h: 5.65,
-      headerText: "2. Why We Selected This Topic (Motivation)",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.lightGreen,
-      borderColor: COLORS.emerald,
-    });
-
-    s4.addText(
-      "• Reason 1 — Lack of Regional Kannada Assistive Tools:\n  Almost all existing sign language datasets and translation tools are designed for American Sign Language (ASL) and English, leaving Kannada-speaking families, doctors, and officials unable to converse with Deaf citizens.\n\n• Reason 2 — Critical Need in Healthcare & Public Counters:\n  In hospital outpatient clinics, banks, and railway counters, Deaf citizens face difficulty explaining symptoms or civic requests when human interpreters are unavailable.\n\n• Reason 3 — Need for Two-Way (Bidirectional) Communication:\n  Communication is a two-way street: a Deaf person needs their signs translated into Kannada speech, and equally needs the doctor's or clerk's Kannada reply translated back into visual sign language.\n\n• Reason 4 — Privacy & Hardware Accessibility:\n  Public institutions require a software solution that runs on standard desktop/laptop webcams without expensive wearable gloves or cloud video recording.",
-      {
-        x: 6.98,
-        y: 1.72,
-        w: 5.7,
-        h: 4.95,
-        fontFace: FONT,
-        fontSize: 12.2,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.18,
-      }
-    );
-  }
-
-  // =========================================================================
-  // SLIDE 5: PROBLEM STATEMENT & OBJECTIVES (3–4 OBJECTIVES, NO TARGET MET)
-  // =========================================================================
-  {
-    const s5 = pptx.addSlide();
-    addMasterChrome(
-      s5,
-      pptx,
-      5,
-      "Problem Statement & Project Objectives",
-      "Defining the Technical Challenges and Core Engineering Objectives of the Project",
-      "Report Ch. 1, Sec. 1.2–1.4 (pp. 5–8)"
-    );
-
-    // Top Card: Problem Statement
-    addCard(s5, pptx, {
-      x: 0.45,
-      y: 1.22,
-      w: 12.43,
-      h: 2.35,
-      headerText: "Problem Statement (Report Section 1.2)",
-      headerFill: COLORS.crimson,
-      bodyFill: COLORS.lightRed,
-      borderColor: COLORS.borderRed,
-    });
-
-    s5.addText(
-      "Deaf and Hard-of-Hearing (DHH) individuals in Karnataka face a persistent communication barrier when interacting with Kannada-speaking healthcare providers, educators, and public service personnel due to:\n1. Severe Scarcity of Certified Interpreters: India has roughly 350 certified ISL interpreters, making on-demand human interpretation unavailable for routine hospital visits, banking, and classroom learning.\n2. Limitations of Existing Automated Approaches: Current vision-based systems are predominantly one-way (Sign-to-English), sensitive to camera distance and background clutter, struggle to segment continuous multi-sign streams from resting hand movements, and lack reverse translation from agglutinative Kannada text/speech into anatomically natural 3D sign animation.",
-      {
-        x: 0.68,
-        y: 1.68,
-        w: 11.96,
-        h: 1.78,
-        fontFace: FONT,
-        fontSize: 12.3,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.18,
-      }
-    );
-
-    // Bottom Card: 4 Concise Objectives (No "Target Met" claims)
-    addCard(s5, pptx, {
-      x: 0.45,
-      y: 3.75,
-      w: 12.43,
-      h: 3.12,
-      headerText: "Project Objectives (Report Section 1.4)",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.blue,
-    });
-
-    const objectives = [
-      {
-        x: 0.65,
-        y: 4.28,
-        num: "Objective 1",
-        title: "Scale-Invariant Hand & Face Landmark Extraction",
-        desc: "To design a privacy-preserving, browser-based feature extraction pipeline that captures two-hand skeletal joints and facial grammar landmarks normalized for camera distance.",
-      },
-      {
-        x: 6.75,
-        y: 4.28,
-        num: "Objective 2",
-        title: "Continuous Sign Segmentation & Classification",
-        desc: "To develop a motion-hysteresis segmentation module and hybrid neural classifier capable of recognizing isolated and continuous Indian Sign Language gestures in real time.",
-      },
-      {
-        x: 0.65,
-        y: 5.58,
-        num: "Objective 3",
-        title: "Kannada SOV Morphological & Grammar Engine",
-        desc: "To construct a bidirectional linguistic engine that synthesizes natural Kannada sentences from recognized ISL glosses and converts Kannada SOV input into ISL word order.",
-      },
-      {
-        x: 6.75,
-        y: 5.58,
-        num: "Objective 4",
-        title: "3D Signing Avatar with Analytic Inverse Kinematics",
-        desc: "To implement an interactive 3D humanoid avatar driven by closed-form two-bone inverse kinematics and smooth co-articulation trajectories for Kannada-to-ISL visualization.",
-      },
-    ];
-
-    objectives.forEach((obj) => {
-      s5.addShape(pptx.ShapeType.roundRect, {
-        x: obj.x,
-        y: obj.y,
-        w: 5.92,
-        h: 1.15,
-        fill: { color: COLORS.lightBlue },
-        line: { color: COLORS.borderBlue, width: 1.2 },
-        rectRadius: 0.05,
-      });
-      s5.addText(
-        [
-          { text: `${obj.num}: ${obj.title}\n`, options: { bold: true, color: COLORS.darkBlue, fontSize: 12.5 } },
-          { text: obj.desc, options: { bold: false, color: COLORS.navy, fontSize: 11.5 } },
-        ],
-        {
-          x: obj.x + 0.14,
-          y: obj.y + 0.06,
-          w: 5.64,
-          h: 1.02,
-          fontFace: FONT,
-          valign: "middle",
-          lineSpacingMultiple: 1.15,
-        }
-      );
-    });
-  }
-
-  // =========================================================================
-  // SLIDE 6: LITERATURE SURVEY (PRIOR WORKS ONLY — NO OUR SOLUTION)
-  // =========================================================================
-  {
-    const s6 = pptx.addSlide();
-    addMasterChrome(
-      s6,
-      pptx,
-      6,
-      "Literature Survey",
-      "Review of Existing Sign Language Recognition & Avatar Synthesis Research Papers",
-      "Report Chapter 2 (pp. 9–17)"
-    );
-
-    addCard(s6, pptx, {
-      x: 0.45,
-      y: 1.2,
-      w: 12.43,
-      h: 5.7,
-      headerText: "Table 2.1: Survey of Existing Research Works and Identified Limitations",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
-    });
 
     const litRows = [
       [
-        { text: "Author(s) & Year", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Methodology / Model Used", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Dataset / Modality", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Limitations / Research Gap Identified", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
+        hCell("Work / System"),
+        hCell("Domain & Scope"),
+        hCell("Core Technique"),
+        hCell("Observed Limitation"),
+        hCell("Silent Bridge Advance"),
       ],
       [
-        "Abhishek et al. (2020)",
-        "Wearable flex & IMU sensor glove with SVM classifier",
-        "Custom 30-sign hardware dataset",
-        "Requires expensive wired hardware (~Rs. 18,000); cannot capture facial grammar or non-manual markers.",
+        bCell("Sridhar et al. (2020)\nINCLUDE", PALETTE.navy),
+        "263 isolated ISL signs (4,287 videos)",
+        "Pose keypoints + BiLSTM / Transformer",
+        "One-way English labels; no Kannada output or avatar",
+        "Expands corpus via HTTP-Range (86.7% saved) + bidirectional Kannada",
       ],
       [
-        "Koller et al. (2019)",
-        "Deep CNN + Weakly Supervised HMM on raw RGB frames",
-        "RWTH-PHOENIX Weather (DGS)",
-        "High GPU memory footprint; overfits to background lighting and signer clothing on unseen users.",
+        bCell("Elakkiya et al. (2021)\nISL-CSLTR", PALETTE.navy),
+        "100 continuous ISL sentences (7 signers)",
+        "CNN-LSTM / BiGRU with CTC alignment",
+        "Offline GPU focus; no browser-local inference or reverse path",
+        "Separate 2-layer BiGRU-CTC + λ=1.0 fusion in 37.0 ms on CPU",
       ],
       [
-        "Sridhar et al. (2020)",
-        "Deep 3D-CNN / BiLSTM over video frames",
-        "INCLUDE 263-Sign Isolated ISL Dataset",
-        "Restricted to pre-trimmed isolated clips; lacks continuous stream boundary detection and regional language output.",
+        bCell("Camgoz et al. (2020)\nSign Language Trans.", PALETTE.navy),
+        "PHOENIX-2014T (German DGS)",
+        "Joint Transformer SLR + NMT (CTC)",
+        "Heavy GPU weights; European language, not Dravidian SOV",
+        "Lightweight ONNX BiGRU + Kannada agglutinative SOV meaning layer",
       ],
       [
-        "Elakkiya & Natarajan (2021)",
-        "Subunit sign modeling with 2D pose keypoints + LSTM",
-        "ISL-CSLTR Sentence Corpus",
-        "Fixed sliding windows produce high boundary insertion errors during natural inter-sign pauses.",
+        bCell("Lugaresi / Google\nMediaPipe Holistic", PALETTE.navy),
+        "Real-time hand & face landmarking",
+        "On-device WASM / WebGL landmarking",
+        "Raw coordinates sensitive to scale, camera distance & hand drops",
+        "147-D hands-face-v2 schema: wrist-centered, scale-norm + 21 face NMM",
       ],
       [
-        "Wadhawan & Kumar (2021)",
-        "CNN-based static & dynamic handshape classifier",
-        "35,000 static ISL alphabet/word images",
-        "One-way recognition to English text only; omits non-manual facial cues and reverse sign animation.",
+        bCell("Graves et al. (2006)\nCTC Decoding", PALETTE.navy),
+        "Unsegmented sequence alignment",
+        "Blank-symbol marginalization loss",
+        "Frequently conflated with recurrent encoder in prior student work",
+        "Strict modular split: Isolated BiGRU (no CTC) vs Continuous BiGRU-CTC",
       ],
       [
-        "Saunders et al. (2020)",
-        "Progressive Transformers for 2D/3D skeletal pose generation",
-        "PHOENIX14T German Sign Language",
-        "Requires server-grade GPUs and lacks closed-form inverse kinematics, causing mid-sentence arm drops.",
+        bCell("WebGL / JASigning\nSign Avatars", PALETTE.navy),
+        "Text-to-sign 3D visualization",
+        "SiGML / keyframe skeletal playback",
+        "Robotic interpolation, unnatural shoulder drops, English-only input",
+        "161 cleaned dataset motion clips + Three.js Analytic IK (367→0 drops)",
       ],
     ];
 
-    s6.addTable(litRows, {
-      x: 0.62,
-      y: 1.68,
-      w: 12.08,
-      colW: [2.15, 2.85, 2.35, 4.73],
-      fontFace: FONT,
-      fontSize: 11,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.68,
-    });
-  }
-
-  // =========================================================================
-  // SLIDE 7: SYSTEM ARCHITECTURE (REPORT DIAGRAM) & ARROW PIPELINE
-  // =========================================================================
-  {
-    const s7 = pptx.addSlide();
-    addMasterChrome(
-      s7,
-      pptx,
-      7,
-      "System Architecture & Step-by-Step Pipeline",
-      "Report System Architecture Diagram (Fig. 5.1) & Arrow-Connected Bidirectional Workflows",
-      "Report Ch. 5, Sec. 5.1 (pp. 32–35)"
-    );
-
-    // Left: Exact Report Architecture Diagram (Fig. 5.1)
-    addCard(s7, pptx, {
-      x: 0.4,
-      y: 1.2,
-      w: 6.65,
-      h: 5.7,
-      headerText: "Figure 5.1: System Architecture Diagram (From Project Report)",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.blue,
-    });
-
-    if (IMAGES.figArchitecture) {
-      s7.addImage({
-        data: IMAGES.figArchitecture,
-        x: 0.52,
-        y: 1.68,
-        w: 6.4,
-        h: 5.05,
-      });
-    }
-
-    // Right: Arrow-Connected Forward & Reverse Pipelines
-    addCard(s7, pptx, {
-      x: 7.2,
-      y: 1.2,
-      w: 5.73,
-      h: 2.78,
-      headerText: "Forward Pipeline: ISL Video ➔ Kannada Speech",
-      headerFill: COLORS.blue,
-      bodyFill: COLORS.lightBlue,
-      borderColor: COLORS.borderBlue,
-    });
-
-    s7.addText(
-      "  [1. Webcam Frame Capture (30 FPS)]\n                        ⬇\n  [2. MediaPipe Holistic (21×2 Hands + 12 Face Points)]\n                        ⬇\n  [3. 147-D Shoulder-Scaled Normalization]\n                        ⬇\n  [4. 3-State Hysteresis Velocity Segmenter]\n                        ⬇\n  [5. ONNX MLP + BiGRU-CTC Classifier]  ➔  [6. Kannada SOV & TTS]",
-      {
-        x: 7.35,
-        y: 1.64,
-        w: 5.43,
-        h: 2.25,
-        fontFace: FONT,
-        fontSize: 11.5,
-        bold: true,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.08,
-      }
-    );
-
-    addCard(s7, pptx, {
-      x: 7.2,
-      y: 4.12,
-      w: 5.73,
-      h: 2.78,
-      headerText: "Reverse Pipeline: Kannada Text/Voice ➔ 3D Avatar",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.lightGreen,
-      borderColor: COLORS.borderGreen,
-    });
-
-    s7.addText(
-      "  [1. Kannada Unicode Text / Speech Dictation]\n                        ⬇\n  [2. Three-Tier Morphological Suffix Stemmer]\n                        ⬇\n  [3. SOV-to-ISL Topological Clause Reordering]\n                        ⬇\n  [4. 144-Class Keyframe Trajectory Lookup]\n                        ⬇\n  [5. 2-Bone Analytic IK Solver]  ➔  [6. 60 FPS 3D Avatar Animation]",
-      {
-        x: 7.35,
-        y: 4.56,
-        w: 5.43,
-        h: 2.25,
-        fontFace: FONT,
-        fontSize: 11.5,
-        bold: true,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.08,
-      }
-    );
-  }
-
-  // =========================================================================
-  // SLIDE 8: HARDWARE & SOFTWARE REQUIREMENTS (IMPLEMENTATION SETUP)
-  // =========================================================================
-  {
-    const s8 = pptx.addSlide();
-    addMasterChrome(
-      s8,
-      pptx,
-      8,
-      "System Requirements: Hardware & Software",
-      "Hardware Configuration and Software Stack Used for Development, Training & Execution",
-      "Report Chapter 3 (pp. 18–25)"
-    );
-
-    // Left: Hardware Requirements Table
-    addCard(s8, pptx, {
-      x: 0.45,
-      y: 1.2,
-      w: 5.95,
-      h: 5.7,
-      headerText: "Table 3.1: Hardware Requirements",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
-    });
-
-    const hwRows = [
-      [
-        { text: "Component", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Minimum Specification", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Recommended Setup", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      ["Processor (CPU)", "Dual-Core x86_64 (2.0 GHz)", "Quad-Core Intel i5 / Ryzen 5"],
-      ["System Memory", "4 GB RAM", "8 GB RAM or higher"],
-      ["Camera Input", "720p / 480p USB or Integrated Webcam (30 FPS)", "720p HD Webcam (640×480 @ 30 FPS)"],
-      ["Graphics (GPU)", "Integrated Graphics (WebGL 2.0 support)", "Integrated Iris Xe / WebGL 2.0"],
-      ["Audio I/O", "Standard Speakers / Headphones", "Speakers + Microphone (for ASR)"],
-      ["Disk Storage", "250 MB free browser cache", "2 GB SSD (for training corpus)"],
-    ];
-
-    s8.addTable(hwRows, {
-      x: 0.6,
-      y: 1.7,
-      w: 5.65,
-      colW: [1.45, 2.1, 2.1],
-      fontFace: FONT,
-      fontSize: 11,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.66,
-    });
-
-    // Right: Software Requirements Table
-    addCard(s8, pptx, {
-      x: 6.65,
-      y: 1.2,
-      w: 6.23,
-      h: 5.7,
-      headerText: "Table 3.2: Software Requirements & Technology Stack",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
-    });
-
-    const swRows = [
-      [
-        { text: "Software Layer", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Technology / Library", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Purpose in System", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      ["Operating System", "Windows 10/11, Ubuntu Linux, macOS", "Cross-platform execution"],
-      ["Frontend UI", "React 18, TypeScript 5, Vite", "Interactive studios & state management"],
-      ["Landmark Tracking", "MediaPipe Holistic (WASM)", "30 FPS hand (21×2) & face tracking"],
-      ["Browser AI Engine", "ONNX Runtime Web (SIMD)", "Client-side neural model inference"],
-      ["3D Avatar Engine", "Three.js (WebGL 2.0)", "60 FPS 3D humanoid & Analytic IK"],
-      ["Speech Engine", "Web Speech API (kn-IN)", "Kannada TTS voice & ASR dictation"],
-      ["Backend & ML", "Python 3.10+, FastAPI, PyTorch", "Model training, evaluation & API"],
-    ];
-
-    s8.addTable(swRows, {
-      x: 6.8,
-      y: 1.7,
-      w: 5.93,
-      colW: [1.55, 2.05, 2.33],
-      fontFace: FONT,
-      fontSize: 11,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.58,
-    });
-  }
-
-  // =========================================================================
-  // SLIDE 9: FEATURE EXTRACTION SCHEMA (147-D FEATURES & 441-D POOLING)
-  // =========================================================================
-  {
-    const s9 = pptx.addSlide();
-    addMasterChrome(
-      s9,
-      pptx,
-      9,
-      "Feature Extraction Schema (147-D Hand, Face & Motion)",
-      "Anatomical Feature Vector Composition (Table 5.1) and Multi-Corpus Dataset Distribution",
-      "Report Ch. 5, Sec. 5.2 (pp. 35–38)"
-    );
-
-    addCard(s9, pptx, {
-      x: 0.4,
-      y: 1.2,
-      w: 7.25,
-      h: 5.7,
-      headerText: "Table 5.1: 147-D Per-Frame & 441-D Window Feature Vector Schema",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
-    });
-
-    const featRows = [
-      [
-        { text: "Feature Block", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Indices", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Dims", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Description & Mathematical Normalization", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      ["Left Hand Skeleton", "[0 : 63]", "63-D", "21 joints × (x, y, z), centered at left wrist & scaled by shoulder width S_t"],
-      ["Right Hand Skeleton", "[63 : 126]", "63-D", "21 joints × (x, y, z), centered at right wrist & scaled by shoulder width S_t"],
-      ["Hand-to-Face Vectors", "[126 : 132]", "6-D", "3D displacement from Left & Right wrists to nose tip anchor (cranial height)"],
-      ["Facial Grammar Cues", "[132 : 143]", "11-D", "Eyebrow raise, Mouth Aspect Ratio (MAR), Eye Aspect Ratio (EAR), head pitch/yaw"],
-      ["Bimanual & Presence", "[143 : 147]", "4-D", "Inter-wrist Euclidean distance d_LR, hand visibility flags & wrist speed"],
-      [
-        { text: "Temporal Pooling", options: { bold: true, fill: "EFF6FF", color: COLORS.darkBlue } },
-        { text: "[0 : 441]", options: { bold: true, fill: "EFF6FF", color: COLORS.darkBlue } },
-        { text: "441-D", options: { bold: true, fill: "EFF6FF", color: COLORS.darkBlue } },
-        { text: "Concatenation of Mean (μ, 147-D) ⊕ Std Dev (σ, 147-D) ⊕ Velocity (Δ, 147-D)", options: { bold: true, fill: "EFF6FF", color: COLORS.darkBlue } },
-      ],
-    ];
-
-    s9.addTable(featRows, {
+    s.addTable(litRows, {
       x: 0.55,
-      y: 1.68,
-      w: 6.95,
-      colW: [1.55, 1.0, 0.75, 3.65],
-      fontFace: FONT,
-      fontSize: 10.8,
-      border: { pt: 1, color: COLORS.borderGray },
+      y: 1.28,
+      w: 12.23,
+      colW: [2.05, 1.95, 2.15, 2.88, 3.2],
+      fontFace: FONT_BODY,
+      fontSize: 9.2,
+      color: PALETTE.body,
+      border: { type: "solid", color: PALETTE.border, pt: 0.55 },
+      rowH: [0.38, 0.72, 0.72, 0.72, 0.72, 0.72, 0.72],
+      margin: [0.05, 0.08, 0.05, 0.08],
       valign: "middle",
-      rowH: 0.58,
     });
 
-    s9.addText(
-      "Why 147-D Features Are Used:\n• Scale Invariance: Dividing coordinates by shoulder span S_t ensures identical feature values whether the user sits 0.5m or 1.8m from the camera.\n• Minimal-Pair Disambiguation: Hand-to-face vectors [126:132] separate signs with identical handshapes performed near the forehead vs. chin.",
-      {
-        x: 0.58,
-        y: 5.55,
-        w: 6.9,
-        h: 1.25,
-        fontFace: FONT,
-        fontSize: 11.2,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.18,
-      }
-    );
-
-    // Right: Dataset Distribution Graph
-    addCard(s9, pptx, {
-      x: 7.8,
-      y: 1.2,
-      w: 5.13,
-      h: 5.7,
-      headerText: "Graph: Multi-Corpus Dataset Distribution (Fig. 5.2)",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.emerald,
+    // Bottom Research Gap Synthesis Strip
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 6.18,
+      w: 12.23,
+      h: 0.76,
+      fill: { color: PALETTE.tealLight },
+      line: { color: PALETTE.teal, width: 0.8 },
     });
-
-    if (IMAGES.figDatadist) {
-      s9.addImage({
-        data: IMAGES.figDatadist,
-        x: 7.95,
-        y: 1.72,
-        w: 4.83,
-        h: 3.25,
-      });
-    }
-
-    s9.addText(
-      "Dataset Composition (Report Table 3.2):\n• Amrita-ISLR: Isolated clinical & daily vocabulary\n• INCLUDE: Multi-signer lexical categories\n• ISL-CSLTR: Sentence-level continuous streams\n• Total Scope: 144 Vocabulary Classes, 187 Phrases, 314 Evaluation Video Streams",
+    s.addText(
+      "Research Gap Closed:  No prior open system unifies (1) browser-local 147-D landmark extraction with zero video upload, (2) signer-independent 64→144 sign BiGRU + separate BiGRU-CTC continuous decoding on CPU, (3) Kannada SOV translation + kn-IN speech, (4) cleaned 3D Analytic IK avatar playback, and (5) an integrated Deaf ISL evaluation harness (#study).",
       {
-        x: 7.95,
-        y: 5.1,
-        w: 4.83,
-        h: 1.65,
-        fontFace: FONT,
-        fontSize: 11.5,
+        x: 0.72,
+        y: 6.24,
+        w: 11.9,
+        h: 0.64,
+        fontFace: FONT_BODY,
+        fontSize: 9.8,
         bold: true,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.2,
-      }
-    );
-  }
-
-  // =========================================================================
-  // SLIDE 10: MODULE-WISE IMPLEMENTATION (EXPLAINING ALL MODULES: HOW & WHY)
-  // =========================================================================
-  {
-    const s10 = pptx.addSlide();
-    addMasterChrome(
-      s10,
-      pptx,
-      10,
-      "Module-Wise Implementation (How & Why)",
-      "Detailed Explanation of All Six System Modules and Their Functional Role",
-      "Report Chapter 6 (pp. 45–54)"
-    );
-
-    addCard(s10, pptx, {
-      x: 0.4,
-      y: 1.2,
-      w: 8.35,
-      h: 5.7,
-      headerText: "Table 6.1: Implementation Breakdown of All Core System Modules (How & Why)",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
-    });
-
-    const modRows = [
-      [
-        { text: "Module Name", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "HOW It Is Implemented", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "WHY It Is Required", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      [
-        "1. Holistic Landmark Module",
-        "Extracts 21 left-hand, 21 right-hand & 12 face landmarks at 30 FPS via MediaPipe WebAssembly.",
-        "Eliminates background clutter and keeps raw webcam video private on the client device.",
-      ],
-      [
-        "2. Hysteresis Motion Segmenter",
-        "3-state velocity FSM (IDLE ➔ SIGNING ➔ HOLD_PAUSE) with dual thresholds (θ_high=0.022, θ_low=0.011).",
-        "Prevents accidental resting hand movements from triggering false words and isolates sign strokes.",
-      ],
-      [
-        "3. Hybrid ONNX Classifier",
-        "Fuses 441-D MLP with BiGRU-CTC temporal decoder exported to quantized ONNX Runtime Web.",
-        "Captures both spatial hand postures and sequential trajectory order in 4.6 ms on CPU.",
-      ],
-      [
-        "4. Few-Shot Custom Sign Trainer",
-        "In-browser Float32 2-layer MLP (441➔96➔C) trained with AdamW and 12× kinematic augmentation.",
-        "Allows users to enroll new regional or hospital signs from 3–5 clips in under 45 seconds.",
-      ],
-      [
-        "5. Kannada SOV Grammar Engine",
-        "3-tier morphological suffix stemmer & clause reorderer ([Time ➔ Subj ➔ Obj ➔ Verb ➔ Neg]).",
-        "Converts agglutinative Kannada grammar into natural ISL sign sequence and synthesizes kn-IN speech.",
-      ],
-      [
-        "6. 3D Avatar Analytic IK Module",
-        "Closed-form 2-bone law-of-cosines Shoulder-Elbow-Wrist IK with parabolic transition arcs.",
-        "Animates 144 signs at 60 FPS with chest-collision avoidance and zero mid-sentence arm drops.",
-      ],
-    ];
-
-    s10.addTable(modRows, {
-      x: 0.52,
-      y: 1.66,
-      w: 8.1,
-      colW: [1.85, 3.15, 3.1],
-      fontFace: FONT,
-      fontSize: 10.3,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.69,
-    });
-
-    // Right Column: Live Studio + 3D Avatar Screenshots
-    addCard(s10, pptx, {
-      x: 8.9,
-      y: 1.2,
-      w: 4.03,
-      h: 2.78,
-      headerText: "Fig. 6.1: Live Recognition Module UI",
-      headerFill: COLORS.blue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.blue,
-    });
-    if (IMAGES.uiLive) {
-      s10.addImage({
-        data: IMAGES.uiLive,
-        x: 9.04,
-        y: 1.64,
-        w: 3.75,
-        h: 2.22,
-      });
-    }
-
-    addCard(s10, pptx, {
-      x: 8.9,
-      y: 4.12,
-      w: 4.03,
-      h: 2.78,
-      headerText: "Fig. 6.3: 3D Avatar Analytic IK UI",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.emerald,
-    });
-    if (IMAGES.uiAvatar) {
-      s10.addImage({
-        data: IMAGES.uiAvatar,
-        x: 9.04,
-        y: 4.56,
-        w: 3.75,
-        h: 2.22,
-      });
-    }
-  }
-
-  // =========================================================================
-  // SLIDE 11: EVALUATION PARAMETERS & COMPARISON WITH EXISTING RESULTS
-  // =========================================================================
-  {
-    const s11 = pptx.addSlide();
-    addMasterChrome(
-      s11,
-      pptx,
-      11,
-      "Evaluation Parameters & Comparison with Existing Works",
-      "Definitions of Accuracy, Precision, Recall & F1-Score and Benchmark Comparison",
-      "Report Ch. 7, Sec. 7.1–7.3 (pp. 55–59)"
-    );
-
-    // Left: Table of Evaluation Parameters
-    addCard(s11, pptx, {
-      x: 0.4,
-      y: 1.2,
-      w: 6.2,
-      h: 5.7,
-      headerText: "Table 7.1: Evaluation Parameters Explained",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.borderGray,
-    });
-
-    const paramRows = [
-      [
-        { text: "Parameter", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Formula", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Role in Sign Recognition", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Measured", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      [
-        "Top-1 Accuracy",
-        "(TP + TN) / N",
-        "Fraction of test videos where top predicted gloss matches ground truth",
-        "81.5% (All)\n76.5% (Unseen)",
-      ],
-      [
-        "Precision",
-        "TP / (TP + FP)",
-        "Measures reliability of emitted signs & suppression of false triggers",
-        "0.818",
-      ],
-      [
-        "Recall (Sensitivity)",
-        "TP / (TP + FN)",
-        "Measures ability to detect actual signs across diverse signers",
-        "0.792",
-      ],
-      [
-        "Macro F1-Score",
-        "2·(P × R) / (P + R)",
-        "Harmonic mean of Precision & Recall across all sign classes",
-        "0.800 (Base)\n0.812 (τ*=0.5)",
-      ],
-      [
-        "Top-3 Accuracy",
-        "Correct in Top 3",
-        "Useful for interactive candidate chip selection in UI",
-        "94.9%",
-      ],
-      [
-        "Segment Error (SER)",
-        "(S + D + I) / N_ref",
-        "Levenshtein error rate on continuous multi-sign streams",
-        "12.6%",
-      ],
-    ];
-
-    s11.addTable(paramRows, {
-      x: 0.52,
-      y: 1.68,
-      w: 5.96,
-      colW: [1.3, 1.35, 2.26, 1.05],
-      fontFace: FONT,
-      fontSize: 10.3,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.66,
-    });
-
-    // Right: Comparison Between Existing Results and Proposed System
-    addCard(s11, pptx, {
-      x: 6.75,
-      y: 1.2,
-      w: 6.18,
-      h: 5.7,
-      headerText: "Table 7.2: Comparison Between Existing Methods and Proposed Work",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.emerald,
-    });
-
-    const compRows = [
-      [
-        { text: "Method / Model Evaluated", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Unseen Acc.", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Precision", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Recall", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-        { text: "Macro F1", options: { bold: true, fill: COLORS.navy, color: COLORS.white } },
-      ],
-      ["Single-Hand 63-D MLP (Existing)", "51.2%", "0.534", "0.498", "0.515"],
-      ["Two-Hand 126-D Baseline (No Face)", "54.5%", "0.589", "0.560", "0.574"],
-      ["3D-CNN RGB Video Model", "58.4%", "0.602", "0.571", "0.586"],
-      ["147-D Hands+Face MLP (No BiGRU)", "62.9%", "0.654", "0.628", "0.641"],
-      ["Sliding-Window LSTM (No Hysteresis)", "68.5%", "0.718", "0.698", "0.708"],
-      [
-        { text: "Proposed 147-D + Hysteresis + BiGRU-CTC (81.5% Overall)", options: { bold: true, fill: "DCFCE7", color: COLORS.teal } },
-        { text: "76.5%", options: { bold: true, fill: "DCFCE7", color: COLORS.teal } },
-        { text: "0.818", options: { bold: true, fill: "DCFCE7", color: COLORS.teal } },
-        { text: "0.792", options: { bold: true, fill: "DCFCE7", color: COLORS.teal } },
-        { text: "0.800", options: { bold: true, fill: "DCFCE7", color: COLORS.teal } },
-      ],
-    ];
-
-    s11.addTable(compRows, {
-      x: 6.88,
-      y: 1.68,
-      w: 5.92,
-      colW: [2.32, 0.95, 0.9, 0.85, 0.9],
-      fontFace: FONT,
-      fontSize: 10.3,
-      border: { pt: 1, color: COLORS.borderGray },
-      valign: "middle",
-      rowH: 0.58,
-    });
-
-    s11.addText(
-      "Summary of Comparative Evaluation (Sec. 7.3):\n• Evaluated on 314 real video streams using leave-one-signer-out cross-validation.\n• Adding 21-D facial & hand-to-face features improved unseen-signer accuracy from 54.5% to 62.9%.\n• Combining Hysteresis segmentation, BiGRU-CTC, and 5-view TTA recorded 76.5% on unseen signers (81.5% overall, p = 0.003).",
-      {
-        x: 6.9,
-        y: 5.32,
-        w: 5.88,
-        h: 1.45,
-        fontFace: FONT,
-        fontSize: 11.2,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.18,
-      }
-    );
-  }
-
-  // =========================================================================
-  // SLIDE 12: EXPERIMENTAL RESULTS & NAMED PERFORMANCE GRAPHS
-  // =========================================================================
-  {
-    const s12 = pptx.addSlide();
-    addMasterChrome(
-      s12,
-      pptx,
-      12,
-      "Experimental Results & Named Performance Graphs",
-      "Visual Evaluation Plots from Stratified and Unseen-Signer Testing (Report Chapter 7)",
-      "Report Ch. 7, Sec. 7.3–7.6 (pp. 58–63)"
-    );
-
-    const graphs = [
-      {
-        x: 0.4,
-        y: 1.18,
-        title: "Graph 1: Top-1 Accuracy Across Feature & Model Stages (Fig. 5.3)",
-        fill: COLORS.darkBlue,
-        img: IMAGES.figResults,
-        caption: "Compares All-Split (81.5%), Unseen Signers (76.5%), and INCLUDE Subset (92.7%).",
-      },
-      {
-        x: 6.75,
-        y: 1.18,
-        title: "Graph 2: Out-of-Fold Confidence Calibration Curve (Fig. 5.4)",
-        fill: COLORS.teal,
-        img: IMAGES.figCalibration,
-        caption: "Identifies optimal probability threshold τ* = 0.50 maximizing Macro-F1 (0.812).",
-      },
-      {
-        x: 0.4,
-        y: 4.12,
-        title: "Graph 3: Per-Class F1-Score Distribution Across Signs (Fig. 5.5)",
-        fill: COLORS.purple,
-        img: IMAGES.figPerclass,
-        caption: "Shows per-sign F1 distribution across evaluated test signs (Mean F1 = 0.800).",
-      },
-      {
-        x: 6.75,
-        y: 4.12,
-        title: "Graph 4: Continuous Stream Segment Error Rate (SER) (Fig. 5.6)",
-        fill: COLORS.amber,
-        img: IMAGES.figSegmentation,
-        caption: "Hysteresis + BiGRU-CTC reduces continuous 5-sign stream SER from 35.2% to 12.6%.",
-      },
-    ];
-
-    graphs.forEach((g) => {
-      addCard(s12, pptx, {
-        x: g.x,
-        y: g.y,
-        w: 6.18,
-        h: 2.82,
-        headerText: g.title,
-        headerFill: g.fill,
-        bodyFill: COLORS.white,
-        borderColor: COLORS.borderGray,
-        headerHeight: 0.34,
-      });
-
-      if (g.img) {
-        s12.addImage({
-          data: g.img,
-          x: g.x + 0.15,
-          y: g.y + 0.38,
-          w: 5.88,
-          h: 2.04,
-        });
-      }
-
-      s12.addText(g.caption, {
-        x: g.x + 0.12,
-        y: g.y + 2.44,
-        w: 5.94,
-        h: 0.34,
-        fontFace: FONT,
-        fontSize: 10.8,
-        bold: true,
-        color: COLORS.navy,
-        align: "center",
-      });
-    });
-  }
-
-  // =========================================================================
-  // SLIDE 13: CONCLUSION & FUTURE WORK (DEDICATED SLIDE, OBJECTIVE TONE)
-  // =========================================================================
-  {
-    const s13 = pptx.addSlide();
-    addMasterChrome(
-      s13,
-      pptx,
-      13,
-      "Conclusion & Future Work",
-      "Summary of Engineering Work Completed and Scope for Future Extensions",
-      "Report Chapter 8 (pp. 64–66)"
-    );
-
-    // Left: Conclusion (What Was Done)
-    addCard(s13, pptx, {
-      x: 0.45,
-      y: 1.22,
-      w: 6.08,
-      h: 5.65,
-      headerText: "1. Conclusion (Summary of Work Done — Sec. 8.1)",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.lightBlue,
-      borderColor: COLORS.blue,
-    });
-
-    s13.addText(
-      "• Bidirectional Framework Implemented:\n  Designed and built a full-stack web application supporting both Indian Sign Language to Kannada translation and Kannada to 3D Avatar sign synthesis.\n\n• 147-D Anatomical Landmark Pipeline:\n  Implemented client-side MediaPipe Holistic extraction of 147-D hand and facial landmarks normalized by shoulder width, ensuring user video never leaves the browser.\n\n• Continuous Segmentation & Hybrid Classification:\n  Combined a 3-state Hysteresis Motion Segmenter with a 441-D MLP and BiGRU-CTC model exported to ONNX Runtime Web (4.6 ms inference time).\n\n• Kannada SOV Stemmer & 2-Bone Analytic IK:\n  Developed a rule-based Kannada morphological stemmer, SOV-to-ISL clause reorderer, and a 60 FPS Three.js avatar with parabolic inter-sign co-articulation.\n\n• Empirical Validation:\n  Evaluated across 314 video streams from Amrita-ISLR, INCLUDE, and ISL-CSLTR, recording 81.5% overall Top-1 accuracy and 76.5% on unseen signers.",
-      {
-        x: 0.65,
-        y: 1.72,
-        w: 5.68,
-        h: 4.98,
-        fontFace: FONT,
-        fontSize: 11.8,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.16,
-      }
-    );
-
-    // Right: Future Work
-    addCard(s13, pptx, {
-      x: 6.8,
-      y: 1.22,
-      w: 6.08,
-      h: 5.65,
-      headerText: "2. Future Work (Scope for Enhancement — Sec. 8.2)",
-      headerFill: COLORS.teal,
-      bodyFill: COLORS.lightGreen,
-      borderColor: COLORS.emerald,
-    });
-
-    s13.addText(
-      "• Direction 1 — Vocabulary Expansion to 1,000+ Signs:\n  Extend the current 144-sign lexicon to cover specialized medical triage, legal aid, and banking terminology across Karnataka dialects.\n\n• Direction 2 — Transformer & Diffusion Avatar Motion:\n  Integrate continuous spatio-temporal Transformer decoders for finger-spelling and diffusion-based facial blendshapes for richer eyebrow and mouthing prosody.\n\n• Direction 3 — Multi-Language Dravidian Grammar Support:\n  Extend the agglutinative SOV morphological stemmer to support Telugu, Tamil, and Malayalam alongside Kannada.\n\n• Direction 4 — Offline Mobile & Rural Kiosk Deployment:\n  Package the WebAssembly inference engine as an installable Progressive Web App (PWA) for low-power Android tablets in rural primary health centers (PHCs).",
-      {
-        x: 7.0,
-        y: 1.72,
-        w: 5.68,
-        h: 4.98,
-        fontFace: FONT,
-        fontSize: 11.8,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.18,
-      }
-    );
-  }
-
-  // =========================================================================
-  // SLIDE 14: RESEARCH PAPER PUBLICATION & ITS IMPORTANCE (FINAL SLIDE)
-  // =========================================================================
-  {
-    const s14 = pptx.addSlide();
-    addMasterChrome(
-      s14,
-      pptx,
-      14,
-      "Research Paper Publication & Its Importance",
-      "Details of the Research Manuscript Prepared from This Project and Its Significance",
-      "Report Appendix B (Page 72)"
-    );
-
-    // Top Card: Paper Details
-    addCard(s14, pptx, {
-      x: 0.45,
-      y: 1.18,
-      w: 12.43,
-      h: 2.28,
-      headerText: "Research Paper Manuscript Details (Report Appendix B)",
-      headerFill: COLORS.darkBlue,
-      bodyFill: COLORS.white,
-      borderColor: COLORS.blue,
-    });
-
-    s14.addText(
-      "• Title of Paper: “Silent Bridge: Real-Time Bidirectional Indian Sign Language and Kannada Translation with 3D Avatar”\n• Authors: H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), and Prof. Tejaswini K (Assistant Professor, Dept. of CSBS, B.M.S. College of Engineering, Bangalore – 560019)\n• Manuscript Format & Structure: Standard IEEE Two-Column Research Paper Format (8 Pages · 12 Empirical Tables · 7 Figures · 12 Mathematical Equations · 3 Algorithms · 25 Peer-Reviewed IEEE References)\n• Core Focus: Privacy-Preserving 147-D Anatomical Landmark Recognition, Hysteresis + BiGRU-CTC Continuous Decoding, Kannada SOV Morphological Reordering, and Two-Bone Analytic Inverse Kinematics.",
-      {
-        x: 0.65,
-        y: 1.62,
-        w: 12.03,
-        h: 1.75,
-        fontFace: FONT,
-        fontSize: 12,
-        bold: true,
-        color: COLORS.navy,
-        lineSpacingMultiple: 1.2,
-      }
-    );
-
-    // Middle Grid: 4 Pillars of Importance
-    const impCards = [
-      {
-        x: 0.45,
-        y: 3.6,
-        title: "1. Benchmark & Dataset Contribution",
-        fill: COLORS.blue,
-        bg: COLORS.lightBlue,
-        text: "Establishes a reproducible 147-D skeletal + facial landmark benchmark across 3 Indian Sign Language corpora (Amrita-ISLR, INCLUDE, ISL-CSLTR) with strict unseen-signer evaluation.",
-      },
-      {
-        x: 6.75,
-        y: 3.6,
-        title: "2. Regional Kannada Linguistic Contribution",
-        fill: COLORS.teal,
-        bg: COLORS.lightGreen,
-        text: "Documents a formal rule-based algorithm for stripping agglutinative Kannada suffixes and mapping Subject-Object-Verb (SOV) clauses into ISL temporal-first sign order.",
-      },
-      {
-        x: 0.45,
-        y: 4.92,
-        title: "3. Edge-AI & Kinematic Engineering",
-        fill: COLORS.purple,
-        bg: COLORS.lightPurple,
-        text: "Demonstrates sub-5ms browser-native ONNX inference on CPU laptops paired with closed-form 2-bone Analytic IK that eliminates mid-sentence avatar arm drops.",
-      },
-      {
-        x: 6.75,
-        y: 4.92,
-        title: "4. Clinical Privacy & Societal Impact",
-        fill: COLORS.amber,
-        bg: COLORS.lightAmber,
-        text: "Provides a zero-video-upload assistive blueprint aligned with UN SDGs 3, 4, 8, 9 & 10, reducing public counter interpretation costs by 94% (Rs. 16/day vs Rs. 1,800/day).",
-      },
-    ];
-
-    impCards.forEach((c) => {
-      addCard(s14, pptx, {
-        x: c.x,
-        y: c.y,
-        w: 6.13,
-        h: 1.22,
-        headerText: c.title,
-        headerFill: c.fill,
-        bodyFill: c.bg,
-        borderColor: COLORS.borderGray,
-        headerHeight: 0.34,
-      });
-      s14.addText(c.text, {
-        x: c.x + 0.14,
-        y: c.y + 0.38,
-        w: 5.85,
-        h: 0.78,
-        fontFace: FONT,
-        fontSize: 11.2,
-        color: COLORS.navy,
+        color: PALETTE.navy,
         valign: "middle",
-        lineSpacingMultiple: 1.15,
+        lineSpacingMultiple: 1.18,
+      }
+    );
+  }
+
+  // =========================================================================
+  // SLIDE 4: SYSTEM ARCHITECTURE (PROMINENT FULL-WIDTH ARCHITECTURAL DIAGRAM)
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      4,
+      "SYSTEM ARCHITECTURE",
+      "End-to-End Bidirectional Architecture & Privacy Boundary",
+      "Browser-Local Feature Extraction, Parallel Isolated/Continuous Branches, and Reverse Kannada → 3D Avatar Pipeline"
+    );
+
+    // Framed Architectural Diagram Showcase (Full-Width Centerpiece)
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 1.24,
+      w: 12.23,
+      h: 3.74,
+      fill: { color: PALETTE.white },
+      line: { color: PALETTE.border, width: 1 },
+    });
+    if (IMAGES.figArchitecture) {
+      s.addImage({
+        data: IMAGES.figArchitecture,
+        x: 0.7,
+        y: 1.32,
+        w: 11.93,
+        h: 3.58,
+        sizing: { type: "contain", w: 11.93, h: 3.58 },
+      });
+    }
+
+    // 3-Tier Architectural Breakdown Cards directly beneath diagram
+    const tiers = [
+      [
+        "TIER 1 · BROWSER EDGE (REACT + WASM)",
+        "Webcam (~30 fps) → MediaPipe Hand + Face Landmarker extracts 147 floats/frame locally. Supports 100% browser-only ONNX inference or lightweight JSON landmark streaming over WebSocket (zero raw video transmitted).",
+      ],
+      [
+        "TIER 2 · INTELLIGENCE BACKEND (FASTAPI)",
+        "Motion-energy segmentation (280 ms stillness tail) routes windows to Isolated BiGRU (64→144 signs + cosine custom matcher ≥ 0.82) or Continuous BiGRU-CTC + λ=1.0 sentence fusion → Kannada SOV meaning & kn-IN speech.",
+      ],
+      [
+        "TIER 3 · REVERSE 3D AVATAR & GOVERNANCE",
+        "Kannada text/voice → NFC normalization & agglutinative stemmer → ISL gloss plan → 161 cleaned motion clips retargeted onto Three.js Analytic IK rig at 60 fps. Backed by MD5 corpus auditing & #study evaluation harness.",
+      ],
+    ];
+    tiers.forEach(([title, body], i) => {
+      const tx = 0.55 + i * 4.14;
+      s.addShape(pptx.ShapeType.rect, {
+        x: tx,
+        y: 5.14,
+        w: 3.95,
+        h: 1.8,
+        fill: { color: i === 1 ? PALETTE.navy : PALETTE.surface },
+        line: { color: i === 1 ? PALETTE.navy : PALETTE.border, width: 0.8 },
+      });
+      s.addText(title, {
+        x: tx + 0.14,
+        y: 5.24,
+        w: 3.67,
+        h: 0.26,
+        fontFace: FONT_BODY,
+        fontSize: 9,
+        bold: true,
+        color: i === 1 ? "5EEAD4" : PALETTE.teal,
+      });
+      s.addText(body, {
+        x: tx + 0.14,
+        y: 5.52,
+        w: 3.67,
+        h: 1.34,
+        fontFace: FONT_BODY,
+        fontSize: 9.2,
+        color: i === 1 ? "E2E8F0" : PALETTE.body,
+        lineSpacingMultiple: 1.2,
       });
     });
+  }
 
-    // Bottom Thank You Banner
-    s14.addShape(pptx.ShapeType.roundRect, {
-      x: 0.45,
-      y: 6.26,
-      w: 12.43,
-      h: 0.72,
-      fill: { color: COLORS.navy },
-      line: { color: COLORS.gold, width: 1.5 },
-      rectRadius: 0.06,
+  // =========================================================================
+  // SLIDE 5: PROPOSED METHODOLOGY (147-D SCHEMA & DUAL PIPELINES)
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      5,
+      "PROPOSED METHODOLOGY · PART 1",
+      "147-D hands-face-v2 Schema & Bidirectional Pipelines",
+      "Invariant Per-Frame Representation Feeding Seven-Step Forward (ISL → Kannada) and Six-Step Reverse (Kannada → 3D ISL) Flows"
+    );
+
+    // Top Visual Strip: 147-D Tensor Composition Breakdown
+    addSectionLabel(s, pptx, 0.55, 1.24, 12.23, "147-Dimensional Per-Frame Feature Tensor (hands-face-v2 · T = 24 Resampled Frames)");
+    const segments = [
+      ["Right Hand · 63 dims (42.9%)", "21 landmarks × (x, y, z) · Wrist-centered & palm-scale normalized", 5.24, PALETTE.navy],
+      ["Left Hand · 63 dims (42.9%)", "21 landmarks × (x, y, z) · Zero-padded cleanly on 1-hand signs", 5.24, PALETTE.lapis],
+      ["Face NMM · 21 (14.2%)", "7 anchors (eyes, nose, mouth, chin)", 1.75, PALETTE.teal],
+    ];
+    let curX = 0.55;
+    segments.forEach(([label, sub, w, fill]) => {
+      s.addShape(pptx.ShapeType.rect, {
+        x: curX,
+        y: 1.6,
+        w: w - 0.04,
+        h: 0.78,
+        fill: { color: fill },
+        line: { color: PALETTE.white, width: 1 },
+      });
+      s.addText(label, {
+        x: curX + 0.1,
+        y: 1.66,
+        w: w - 0.24,
+        h: 0.26,
+        fontFace: FONT_BODY,
+        fontSize: 10,
+        bold: true,
+        color: PALETTE.white,
+      });
+      s.addText(sub, {
+        x: curX + 0.1,
+        y: 1.94,
+        w: w - 0.24,
+        h: 0.36,
+        fontFace: FONT_BODY,
+        fontSize: 8.3,
+        color: "E2E8F0",
+      });
+      curX += w;
     });
 
-    s14.addText(
-      "THANK YOU!   |   H S Thanush (1BM23CB066) · Kiran M K (1BM23CB068) · Manoj G U (1BM24CB401)   |   Guide: Prof. Tejaswini K (Dept. of CSBS, BMSCE)",
+    // Bottom Left: Forward Pipeline (Part A)
+    addSectionLabel(s, pptx, 0.55, 2.56, 6.0, "Part A: Forward Pipeline (ISL → Kannada Speech)");
+    const fwdSteps = [
+      ["1. Capture", "Browser webcam (~30 fps) with MediaPipe Hand + Face WASM extraction."],
+      ["2. Normalize", "147-D hands-face-v2 wrist-centered, scale-invariant coords + 7 facial anchors."],
+      ["3. Segment", "Motion-energy trigger + 280 ms stillness tail trimming to isolate each sign."],
+      ["4. Classify", "3-seed BiGRU ONNX ensemble + 3-view TTA (0.50 / 0.30 / 0.20) + Temp T scaling."],
+      ["5. Custom Match", "Cosine similarity vs. user few-shot prototypes (accept if ≥ 0.82, zero retrain)."],
+      ["6. Meaning", "ISL gloss buffer → SOV meaning rewriter (43-pattern bank, 39.5% → 60.5%)."],
+      ["7. Output", "Verified Kannada Unicode script, kn-IN Web Speech TTS, & editable transcript."],
+    ];
+    s.addTable(
+      fwdSteps.map(([st, d]) => [bCell(st, PALETTE.navy), d]),
       {
         x: 0.55,
-        y: 6.26,
-        w: 12.23,
-        h: 0.72,
-        fontFace: FONT,
-        fontSize: 13,
+        y: 2.92,
+        w: 6.0,
+        colW: [1.35, 4.65],
+        fontFace: FONT_BODY,
+        fontSize: 9.2,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.borderLight, pt: 0.5 },
+        rowH: [0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55],
+        margin: [0.03, 0.07, 0.03, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Bottom Right: Reverse Pipeline (Part B)
+    addSectionLabel(s, pptx, 6.85, 2.56, 5.93, "Part B: Reverse Pipeline (Kannada → 3D ISL Avatar)", PALETTE.teal);
+    const revSteps = [
+      ["1. Input", "Typed Kannada/English text or live Web Speech API voice dictation."],
+      ["2. Normalize", "Unicode NFC normalization + punctuation cleanup + phrase-table lookup."],
+      ["3. Stemmer", "Agglutinative Kannada suffix stripper (-ಅನ್ನು, -ಇಂದ, -ಗೆ, -ಅಲ್ಲಿ) to root lemmas."],
+      ["4. Gloss Plan", "Longest-match ISL gloss ordering; flags unsupported words transparently."],
+      ["5. Trajectory", "161 dataset-retargeted clips cleaned via cubic spline gap-fill (367→0 drops)."],
+      ["6. 3D Playback", "Three.js humanoid with Analytic 2-Bone IK, SLERP smoothing & 0.5×–1.5× speed."],
+    ];
+    s.addTable(
+      revSteps.map(([st, d]) => [bCell(st, PALETTE.teal), d]),
+      {
+        x: 6.85,
+        y: 2.92,
+        w: 5.93,
+        colW: [1.32, 4.61],
+        fontFace: FONT_BODY,
+        fontSize: 9.2,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.borderLight, pt: 0.5 },
+        rowH: [0.58, 0.58, 0.58, 0.58, 0.58, 0.58],
+        margin: [0.03, 0.07, 0.03, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Small technical highlight box under Part B
+    s.addShape(pptx.ShapeType.rect, {
+      x: 6.85,
+      y: 6.46,
+      w: 5.93,
+      h: 0.44,
+      fill: { color: PALETTE.surfaceAlt },
+      line: { color: PALETTE.border, width: 0.7 },
+    });
+    s.addText("Key Advantage: 147-D vectors are 400× smaller than 224×224 RGB frames → CPU real-time.", {
+      x: 6.97,
+      y: 6.5,
+      w: 5.7,
+      h: 0.36,
+      fontFace: FONT_BODY,
+      fontSize: 9.3,
+      bold: true,
+      color: PALETTE.navy,
+      valign: "middle",
+    });
+  }
+
+  // =========================================================================
+  // SLIDE 6: DEEP LEARNING ARCHITECTURE — GRU, BiGRU & CTC
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      6,
+      "PROPOSED METHODOLOGY · PART 2",
+      "Deep Learning Design: GRU, BiGRU & CTC (BiGRU ≠ CTC)",
+      "Architectural Separation Between Segmented Isolated Sign Classification and Unsegmented Continuous Sentence Decoding"
+    );
+
+    // Top 3 Conceptual Definition Cards
+    const concepts = [
+      [
+        "GRU (Gated Recurrent Unit)",
+        "Recurrent cell using update gate (z) for memory retention and reset gate (r) for candidate state modulation—fewer parameters and faster CPU execution than LSTM.",
+      ],
+      [
+        "BiGRU (Bidirectional Encoder)",
+        "Two parallel GRUs scan each gesture forward and backward, concatenating hidden states so every frame captures both starting handshape and ending location.",
+      ],
+      [
+        "CTC (Alignment Loss & Decoder)",
+        "Connectionist Temporal Classification is a loss & decoding rule—NOT a network layer. Uses a blank token to align unsegmented frames to glosses without frame labels.",
+      ],
+    ];
+    concepts.forEach(([title, body], i) => {
+      const cx = 0.55 + i * 4.14;
+      s.addShape(pptx.ShapeType.rect, {
+        x: cx,
+        y: 1.26,
+        w: 3.95,
+        h: 1.46,
+        fill: { color: i === 2 ? PALETTE.tealLight : PALETTE.surface },
+        line: { color: i === 2 ? PALETTE.teal : PALETTE.border, width: 0.8 },
+      });
+      s.addText(title, {
+        x: cx + 0.14,
+        y: 1.35,
+        w: 3.67,
+        h: 0.26,
+        fontFace: FONT_DISPLAY,
+        fontSize: 11.5,
         bold: true,
-        color: COLORS.white,
-        align: "center",
+        color: i === 2 ? PALETTE.teal : PALETTE.navy,
+      });
+      s.addText(body, {
+        x: cx + 0.14,
+        y: 1.64,
+        w: 3.67,
+        h: 1.0,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.2,
+      });
+    });
+
+    // Bottom Left: Model A (Isolated BiGRU — NO CTC)
+    addSectionLabel(s, pptx, 0.55, 2.9, 6.0, "Model A: Isolated Sign Classifier (No CTC)");
+    s.addTable(
+      [
+        [hCell("Stage"), hCell("Tensor Shape / Operation")],
+        [bCell("1. Input", PALETTE.navy), "24 × 147 resampled landmarks per segmented sign"],
+        [bCell("2. Encoder", PALETTE.navy), "Forward GRU (96) ∥ Backward GRU (96) → 192-D/frame"],
+        [bCell("3. Pooling", PALETTE.navy), "Temporal Mean + Max Pooling ⊕ Global Path & Velocity"],
+        [bCell("4. Head", PALETTE.navy), "Dense Softmax (64 / 144 classes), Temp Calibration T"],
+        [bCell("5. Runtime", PALETTE.navy), "3-Seed ONNX Ensemble + 3-View TTA (0.50/0.30/0.20) · 15.3 ms"],
+      ],
+      {
+        x: 0.55,
+        y: 3.26,
+        w: 6.0,
+        colW: [1.3, 4.7],
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.48, 0.48, 0.48, 0.48, 0.48],
+        margin: [0.04, 0.08, 0.04, 0.08],
+        valign: "middle",
+      }
+    );
+
+    // Bottom Right: Model B (Continuous BiGRU + CTC)
+    addSectionLabel(s, pptx, 6.85, 2.9, 5.93, "Model B: Continuous Sentence Model (BiGRU + CTC)", PALETTE.teal);
+    s.addTable(
+      [
+        [hCell("Stage"), hCell("Tensor Shape / Operation")],
+        [bCell("1. Input", PALETTE.teal), "Subsampled (every 2nd frame) full unsegmented sentence video"],
+        [bCell("2. Encoder", PALETTE.teal), "2-Layer BiGRU (128 units/direction) across full clip"],
+        [bCell("3. Projection", PALETTE.teal), "Linear head → 168 glosses + 1 CTC blank (169 symbols)"],
+        [bCell("4. CTC Decode", PALETTE.teal), "Greedy / prefix-beam collapse of repeats & blanks (ONLY CTC)"],
+        [bCell("5. Fusion", PALETTE.teal), "Score fusion (λ = 1.0) with sentence classifier → 101-set · 37 ms"],
+      ],
+      {
+        x: 6.85,
+        y: 3.26,
+        w: 5.93,
+        colW: [1.32, 4.61],
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.48, 0.48, 0.48, 0.48, 0.48],
+        margin: [0.04, 0.08, 0.04, 0.08],
+        valign: "middle",
+      }
+    );
+
+    // Bottom Executive Rule Callout
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 6.22,
+      w: 12.23,
+      h: 0.68,
+      fill: { color: PALETTE.navy },
+      line: { color: PALETTE.navy, width: 0 },
+    });
+    s.addText(
+      "Key Architectural Principle:  BiGRU extracts bidirectional temporal features in both models, whereas CTC is used strictly in Model B to align unsegmented continuous sentences without frame-level gloss annotations.",
+      {
+        x: 0.72,
+        y: 6.28,
+        w: 11.9,
+        h: 0.56,
+        fontFace: FONT_BODY,
+        fontSize: 10.2,
+        bold: true,
+        color: PALETTE.white,
         valign: "middle",
       }
     );
   }
 
-  fs.mkdirSync(REPORT_DIR, { recursive: true });
+  // =========================================================================
+  // SLIDE 7: REQUIREMENTS, AUDITED DATASETS & 16 IMPLEMENTATION MODULES
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      7,
+      "ENGINEERING STACK & MODULES",
+      "Tech Stack, Audited Corpora & 16 Implemented Modules",
+      "CPU-Only Deployment Profile, Bandwidth-Efficient Dataset Governance, and Complete Modular Codebase"
+    );
+
+    // Left Column: Stack & Audited Datasets
+    addSectionLabel(s, pptx, 0.55, 1.24, 5.15, "Software, Hardware & Audited Datasets");
+    s.addTable(
+      [
+        [hCell("Layer"), hCell("Specification")],
+        [bCell("Frontend", PALETTE.navy), "React 18, TypeScript, Vite, Three.js WebGL, MediaPipe WASM, ONNX Runtime Web"],
+        [bCell("Backend", PALETTE.navy), "Python 3.11, FastAPI, Uvicorn WebSockets, PyTorch, NumPy, SciPy"],
+        [bCell("Hardware", PALETTE.navy), "Commodity CPU laptop (no GPU required), 8 GB RAM, 720p 30 fps webcam"],
+        [bCell("Isolated Corpus", PALETTE.navy), "Amrita + INCLUDE: 1,290 → 1,749 (64 cls) → 2,249 train / 524 held-out (144 cls)"],
+        [bCell("Continuous Data", PALETTE.navy), "ISL-CSLTR: 101 closed sentences, 7 signers, unseen-round split protocol"],
+        [bCell("Data Hygiene", PALETTE.navy), "MD5 duplicate audit + HTTP-Range ZIP ingestion saving 86.7% bandwidth"],
+      ],
+      {
+        x: 0.55,
+        y: 1.6,
+        w: 5.15,
+        colW: [1.38, 3.77],
+        fontFace: FONT_BODY,
+        fontSize: 9.0,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.72, 0.65, 0.65, 0.82, 0.68, 0.72],
+        margin: [0.04, 0.07, 0.04, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Right Column: 16 Modules Organized in 4 Neat 2x2 Layer Cards
+    addSectionLabel(s, pptx, 5.95, 1.24, 6.83, "16 Implemented Modules Across 4 Functional Layers", PALETTE.teal);
+    const modGroups = [
+      [
+        "Layer 1 · Vision & Features (M1–M4)",
+        "M1: Live Webcam & Frame Pacer (~30 fps)\nM2: Browser MediaPipe Hand + Face WASM\nM3: 147-D hands-face-v2 Normalizer\nM4: Motion-Energy Segmenter (280 ms tail)",
+      ],
+      [
+        "Layer 2 · Recognition & Custom Signs (M5–M8)",
+        "M5: Isolated 3-Seed BiGRU ONNX + 3-View TTA\nM6: Continuous 2-Layer BiGRU-CTC + λ=1.0 Fusion\nM7: Temperature Calibration & Abstention Gate\nM8: Few-Shot Custom Sign Recorder (cos ≥ 0.82)",
+      ],
+      [
+        "Layer 3 · Kannada NLP & 3D Avatar (M9–M12)",
+        "M9: ISL Gloss → Kannada SOV Meaning Rewriter\nM10: kn-IN Web Speech TTS & Editable Transcript\nM11: Kannada Stemmer & Gloss Planner\nM12: Three.js 3D Analytic IK Avatar (161 clips)",
+      ],
+      [
+        "Layer 4 · Governance & Evaluation (M13–M16)",
+        "M13: MD5 Manifest & HTTP-Range Corpus Ingestor\nM14: Evidence-Gated Checkpoint Promoter\nM15: Interactive Report/Paper/PPT Export Suite\nM16: Live Deaf ISL User Study Harness (#study)",
+      ],
+    ];
+    modGroups.forEach(([title, body], idx) => {
+      const col = idx % 2;
+      const row = Math.floor(idx / 2);
+      const gx = 5.95 + col * 3.48;
+      const gy = 1.62 + row * 2.38;
+      s.addShape(pptx.ShapeType.rect, {
+        x: gx,
+        y: gy,
+        w: 3.35,
+        h: 2.22,
+        fill: { color: PALETTE.surface },
+        line: { color: PALETTE.border, width: 0.8 },
+      });
+      s.addShape(pptx.ShapeType.rect, {
+        x: gx,
+        y: gy,
+        w: 3.35,
+        h: 0.36,
+        fill: { color: idx === 3 ? PALETTE.teal : PALETTE.navy },
+        line: { color: idx === 3 ? PALETTE.teal : PALETTE.navy, width: 0 },
+      });
+      s.addText(title, {
+        x: gx + 0.1,
+        y: gy + 0.03,
+        w: 3.15,
+        h: 0.3,
+        fontFace: FONT_BODY,
+        fontSize: 9.2,
+        bold: true,
+        color: PALETTE.white,
+        valign: "middle",
+      });
+      s.addText(body, {
+        x: gx + 0.12,
+        y: gy + 0.44,
+        w: 3.11,
+        h: 1.7,
+        fontFace: FONT_BODY,
+        fontSize: 9.0,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.32,
+        valign: "top",
+      });
+    });
+
+    // Bottom note under right grid
+    s.addText("All 16 modules run seamlessly in dual deployment modes: Standalone Browser-ONNX (offline-capable) or Full-Stack FastAPI WebSocket.", {
+      x: 5.95,
+      y: 6.46,
+      w: 6.83,
+      h: 0.42,
+      fontFace: FONT_BODY,
+      fontSize: 9.2,
+      italic: true,
+      color: PALETTE.muted,
+      valign: "middle",
+    });
+  }
+
+  // =========================================================================
+  // SLIDE 8: LIVE APPLICATION SHOWCASE (DUAL UI GALLERY)
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      8,
+      "LIVE SYSTEM WALKTHROUGH",
+      "Working Application Showcase: Forward & Reverse Interfaces",
+      "Actual Rendered Screens of Live ISL → Kannada Translation, 3D Analytic IK Avatar, Custom Signs & Deaf Study Module"
+    );
+
+    // Left Showcase: Live ISL -> Kannada Recognition
+    addSectionLabel(s, pptx, 0.55, 1.24, 5.95, "1. Live Sign → Kannada Translation Workspace");
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 1.58,
+      w: 5.95,
+      h: 3.55,
+      fill: { color: PALETTE.surface },
+      line: { color: PALETTE.border, width: 1 },
+    });
+    if (IMAGES.figUiLive) {
+      s.addImage({
+        data: IMAGES.figUiLive,
+        x: 0.63,
+        y: 1.66,
+        w: 5.79,
+        h: 3.39,
+        sizing: { type: "contain", w: 5.79, h: 3.39 },
+      });
+    }
+    s.addText(
+      "Real-time MediaPipe 147-D skeleton overlay, calibrated top-k confidence meter, abstention threshold guard, Kannada SOV meaning composer, and one-click kn-IN Web Speech synthesis.",
+      {
+        x: 0.55,
+        y: 5.2,
+        w: 5.95,
+        h: 0.62,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.2,
+      }
+    );
+
+    // Right Showcase: Reverse Kannada -> 3D Avatar
+    addSectionLabel(s, pptx, 6.83, 1.24, 5.95, "2. Reverse Kannada → 3D ISL Avatar Player", PALETTE.teal);
+    s.addShape(pptx.ShapeType.rect, {
+      x: 6.83,
+      y: 1.58,
+      w: 5.95,
+      h: 3.55,
+      fill: { color: PALETTE.surface },
+      line: { color: PALETTE.border, width: 1 },
+    });
+    if (IMAGES.figUiAvatar) {
+      s.addImage({
+        data: IMAGES.figUiAvatar,
+        x: 6.91,
+        y: 1.66,
+        w: 5.79,
+        h: 3.39,
+        sizing: { type: "contain", w: 5.79, h: 3.39 },
+      });
+    }
+    s.addText(
+      "Accepts typed or spoken Kannada/English, strips agglutinative suffixes, maps to ISL gloss timeline, and drives the Three.js Analytic IK humanoid across 161 cleaned motion clips at 60 fps.",
+      {
+        x: 6.83,
+        y: 5.2,
+        w: 5.95,
+        h: 0.62,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.2,
+      }
+    );
+
+    // Bottom 3-Column Feature Callout Strip
+    const feats = [
+      ["Zero-Retraining Custom Signs (#custom)", "Record 3–5 examples in browser; cosine prototype matcher (≥ 0.82) recognizes custom local vocabulary instantly."],
+      ["Live Deaf ISL User Study (#study)", "Interactive 3-task evaluation harness: 18 blind 4-AFC avatar trials, 5 sentence checks, counter role-play & Brooke SUS export."],
+      ["Integrated Academic Suite (#ppt / #paper)", "Live preview & verified export of 79p CSBS Report, 6p NCDTE Paper, and 12-Slide Deck directly from the platform."],
+    ];
+    feats.forEach(([h, b], i) => {
+      const fx = 0.55 + i * 4.14;
+      s.addShape(pptx.ShapeType.rect, {
+        x: fx,
+        y: 5.92,
+        w: 3.95,
+        h: 1.0,
+        fill: { color: PALETTE.navy },
+        line: { color: PALETTE.navy, width: 0 },
+      });
+      s.addText(h, {
+        x: fx + 0.14,
+        y: 6.0,
+        w: 3.67,
+        h: 0.24,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        bold: true,
+        color: "5EEAD4",
+      });
+      s.addText(b, {
+        x: fx + 0.14,
+        y: 6.26,
+        w: 3.67,
+        h: 0.6,
+        fontFace: FONT_BODY,
+        fontSize: 8.8,
+        color: "E2E8F0",
+        lineSpacingMultiple: 1.18,
+      });
+    });
+  }
+
+  // =========================================================================
+  // SLIDE 9: QUANTITATIVE RESULTS (1/2) — ISOLATED SIGN ACCURACY (64 -> 144)
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      9,
+      "EXPERIMENTAL RESULTS · PART 1",
+      "Isolated Sign Accuracy: 64-Sign Baseline → Promoted 144-Sign",
+      "Strict Signer-Independent Held-Out Evaluation Showing Statistically Significant Gains (McNemar p = 0.003)"
+    );
+
+    // Top 4 Bold KPI Cards
+    addKpiCard(s, pptx, 0.55, 1.24, 2.92, 0.94, "87.2%", "144-Sign Full Held-Out", "457 / 524 videos (v20261103)", true);
+    addKpiCard(s, pptx, 3.65, 1.24, 2.92, 0.94, "81.7%", "Unseen Amrita Signers", "+27.2 pp over 54.5% LogReg", false);
+    addKpiCard(s, pptx, 6.75, 1.24, 2.92, 0.94, "0.850", "Macro F1-Score (144)", "Up from 0.800 on 64-sign model", false);
+    addKpiCard(s, pptx, 9.85, 1.24, 2.93, 0.94, "p = 0.003", "Paired McNemar Test", "34 fixed vs 13 regressed (unseen)", false);
+
+    // Left: Accuracy Progression Bar Chart
+    addSectionLabel(s, pptx, 0.55, 2.34, 6.2, "Accuracy Progression Across Feature & Model Stages");
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 2.68,
+      w: 6.2,
+      h: 3.62,
+      fill: { color: PALETTE.white },
+      line: { color: PALETTE.border, width: 0.8 },
+    });
+    if (IMAGES.figResults) {
+      s.addImage({
+        data: IMAGES.figResults,
+        x: 0.65,
+        y: 2.75,
+        w: 6.0,
+        h: 3.48,
+        sizing: { type: "contain", w: 6.0, h: 3.48 },
+      });
+    }
+    s.addText(
+      "Training scale: 1,290 baseline → 1,749 (+462 INCLUDE) for 64 signs → 2,249 videos for promoted 144-sign checkpoint.",
+      {
+        x: 0.55,
+        y: 6.38,
+        w: 6.2,
+        h: 0.48,
+        fontFace: FONT_BODY,
+        fontSize: 9.0,
+        italic: true,
+        color: PALETTE.muted,
+      }
+    );
+
+    // Right: Verified 64-Sign vs Promoted 144-Sign Table + Calibration Insights
+    addSectionLabel(s, pptx, 7.0, 2.34, 5.78, "Verified 64-Sign vs. Promoted 144-Sign Checkpoint", PALETTE.teal);
+    s.addTable(
+      [
+        [hCell("Metric"), hCell("64-Sign Report"), hCell("144-Sign Promoted")],
+        [bCell("Full Held-Out Acc.", PALETTE.navy), "81.5% (314 videos)", bCell("87.2% (457 / 524)", PALETTE.teal)],
+        [bCell("Shared 314-Video Split", PALETTE.navy), "81.5%", bCell("84.7% (+3.2 pp)", PALETTE.teal)],
+        [bCell("Unseen Amrita Signers", PALETTE.navy), "76.5% (213 clips)", bCell("81.7% (+5.2 pp)", PALETTE.teal)],
+        [bCell("Macro Precision / Recall", PALETTE.navy), "84.4% / 81.1%", "Balanced across 144 cls"],
+        [bCell("Macro F1-Score", PALETTE.navy), "0.800", bCell("0.850 (+0.050)", PALETTE.teal)],
+        [bCell("CPU Inference Latency", PALETTE.navy), "11.2 ms (3-view)", "15.3 ms (3-seed ONNX)"],
+      ],
+      {
+        x: 7.0,
+        y: 2.7,
+        w: 5.78,
+        colW: [2.12, 1.74, 1.92],
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.36, 0.44, 0.44, 0.44, 0.44, 0.44, 0.44],
+        margin: [0.04, 0.08, 0.04, 0.08],
+        valign: "middle",
+      }
+    );
+
+    // Evidence-Gated Promotion Box
+    s.addShape(pptx.ShapeType.rect, {
+      x: 7.0,
+      y: 5.84,
+      w: 5.78,
+      h: 1.04,
+      fill: { color: PALETTE.surfaceAlt },
+      line: { color: PALETTE.border, width: 0.8 },
+    });
+    s.addText("Evidence-Gated Promotion & Calibration", {
+      x: 7.14,
+      y: 5.92,
+      w: 5.5,
+      h: 0.24,
+      fontFace: FONT_BODY,
+      fontSize: 9.8,
+      bold: true,
+      color: PALETTE.navy,
+    });
+    s.addText(
+      "• Expanding 2.25× in vocabulary (64 → 144 signs) improved—not degraded—accuracy on the identical shared 314-video benchmark (+3.2 pp).\n• Temperature scaling + abstention threshold suppresses low-confidence false commits.",
+      {
+        x: 7.14,
+        y: 6.18,
+        w: 5.5,
+        h: 0.64,
+        fontFace: FONT_BODY,
+        fontSize: 9.0,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.2,
+      }
+    );
+  }
+
+  // =========================================================================
+  // SLIDE 10: QUANTITATIVE RESULTS (2/2) — CONFUSIONS, ABLATION, LATENCY & AVATAR
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      10,
+      "EXPERIMENTAL RESULTS · PART 2",
+      "Ablations, Error Analysis, Continuous Latency & 3D Avatar Audit",
+      "Face-Landmark Ablation Proof, Top Confused Pairs, CPU Latency Budget, Kannada SOV Gain & Trajectory Cleaning"
+    );
+
+    // Left Top: Per-Class F1 Chart
+    addSectionLabel(s, pptx, 0.55, 1.24, 5.95, "Per-Class F1 Distribution & Face-Landmark Ablation");
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 1.56,
+      w: 5.95,
+      h: 2.52,
+      fill: { color: PALETTE.white },
+      line: { color: PALETTE.border, width: 0.8 },
+    });
+    if (IMAGES.figPerclass) {
+      s.addImage({
+        data: IMAGES.figPerclass,
+        x: 0.62,
+        y: 1.62,
+        w: 5.81,
+        h: 2.4,
+        sizing: { type: "contain", w: 5.81, h: 2.4 },
+      });
+    }
+
+    // Face Ablation Highlight Banner
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 4.18,
+      w: 5.95,
+      h: 0.62,
+      fill: { color: PALETTE.navy },
+      line: { color: PALETTE.navy, width: 0 },
+    });
+    s.addText(
+      "Face-Landmark Ablation: Removing the 21 face-anchor features drops accuracy from 66.8% → 47.8% (−19.0 pp), proving facial reference anchors are essential.",
+      {
+        x: 0.68,
+        y: 4.24,
+        w: 5.7,
+        h: 0.5,
+        fontFace: FONT_BODY,
+        fontSize: 9.2,
+        bold: true,
+        color: PALETTE.white,
+        valign: "middle",
+      }
+    );
+
+    // Left Bottom: Top Confused Pairs Table
+    s.addTable(
+      [
+        [hCell("Confused Pair"), hCell("Count"), hCell("Physical Cause")],
+        [bCell("EAT → NOSE", PALETTE.navy), "4", "Both touch face centerline near mouth/nose"],
+        [bCell("HELLO → GOOD", PALETTE.navy), "3", "Open palm near head/chin with outward sweep"],
+        [bCell("THANK YOU → SORRY", PALETTE.navy), "3", "Chin-to-chest trajectory overlap"],
+        [bCell("WATER → DRINK", PALETTE.navy), "2", "Shared cup-handshape toward mouth"],
+      ],
+      {
+        x: 0.55,
+        y: 4.92,
+        w: 5.95,
+        colW: [1.82, 0.72, 3.41],
+        fontFace: FONT_BODY,
+        fontSize: 8.9,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.32, 0.4, 0.4, 0.4, 0.4],
+        margin: [0.03, 0.07, 0.03, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Right Top: CPU Latency & Continuous Benchmarks Table
+    addSectionLabel(s, pptx, 6.83, 1.24, 5.95, "Real-Time CPU Latency & Continuous Sentence Metrics", PALETTE.teal);
+    s.addTable(
+      [
+        [hCell("Subsystem / Stage"), hCell("Measured Value"), hCell("Operating Context")],
+        [bCell("Feature Extraction", PALETTE.navy), "1.4 ms / frame", "Browser MediaPipe WASM (~30 fps)"],
+        [bCell("Isolated Single-View", PALETTE.navy), "3.8 ms / sign", "64-sign BiGRU ONNX on CPU"],
+        [bCell("Isolated 3-View / 3-Seed", PALETTE.navy), "11.2 / 15.3 ms", "64-sign TTA / 144-sign Promoted"],
+        [bCell("Continuous Greedy CTC", PALETTE.navy), "12.3 ms / clip", "2-layer BiGRU-CTC alignment"],
+        [bCell("Fused Sentence (λ=1.0)", PALETTE.navy), "37.0 ms (p95: 62 ms)", "69.4% unseen-round / 101 closed set"],
+        [bCell("Stillness Gate Window", PALETTE.navy), "280 ms tail", "Prevents premature sign splitting"],
+      ],
+      {
+        x: 6.83,
+        y: 1.58,
+        w: 5.95,
+        colW: [1.95, 1.65, 2.35],
+        fontFace: FONT_BODY,
+        fontSize: 9.0,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.42, 0.42, 0.42, 0.42, 0.42, 0.42],
+        margin: [0.03, 0.07, 0.03, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Right Bottom: Kannada SOV & 3D Avatar Trajectory Audit Cards
+    addSectionLabel(s, pptx, 6.83, 4.62, 5.95, "Kannada Meaning Layer & 3D Avatar Trajectory Audit", PALETTE.teal);
+
+    // 2 side-by-side impact blocks
+    s.addShape(pptx.ShapeType.rect, {
+      x: 6.83,
+      y: 4.98,
+      w: 2.88,
+      h: 1.86,
+      fill: { color: PALETTE.tealLight },
+      line: { color: PALETTE.teal, width: 0.8 },
+    });
+    s.addText("39.5% → 60.5%", {
+      x: 6.97,
+      y: 5.08,
+      w: 2.6,
+      h: 0.4,
+      fontFace: FONT_DISPLAY,
+      fontSize: 18,
+      bold: true,
+      color: PALETTE.teal,
+    });
+    s.addText("Kannada SOV Fluency", {
+      x: 6.97,
+      y: 5.48,
+      w: 2.6,
+      h: 0.24,
+      fontFace: FONT_BODY,
+      fontSize: 10,
+      bold: true,
+      color: PALETTE.navy,
+    });
+    s.addText(
+      "Natural grammatical phrasing across 43 counter/daily patterns vs. literal word-by-word gloss mapping, paired with kn-IN speech.",
+      {
+        x: 6.97,
+        y: 5.76,
+        w: 2.6,
+        h: 0.98,
+        fontFace: FONT_BODY,
+        fontSize: 8.9,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.2,
+      }
+    );
+
+    s.addShape(pptx.ShapeType.rect, {
+      x: 9.9,
+      y: 4.98,
+      w: 2.88,
+      h: 1.86,
+      fill: { color: PALETTE.surface },
+      line: { color: PALETTE.border, width: 0.8 },
+    });
+    s.addText("367 → 0 Drops", {
+      x: 10.04,
+      y: 5.08,
+      w: 2.6,
+      h: 0.4,
+      fontFace: FONT_DISPLAY,
+      fontSize: 18,
+      bold: true,
+      color: PALETTE.navy,
+    });
+    s.addText("3D Avatar Audit (161 Clips)", {
+      x: 10.04,
+      y: 5.48,
+      w: 2.6,
+      h: 0.24,
+      fontFace: FONT_BODY,
+      fontSize: 10,
+      bold: true,
+      color: PALETTE.teal,
+    });
+    s.addText(
+      "Cubic spline gap-fill + wrist outlier clamping eliminated all 367 sudden arm drops across 161 clips, sustaining smooth 60 fps WebGL IK.",
+      {
+        x: 10.04,
+        y: 5.76,
+        w: 2.6,
+        h: 0.98,
+        fontFace: FONT_BODY,
+        fontSize: 8.9,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.2,
+      }
+    );
+  }
+
+  // =========================================================================
+  // SLIDE 11: COMPARISON, SCALABILITY ROADMAP & DEAF ISL USER STUDY
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      11,
+      "BENCHMARKING & REVIEWER REVISIONS",
+      "Comparison with Prior Work, Scaling Beyond 144 & Deaf ISL Study",
+      "Addressing All Peer-Review Critiques Honestly: Vocabulary Scalability Roadmap & Live Pre-Registered Human Study (#study)"
+    );
+
+    // Top Table: Cross-Study Contextual Comparison
+    addSectionLabel(s, pptx, 0.55, 1.24, 12.23, "Contextual Comparison with Existing Sign Language Systems");
+    s.addTable(
+      [
+        [
+          hCell("System"),
+          hCell("Split Rigor"),
+          hCell("Vocab / Task"),
+          hCell("Bidirectional"),
+          hCell("Regional Lang."),
+          hCell("Edge CPU Privacy"),
+        ],
+        [
+          bCell("INCLUDE (2020)", PALETTE.navy),
+          "Clip-level / signer-mixed",
+          "263 isolated ISL",
+          "No (Sign → Eng)",
+          "English only",
+          "Offline GPU",
+        ],
+        [
+          bCell("ISL-CSLTR (2021)", PALETTE.navy),
+          "Multi-signer sentence",
+          "100 continuous ISL",
+          "No (Sign → Eng)",
+          "English only",
+          "Offline GPU",
+        ],
+        [
+          bCell("Camgoz SLT (2020)", PALETTE.navy),
+          "Signer-independent",
+          "DGS continuous",
+          "No (Sign → Ger)",
+          "German only",
+          "Cloud GPU",
+        ],
+        [
+          bCell("Silent Bridge (Ours)", PALETTE.teal),
+          bCell("Strict Unseen Signer", PALETTE.teal),
+          bCell("144 Iso (87.2%) + 101 Sent", PALETTE.teal),
+          bCell("Yes (3D Avatar)", PALETTE.teal),
+          bCell("Kannada SOV + TTS", PALETTE.teal),
+          bCell("Yes (147-D Browser)", PALETTE.teal),
+        ],
+      ],
+      {
+        x: 0.55,
+        y: 1.58,
+        w: 12.23,
+        colW: [2.0, 2.05, 2.45, 1.8, 1.93, 2.0],
+        fontFace: FONT_BODY,
+        fontSize: 9.0,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.38, 0.38, 0.38, 0.42],
+        margin: [0.03, 0.07, 0.03, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Bottom Left: 5-Axis Scalability Roadmap (Reviewer Revision 1)
+    addSectionLabel(s, pptx, 0.55, 3.68, 6.0, "Revision 1 · Scaling Roadmap (144 → 500–2,000+ Signs)");
+    const scaleAxes = [
+      ["1. Proven 64 → 144 Jump", "2.25× vocabulary expansion raised shared-split accuracy from 81.5% → 84.7% and full held-out to 87.2%."],
+      ["2. Metric Embeddings + HNSW", "Replace flat softmax with ArcFace/cosine embeddings + approximate nearest-neighbor retrieval for 2,000+ classes."],
+      ["3. Phonological Factorization", "Auxiliary handshape, location & facial NMM heads resolve near-homophone confusions (EAT/NOSE, HELLO/GOOD)."],
+      ["4. O(C·d) Linear Head Budget", "Backbone cost is constant; scaling output head to 2,000 signs adds < 0.4 ms on CPU."],
+      ["5. HTTP-Range + Few-Shot", "Selective corpus streaming (86.7% saved) + instant browser prototype onboarding (cos ≥ 0.82)."],
+    ];
+    s.addTable(
+      scaleAxes.map(([a, b]) => [bCell(a, PALETTE.navy), b]),
+      {
+        x: 0.55,
+        y: 4.02,
+        w: 6.0,
+        colW: [2.0, 4.0],
+        fontFace: FONT_BODY,
+        fontSize: 8.8,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.borderLight, pt: 0.5 },
+        rowH: [0.55, 0.55, 0.55, 0.55, 0.55],
+        margin: [0.03, 0.07, 0.03, 0.07],
+        valign: "middle",
+      }
+    );
+
+    // Bottom Right: Pre-Registered Deaf ISL User Study (Reviewer Revision 2)
+    addSectionLabel(s, pptx, 6.83, 3.68, 5.95, "Revision 2 · Live Deaf ISL User Study (#study)", PALETTE.teal);
+    s.addShape(pptx.ShapeType.rect, {
+      x: 6.83,
+      y: 4.02,
+      w: 5.95,
+      h: 2.75,
+      fill: { color: PALETTE.tealLight },
+      line: { color: PALETTE.teal, width: 0.9 },
+    });
+    s.addText(
+      "Implemented Live in Web App (#study) — Zero Fabricated Human Scores",
+      {
+        x: 6.99,
+        y: 4.12,
+        w: 5.65,
+        h: 0.28,
+        fontFace: FONT_BODY,
+        fontSize: 10,
+        bold: true,
+        color: PALETTE.navy,
+      }
+    );
+    const studyBullets = [
+      "• Cohort & Ethics: Pre-registered N = 8–12 adult Deaf ISL signers in Bengaluru facilitated by an accredited ISL interpreter (informed consent + anonymized IDs).",
+      "• Task 1 (Avatar Clarity): 18 blind randomized avatar clips — 4-AFC comprehension, 1–5 visual clarity Likert, and 5 structured error tags (handshape, speed, location, timing, missing NMM).",
+      "• Task 2 (Sentence Gist): 5 bidirectional Kannada ↔ ISL sentences rated on gist accuracy & naturalness.",
+      "• Task 3 (Counter Role-Play & SUS): End-to-end public desk scenario + standard 10-item Brooke SUS (0–100) with one-click JSON/CSV research export.",
+      "• Integrity Rule: Paper & app report objective avatar metrics (367 → 0 drops) today and strictly await real IRB-consented sessions before publishing human SUS/comprehension means.",
+    ];
+    s.addText(studyBullets.join("\n"), {
+      x: 6.99,
+      y: 4.44,
+      w: 5.65,
+      h: 2.25,
+      fontFace: FONT_BODY,
+      fontSize: 8.85,
+      color: PALETTE.body,
+      lineSpacingMultiple: 1.22,
+      valign: "top",
+    });
+  }
+
+  // =========================================================================
+  // SLIDE 12: DELIVERABLES, CONCLUSION & EXECUTIVE CLOSING
+  // =========================================================================
+  {
+    const s = pptx.addSlide();
+    addBoldHeader(
+      s,
+      pptx,
+      12,
+      "RESEARCH IMPACT & CONCLUSION",
+      "Academic Deliverables, Key Contributions & Conclusion",
+      "Verified 6-Page NCDTE Conference Manuscript, 79-Page BMSCE CSBS Report & Deployed Bidirectional System"
+    );
+
+    // Top Table: Verified Deliverables
+    addSectionLabel(s, pptx, 0.55, 1.24, 12.23, "Verified Academic & Software Deliverables");
+    s.addTable(
+      [
+        [hCell("Deliverable"), hCell("Verified Specification & Audit Status")],
+        [
+          bCell("NCDTE Conference Paper (6 Pages)", PALETTE.navy),
+          "Single-column 12pt Times New Roman, 2.5/2.0 cm margins, 5 tables, 4 figures, 15 numbered references. Addressed all 3 reviewer revisions: (1) 144-sign promotion + 5-axis scaling, (2) Avatar audit + live #study protocol with zero fabricated scores, (3) Condensed from ~6,000 words to strict 6-page conference limit.",
+        ],
+        [
+          bCell("B.E. Final Project Report (79 Pages)", PALETTE.navy),
+          "77-page BMSCE CSBS thesis (27,910 words, 100% Times New Roman, 21 embedded figures/screens) + 2-page iThenticate certificate (6% AI index, submission trn:oid:::3618:158338407).",
+        ],
+        [
+          bCell("Shipped Bidirectional Web Platform", PALETTE.navy),
+          "16 modules live in React + Three.js + ONNX / FastAPI: 144-sign promoted BiGRU, 101-sentence BiGRU-CTC, Kannada SOV + kn-IN speech, 161-clip 3D avatar, few-shot custom signs, and live #study harness.",
+        ],
+      ],
+      {
+        x: 0.55,
+        y: 1.58,
+        w: 12.23,
+        colW: [3.15, 9.08],
+        fontFace: FONT_BODY,
+        fontSize: 9.2,
+        color: PALETTE.body,
+        border: { type: "solid", color: PALETTE.border, pt: 0.5 },
+        rowH: [0.34, 0.78, 0.56, 0.58],
+        margin: [0.04, 0.08, 0.04, 0.08],
+        valign: "middle",
+      }
+    );
+
+    // Middle 2-Column Split: Conclusion & Honest Boundaries
+    addSectionLabel(s, pptx, 0.55, 4.02, 6.0, "Core Takeaways");
+    s.addText(
+      "• Practical Real-Time Accessibility: Proves commodity laptops can run bidirectional ISL ↔ Kannada translation with 3D avatar feedback at sub-40 ms CPU latency and zero video upload.\n• Rigorous Empirical Governance: Unseen-signer evaluation, MD5 deduplication, McNemar validation (p = 0.003), and evidence-gated model promotion (64 → 144 signs).\n• Ready for Field Expansion: Extensible to Telugu, Tamil, Malayalam, offline rural clinic PWA tablets, and formal N = 8–12 Deaf community evaluation.",
+      {
+        x: 0.55,
+        y: 4.38,
+        w: 6.0,
+        h: 1.32,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.25,
+      }
+    );
+
+    addSectionLabel(s, pptx, 6.83, 4.02, 5.95, "Transparent Scope & Next Milestones", PALETTE.teal);
+    s.addText(
+      "• Continuous Decoding Scope: Current BiGRU-CTC fusion operates over a 101-sentence closed set; next step is open-vocabulary prefix-beam search with a Kannada LM.\n• Human Evaluation Execution: Live #study module is fully engineered and tested; next milestone is completing IRB-consented sessions with Bengaluru Deaf ISL signers.\n• Regional Dialect Coverage: Future collection targets multi-lighting webcam cohorts across Karnataka.",
+      {
+        x: 6.83,
+        y: 4.38,
+        w: 5.95,
+        h: 1.32,
+        fontFace: FONT_BODY,
+        fontSize: 9.3,
+        color: PALETTE.body,
+        lineSpacingMultiple: 1.25,
+      }
+    );
+
+    // Bold Deep Navy Closing Banner
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 5.84,
+      w: 12.23,
+      h: 1.08,
+      fill: { color: PALETTE.navy },
+      line: { color: PALETTE.navy, width: 0 },
+    });
+    s.addShape(pptx.ShapeType.rect, {
+      x: 0.55,
+      y: 5.84,
+      w: 0.14,
+      h: 1.08,
+      fill: { color: PALETTE.gold },
+      line: { color: PALETTE.gold, width: 0 },
+    });
+    s.addText("Thank You  —  Questions & Live System Demonstration", {
+      x: 0.9,
+      y: 5.94,
+      w: 11.6,
+      h: 0.42,
+      fontFace: FONT_DISPLAY,
+      fontSize: 19,
+      bold: true,
+      color: PALETTE.white,
+      valign: "middle",
+    });
+    s.addText(
+      "H S Thanush (1BM23CB066)  ·  Kiran M K (1BM23CB068)  ·  Manoj G U (1BM24CB401)   |   Guide: Prof. Tejaswini K   |   Dept. of CSBS, BMSCE",
+      {
+        x: 0.9,
+        y: 6.42,
+        w: 11.6,
+        h: 0.34,
+        fontFace: FONT_BODY,
+        fontSize: 10.2,
+        bold: true,
+        color: "5EEAD4",
+        valign: "middle",
+      }
+    );
+  }
+
+  const outPptx = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.pptx");
+  await pptx.writeFile({ fileName: outPptx });
   fs.mkdirSync(DOCS_PAPER_DIR, { recursive: true });
-
-  const outReportPptx = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.pptx");
-  const outDocsPptx = path.join(DOCS_PAPER_DIR, "SILENT_BRIDGE_Presentation_10Slides.pptx");
-
-  await pptx.writeFile({ fileName: outReportPptx });
-  fs.copyFileSync(outReportPptx, outDocsPptx);
-  console.log(`[generate-ppt] Wrote ${TOTAL_SLIDES}-slide PPTX -> ${outReportPptx}`);
+  fs.copyFileSync(outPptx, path.join(DOCS_PAPER_DIR, "SILENT_BRIDGE_Presentation_10Slides.pptx"));
+  console.log(`[generate-ppt] Wrote bold 12-slide PPTX -> ${outPptx}`);
 }
 
-function generateHtmlSlides() {
+function slideChrome(num, kicker, title, subtitle, bodyHtml) {
+  const pct = ((num / TOTAL_SLIDES) * 100).toFixed(2);
+  return `
+  <section class="ppt-slide">
+    <div class="top-bar"><div class="top-bar-fill" style="width:${pct}%"></div></div>
+    <header class="slide-head">
+      <div class="kicker">${String(num).padStart(2, "0")} &nbsp;/&nbsp; ${kicker}</div>
+      <h2>${title}</h2>
+      <p class="subtitle">${subtitle}</p>
+    </header>
+    <div class="slide-body">
+      ${bodyHtml}
+    </div>
+    <footer class="slide-foot">
+      <span>SILENT BRIDGE · Real-Time Bidirectional ISL &amp; Kannada Translation · Dept. of CSBS, BMSCE</span>
+      <span class="slide-num">${num} / ${TOTAL_SLIDES}</span>
+    </footer>
+  </section>`;
+}
+
+function generateHtmlDeck() {
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SILENT BRIDGE — 14-Slide B.E. Project Presentation Deck (Referenced from 78-Page CSBS Report)</title>
-  <style>
-    @font-face {
-      font-family: "Times New Roman";
-      src: local("Times New Roman"), local("TimesNewRomanPSMT"), url("/report/fonts/LiberationSerif-Regular.ttf") format("truetype");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "Times New Roman";
-      src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), url("/report/fonts/LiberationSerif-Bold.ttf") format("truetype");
-      font-weight: 700;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "Times New Roman";
-      src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), url("/report/fonts/LiberationSerif-Italic.ttf") format("truetype");
-      font-weight: 400;
-      font-style: italic;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "CSBS-Kannada";
-      src: url("/report/fonts/NotoSerifKannada-Regular.ttf") format("truetype");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: "CSBS-Kannada";
-      src: url("/report/fonts/NotoSerifKannada-Bold.ttf") format("truetype");
-      font-weight: 700;
-      font-style: normal;
-      font-display: swap;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SILENT BRIDGE — 12-Slide Executive Presentation</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1e293b;
+    font-family: 'Calibri', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #1e293b;
+    padding: 20px 0 36px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .ppt-slide {
+    width: 1280px;
+    height: 720px;
+    margin: 0 auto 24px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 18px 42px rgba(2, 6, 23, 0.45);
+  }
+  .top-bar {
+    height: 7px;
+    width: 100%;
+    background: #0b192c;
+    flex-shrink: 0;
+  }
+  .top-bar-fill {
+    height: 100%;
+    background: #0f766e;
+  }
+  .slide-head {
+    padding: 15px 46px 10px;
+    border-bottom: 1px solid #cbd5e1;
+    flex-shrink: 0;
+  }
+  .kicker {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #0f766e;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .slide-head h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0b192c;
+    line-height: 1.18;
+  }
+  .slide-head .subtitle {
+    font-size: 13px;
+    color: #475569;
+    margin-top: 3px;
+  }
+  .slide-body {
+    flex: 1;
+    padding: 14px 46px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    min-height: 0;
+  }
+  .slide-foot {
+    padding: 7px 46px 10px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10.5px;
+    color: #64748b;
+    flex-shrink: 0;
+  }
+  .slide-num {
+    font-weight: 700;
+    color: #0b192c;
+    font-variant-numeric: tabular-nums;
+  }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Times New Roman", "CSBS-Kannada", Times, serif !important;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    body {
-      background: #1e293b;
-      color: #0f172a;
-      font-family: "Times New Roman", "CSBS-Kannada", Times, serif;
-      padding: 64px 0 36px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-    }
-    .ppt-toolbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 50px;
-      background: #0f172a;
-      border-bottom: 2px solid #2563eb;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      z-index: 1000;
-      font-size: 13.5px;
-    }
-    .ppt-toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .ppt-btn {
-      background: #2563eb;
-      color: #ffffff;
-      text-decoration: none;
-      border: 1px solid #60a5fa;
-      padding: 6px 14px;
-      border-radius: 5px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .ppt-btn.secondary {
-      background: #047857;
-      border-color: #34d399;
-    }
-    .ppt-btn.print-btn {
-      background: #334155;
-      border-color: #64748b;
-    }
+  /* Cover Slide */
+  .ppt-slide.cover {
+    background: #0b192c;
+    color: #ffffff;
+    padding: 44px 58px 28px 72px;
+    justify-content: space-between;
+  }
+  .cover-rail {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: #0f766e;
+  }
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .gold-rule {
+    width: 118px;
+    height: 4px;
+    background: #d97706;
+    margin-bottom: 12px;
+  }
+  .cover-inst {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #e2e8f0;
+  }
+  .cover-dept {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+  .cover-logo-box {
+    width: 106px;
+    height: 106px;
+    background: #ffffff;
+    padding: 8px;
+    border: 1px solid #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cover-logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .cover-hero h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    line-height: 1.05;
+  }
+  .cover-hero .hero-sub {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    color: #cbd5e1;
+    line-height: 1.28;
+    margin-top: 10px;
+    max-width: 980px;
+  }
+  .cover-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .cover-stat {
+    background: #162c46;
+    border: 1px solid #26415e;
+    padding: 13px 16px;
+  }
+  .cover-stat .val {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #5eead4;
+    font-variant-numeric: tabular-nums;
+  }
+  .cover-stat .lbl {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 4px;
+  }
+  .cover-stat .sub {
+    font-size: 10.5px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+  .cover-meta {
+    border-top: 1px solid #26415e;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .meta-kicker {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #f59e0b;
+    margin-bottom: 5px;
+  }
+  .cover-guide-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .cover-guide-sub {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.45;
+    margin-top: 3px;
+  }
+  .cover-team {
+    text-align: right;
+  }
+  .cover-team-list {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.45;
+    font-variant-numeric: tabular-nums;
+  }
+  .cover-foot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-top: 6px;
+  }
+
+  /* Common Components */
+  .sec-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0b192c;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #cbd5e1;
+    margin-bottom: 7px;
+  }
+  .sec-title.teal { color: #0f766e; }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .two-col-wide-left {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .two-col-wide-right {
+    display: grid;
+    grid-template-columns: 0.84fr 1.16fr;
+    gap: 22px;
+    flex: 1;
+    min-height: 0;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  table.clean {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  table.clean th {
+    background: #0b192c;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: left;
+    padding: 6px 9px;
+    border: 1px solid #0b192c;
+  }
+  table.clean td {
+    padding: 5.5px 9px;
+    border: 1px solid #cbd5e1;
+    vertical-align: middle;
+    line-height: 1.28;
+  }
+  table.clean tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  table.compact td {
+    padding: 4.5px 8px;
+    font-size: 11.2px;
+  }
+  .lead-p {
+    font-size: 12.2px;
+    line-height: 1.38;
+    color: #1e293b;
+    margin-bottom: 8px;
+  }
+  .obj-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .obj-item {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+  }
+  .obj-item:nth-child(even) { background: #ffffff; }
+  .obj-num {
+    background: #0b192c;
+    color: #5eead4;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .obj-body {
+    padding: 7px 11px;
+  }
+  .obj-body strong {
+    display: block;
+    font-size: 12.8px;
+    color: #0b192c;
+    margin-bottom: 2px;
+  }
+  .obj-body p {
+    font-size: 11.1px;
+    line-height: 1.28;
+    color: #334155;
+  }
+  .navy-band {
+    background: #0b192c;
+    color: #ffffff;
+    padding: 10px 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    flex-shrink: 0;
+  }
+  .navy-band .bk {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #5eead4;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .navy-band .bv {
+    font-size: 11.6px;
+    line-height: 1.3;
+    color: #f1f5f9;
+  }
+  .teal-callout {
+    background: #f0fdfa;
+    border: 1px solid #0f766e;
+    padding: 9px 14px;
+    font-size: 11.6px;
+    line-height: 1.35;
+    color: #0b192c;
+    flex-shrink: 0;
+  }
+  .navy-callout {
+    background: #0b192c;
+    color: #ffffff;
+    padding: 9px 14px;
+    font-size: 11.8px;
+    line-height: 1.35;
+    flex-shrink: 0;
+  }
+  .arch-frame {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    padding: 8px 12px;
+    height: 332px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .arch-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    flex: 1;
+  }
+  .tier-card {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    padding: 10px 13px;
+  }
+  .tier-card.dark {
+    background: #0b192c;
+    border-color: #0b192c;
+    color: #e2e8f0;
+  }
+  .tier-card .tk {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #0f766e;
+    margin-bottom: 5px;
+  }
+  .tier-card.dark .tk { color: #5eead4; }
+  .tier-card p {
+    font-size: 11.2px;
+    line-height: 1.35;
+  }
+  .schema-bar {
+    display: grid;
+    grid-template-columns: 42.9fr 42.9fr 14.2fr;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .schema-seg {
+    padding: 9px 12px;
+    color: #ffffff;
+  }
+  .schema-seg strong { display: block; font-size: 12px; }
+  .schema-seg span { display: block; font-size: 10.2px; color: #e2e8f0; margin-top: 2px; }
+  .seg-navy { background: #0b192c; }
+  .seg-lapis { background: #1e3a8a; }
+  .seg-teal { background: #0f766e; }
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .concept-card {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    padding: 10px 13px;
+  }
+  .concept-card.teal {
+    background: #f0fdfa;
+    border-color: #0f766e;
+  }
+  .concept-card h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13.5px;
+    color: #0b192c;
+    margin-bottom: 4px;
+  }
+  .concept-card.teal h4 { color: #0f766e; }
+  .concept-card p {
+    font-size: 11.2px;
+    line-height: 1.34;
+    color: #334155;
+  }
+
+  .mod-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex: 1;
+  }
+  .mod-card {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+  }
+  .mod-head {
+    background: #0b192c;
+    color: #ffffff;
+    font-size: 11.2px;
+    font-weight: 700;
+    padding: 6px 10px;
+  }
+  .mod-head.teal { background: #0f766e; }
+  .mod-card ul {
+    list-style: none;
+    padding: 8px 10px;
+    font-size: 11px;
+    line-height: 1.48;
+    color: #1e293b;
+  }
+
+  .ui-frame {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    padding: 6px;
+    height: 318px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ui-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .ui-cap {
+    font-size: 11.2px;
+    line-height: 1.34;
+    color: #334155;
+    margin-top: 6px;
+  }
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex-shrink: 0;
+  }
+  .kpi-box {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    padding: 9px 13px;
+  }
+  .kpi-box.dark {
+    background: #0b192c;
+    border-color: #0b192c;
+    color: #ffffff;
+  }
+  .kpi-box .kv {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0b192c;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-box.dark .kv { color: #ffffff; }
+  .kpi-box .kl {
+    font-size: 11.2px;
+    font-weight: 700;
+    color: #0f766e;
+    margin-top: 2px;
+  }
+  .kpi-box.dark .kl { color: #5eead4; }
+  .kpi-box .ks {
+    font-size: 10px;
+    color: #475569;
+    margin-top: 2px;
+  }
+  .kpi-box.dark .ks { color: #cbd5e1; }
+
+  .chart-frame {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    padding: 6px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chart-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .note-box {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    padding: 8px 11px;
+    font-size: 11px;
+    line-height: 1.35;
+    color: #1e293b;
+  }
+  .mini-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex: 1;
+  }
+  .impact-box {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    padding: 10px 12px;
+  }
+  .impact-box.teal {
+    background: #f0fdfa;
+    border-color: #0f766e;
+  }
+  .impact-box .iv {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b192c;
+  }
+  .impact-box.teal .iv { color: #0f766e; }
+  .impact-box .il {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #0b192c;
+    margin: 3px 0 4px;
+  }
+  .impact-box p {
+    font-size: 10.8px;
+    line-height: 1.34;
+    color: #334155;
+  }
+  .study-panel {
+    background: #f0fdfa;
+    border: 1px solid #0f766e;
+    padding: 10px 13px;
+    flex: 1;
+  }
+  .study-panel h4 {
+    font-size: 12px;
+    color: #0b192c;
+    margin-bottom: 6px;
+  }
+  .study-panel ul {
+    list-style: disc;
+    padding-left: 16px;
+    font-size: 10.9px;
+    line-height: 1.38;
+    color: #1e293b;
+  }
+  .study-panel li + li { margin-top: 4px; }
+
+  .bullet-list {
+    list-style: disc;
+    padding-left: 17px;
+    font-size: 11.4px;
+    line-height: 1.4;
+    color: #1e293b;
+  }
+  .bullet-list li + li { margin-top: 5px; }
+  .closing-banner {
+    background: #0b192c;
+    border-left: 10px solid #d97706;
+    color: #ffffff;
+    padding: 13px 20px;
+    flex-shrink: 0;
+  }
+  .closing-banner h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    color: #ffffff;
+  }
+  .closing-banner p {
+    font-size: 12px;
+    font-weight: 700;
+    color: #5eead4;
+    margin-top: 5px;
+  }
+  .hl-teal { color: #0f766e; font-weight: 700; }
+  .hl-navy { color: #0b192c; font-weight: 700; }
+
+  @media print {
+    body { background: #ffffff; padding: 0; }
     .ppt-slide {
-      width: 1120px;
-      height: 630px;
-      background: #ffffff;
-      border-radius: 6px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.48);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
+      margin: 0;
+      box-shadow: none;
+      width: 13.333in;
+      height: 7.5in;
       page-break-after: always;
       break-after: page;
     }
-    .slide-header {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 10px 24px;
-      border-bottom: 4px solid #2563eb;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      height: 72px;
-      flex-shrink: 0;
-    }
-    .slide-badge {
-      background: #2563eb;
-      border: 1px solid #93c5fd;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 13.5px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-    .slide-header-text {
-      flex: 1;
-    }
-    .slide-header-text h2 {
-      font-size: 21px;
-      font-weight: 700;
-      line-height: 1.15;
-      color: #ffffff;
-    }
-    .slide-header-text p {
-      font-size: 12.5px;
-      font-style: italic;
-      color: #93c5fd;
-      margin-top: 2px;
-    }
-    .chapter-pill {
-      background: #1e293b;
-      border: 1px solid #60a5fa;
-      color: #dbeafe;
-      font-weight: 700;
-      font-size: 11.5px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-    .slide-body {
-      flex: 1;
-      padding: 12px 22px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow: hidden;
-      gap: 10px;
-    }
-    .slide-footer {
-      height: 30px;
-      background: #f1f5f9;
-      border-top: 1px solid #cbd5e1;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11.2px;
-      color: #334155;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .v-card {
-      border: 1.5px solid #cbd5e1;
-      border-radius: 7px;
-      background: #f8fafc;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .v-card-head {
-      padding: 6px 12px;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 13px;
-      text-align: center;
-      background: #1e3a8a;
-      flex-shrink: 0;
-    }
-    .v-card-body {
-      padding: 10px 13px;
-      font-size: 12.6px;
-      line-height: 1.38;
-      color: #0f172a;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .v-card-body ul {
-      padding-left: 16px;
-    }
-    .v-card-body li {
-      margin-bottom: 5px;
-    }
-    .ppt-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11.8px;
-    }
-    .ppt-table th {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 5.5px 8px;
-      text-align: left;
-      border: 1px solid #334155;
-      font-weight: 700;
-    }
-    .ppt-table td {
-      padding: 5px 8px;
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
-    }
-    .ppt-table tr.highlight td {
-      background: #dcfce7;
-      color: #065f46;
-      font-weight: 700;
-    }
-    .ppt-table tr.subhighlight td {
-      background: #eff6ff;
-      color: #1e3a8a;
-      font-weight: 700;
-    }
-    .pipeline-flow {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      align-items: center;
-    }
-    .pipe-step {
-      width: 100%;
-      background: #ffffff;
-      border: 1.5px solid #2563eb;
-      border-radius: 5px;
-      padding: 5px 10px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #0f172a;
-      text-align: center;
-    }
-    .pipe-step.green {
-      border-color: #059669;
-    }
-    .pipe-arrow {
-      font-size: 14px;
-      font-weight: 700;
-      color: #1d4ed8;
-      line-height: 1;
-    }
-    .pipe-arrow.green {
-      color: #047857;
-    }
-    .summary-banner {
-      background: #0f172a;
-      border: 1.5px solid #f59e0b;
-      color: #f8fafc;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: center;
-      line-height: 1.35;
-      flex-shrink: 0;
-    }
-    @media print {
-      @page {
-        size: 1120px 630px;
-        margin: 0;
-      }
-      body {
-        background: #ffffff;
-        padding: 0;
-        gap: 0;
-      }
-      .ppt-toolbar {
-        display: none !important;
-      }
-      .ppt-slide {
-        box-shadow: none;
-        border-radius: 0;
-        margin: 0;
-      }
-    }
-  </style>
+    .ppt-slide:last-child { page-break-after: auto; break-after: auto; }
+  }
+</style>
 </head>
 <body>
-  <div class="ppt-toolbar">
+
+  <!-- SLIDE 1: BOLD EXECUTIVE COVER -->
+  <section class="ppt-slide cover">
+    <div class="cover-rail"></div>
+    <div class="cover-top">
+      <div>
+        <div class="gold-rule"></div>
+        <div class="cover-inst">B.M.S. COLLEGE OF ENGINEERING, BENGALURU</div>
+        <div class="cover-dept">Department of Computer Science and Business Systems &nbsp;·&nbsp; B.E. Final Year Project &amp; NCDTE Conference Research</div>
+      </div>
+      ${IMAGES.logo ? `<div class="cover-logo-box"><img src="${IMAGES.logo}" alt="BMSCE Logo" /></div>` : ""}
+    </div>
+
+    <div class="cover-hero">
+      <h1>SILENT BRIDGE</h1>
+      <div class="hero-sub">
+        <span class="report-project-title">Real-Time Bidirectional Indian Sign Language and Kannada Translation with 3D Avatar</span>
+      </div>
+    </div>
+
+    <div class="cover-stats">
+      <div class="cover-stat">
+        <div class="val">87.2%</div>
+        <div class="lbl">Promoted 144-Sign Accuracy</div>
+        <div class="sub">81.7% unseen Amrita · F1 0.850</div>
+      </div>
+      <div class="cover-stat">
+        <div class="val">147-D</div>
+        <div class="lbl">Browser-Local Landmarks</div>
+        <div class="sub">Zero raw video leaves device</div>
+      </div>
+      <div class="cover-stat">
+        <div class="val">161 Clips</div>
+        <div class="lbl">3D Analytic IK Avatar</div>
+        <div class="sub">367 → 0 arm drops · 60 fps</div>
+      </div>
+      <div class="cover-stat">
+        <div class="val">6p + 79p</div>
+        <div class="lbl">NCDTE Paper &amp; CSBS Report</div>
+        <div class="sub">6% AI iThenticate · #study live</div>
+      </div>
+    </div>
+
     <div>
-      <strong>B.M.S. College of Engineering — Dept. of CSBS</strong> · 14-Slide B.E. Project Presentation Deck (Referenced from 78-Page Report)
-    </div>
-    <div class="ppt-toolbar-actions">
-      <a class="ppt-btn" href="/api/ppt/download-pptx" data-preload-url="/api/ppt/download-pptx" download="SILENT_BRIDGE_Presentation.pptx">⬇ Download PowerPoint (.pptx)</a>
-      <a class="ppt-btn secondary" href="/api/ppt/download-pdf" data-preload-url="/api/ppt/download-pdf" download="SILENT_BRIDGE_Presentation.pdf">⬇ Download PDF (14 Slides)</a>
-      <button class="ppt-btn print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 1: CLEAN ACADEMIC TITLE SLIDE (COLLEGE NAME, TITLE, TEAM)       -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-1" data-slide="1" style="padding: 18px;">
-    <div style="border: 2.5px solid #000; padding: 4px; height: 100%; width: 100%;">
-      <div style="border: 1px solid #000; height: 100%; width: 100%; padding: 18px 28px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center;">
+      <div class="cover-meta">
         <div>
-          <div style="font-size: 26px; font-weight: 700; color: #6B3400; letter-spacing: 0.4px;">
-            B.M.S. COLLEGE OF ENGINEERING
-          </div>
-          <div style="font-size: 15px; font-weight: 700; color: #6B3400; line-height: 1.35; margin-top: 3px;">
-            (Autonomous Institute Affiliated to VTU)<br/>
-            Bull Temple Road, Basavanagudi, Bangalore – 560019
-          </div>
-        </div>
-
-        <div style="margin: 4px 0;">
-          ${IMAGES.logo ? `<img src="${IMAGES.logo}" alt="BMSCE Emblem" style="width: 76px; height: 76px; object-fit: contain;" />` : ""}
-        </div>
-
-        <div>
-          <div style="font-size: 13.5px; font-style: italic; color: #000000; margin-bottom: 4px;">
-            A Major Project Presentation on
-          </div>
-          <h1 class="report-project-title" style="font-size: 21.5px; font-weight: 700; color: #000000; line-height: 1.28; max-width: 960px;">
-            Silent Bridge: Real-Time Bidirectional Indian Sign Language And Kannada Translation With 3D Avatar
-          </h1>
-          <div style="font-size: 13.5px; font-weight: 700; color: #1e3a8a; margin-top: 8px; letter-spacing: 0.3px;">
-            BACHELOR OF ENGINEERING IN COMPUTER SCIENCE AND BUSINESS SYSTEMS
+          <div class="meta-kicker">UNDER THE GUIDANCE OF</div>
+          <div class="cover-guide-name">Prof. Tejaswini K</div>
+          <div class="cover-guide-sub">
+            Assistant Professor, Department of CSBS<br />
+            HoD: Dr. R Ashok Kumar &nbsp;·&nbsp; Principal: Dr. Bheemsha Arya
           </div>
         </div>
-
-        <div class="grid-2" style="width: 100%; max-width: 960px; gap: 24px; margin: 6px 0;">
-          <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 16px;">
-            <div style="font-size: 12.5px; font-style: italic; font-weight: 700; color: #334155; margin-bottom: 5px;">Submitted by:</div>
-            <div style="font-size: 15px; font-weight: 700; color: #000000; line-height: 1.48;">
-              H S Thanush (1BM23CB066)<br/>
-              Kiran M K (1BM23CB068)<br/>
-              Manoj G U (1BM24CB401)
-            </div>
-          </div>
-
-          <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 16px; display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 12.5px; font-style: italic; font-weight: 700; color: #334155; margin-bottom: 5px;">Under the guidance of:</div>
-            <div style="font-size: 16px; font-weight: 700; color: #000000;">Prof. Tejaswini K</div>
-            <div style="font-size: 13px; font-weight: 700; color: #334155; margin-top: 2px;">Assistant Professor, Department of CSBS</div>
-            <div style="font-size: 11.8px; font-weight: 700; color: #1e3a8a; margin-top: 6px; border-top: 1px solid #e2e8f0; padding-top: 4px;">
-              HoD: Dr. R Ashok Kumar &nbsp;|&nbsp; Principal: Dr. Beemsha Arya
-            </div>
+        <div class="cover-team">
+          <div class="meta-kicker">PRESENTED BY (TEAM CSBS)</div>
+          <div class="cover-team-list">
+            H S Thanush &nbsp;—&nbsp; 1BM23CB066<br />
+            Kiran M K &nbsp;—&nbsp; 1BM23CB068<br />
+            Manoj G U &nbsp;—&nbsp; 1BM24CB401
           </div>
         </div>
-
-        <div>
-          <div style="font-size: 15px; font-weight: 700; color: #C25E00;">
-            Department of Computer Science and Business Systems
-          </div>
-          <div style="font-size: 13px; font-weight: 700; color: #000000; margin-top: 2px;">
-            B.M.S. College of Engineering, Bull Temple Road, Basavanagudi, Bangalore – 560019 &nbsp;·&nbsp; 2026–2027
-          </div>
-        </div>
+      </div>
+      <div class="cover-foot">
+        <span>Academic Year 2026–2027</span>
+        <span style="font-weight:700">1 / ${TOTAL_SLIDES}</span>
       </div>
     </div>
   </section>
 
-  <!-- ===================================================================== -->
-  <!-- SLIDE 2: CONTENT TABLE (PRESENTATION AGENDA)                          -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-2" data-slide="2">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 2 / 14</div>
-      <div class="slide-header-text">
-        <h2>Table of Contents (Presentation Agenda)</h2>
-        <p>Structured Sequence of Sections Covered in This Presentation</p>
+  <!-- SLIDE 2: MOTIVATION, PROBLEM STATEMENT & OBJECTIVES -->
+  ${slideChrome(
+    2,
+    "CONTEXT &amp; SCOPE",
+    "Motivation, Problem Statement &amp; Core Objectives",
+    "Bridging the Real-Time Indian Sign Language and Regional Kannada Communication Divide",
+    `
+    <div class="two-col">
+      <div class="col">
+        <div class="sec-title">The Communication &amp; Technical Gap</div>
+        <p class="lead-p">Over 63 million people in India experience hearing loss, yet public counters (hospitals, banks, railway desks) in Karnataka lack certified ISL interpreters. Existing sign tools target English ASL only, require cloud GPUs, or evaluate only on seen signers.</p>
+        <table class="clean compact">
+          <thead><tr><th style="width:34%">Core Bottleneck</th><th>Real-World Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="hl-navy">One-Way &amp; English-Only</td><td>Most research outputs raw English glosses, excluding Kannada speakers.</td></tr>
+            <tr><td class="hl-navy">Signer Overfitting</td><td>Random clip splits leak signer identity and fail on unseen users.</td></tr>
+            <tr><td class="hl-navy">Missing Facial Cues</td><td>Hands-only models confuse location- and expression-dependent signs.</td></tr>
+            <tr><td class="hl-navy">Cloud Privacy Risk</td><td>Uploading raw webcam video to remote servers compromises user privacy.</td></tr>
+            <tr><td class="hl-navy">Unnatural Avatars</td><td>Raw retargeted clips suffer shoulder drops and frozen arm artifacts.</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="chapter-pill">Report Table of Contents</div>
+      <div class="col">
+        <div class="sec-title teal">Four Engineering &amp; Accessibility Objectives</div>
+        <div class="obj-list">
+          <div class="obj-item"><div class="obj-num">01</div><div class="obj-body"><strong>Signer-Independent ISL Recognition</strong><p>Lightweight 147-D BiGRU recognizer (64 → 144 signs) with unseen-signer splits, calibration, and zero-retraining custom signs.</p></div></div>
+          <div class="obj-item"><div class="obj-num">02</div><div class="obj-body"><strong>Bidirectional Kannada SOV &amp; Speech</strong><p>Translate ISL gloss streams into natural Kannada SOV sentences with kn-IN Web Speech synthesis and reverse Kannada gloss planning.</p></div></div>
+          <div class="obj-item"><div class="obj-num">03</div><div class="obj-body"><strong>Real-Time 3D Analytic IK Avatar</strong><p>Retarget 161 cleaned dataset motion clips onto a Three.js humanoid rig at 60 fps, eliminating shoulder/arm drop artifacts (367 → 0 drops).</p></div></div>
+          <div class="obj-item"><div class="obj-num">04</div><div class="obj-body"><strong>Privacy-First Edge &amp; Rigorous Validation</strong><p>Browser-local MediaPipe WASM + ONNX Runtime Web governed by MD5 audits, McNemar tests, and live Deaf study harness (<code>#study</code>).</p></div></div>
+        </div>
+      </div>
     </div>
-    <div class="slide-body">
-      <div class="v-card" style="background: #ffffff; flex: 1;">
-        <div class="v-card-head" style="background: #1e3a8a;">Presentation Agenda &amp; Report Chapter Mapping</div>
-        <div class="v-card-body" style="padding: 8px 12px;">
-          <table class="ppt-table">
-            <thead>
-              <tr>
-                <th style="width: 90px;">Slide No.</th>
-                <th style="width: 245px;">Presentation Section</th>
-                <th>Key Contents Covered</th>
-                <th style="width: 170px;">Report Reference</th>
-              </tr>
-            </thead>
+    <div class="navy-band">
+      <div><div class="bk">Forward Path</div><div class="bv">ISL Video → 147-D → BiGRU / CTC → Kannada SOV + kn-IN Speech</div></div>
+      <div><div class="bk">Reverse Path</div><div class="bv">Kannada Text/Voice → Morphological Stemmer → ISL Gloss → 3D Avatar</div></div>
+      <div><div class="bk">Deployment</div><div class="bv">Standard Laptop CPU · Zero Cloud GPU · Browser-Local Privacy</div></div>
+    </div>`
+  )}
+
+  <!-- SLIDE 3: LITERATURE SURVEY -->
+  ${slideChrome(
+    3,
+    "LITERATURE SURVEY",
+    "Prior Research Landscape &amp; Silent Bridge Differentiation",
+    "Comparative Analysis of ISL Recognition, Continuous SLR, Regional NLP &amp; 3D Sign Avatars",
+    `
+    <table class="clean">
+      <thead>
+        <tr>
+          <th style="width:17%">Work / System</th>
+          <th style="width:16%">Domain &amp; Scope</th>
+          <th style="width:18%">Core Technique</th>
+          <th style="width:23%">Observed Limitation</th>
+          <th style="width:26%">Silent Bridge Advance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="hl-navy">Sridhar et al. (2020)<br/>INCLUDE</td><td>263 isolated ISL signs (4,287 videos)</td><td>Pose keypoints + BiLSTM / Transformer</td><td>One-way English labels; no Kannada output or avatar</td><td>Expands corpus via HTTP-Range (86.7% saved) + bidirectional Kannada</td></tr>
+        <tr><td class="hl-navy">Elakkiya et al. (2021)<br/>ISL-CSLTR</td><td>100 continuous ISL sentences (7 signers)</td><td>CNN-LSTM / BiGRU with CTC alignment</td><td>Offline GPU focus; no browser-local inference or reverse path</td><td>Separate 2-layer BiGRU-CTC + λ=1.0 fusion in 37.0 ms on CPU</td></tr>
+        <tr><td class="hl-navy">Camgoz et al. (2020)<br/>Sign Lang. Trans.</td><td>PHOENIX-2014T (German DGS)</td><td>Joint Transformer SLR + NMT (CTC)</td><td>Heavy GPU weights; European language, not Dravidian SOV</td><td>Lightweight ONNX BiGRU + Kannada agglutinative SOV meaning layer</td></tr>
+        <tr><td class="hl-navy">Lugaresi / Google<br/>MediaPipe Holistic</td><td>Real-time hand &amp; face landmarking</td><td>On-device WASM / WebGL landmarking</td><td>Raw coordinates sensitive to scale, distance &amp; hand drops</td><td>147-D hands-face-v2 schema: wrist-centered, scale-norm + 21 face NMM</td></tr>
+        <tr><td class="hl-navy">Graves et al. (2006)<br/>CTC Decoding</td><td>Unsegmented sequence alignment</td><td>Blank-symbol marginalization loss</td><td>Frequently conflated with recurrent encoder in prior work</td><td>Strict modular split: Isolated BiGRU (no CTC) vs Continuous BiGRU-CTC</td></tr>
+        <tr><td class="hl-navy">WebGL / JASigning<br/>Sign Avatars</td><td>Text-to-sign 3D visualization</td><td>SiGML / keyframe skeletal playback</td><td>Robotic interpolation, unnatural shoulder drops, English-only</td><td>161 cleaned dataset motion clips + Three.js Analytic IK (367→0 drops)</td></tr>
+      </tbody>
+    </table>
+    <div class="teal-callout">
+      <strong>Research Gap Closed:</strong> No prior open system unifies (1) browser-local 147-D landmark extraction with zero video upload, (2) signer-independent 64→144 sign BiGRU + separate BiGRU-CTC continuous decoding on CPU, (3) Kannada SOV translation + kn-IN speech, (4) cleaned 3D Analytic IK avatar playback, and (5) an integrated Deaf ISL evaluation harness (<code>#study</code>).
+    </div>`
+  )}
+
+  <!-- SLIDE 4: END-TO-END SYSTEM ARCHITECTURE (ARCHITECTURAL DIAGRAM) -->
+  ${slideChrome(
+    4,
+    "SYSTEM ARCHITECTURE",
+    "End-to-End Bidirectional Architecture &amp; Privacy Boundary",
+    "Browser-Local Feature Extraction, Parallel Isolated/Continuous Branches, and Reverse Kannada → 3D Avatar Pipeline",
+    `
+    <div class="arch-frame">
+      ${IMAGES.figArchitecture ? `<img src="${IMAGES.figArchitecture}" alt="Silent Bridge System Architecture Diagram" />` : ""}
+    </div>
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tk">TIER 1 · BROWSER EDGE (REACT + WASM)</div>
+        <p>Webcam (~30 fps) → MediaPipe Hand + Face Landmarker extracts 147 floats/frame locally. Supports 100% browser-only ONNX inference or lightweight JSON landmark streaming over WebSocket (zero raw video leaves the device).</p>
+      </div>
+      <div class="tier-card dark">
+        <div class="tk">TIER 2 · INTELLIGENCE BACKEND (FASTAPI)</div>
+        <p>Motion-energy segmentation (280 ms stillness tail) routes windows to Isolated BiGRU (64→144 signs + cosine custom matcher ≥ 0.82) or Continuous BiGRU-CTC + λ=1.0 sentence fusion → Kannada SOV meaning &amp; kn-IN speech.</p>
+      </div>
+      <div class="tier-card">
+        <div class="tk">TIER 3 · REVERSE 3D AVATAR &amp; GOVERNANCE</div>
+        <p>Kannada text/voice → NFC normalization &amp; agglutinative stemmer → ISL gloss plan → 161 cleaned motion clips retargeted onto Three.js Analytic IK rig at 60 fps. Backed by MD5 corpus auditing &amp; <code>#study</code> harness.</p>
+      </div>
+    </div>`
+  )}
+
+  <!-- SLIDE 5: PROPOSED METHODOLOGY (1/2) -->
+  ${slideChrome(
+    5,
+    "PROPOSED METHODOLOGY · PART 1",
+    "147-D hands-face-v2 Schema &amp; Bidirectional Pipelines",
+    "Invariant Per-Frame Representation Feeding Seven-Step Forward (ISL → Kannada) and Six-Step Reverse (Kannada → 3D ISL) Flows",
+    `
+    <div>
+      <div class="sec-title">147-Dimensional Per-Frame Feature Tensor (hands-face-v2 · T = 24 Resampled Frames)</div>
+      <div class="schema-bar">
+        <div class="schema-seg seg-navy"><strong>Right Hand · 63 dims (42.9%)</strong><span>21 landmarks × (x, y, z) · Wrist-centered &amp; palm-scale normalized</span></div>
+        <div class="schema-seg seg-lapis"><strong>Left Hand · 63 dims (42.9%)</strong><span>21 landmarks × (x, y, z) · Zero-padded cleanly on 1-hand signs</span></div>
+        <div class="schema-seg seg-teal"><strong>Face NMM · 21 (14.2%)</strong><span>7 anchors (eyes, nose, mouth, chin)</span></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col">
+        <div class="sec-title">Part A: Forward Pipeline (ISL → Kannada Speech)</div>
+        <table class="clean compact">
+          <tbody>
+            <tr><td class="hl-navy" style="width:24%">1. Capture</td><td>Browser webcam (~30 fps) with MediaPipe Hand + Face WASM extraction.</td></tr>
+            <tr><td class="hl-navy">2. Normalize</td><td>147-D hands-face-v2 wrist-centered, scale-invariant coords + 7 facial anchors.</td></tr>
+            <tr><td class="hl-navy">3. Segment</td><td>Motion-energy trigger + 280 ms stillness tail trimming to isolate each sign.</td></tr>
+            <tr><td class="hl-navy">4. Classify</td><td>3-seed BiGRU ONNX ensemble + 3-view TTA (0.50 / 0.30 / 0.20) + Temp T scaling.</td></tr>
+            <tr><td class="hl-navy">5. Custom Match</td><td>Cosine similarity vs. user few-shot prototypes (accept if ≥ 0.82, zero retrain).</td></tr>
+            <tr><td class="hl-navy">6. Meaning</td><td>ISL gloss buffer → SOV meaning rewriter (43-pattern bank, 39.5% → 60.5%).</td></tr>
+            <tr><td class="hl-navy">7. Output</td><td>Verified Kannada Unicode script, kn-IN Web Speech TTS, &amp; editable transcript.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col" style="justify-content:space-between">
+        <div>
+          <div class="sec-title teal">Part B: Reverse Pipeline (Kannada → 3D ISL Avatar)</div>
+          <table class="clean compact">
             <tbody>
-              <tr>
-                <td><strong>Slide 03</strong></td>
-                <td><strong>Abstract</strong></td>
-                <td>Project summary, bidirectional workflow, 147-D landmarks, Kannada SOV &amp; 3D IK</td>
-                <td>Preliminaries (p. iii)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 04</strong></td>
-                <td><strong>Introduction &amp; Topic Selection</strong></td>
-                <td>Indian Sign Language background and motivation for selecting this project topic</td>
-                <td>Chapter 1 (pp. 1–4)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 05</strong></td>
-                <td><strong>Problem Statement &amp; Objectives</strong></td>
-                <td>Core communication barriers and 4 project objectives</td>
-                <td>Chapter 1 (pp. 5–8)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 06</strong></td>
-                <td><strong>Literature Survey</strong></td>
-                <td>Review of existing sign recognition &amp; avatar research papers and limitations</td>
-                <td>Chapter 2 (pp. 9–17)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 07</strong></td>
-                <td><strong>System Architecture &amp; Pipeline</strong></td>
-                <td>Report architecture diagram (Fig. 5.1) and arrow-connected pipelines</td>
-                <td>Chapter 5 (pp. 32–35)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 08</strong></td>
-                <td><strong>Hardware &amp; Software Requirements</strong></td>
-                <td>Hardware specifications and full-stack software dependencies</td>
-                <td>Chapter 3 (pp. 18–25)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 09</strong></td>
-                <td><strong>Feature Extraction Schema</strong></td>
-                <td>147-D hand, facial &amp; motion feature representation and 441-D window pooling</td>
-                <td>Chapter 5 (pp. 35–38)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 10</strong></td>
-                <td><strong>Module-Wise Implementation</strong></td>
-                <td>Detailed explanation of all 6 modules (What, How &amp; Why) and UI screens</td>
-                <td>Chapter 6 (pp. 45–54)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 11</strong></td>
-                <td><strong>Evaluation Parameters &amp; Comparison</strong></td>
-                <td>Accuracy, Precision, Recall &amp; F1 definitions and comparison with existing works</td>
-                <td>Chapter 7 (pp. 55–59)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 12</strong></td>
-                <td><strong>Results &amp; Named Graphs</strong></td>
-                <td>Named evaluation graphs: Accuracy Progression, Calibration, Per-Class F1 &amp; SER</td>
-                <td>Chapter 7 (pp. 60–63)</td>
-              </tr>
-              <tr>
-                <td><strong>Slide 13</strong></td>
-                <td><strong>Conclusion &amp; Future Work</strong></td>
-                <td>Summary of work completed and directions for future enhancements</td>
-                <td>Chapter 8 (pp. 64–66)</td>
-              </tr>
-              <tr class="subhighlight">
-                <td><strong>Slide 14</strong></td>
-                <td><strong>Research Paper Publication</strong></td>
-                <td>IEEE format research paper details and academic/societal importance</td>
-                <td>Appendix B (p. 72)</td>
-              </tr>
+              <tr><td class="hl-teal" style="width:24%">1. Input</td><td>Typed Kannada/English text or live Web Speech API voice dictation.</td></tr>
+              <tr><td class="hl-teal">2. Normalize</td><td>Unicode NFC normalization + punctuation cleanup + phrase-table lookup.</td></tr>
+              <tr><td class="hl-teal">3. Stemmer</td><td>Agglutinative Kannada suffix stripper (-ಅನ್ನು, -ಇಂದ, -ಗೆ, -ಅಲ್ಲಿ) to root lemmas.</td></tr>
+              <tr><td class="hl-teal">4. Gloss Plan</td><td>Longest-match ISL gloss ordering; flags unsupported words transparently.</td></tr>
+              <tr><td class="hl-teal">5. Trajectory</td><td>161 dataset-retargeted clips cleaned via cubic spline gap-fill (367→0 drops).</td></tr>
+              <tr><td class="hl-teal">6. 3D Playback</td><td>Three.js humanoid with Analytic 2-Bone IK, SLERP smoothing &amp; 0.5×–1.5× speed.</td></tr>
             </tbody>
           </table>
         </div>
+        <div class="note-box"><strong>Key Efficiency Advantage:</strong> 147-D landmark vectors are 400× smaller than 224×224 RGB frames, enabling real-time CPU execution without cloud GPUs.</div>
       </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Table of Contents (Presentation Agenda)</span>
-      <span>Slide 2 of 14</span>
-    </div>
-  </section>
+    </div>`
+  )}
 
-  <!-- ===================================================================== -->
-  <!-- SLIDE 3: ABSTRACT                                                     -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-3" data-slide="3">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 3 / 14</div>
-      <div class="slide-header-text">
-        <h2>Abstract</h2>
-        <p>Executive Summary of the Bidirectional Indian Sign Language and Kannada Translation System</p>
+  <!-- SLIDE 6: DEEP LEARNING ARCHITECTURE — GRU, BiGRU & CTC -->
+  ${slideChrome(
+    6,
+    "PROPOSED METHODOLOGY · PART 2",
+    "Deep Learning Design: GRU, BiGRU &amp; CTC (BiGRU ≠ CTC)",
+    "Architectural Separation Between Segmented Isolated Sign Classification and Unsegmented Continuous Sentence Decoding",
+    `
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>GRU (Gated Recurrent Unit)</h4>
+        <p>Recurrent cell using update gate (z) for memory retention and reset gate (r) for candidate state modulation—fewer parameters and faster CPU execution than LSTM.</p>
       </div>
-      <div class="chapter-pill">Report Abstract (Page iii)</div>
+      <div class="concept-card">
+        <h4>BiGRU (Bidirectional Encoder)</h4>
+        <p>Two parallel GRUs scan each gesture forward and backward, concatenating hidden states so every frame captures both starting handshape and ending location.</p>
+      </div>
+      <div class="concept-card teal">
+        <h4>CTC (Alignment Loss &amp; Decoder)</h4>
+        <p>Connectionist Temporal Classification is a loss &amp; decoding rule—<strong>NOT</strong> a network layer. Uses a blank token to align unsegmented frames to glosses without frame labels.</p>
+      </div>
     </div>
-    <div class="slide-body">
-      <div class="v-card" style="border-color: #2563eb; background: #eff6ff;">
-        <div class="v-card-head" style="background: #1e3a8a;">Project Abstract</div>
-        <div class="v-card-body" style="font-size: 13px; text-align: justify; line-height: 1.48; gap: 8px;">
-          <p>
-            Communication between Deaf and Hard-of-Hearing (DHH) citizens who communicate using Indian Sign Language (ISL) and hearing individuals who speak Kannada remains a significant challenge across hospitals, banks, classrooms, and government offices in Karnataka. Existing automated sign language tools largely focus on one-way American Sign Language (ASL) to English translation or depend on specialized wearable gloves and cloud-based raw video processing.
-          </p>
-          <p>
-            This project develops <strong>Silent Bridge</strong>, a browser-executable, bidirectional translation system connecting Indian Sign Language and Kannada. In the forward path (ISL to Kannada), webcam video is processed locally via MediaPipe Holistic to extract a <strong>147-dimensional</strong> scale-invariant anatomical feature vector capturing dual 21-point hand skeletons, facial landmarks, and hand-to-face spatial anchors. A 3-state <strong>Hysteresis Motion Segmenter</strong> isolates continuous sign boundaries, and a hybrid Multilayer Perceptron (MLP) and Bidirectional Gated Recurrent Unit with Connectionist Temporal Classification (<strong>BiGRU-CTC</strong>) model classifies gestures via ONNX Runtime Web to synthesize grammatical Kannada text and speech. In the reverse path (Kannada to ISL), a rule-based Kannada morphological stemmer strips agglutinative suffixes, reorders clauses from Subject–Object–Verb (SOV) to ISL topological order, and drives a 60 FPS Three.js 3D humanoid avatar using a closed-form two-bone <strong>Analytic Inverse Kinematics (IK)</strong> solver with parabolic co-articulation trajectories.
-          </p>
-        </div>
+    <div class="two-col">
+      <div class="col">
+        <div class="sec-title">Model A: Isolated Sign Classifier (No CTC)</div>
+        <table class="clean compact">
+          <thead><tr><th style="width:24%">Stage</th><th>Tensor Shape / Operation</th></tr></thead>
+          <tbody>
+            <tr><td class="hl-navy">1. Input</td><td><code>24 × 147</code> resampled landmarks per segmented sign</td></tr>
+            <tr><td class="hl-navy">2. Encoder</td><td>Forward GRU (96) ∥ Backward GRU (96) → 192-D/frame</td></tr>
+            <tr><td class="hl-navy">3. Pooling</td><td>Temporal Mean + Max Pooling ⊕ Global Path &amp; Velocity</td></tr>
+            <tr><td class="hl-navy">4. Head</td><td>Dense Softmax (64 / 144 classes), Temp Calibration T</td></tr>
+            <tr><td class="hl-navy">5. Runtime</td><td>3-Seed ONNX Ensemble + 3-View TTA (0.50/0.30/0.20) · 15.3 ms</td></tr>
+          </tbody>
+        </table>
       </div>
+      <div class="col">
+        <div class="sec-title teal">Model B: Continuous Sentence Model (BiGRU + CTC)</div>
+        <table class="clean compact">
+          <thead><tr><th style="width:25%">Stage</th><th>Tensor Shape / Operation</th></tr></thead>
+          <tbody>
+            <tr><td class="hl-teal">1. Input</td><td>Subsampled (every 2nd frame) full unsegmented sentence video</td></tr>
+            <tr><td class="hl-teal">2. Encoder</td><td>2-Layer BiGRU (128 units/direction) across full clip</td></tr>
+            <tr><td class="hl-teal">3. Projection</td><td>Linear head → 168 glosses + 1 CTC blank (169 symbols)</td></tr>
+            <tr><td class="hl-teal">4. CTC Decode</td><td>Greedy / prefix-beam collapse of repeats &amp; blanks (ONLY CTC)</td></tr>
+            <tr><td class="hl-teal">5. Fusion</td><td>Score fusion (λ = 1.0) with sentence classifier → 101-set · 37 ms</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="navy-callout">
+      <strong>Key Architectural Principle:</strong> BiGRU extracts bidirectional temporal features in both models, whereas CTC is used strictly in Model B to align unsegmented continuous sentences without frame-level gloss annotations.
+    </div>`
+  )}
 
-      <div class="grid-3" style="flex: 1;">
-        <div class="v-card" style="border-color: #2563eb; background: #ffffff;">
-          <div class="v-card-head" style="background: #1d4ed8;">Forward Path (ISL ➔ Kannada)</div>
-          <div class="v-card-body">
+  <!-- SLIDE 7: TECH STACK, DATASETS & 16 MODULES -->
+  ${slideChrome(
+    7,
+    "ENGINEERING STACK &amp; MODULES",
+    "Tech Stack, Audited Corpora &amp; 16 Implemented Modules",
+    "CPU-Only Deployment Profile, Bandwidth-Efficient Dataset Governance, and Complete Modular Codebase",
+    `
+    <div class="two-col-wide-right">
+      <div class="col">
+        <div class="sec-title">Software, Hardware &amp; Audited Datasets</div>
+        <table class="clean compact">
+          <thead><tr><th style="width:29%">Layer</th><th>Specification</th></tr></thead>
+          <tbody>
+            <tr><td class="hl-navy">Frontend</td><td>React 18, TypeScript, Vite, Three.js WebGL, MediaPipe WASM, ONNX Runtime Web</td></tr>
+            <tr><td class="hl-navy">Backend</td><td>Python 3.11, FastAPI, Uvicorn WebSockets, PyTorch, NumPy, SciPy</td></tr>
+            <tr><td class="hl-navy">Hardware</td><td>Commodity CPU laptop (no GPU required), 8 GB RAM, 720p 30 fps webcam</td></tr>
+            <tr><td class="hl-navy">Isolated Data</td><td>Amrita + INCLUDE: 1,290 → 1,749 (64 cls) → 2,249 train / 524 held-out (144 cls)</td></tr>
+            <tr><td class="hl-navy">Continuous</td><td>ISL-CSLTR: 101 closed sentences, 7 signers, unseen-round split protocol</td></tr>
+            <tr><td class="hl-navy">Data Hygiene</td><td>MD5 duplicate audit + HTTP-Range ZIP ingestion saving 86.7% bandwidth</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col">
+        <div class="sec-title teal">16 Implemented Modules Across 4 Functional Layers</div>
+        <div class="mod-grid">
+          <div class="mod-card">
+            <div class="mod-head">Layer 1 · Vision &amp; Features (M1–M4)</div>
             <ul>
-              <li>30 FPS client-side holistic landmark extraction.</li>
-              <li>147-D wrist-centered, shoulder-scaled encoding.</li>
-              <li>3-state hysteresis continuous boundary detector.</li>
-              <li>Browser ONNX classification &amp; Kannada TTS voice.</li>
+              <li><strong>M1:</strong> Live Webcam &amp; Frame Pacer (~30 fps)</li>
+              <li><strong>M2:</strong> Browser MediaPipe Hand + Face WASM</li>
+              <li><strong>M3:</strong> 147-D hands-face-v2 Normalizer</li>
+              <li><strong>M4:</strong> Motion-Energy Segmenter (280 ms tail)</li>
+            </ul>
+          </div>
+          <div class="mod-card">
+            <div class="mod-head">Layer 2 · Recognition &amp; Custom (M5–M8)</div>
+            <ul>
+              <li><strong>M5:</strong> Isolated 3-Seed BiGRU ONNX + 3-View TTA</li>
+              <li><strong>M6:</strong> Continuous BiGRU-CTC + λ=1.0 Fusion</li>
+              <li><strong>M7:</strong> Temp Calibration &amp; Abstention Gate</li>
+              <li><strong>M8:</strong> Few-Shot Custom Recorder (cos ≥ 0.82)</li>
+            </ul>
+          </div>
+          <div class="mod-card">
+            <div class="mod-head">Layer 3 · Kannada &amp; 3D Avatar (M9–M12)</div>
+            <ul>
+              <li><strong>M9:</strong> ISL Gloss → Kannada SOV Meaning Rewriter</li>
+              <li><strong>M10:</strong> kn-IN Web Speech TTS &amp; Transcript</li>
+              <li><strong>M11:</strong> Kannada Stemmer &amp; Gloss Planner</li>
+              <li><strong>M12:</strong> Three.js 3D Analytic IK Avatar (161 clips)</li>
+            </ul>
+          </div>
+          <div class="mod-card">
+            <div class="mod-head teal">Layer 4 · Governance &amp; Study (M13–M16)</div>
+            <ul>
+              <li><strong>M13:</strong> MD5 Manifest &amp; HTTP-Range Ingestor</li>
+              <li><strong>M14:</strong> Evidence-Gated Checkpoint Promoter</li>
+              <li><strong>M15:</strong> Report / Paper / PPT Export Suite</li>
+              <li><strong>M16:</strong> Live Deaf ISL User Study (<code>#study</code>)</li>
             </ul>
           </div>
         </div>
-        <div class="v-card" style="border-color: #059669; background: #ffffff;">
-          <div class="v-card-head" style="background: #047857;">Reverse Path (Kannada ➔ ISL)</div>
-          <div class="v-card-body">
-            <ul>
-              <li>Unicode Kannada text &amp; spoken microphone input.</li>
-              <li>3-tier agglutinative suffix stripping rules.</li>
-              <li>SOV-to-ISL clause reordering engine.</li>
-              <li>60 FPS 2-bone Analytic IK 3D signing avatar.</li>
-            </ul>
-          </div>
+        <p style="font-size:11px;font-style:italic;color:#475569;margin-top:6px;">All 16 modules run seamlessly in dual deployment modes: Standalone Browser-ONNX (offline-capable) or Full-Stack FastAPI WebSocket.</p>
+      </div>
+    </div>`
+  )}
+
+  <!-- SLIDE 8: LIVE APPLICATION SHOWCASE -->
+  ${slideChrome(
+    8,
+    "LIVE SYSTEM WALKTHROUGH",
+    "Working Application Showcase: Forward &amp; Reverse Interfaces",
+    "Actual Rendered Screens of Live ISL → Kannada Translation, 3D Analytic IK Avatar, Custom Signs &amp; Deaf Study Module",
+    `
+    <div class="two-col">
+      <div class="col">
+        <div class="sec-title">1. Live Sign → Kannada Translation Workspace</div>
+        <div class="ui-frame">
+          ${IMAGES.figUiLive ? `<img src="${IMAGES.figUiLive}" alt="Live ISL to Kannada Recognition Interface" />` : ""}
         </div>
-        <div class="v-card" style="border-color: #7c3aed; background: #ffffff;">
-          <div class="v-card-head" style="background: #5b21b6;">Datasets &amp; Evaluation Scope</div>
-          <div class="v-card-body">
-            <ul>
-              <li>Harmonized Amrita-ISLR, INCLUDE &amp; ISL-CSLTR.</li>
-              <li>144 sign vocabulary classes &amp; 187 phrases.</li>
-              <li>Evaluated on 314 real video streams.</li>
-              <li>Includes in-browser Few-Shot custom sign studio.</li>
-            </ul>
-          </div>
+        <p class="ui-cap">Real-time MediaPipe 147-D skeleton overlay, calibrated top-k confidence meter, abstention threshold guard, Kannada SOV meaning composer, and one-click kn-IN Web Speech synthesis.</p>
+      </div>
+      <div class="col">
+        <div class="sec-title teal">2. Reverse Kannada → 3D ISL Avatar Player</div>
+        <div class="ui-frame">
+          ${IMAGES.figUiAvatar ? `<img src="${IMAGES.figUiAvatar}" alt="Reverse Kannada to 3D ISL Avatar Interface" />` : ""}
         </div>
+        <p class="ui-cap">Accepts typed or spoken Kannada/English, strips agglutinative suffixes, maps to ISL gloss timeline, and drives the Three.js Analytic IK humanoid across 161 cleaned motion clips at 60 fps.</p>
       </div>
     </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Abstract</span>
-      <span>Slide 3 of 14</span>
-    </div>
-  </section>
+    <div class="navy-band">
+      <div><div class="bk">Zero-Retraining Custom Signs (#custom)</div><div class="bv">Record 3–5 examples in browser; cosine prototype matcher (≥ 0.82) adds custom local vocabulary immediately.</div></div>
+      <div><div class="bk">Live Deaf ISL User Study (#study)</div><div class="bv">3-task evaluation harness: 18 blind 4-AFC avatar trials, 5 sentence checks, counter role-play &amp; Brooke SUS JSON/CSV export.</div></div>
+      <div><div class="bk">Integrated Academic Suite (#ppt / #paper)</div><div class="bv">Live preview &amp; verified export of 79p CSBS Report, 6p NCDTE Paper, and 12-Slide Deck directly from the app.</div></div>
+    </div>`
+  )}
 
-  <!-- ===================================================================== -->
-  <!-- SLIDE 4: INTRODUCTION & WHY WE SELECTED THIS TOPIC                    -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-4" data-slide="4">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 4 / 14</div>
-      <div class="slide-header-text">
-        <h2>Introduction &amp; Rationale for Topic Selection</h2>
-        <p>Domain Context of Indian Sign Language (ISL) and Motivation for Selecting This Topic</p>
-      </div>
-      <div class="chapter-pill">Report Ch. 1, Sec. 1.1 (pp. 1–4)</div>
+  <!-- SLIDE 9: QUANTITATIVE RESULTS (1/2) -->
+  ${slideChrome(
+    9,
+    "EXPERIMENTAL RESULTS · PART 1",
+    "Isolated Sign Accuracy: 64-Sign Baseline → Promoted 144-Sign",
+    "Strict Signer-Independent Held-Out Evaluation Showing Statistically Significant Gains (McNemar p = 0.003)",
+    `
+    <div class="kpi-row">
+      <div class="kpi-box dark"><div class="kv">87.2%</div><div class="kl">144-Sign Full Held-Out</div><div class="ks">457 / 524 videos (v20261103)</div></div>
+      <div class="kpi-box"><div class="kv">81.7%</div><div class="kl">Unseen Amrita Signers</div><div class="ks">+27.2 pp over 54.5% LogReg</div></div>
+      <div class="kpi-box"><div class="kv">0.850</div><div class="kl">Macro F1-Score (144)</div><div class="ks">Up from 0.800 on 64-sign model</div></div>
+      <div class="kpi-box"><div class="kv">p = 0.003</div><div class="kl">Paired McNemar Test</div><div class="ks">34 fixed vs 13 regressed (unseen)</div></div>
     </div>
-    <div class="slide-body">
-      <div class="grid-2" style="flex: 1;">
-        <div class="v-card" style="border-color: #2563eb; background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">1. Domain Introduction: Indian Sign Language (ISL)</div>
-          <div class="v-card-body">
-            <ul>
-              <li><strong>Visual-Spatial Natural Language:</strong> Indian Sign Language (ISL) is a complete visual-gestural language with its own phonological, morphological, and syntactic structure independent of spoken languages.</li>
-              <li><strong>Multi-Channel Articulation:</strong> Meaning in ISL is conveyed simultaneously through manual articulators (two-hand configuration, palm orientation, spatial location, and movement trajectory) and non-manual facial markers (eyebrow raise, mouth aperture, and head tilt).</li>
-              <li><strong>Structural Divergence from Spoken Kannada:</strong> Spoken and written Kannada is an agglutinative Dravidian language with Subject–Object–Verb (SOV) order and rich case/tense suffixes, whereas ISL uses a Topic–Comment / Temporal-First syntactic structure without inflectional suffixes.</li>
-              <li><strong>Demographic Context:</strong> Over 63 million individuals in India experience hearing or speech impairments (WHO / Census), including hundreds of thousands of citizens across Karnataka whose regional civic language is Kannada.</li>
-            </ul>
-          </div>
+    <div class="two-col-wide-left">
+      <div class="col">
+        <div class="sec-title">Accuracy Progression Across Feature &amp; Model Stages</div>
+        <div class="chart-frame">
+          ${IMAGES.figResults ? `<img src="${IMAGES.figResults}" alt="Accuracy Progression Bar Chart" />` : ""}
         </div>
-
-        <div class="v-card" style="border-color: #059669; background: #ecfdf5;">
-          <div class="v-card-head" style="background: #065f46;">2. Why We Selected This Topic (Motivation)</div>
-          <div class="v-card-body">
-            <ul>
-              <li><strong>Absence of Regional Kannada Sign Tools:</strong> Existing sign language datasets and recognition tools predominantly focus on American Sign Language (ASL) and English, leaving Kannada-speaking doctors, bank clerks, and families without accessible translation tools.</li>
-              <li><strong>Critical Need in Healthcare &amp; Public Desks:</strong> During outpatient hospital consultations, banking transactions, and railway inquiries, Deaf citizens struggle to communicate symptoms or requests when human interpreters are unavailable.</li>
-              <li><strong>Need for Bidirectional Conversation:</strong> Real-world dialogue requires two-way translation—converting a Deaf person's signs into Kannada speech, and converting the hearing person's Kannada response back into visual sign language.</li>
-              <li><strong>Need for Hardware-Free Privacy:</strong> Public service desks and clinics require a solution that operates on standard laptop webcams without expensive sensor gloves or uploading private patient videos to cloud servers.</li>
-            </ul>
-          </div>
-        </div>
+        <p style="font-size:10.8px;font-style:italic;color:#475569;margin-top:5px;">Training scale: 1,290 baseline → 1,749 (+462 INCLUDE) for 64 signs → 2,249 videos for promoted 144-sign checkpoint.</p>
       </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 1: Introduction &amp; Rationale for Topic Selection</span>
-      <span>Slide 4 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 5: PROBLEM STATEMENT & OBJECTIVES (4 OBJECTIVES, NO TARGET MET) -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-5" data-slide="5">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 5 / 14</div>
-      <div class="slide-header-text">
-        <h2>Problem Statement &amp; Project Objectives</h2>
-        <p>Defining the Core Communication Barriers and Engineering Objectives</p>
-      </div>
-      <div class="chapter-pill">Report Ch. 1, Sec. 1.2–1.4 (pp. 5–8)</div>
-    </div>
-    <div class="slide-body">
-      <div class="v-card" style="border-color: #dc2626; background: #fef2f2;">
-        <div class="v-card-head" style="background: #b91c1c;">Problem Statement (Report Section 1.2)</div>
-        <div class="v-card-body" style="font-size: 12.8px; line-height: 1.42;">
-          <p style="margin-bottom: 6px;">
-            Deaf and Hard-of-Hearing (DHH) citizens in Karnataka face a severe two-way communication barrier when interacting with Kannada-speaking healthcare professionals, educators, and civic counter staff due to:
-          </p>
-          <ul>
-            <li><strong>Acute Scarcity of Certified ISL Interpreters:</strong> With only ~350 certified interpreters nationwide, on-site interpretation is unavailable for everyday hospital triage, banking, and classroom interactions.</li>
-            <li><strong>Technical Gaps in Existing Vision Systems:</strong> Current automated sign systems are largely unidirectional (Sign-to-English), sensitive to camera distance and background clutter, prone to false triggers during continuous signing, and lack reverse translation from agglutinative Kannada grammar into smooth 3D sign animation.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="v-card" style="border-color: #2563eb; background: #ffffff; flex: 1;">
-        <div class="v-card-head" style="background: #1e3a8a;">Project Objectives (Report Section 1.4)</div>
-        <div class="v-card-body">
-          <div class="grid-2" style="gap: 12px; flex: 1;">
-            <div style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 6px; padding: 10px 14px;">
-              <div style="font-size: 13.5px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px;">
-                Objective 1: Scale-Invariant Hand &amp; Face Landmark Extraction
-              </div>
-              <div style="font-size: 12.2px; color: #0f172a; line-height: 1.38;">
-                To design a privacy-preserving, browser-based feature extraction pipeline that captures two-hand skeletal joints and facial grammar landmarks normalized for camera seating distance.
-              </div>
-            </div>
-
-            <div style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 6px; padding: 10px 14px;">
-              <div style="font-size: 13.5px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px;">
-                Objective 2: Continuous Sign Segmentation &amp; Classification
-              </div>
-              <div style="font-size: 12.2px; color: #0f172a; line-height: 1.38;">
-                To develop a motion-hysteresis segmentation module and hybrid neural classifier capable of recognizing isolated and continuous Indian Sign Language gestures in real time.
-              </div>
-            </div>
-
-            <div style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 6px; padding: 10px 14px;">
-              <div style="font-size: 13.5px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px;">
-                Objective 3: Kannada SOV Morphological &amp; Grammar Engine
-              </div>
-              <div style="font-size: 12.2px; color: #0f172a; line-height: 1.38;">
-                To construct a bidirectional linguistic engine that synthesizes natural Kannada sentences from recognized ISL glosses and converts Kannada SOV input into ISL word order.
-              </div>
-            </div>
-
-            <div style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 6px; padding: 10px 14px;">
-              <div style="font-size: 13.5px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px;">
-                Objective 4: 3D Signing Avatar with Analytic Inverse Kinematics
-              </div>
-              <div style="font-size: 12.2px; color: #0f172a; line-height: 1.38;">
-                To implement an interactive 3D humanoid avatar driven by closed-form two-bone inverse kinematics and smooth co-articulation trajectories for Kannada-to-ISL visualization.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 1: Problem Statement &amp; Project Objectives</span>
-      <span>Slide 5 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 6: LITERATURE SURVEY (PRIOR WORKS ONLY — NO OUR SOLUTION)       -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-6" data-slide="6">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 6 / 14</div>
-      <div class="slide-header-text">
-        <h2>Literature Survey</h2>
-        <p>Review of Existing Sign Language Recognition &amp; Avatar Synthesis Research Papers</p>
-      </div>
-      <div class="chapter-pill">Report Chapter 2 (pp. 9–17)</div>
-    </div>
-    <div class="slide-body">
-      <div class="v-card" style="background: #ffffff; flex: 1;">
-        <div class="v-card-head" style="background: #1e3a8a;">Table 2.1: Survey of Existing Research Papers and Identified Limitations</div>
-        <div class="v-card-body" style="padding: 8px 12px;">
-          <table class="ppt-table">
-            <thead>
-              <tr>
-                <th style="width: 175px;">Author(s) &amp; Year</th>
-                <th style="width: 245px;">Methodology / Model Used</th>
-                <th style="width: 205px;">Dataset / Modality</th>
-                <th>Limitations &amp; Research Gap Identified</th>
-              </tr>
-            </thead>
+      <div class="col" style="justify-content:space-between;gap:10px;">
+        <div>
+          <div class="sec-title teal">Verified 64-Sign vs. Promoted 144-Sign Checkpoint</div>
+          <table class="clean compact">
+            <thead><tr><th>Metric</th><th>64-Sign Report</th><th>144-Sign Promoted</th></tr></thead>
             <tbody>
-              <tr>
-                <td><strong>Abhishek et al. (2020)</strong></td>
-                <td>Wearable flex &amp; IMU sensor glove with SVM classifier</td>
-                <td>Custom 30-sign hardware dataset</td>
-                <td>Requires costly wired glove hardware (~Rs. 18,000); cannot capture facial grammar or non-manual expressions.</td>
-              </tr>
-              <tr>
-                <td><strong>Koller et al. (2019)</strong></td>
-                <td>Deep CNN + Weakly Supervised HMM on raw RGB video</td>
-                <td>RWTH-PHOENIX Weather (DGS)</td>
-                <td>High GPU memory requirement; overfits to background lighting and signer clothing on unseen users.</td>
-              </tr>
-              <tr>
-                <td><strong>Sridhar et al. (2020)</strong></td>
-                <td>Deep 3D-CNN / BiLSTM over raw video frames</td>
-                <td>INCLUDE 263-Sign Isolated ISL Dataset</td>
-                <td>Restricted to pre-trimmed isolated clips; lacks continuous stream boundary detection and regional language output.</td>
-              </tr>
-              <tr>
-                <td><strong>Elakkiya &amp; Natarajan (2021)</strong></td>
-                <td>Subunit sign modeling with 2D pose keypoints + LSTM</td>
-                <td>ISL-CSLTR Sentence Corpus</td>
-                <td>Fixed sliding windows cause boundary insertion errors during natural inter-sign pauses.</td>
-              </tr>
-              <tr>
-                <td><strong>Wadhawan &amp; Kumar (2021)</strong></td>
-                <td>CNN-based static &amp; dynamic handshape classifier</td>
-                <td>35,000 static ISL alphabet/word images</td>
-                <td>One-way recognition to English text only; omits non-manual facial cues and reverse sign animation.</td>
-              </tr>
-              <tr>
-                <td><strong>Saunders et al. (2020)</strong></td>
-                <td>Progressive Transformers for skeletal pose generation</td>
-                <td>PHOENIX14T German Sign Language</td>
-                <td>Requires server-grade GPUs and lacks closed-form inverse kinematics, causing mid-sentence arm drops.</td>
-              </tr>
+              <tr><td class="hl-navy">Full Held-Out Acc.</td><td>81.5% (314 videos)</td><td class="hl-teal">87.2% (457 / 524)</td></tr>
+              <tr><td class="hl-navy">Shared 314-Video Split</td><td>81.5%</td><td class="hl-teal">84.7% (+3.2 pp)</td></tr>
+              <tr><td class="hl-navy">Unseen Amrita Signers</td><td>76.5% (213 clips)</td><td class="hl-teal">81.7% (+5.2 pp)</td></tr>
+              <tr><td class="hl-navy">Macro Precision / Recall</td><td>84.4% / 81.1%</td><td>Balanced across 144 cls</td></tr>
+              <tr><td class="hl-navy">Macro F1-Score</td><td>0.800</td><td class="hl-teal">0.850 (+0.050)</td></tr>
+              <tr><td class="hl-navy">CPU Inference Latency</td><td>11.2 ms (3-view)</td><td>15.3 ms (3-seed ONNX)</td></tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 2: Literature Survey</span>
-      <span>Slide 6 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 7: SYSTEM ARCHITECTURE (REPORT DIAGRAM) & ARROW PIPELINE        -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-7" data-slide="7">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 7 / 14</div>
-      <div class="slide-header-text">
-        <h2>System Architecture &amp; Step-by-Step Pipeline</h2>
-        <p>Report System Architecture Diagram (Fig. 5.1) &amp; Arrow-Connected Bidirectional Workflows</p>
-      </div>
-      <div class="chapter-pill">Report Ch. 5, Sec. 5.1 (pp. 32–35)</div>
-    </div>
-    <div class="slide-body">
-      <div style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 14px; flex: 1;">
-        <div class="v-card" style="border-color: #2563eb; background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">Figure 5.1: System Architecture Diagram (From Project Report)</div>
-          <div class="v-card-body" style="align-items: center; justify-content: center; padding: 6px;">
-            ${IMAGES.figArchitecture ? `<img src="${IMAGES.figArchitecture}" alt="Report System Architecture Diagram" style="width: 100%; height: 430px; object-fit: contain;" />` : ""}
-          </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 10px;">
-          <div class="v-card" style="border-color: #2563eb; background: #eff6ff; flex: 1;">
-            <div class="v-card-head" style="background: #1d4ed8;">Forward Pipeline: ISL Video ➔ Kannada Speech</div>
-            <div class="v-card-body" style="padding: 8px 12px;">
-              <div class="pipeline-flow">
-                <div class="pipe-step">1. Webcam Video Capture (640×480 @ 30 FPS)</div>
-                <div class="pipe-arrow">⬇</div>
-                <div class="pipe-step">2. MediaPipe Holistic (21×2 Hands + 12 Face Landmarks)</div>
-                <div class="pipe-arrow">⬇</div>
-                <div class="pipe-step">3. 147-D Shoulder-Scaled Normalization &amp; 3-State Hysteresis Gate</div>
-                <div class="pipe-arrow">⬇</div>
-                <div class="pipe-step">4. ONNX MLP + BiGRU-CTC Classifier ➔ Kannada SOV Text &amp; TTS</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="v-card" style="border-color: #059669; background: #ecfdf5; flex: 1;">
-            <div class="v-card-head" style="background: #047857;">Reverse Pipeline: Kannada Text/Voice ➔ 3D Avatar</div>
-            <div class="v-card-body" style="padding: 8px 12px;">
-              <div class="pipeline-flow">
-                <div class="pipe-step green">1. Kannada Unicode Text or Microphone Speech Dictation</div>
-                <div class="pipe-arrow green">⬇</div>
-                <div class="pipe-step green">2. Three-Tier Kannada Morphological Suffix Stemmer</div>
-                <div class="pipe-arrow green">⬇</div>
-                <div class="pipe-step green">3. SOV-to-ISL Topological Clause Reordering Engine</div>
-                <div class="pipe-arrow green">⬇</div>
-                <div class="pipe-step green">4. 2-Bone Analytic IK Solver ➔ 60 FPS 3D Avatar Sign Animation</div>
-              </div>
-            </div>
-          </div>
+        <div class="note-box">
+          <strong>Evidence-Gated Promotion &amp; Calibration:</strong><br/>
+          • Expanding 2.25× in vocabulary (64 → 144 signs) improved—not degraded—accuracy on the identical shared 314-video benchmark (+3.2 pp).<br/>
+          • Temperature scaling + abstention threshold suppresses low-confidence false commits.
         </div>
       </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 5: System Architecture &amp; Step-by-Step Pipeline</span>
-      <span>Slide 7 of 14</span>
-    </div>
-  </section>
+    </div>`
+  )}
 
-  <!-- ===================================================================== -->
-  <!-- SLIDE 8: HARDWARE & SOFTWARE REQUIREMENTS                             -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-8" data-slide="8">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 8 / 14</div>
-      <div class="slide-header-text">
-        <h2>System Requirements: Hardware &amp; Software</h2>
-        <p>Hardware Configuration and Software Stack Used for Implementation</p>
-      </div>
-      <div class="chapter-pill">Report Chapter 3 (pp. 18–25)</div>
-    </div>
-    <div class="slide-body">
-      <div class="grid-2" style="flex: 1;">
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">Table 3.1: Hardware Requirements</div>
-          <div class="v-card-body" style="padding: 8px 10px;">
-            <table class="ppt-table">
-              <thead>
-                <tr>
-                  <th>Component</th>
-                  <th>Minimum Specification</th>
-                  <th>Recommended Setup</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Processor (CPU)</strong></td>
-                  <td>Dual-Core x86_64 (2.0 GHz)</td>
-                  <td>Quad-Core Intel Core i5 / Ryzen 5</td>
-                </tr>
-                <tr>
-                  <td><strong>System Memory</strong></td>
-                  <td>4 GB RAM</td>
-                  <td>8 GB RAM or higher</td>
-                </tr>
-                <tr>
-                  <td><strong>Camera Input</strong></td>
-                  <td>480p / 720p Webcam (30 FPS)</td>
-                  <td>720p HD Webcam (640×480 @ 30 FPS)</td>
-                </tr>
-                <tr>
-                  <td><strong>Graphics (GPU)</strong></td>
-                  <td>Integrated GPU (WebGL 2.0)</td>
-                  <td>Integrated Iris Xe / WebGL 2.0</td>
-                </tr>
-                <tr>
-                  <td><strong>Audio I/O</strong></td>
-                  <td>Standard Speakers / Headphones</td>
-                  <td>Speakers + Microphone (for ASR)</td>
-                </tr>
-                <tr>
-                  <td><strong>Storage Space</strong></td>
-                  <td>250 MB browser cache</td>
-                  <td>2 GB SSD (for training corpus)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  <!-- SLIDE 10: QUANTITATIVE RESULTS (2/2) -->
+  ${slideChrome(
+    10,
+    "EXPERIMENTAL RESULTS · PART 2",
+    "Ablations, Error Analysis, Continuous Latency &amp; 3D Avatar Audit",
+    "Face-Landmark Ablation Proof, Top Confused Pairs, CPU Latency Budget, Kannada SOV Gain &amp; Trajectory Cleaning",
+    `
+    <div class="two-col">
+      <div class="col" style="gap:8px;">
+        <div class="sec-title">Per-Class F1 Distribution &amp; Face-Landmark Ablation</div>
+        <div class="chart-frame" style="height:212px;flex:none;">
+          ${IMAGES.figPerclass ? `<img src="${IMAGES.figPerclass}" alt="Per-Class F1 Chart" />` : ""}
         </div>
-
-        <div class="v-card" style="border-color: #059669; background: #ffffff;">
-          <div class="v-card-head" style="background: #065f46;">Table 3.2: Software Requirements &amp; Technology Stack</div>
-          <div class="v-card-body" style="padding: 8px 10px;">
-            <table class="ppt-table">
-              <thead>
-                <tr>
-                  <th>Software Layer</th>
-                  <th>Technology / Library</th>
-                  <th>Role in Implementation</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Operating System</strong></td>
-                  <td>Windows 10/11, Ubuntu, macOS</td>
-                  <td>Cross-platform browser &amp; server host</td>
-                </tr>
-                <tr>
-                  <td><strong>Frontend Framework</strong></td>
-                  <td>React 18, TypeScript 5, Vite</td>
-                  <td>Interactive studios &amp; state management</td>
-                </tr>
-                <tr>
-                  <td><strong>Landmark Engine</strong></td>
-                  <td>MediaPipe Holistic (WASM)</td>
-                  <td>30 FPS hand (21×2) &amp; face tracking</td>
-                </tr>
-                <tr>
-                  <td><strong>Browser Inference</strong></td>
-                  <td>ONNX Runtime Web (SIMD)</td>
-                  <td>Client-side neural model execution</td>
-                </tr>
-                <tr>
-                  <td><strong>3D Rendering</strong></td>
-                  <td>Three.js (WebGL 2.0)</td>
-                  <td>60 FPS 3D humanoid &amp; Analytic IK</td>
-                </tr>
-                <tr>
-                  <td><strong>Speech Synthesis</strong></td>
-                  <td>Web Speech API (<code>kn-IN</code>)</td>
-                  <td>Kannada voice TTS &amp; speech dictation</td>
-                </tr>
-                <tr>
-                  <td><strong>Backend &amp; ML</strong></td>
-                  <td>Python 3.10+, FastAPI, PyTorch</td>
-                  <td>Model training, evaluation &amp; REST API</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="navy-callout" style="padding:7px 11px;font-size:11px;">
+          <strong>Face-Landmark Ablation:</strong> Removing the 21 face-anchor features drops accuracy from <strong>66.8% → 47.8% (−19.0 pp)</strong>, proving facial reference anchors are essential.
+        </div>
+        <table class="clean compact">
+          <thead><tr><th style="width:31%">Confused Pair</th><th style="width:12%">Cnt</th><th>Physical Cause</th></tr></thead>
+          <tbody>
+            <tr><td class="hl-navy">EAT → NOSE</td><td>4</td><td>Both touch face centerline near mouth/nose</td></tr>
+            <tr><td class="hl-navy">HELLO → GOOD</td><td>3</td><td>Open palm near head/chin with outward sweep</td></tr>
+            <tr><td class="hl-navy">THANK YOU → SORRY</td><td>3</td><td>Chin-to-chest trajectory overlap</td></tr>
+            <tr><td class="hl-navy">WATER → DRINK</td><td>2</td><td>Shared cup-handshape toward mouth</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col" style="gap:9px;">
+        <div class="sec-title teal">Real-Time CPU Latency &amp; Continuous Sentence Metrics</div>
+        <table class="clean compact">
+          <thead><tr><th style="width:34%">Subsystem / Stage</th><th style="width:27%">Measured Value</th><th>Operating Context</th></tr></thead>
+          <tbody>
+            <tr><td class="hl-navy">Feature Extraction</td><td>1.4 ms / frame</td><td>Browser MediaPipe WASM (~30 fps)</td></tr>
+            <tr><td class="hl-navy">Isolated Single-View</td><td>3.8 ms / sign</td><td>64-sign BiGRU ONNX on CPU</td></tr>
+            <tr><td class="hl-navy">Isolated 3-View / 3-Seed</td><td>11.2 / 15.3 ms</td><td>64-sign TTA / 144-sign Promoted</td></tr>
+            <tr><td class="hl-navy">Continuous Greedy CTC</td><td>12.3 ms / clip</td><td>2-layer BiGRU-CTC alignment</td></tr>
+            <tr><td class="hl-navy">Fused Sentence (λ=1.0)</td><td>37.0 ms (p95: 62)</td><td>69.4% unseen-round / 101 closed set</td></tr>
+            <tr><td class="hl-navy">Stillness Gate Window</td><td>280 ms tail</td><td>Prevents premature sign splitting</td></tr>
+          </tbody>
+        </table>
+        <div class="sec-title teal" style="margin-top:2px;">Kannada Meaning Layer &amp; 3D Avatar Trajectory Audit</div>
+        <div class="mini-grid-2">
+          <div class="impact-box teal">
+            <div class="iv">39.5% → 60.5%</div>
+            <div class="il">Kannada SOV Fluency</div>
+            <p>Natural grammatical phrasing across 43 counter/daily patterns vs. literal gloss mapping, paired with kn-IN speech.</p>
+          </div>
+          <div class="impact-box">
+            <div class="iv">367 → 0 Drops</div>
+            <div class="il">3D Avatar Audit (161 Clips)</div>
+            <p>Cubic spline gap-fill + wrist clamping removed all 367 sudden arm drops across 161 clips, sustaining smooth 60 fps IK.</p>
           </div>
         </div>
       </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 3: Hardware &amp; Software Requirements</span>
-      <span>Slide 8 of 14</span>
-    </div>
-  </section>
+    </div>`
+  )}
 
-  <!-- ===================================================================== -->
-  <!-- SLIDE 9: FEATURE EXTRACTION SCHEMA (147-D & 441-D FEATURES)           -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-9" data-slide="9">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 9 / 14</div>
-      <div class="slide-header-text">
-        <h2>Feature Extraction Schema (147-D Hand, Face &amp; Motion)</h2>
-        <p>Anatomical Feature Vector Composition (Table 5.1) and Multi-Corpus Dataset Distribution</p>
+  <!-- SLIDE 11: COMPARISON, SCALABILITY & DEAF ISL USER STUDY -->
+  ${slideChrome(
+    11,
+    "BENCHMARKING &amp; REVIEWER REVISIONS",
+    "Comparison with Prior Work, Scaling Beyond 144 &amp; Deaf ISL Study",
+    "Addressing All Peer-Review Critiques Honestly: Vocabulary Scalability Roadmap &amp; Live Pre-Registered Human Study (#study)",
+    `
+    <div>
+      <div class="sec-title">Contextual Comparison with Existing Sign Language Systems</div>
+      <table class="clean compact">
+        <thead>
+          <tr><th>System</th><th>Split Rigor</th><th>Vocab / Task</th><th>Bidirectional</th><th>Regional Lang.</th><th>Edge CPU Privacy</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="hl-navy">INCLUDE (2020)</td><td>Clip-level / signer-mixed</td><td>263 isolated ISL</td><td>No (Sign → Eng)</td><td>English only</td><td>Offline GPU</td></tr>
+          <tr><td class="hl-navy">ISL-CSLTR (2021)</td><td>Multi-signer sentence</td><td>100 continuous ISL</td><td>No (Sign → Eng)</td><td>English only</td><td>Offline GPU</td></tr>
+          <tr><td class="hl-navy">Camgoz SLT (2020)</td><td>Signer-independent</td><td>DGS continuous</td><td>No (Sign → Ger)</td><td>German only</td><td>Cloud GPU</td></tr>
+          <tr><td class="hl-teal">Silent Bridge (Ours)</td><td class="hl-teal">Strict Unseen Signer</td><td class="hl-teal">144 Iso (87.2%) + 101 Sent</td><td class="hl-teal">Yes (3D Avatar)</td><td class="hl-teal">Kannada SOV + TTS</td><td class="hl-teal">Yes (147-D Browser)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two-col">
+      <div class="col">
+        <div class="sec-title">Revision 1 · Scaling Roadmap (144 → 500–2,000+ Signs)</div>
+        <table class="clean compact">
+          <tbody>
+            <tr><td class="hl-navy" style="width:34%">1. Proven 64 → 144 Jump</td><td>2.25× vocabulary expansion raised shared-split accuracy from 81.5% → 84.7% and full held-out to 87.2%.</td></tr>
+            <tr><td class="hl-navy">2. Metric + HNSW</td><td>Replace flat softmax with ArcFace/cosine embeddings + approximate nearest-neighbor retrieval for 2,000+ classes.</td></tr>
+            <tr><td class="hl-navy">3. Phonological Heads</td><td>Auxiliary handshape, location &amp; facial NMM heads resolve near-homophone confusions (EAT/NOSE, HELLO/GOOD).</td></tr>
+            <tr><td class="hl-navy">4. O(C·d) Linear Budget</td><td>Backbone cost is constant; scaling output head to 2,000 signs adds &lt; 0.4 ms on CPU.</td></tr>
+            <tr><td class="hl-navy">5. Range + Few-Shot</td><td>Selective corpus streaming (86.7% saved) + instant browser prototype onboarding (cos ≥ 0.82).</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="chapter-pill">Report Ch. 5, Sec. 5.2 (pp. 35–38)</div>
-    </div>
-    <div class="slide-body">
-      <div style="display: grid; grid-template-columns: 1.32fr 1fr; gap: 14px; flex: 1;">
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">Table 5.1: 147-D Per-Frame &amp; 441-D Window Feature Vector Schema</div>
-          <div class="v-card-body" style="padding: 8px 10px;">
-            <table class="ppt-table">
-              <thead>
-                <tr>
-                  <th>Feature Block</th>
-                  <th>Indices</th>
-                  <th>Dims</th>
-                  <th>Anatomical Representation &amp; Normalization</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Left Hand Skeleton</strong></td>
-                  <td><code>[0 : 63]</code></td>
-                  <td>63-D</td>
-                  <td>21 joints × (x,y,z), wrist-centered &amp; scaled by shoulder span <i>S<sub>t</sub></i></td>
-                </tr>
-                <tr>
-                  <td><strong>Right Hand Skeleton</strong></td>
-                  <td><code>[63 : 126]</code></td>
-                  <td>63-D</td>
-                  <td>21 joints × (x,y,z), wrist-centered &amp; scaled by shoulder span <i>S<sub>t</sub></i></td>
-                </tr>
-                <tr>
-                  <td><strong>Hand-to-Face Vectors</strong></td>
-                  <td><code>[126 : 132]</code></td>
-                  <td>6-D</td>
-                  <td>3D displacement from Left &amp; Right wrists to nose tip anchor</td>
-                </tr>
-                <tr>
-                  <td><strong>Facial Grammar Cues</strong></td>
-                  <td><code>[132 : 143]</code></td>
-                  <td>11-D</td>
-                  <td>Eyebrow raise, Mouth MAR, Eye EAR, and head pitch/yaw/roll</td>
-                </tr>
-                <tr>
-                  <td><strong>Bimanual &amp; Velocity</strong></td>
-                  <td><code>[143 : 147]</code></td>
-                  <td>4-D</td>
-                  <td>Inter-wrist distance <i>d<sub>LR</sub></i>, hand presence flags &amp; wrist speed</td>
-                </tr>
-                <tr class="subhighlight">
-                  <td><strong>Temporal Pooling</strong></td>
-                  <td><code>[0 : 441]</code></td>
-                  <td><strong>441-D</strong></td>
-                  <td><strong>Mean (μ, 147-D) ⊕ Std Dev (σ, 147-D) ⊕ Velocity (Δ, 147-D)</strong></td>
-                </tr>
-              </tbody>
-            </table>
-            <div style="background: #eff6ff; border: 1px solid #93c5fd; border-radius: 6px; padding: 7px 10px; font-size: 11.8px; margin-top: 6px;">
-              <strong>Why These Features Are Extracted:</strong><br/>
-              • <strong>Scale Invariance:</strong> Normalizing by inter-shoulder span <i>S<sub>t</sub></i> keeps feature magnitudes consistent across 0.5m–1.8m seating distances.<br/>
-              • <strong>Cranial Disambiguation:</strong> Hand-to-face vectors separate minimal-pair signs sharing identical handshapes near the forehead vs. chin.
-            </div>
-          </div>
-        </div>
-
-        <div class="v-card" style="border-color: #059669; background: #ffffff;">
-          <div class="v-card-head" style="background: #065f46;">Graph: Multi-Corpus Dataset Distribution (Fig. 5.2)</div>
-          <div class="v-card-body" style="align-items: center;">
-            ${IMAGES.figDatadist ? `<img src="${IMAGES.figDatadist}" alt="Dataset Distribution Chart" style="width: 100%; height: 265px; object-fit: contain; border: 1px solid #cbd5e1; border-radius: 6px;" />` : ""}
-            <div style="width: 100%; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 6px; padding: 7px 10px; font-size: 11.8px;">
-              <strong>Three Harmonized ISL Corpora (Table 3.2):</strong><br/>
-              • <strong>Amrita-ISLR:</strong> Clinical &amp; daily isolated vocabulary<br/>
-              • <strong>INCLUDE:</strong> Multi-signer lexical categories<br/>
-              • <strong>ISL-CSLTR:</strong> Continuous sentence sign streams<br/>
-              • <strong>Total:</strong> 144 Sign Classes · 187 Phrases · 314 Video Streams
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 5: Feature Extraction Schema (147-D Hand, Face &amp; Motion)</span>
-      <span>Slide 9 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 10: MODULE-WISE IMPLEMENTATION (HOW & WHY FOR ALL MODULES)      -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-10" data-slide="10">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 10 / 14</div>
-      <div class="slide-header-text">
-        <h2>Module-Wise Implementation (How &amp; Why)</h2>
-        <p>Detailed Explanation of All Six System Modules and Their Functional Implementation</p>
-      </div>
-      <div class="chapter-pill">Report Chapter 6 (pp. 45–54)</div>
-    </div>
-    <div class="slide-body">
-      <div style="display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; flex: 1;">
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">Table 6.1: Implementation of All Core System Modules (How &amp; Why)</div>
-          <div class="v-card-body" style="padding: 6px 8px;">
-            <table class="ppt-table" style="font-size: 11.2px;">
-              <thead>
-                <tr>
-                  <th style="width: 145px;">Module Name</th>
-                  <th>HOW It Is Implemented</th>
-                  <th>WHY It Is Needed</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>1. Holistic Landmark Module</strong></td>
-                  <td>Extracts 21 left-hand, 21 right-hand &amp; 12 face points at 30 FPS via MediaPipe WASM.</td>
-                  <td>Eliminates background lighting noise and keeps webcam video private on device.</td>
-                </tr>
-                <tr>
-                  <td><strong>2. Hysteresis Motion Segmenter</strong></td>
-                  <td>3-state velocity FSM (<code>IDLE ➔ SIGNING ➔ HOLD_PAUSE</code>) with dual velocity gates.</td>
-                  <td>Prevents resting hand twitches from triggering false words and isolates strokes.</td>
-                </tr>
-                <tr>
-                  <td><strong>3. Hybrid ONNX Classifier</strong></td>
-                  <td>Combines 441-D MLP + BiGRU-CTC temporal decoder exported to ONNX Runtime Web.</td>
-                  <td>Captures both static hand postures and temporal motion order in 4.6 ms on CPU.</td>
-                </tr>
-                <tr>
-                  <td><strong>4. Few-Shot Custom Sign Module</strong></td>
-                  <td>In-browser Float32 2-layer MLP (<code>441➔96➔C</code>) trained with AdamW &amp; 12× augmentation.</td>
-                  <td>Enables users to enroll new regional/medical signs from 3–5 clips in 45 seconds.</td>
-                </tr>
-                <tr>
-                  <td><strong>5. Kannada SOV Grammar Module</strong></td>
-                  <td>3-tier suffix stemmer &amp; clause reorderer (<code>[Time ➔ Subj ➔ Obj ➔ Verb ➔ Neg]</code>).</td>
-                  <td>Maps agglutinative Kannada grammar to ISL order and synthesizes <code>kn-IN</code> voice.</td>
-                </tr>
-                <tr>
-                  <td><strong>6. 3D Avatar Analytic IK Module</strong></td>
-                  <td>Closed-form 2-bone law-of-cosines Shoulder-Elbow-Wrist IK with parabolic arcs.</td>
-                  <td>Renders 144 signs at 60 FPS with chest guard and zero mid-sentence arm drops.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 10px;">
-          <div class="v-card" style="border-color: #2563eb; background: #ffffff; flex: 1;">
-            <div class="v-card-head" style="background: #1d4ed8;">Fig. 6.1: Live Recognition Studio UI</div>
-            <div class="v-card-body" style="padding: 6px; align-items: center; justify-content: center;">
-              ${IMAGES.uiLive ? `<img src="${IMAGES.uiLive}" alt="Live Recognition Studio" style="width: 100%; height: 185px; object-fit: contain; border-radius: 4px; background: #0f172a;" />` : ""}
-            </div>
-          </div>
-
-          <div class="v-card" style="border-color: #059669; background: #ffffff; flex: 1;">
-            <div class="v-card-head" style="background: #047857;">Fig. 6.3: 3D Avatar Analytic IK Studio UI</div>
-            <div class="v-card-body" style="padding: 6px; align-items: center; justify-content: center;">
-              ${IMAGES.uiAvatar ? `<img src="${IMAGES.uiAvatar}" alt="3D Avatar Studio" style="width: 100%; height: 185px; object-fit: contain; border-radius: 4px; background: #0f172a;" />` : ""}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 6: Module-Wise Implementation (How &amp; Why)</span>
-      <span>Slide 10 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 11: EVALUATION PARAMETERS & COMPARISON WITH EXISTING RESULTS    -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-11" data-slide="11">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 11 / 14</div>
-      <div class="slide-header-text">
-        <h2>Evaluation Parameters &amp; Comparison with Existing Works</h2>
-        <p>Definitions of Accuracy, Precision, Recall &amp; F1-Score and Comparative Benchmark Table</p>
-      </div>
-      <div class="chapter-pill">Report Ch. 7, Sec. 7.1–7.3 (pp. 55–59)</div>
-    </div>
-    <div class="slide-body">
-      <div class="grid-2" style="flex: 1;">
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">Table 7.1: Evaluation Parameters Explained</div>
-          <div class="v-card-body" style="padding: 8px 10px;">
-            <table class="ppt-table">
-              <thead>
-                <tr>
-                  <th>Parameter</th>
-                  <th>Formula</th>
-                  <th>What It Measures in Sign Recognition</th>
-                  <th>Measured</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Top-1 Accuracy</strong></td>
-                  <td><code>(TP + TN) / N</code></td>
-                  <td>Ratio of test videos where highest-probability gloss matches ground truth</td>
-                  <td><strong>81.5%</strong> (All)<br/><strong>76.5%</strong> (Unseen)</td>
-                </tr>
-                <tr>
-                  <td><strong>Precision</strong></td>
-                  <td><code>TP / (TP + FP)</code></td>
-                  <td>Proportion of predicted signs that are correct (false-trigger resistance)</td>
-                  <td><strong>0.818</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>Recall</strong></td>
-                  <td><code>TP / (TP + FN)</code></td>
-                  <td>Proportion of actual performed signs detected across different signers</td>
-                  <td><strong>0.792</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>Macro F1-Score</strong></td>
-                  <td><code>2·P·R / (P + R)</code></td>
-                  <td>Harmonic mean balancing Precision and Recall across sign classes</td>
-                  <td><strong>0.800</strong> (Base)<br/><strong>0.812</strong> (τ*=0.5)</td>
-                </tr>
-                <tr>
-                  <td><strong>Top-3 Accuracy</strong></td>
-                  <td><code>Correct in Top-3</code></td>
-                  <td>Presence of true sign among top 3 interactive candidate chips</td>
-                  <td><strong>94.9%</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>Segment Error (SER)</strong></td>
-                  <td><code>(S+D+I) / N_ref</code></td>
-                  <td>Edit distance error rate across continuous 5-sign streams</td>
-                  <td><strong>12.6%</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="v-card" style="border-color: #059669; background: #ffffff;">
-          <div class="v-card-head" style="background: #065f46;">Table 7.2: Comparison Between Existing Methods and Proposed Work</div>
-          <div class="v-card-body" style="padding: 8px 10px;">
-            <table class="ppt-table">
-              <thead>
-                <tr>
-                  <th>Evaluated Method / Model</th>
-                  <th>Unseen Acc.</th>
-                  <th>Precision</th>
-                  <th>Recall</th>
-                  <th>Macro F1</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Single-Hand 63-D MLP (Existing)</td>
-                  <td>51.2%</td>
-                  <td>0.534</td>
-                  <td>0.498</td>
-                  <td>0.515</td>
-                </tr>
-                <tr>
-                  <td>Two-Hand 126-D Baseline (No Face)</td>
-                  <td>54.5%</td>
-                  <td>0.589</td>
-                  <td>0.560</td>
-                  <td>0.574</td>
-                </tr>
-                <tr>
-                  <td>3D-CNN RGB Video Baseline</td>
-                  <td>58.4%</td>
-                  <td>0.602</td>
-                  <td>0.571</td>
-                  <td>0.586</td>
-                </tr>
-                <tr>
-                  <td>147-D Hands+Face MLP (No BiGRU)</td>
-                  <td>62.9%</td>
-                  <td>0.654</td>
-                  <td>0.628</td>
-                  <td>0.641</td>
-                </tr>
-                <tr>
-                  <td>Sliding-Window LSTM (No Hysteresis)</td>
-                  <td>68.5%</td>
-                  <td>0.718</td>
-                  <td>0.698</td>
-                  <td>0.708</td>
-                </tr>
-                <tr class="highlight">
-                  <td><strong>Proposed 147-D + Hysteresis + BiGRU-CTC</strong></td>
-                  <td><strong>76.5%</strong></td>
-                  <td><strong>0.818</strong></td>
-                  <td><strong>0.792</strong></td>
-                  <td><strong>0.800</strong></td>
-                </tr>
-              </tbody>
-            </table>
-            <div style="background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 6px; padding: 7px 10px; font-size: 11.6px; margin-top: 6px;">
-              <strong>Key Observations from Comparative Testing (Sec. 7.3):</strong><br/>
-              • Incorporating 21-D facial and hand-to-face features improved unseen-signer accuracy from 54.5% to 62.9%.<br/>
-              • Combining Hysteresis segmentation, BiGRU-CTC temporal modeling, and 5-view TTA recorded <strong>76.5% unseen-signer accuracy</strong> (<strong>81.5% overall</strong> across 314 videos).
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 7: Evaluation Parameters &amp; Comparison with Existing Works</span>
-      <span>Slide 11 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 12: EXPERIMENTAL RESULTS & NAMED PERFORMANCE GRAPHS             -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-12" data-slide="12">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 12 / 14</div>
-      <div class="slide-header-text">
-        <h2>Experimental Results &amp; Named Performance Graphs</h2>
-        <p>Visual Evaluation Plots from Stratified and Unseen-Signer Testing (Report Chapter 7)</p>
-      </div>
-      <div class="chapter-pill">Report Ch. 7, Sec. 7.3–7.6 (pp. 58–63)</div>
-    </div>
-    <div class="slide-body">
-      <div class="grid-2" style="flex: 1; gap: 12px;">
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #1e3a8a;">Graph 1: Top-1 Accuracy Across Feature &amp; Model Stages (Fig. 5.3)</div>
-          <div class="v-card-body" style="padding: 6px 10px; align-items: center;">
-            ${IMAGES.figResults ? `<img src="${IMAGES.figResults}" alt="Graph 1: Top-1 Accuracy Progression" style="width: 100%; height: 175px; object-fit: contain;" />` : ""}
-            <div style="font-size: 11.5px; font-weight: 700; color: #0f172a; text-align: center;">
-              Compares All-Split (81.5%), Unseen Signers (76.5%), and INCLUDE Subset (92.7%).
-            </div>
-          </div>
-        </div>
-
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #065f46;">Graph 2: Out-of-Fold Confidence Calibration Curve (Fig. 5.4)</div>
-          <div class="v-card-body" style="padding: 6px 10px; align-items: center;">
-            ${IMAGES.figCalibration ? `<img src="${IMAGES.figCalibration}" alt="Graph 2: Confidence Calibration Curve" style="width: 100%; height: 175px; object-fit: contain;" />` : ""}
-            <div style="font-size: 11.5px; font-weight: 700; color: #0f172a; text-align: center;">
-              Identifies optimal rejection gate τ* = 0.50 maximizing Macro-F1 (0.812).
-            </div>
-          </div>
-        </div>
-
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #5b21b6;">Graph 3: Per-Class F1-Score Distribution Across Signs (Fig. 5.5)</div>
-          <div class="v-card-body" style="padding: 6px 10px; align-items: center;">
-            ${IMAGES.figPerclass ? `<img src="${IMAGES.figPerclass}" alt="Graph 3: Per-Class F1 Distribution" style="width: 100%; height: 175px; object-fit: contain;" />` : ""}
-            <div style="font-size: 11.5px; font-weight: 700; color: #0f172a; text-align: center;">
-              Shows per-sign F1-score distribution across evaluated test signs (Mean F1 = 0.800).
-            </div>
-          </div>
-        </div>
-
-        <div class="v-card" style="background: #ffffff;">
-          <div class="v-card-head" style="background: #b45309;">Graph 4: Continuous Stream Segment Error Rate (SER) (Fig. 5.6)</div>
-          <div class="v-card-body" style="padding: 6px 10px; align-items: center;">
-            ${IMAGES.figSegmentation ? `<img src="${IMAGES.figSegmentation}" alt="Graph 4: Continuous Stream SER Comparison" style="width: 100%; height: 175px; object-fit: contain;" />` : ""}
-            <div style="font-size: 11.5px; font-weight: 700; color: #0f172a; text-align: center;">
-              Hysteresis + BiGRU-CTC reduces continuous 5-sign stream SER from 35.2% to 12.6%.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 7: Experimental Results &amp; Named Performance Graphs</span>
-      <span>Slide 12 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 13: CONCLUSION & FUTURE WORK (DEDICATED SLIDE)                  -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-13" data-slide="13">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 13 / 14</div>
-      <div class="slide-header-text">
-        <h2>Conclusion &amp; Future Work</h2>
-        <p>Summary of Engineering Work Completed and Scope for Future Extensions</p>
-      </div>
-      <div class="chapter-pill">Report Chapter 8 (pp. 64–66)</div>
-    </div>
-    <div class="slide-body">
-      <div class="grid-2" style="flex: 1;">
-        <div class="v-card" style="border-color: #2563eb; background: #eff6ff;">
-          <div class="v-card-head" style="background: #1e3a8a;">1. Conclusion (Summary of Work Done — Sec. 8.1)</div>
-          <div class="v-card-body">
-            <ul>
-              <li><strong>Bidirectional Translation Platform Built:</strong> Designed and implemented a browser-executable web application supporting both ISL-to-Kannada recognition and Kannada-to-3D Avatar sign synthesis.</li>
-              <li><strong>147-D Anatomical Landmark Extraction:</strong> Implemented local MediaPipe Holistic extraction of 147-D hand and facial features normalized by shoulder span, preserving complete user camera privacy.</li>
-              <li><strong>Continuous Segmentation &amp; Hybrid Model:</strong> Integrated a 3-state Hysteresis Motion Segmenter with a 441-D MLP and BiGRU-CTC classifier exported to ONNX Runtime Web (4.6 ms latency).</li>
-              <li><strong>Kannada SOV Stemmer &amp; 3D Analytic IK:</strong> Built a rule-based Kannada morphological stemmer, SOV-to-ISL clause reorderer, and a 60 FPS Three.js avatar with parabolic transition arcs.</li>
-              <li><strong>Empirical Testing Completed:</strong> Tested across 314 real videos from Amrita-ISLR, INCLUDE, and ISL-CSLTR, recording 81.5% overall Top-1 accuracy and 76.5% on unseen signers.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="v-card" style="border-color: #059669; background: #ecfdf5;">
-          <div class="v-card-head" style="background: #065f46;">2. Future Work (Scope for Enhancement — Sec. 8.2)</div>
-          <div class="v-card-body">
-            <ul>
-              <li><strong>Vocabulary Expansion to 1,000+ Signs:</strong> Expand the dataset and active vocabulary to cover specialized medical triage, legal aid, and banking terminology across regional dialects.</li>
-              <li><strong>Transformer &amp; Diffusion Avatar Prosody:</strong> Incorporate spatio-temporal Transformer decoders for continuous finger-spelling and diffusion-based facial blendshapes for richer eyebrow and mouthing cues.</li>
-              <li><strong>Multi-Language Dravidian Grammar Support:</strong> Extend the agglutinative SOV morphological stemmer and clause reordering rules to support Telugu, Tamil, and Malayalam alongside Kannada.</li>
-              <li><strong>Offline Mobile &amp; Rural Kiosk Packaging:</strong> Package the WebAssembly inference pipeline as an offline Progressive Web App (PWA) for low-cost Android tablets in rural primary health centers.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Chapter 8: Conclusion &amp; Future Work</span>
-      <span>Slide 13 of 14</span>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- SLIDE 14: RESEARCH PAPER PUBLICATION & ITS IMPORTANCE (FINAL SLIDE)   -->
-  <!-- ===================================================================== -->
-  <section class="ppt-slide" id="slide-14" data-slide="14">
-    <div class="slide-header">
-      <div class="slide-badge">Slide 14 / 14</div>
-      <div class="slide-header-text">
-        <h2>Research Paper Publication &amp; Its Importance</h2>
-        <p>Details of the Research Manuscript Prepared from This Project and Its Significance</p>
-      </div>
-      <div class="chapter-pill">Report Appendix B (Page 72)</div>
-    </div>
-    <div class="slide-body">
-      <div class="v-card" style="border-color: #2563eb; background: #ffffff;">
-        <div class="v-card-head" style="background: #1e3a8a;">Research Paper Manuscript Details (Report Appendix B)</div>
-        <div class="v-card-body" style="font-size: 12.4px; line-height: 1.42;">
+      <div class="col">
+        <div class="sec-title teal">Revision 2 · Live Deaf ISL User Study (#study)</div>
+        <div class="study-panel">
+          <h4>Implemented Live in Web App (<code>#study</code>) — Zero Fabricated Human Scores</h4>
           <ul>
-            <li><strong>Paper Title:</strong> <em>“Silent Bridge: Real-Time Bidirectional Indian Sign Language and Kannada Translation with 3D Avatar”</em></li>
-            <li><strong>Authors:</strong> H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401), under the guidance of <strong>Prof. Tejaswini K</strong>, Assistant Professor, Department of CSBS, B.M.S. College of Engineering, Bangalore – 560019.</li>
-            <li><strong>Manuscript Structure:</strong> Prepared in IEEE Two-Column Research Format (8 Pages · 12 Empirical Tables · 7 Figures · 12 Equations · 3 Algorithms · 25 IEEE References).</li>
+            <li><strong>Cohort &amp; Ethics:</strong> Pre-registered N = 8–12 adult Deaf ISL signers in Bengaluru facilitated by an accredited ISL interpreter (informed consent + anonymized IDs).</li>
+            <li><strong>Task 1 (Avatar Clarity):</strong> 18 blind randomized avatar clips — 4-AFC comprehension, 1–5 visual clarity Likert, and 5 structured error tags (handshape, speed, location, timing, missing NMM).</li>
+            <li><strong>Task 2 (Sentence Gist):</strong> 5 bidirectional Kannada ↔ ISL sentences rated on gist accuracy &amp; naturalness.</li>
+            <li><strong>Task 3 (Counter Role-Play &amp; SUS):</strong> Public desk scenario + standard 10-item Brooke SUS (0–100) with one-click JSON/CSV research export.</li>
+            <li><strong>Integrity Rule:</strong> Reports verified objective avatar audit (367 → 0 drops) today and awaits real consented sessions before publishing human SUS/comprehension means.</li>
           </ul>
         </div>
       </div>
+    </div>`
+  )}
 
-      <div class="grid-2" style="flex: 1; gap: 12px;">
-        <div class="v-card" style="border-color: #2563eb; background: #eff6ff;">
-          <div class="v-card-head" style="background: #1d4ed8;">1. Benchmark &amp; Scientific Importance</div>
-          <div class="v-card-body" style="font-size: 12.2px;">
-            Establishes a reproducible 147-D hand-and-facial landmark benchmark across three Indian Sign Language corpora (Amrita-ISLR, INCLUDE, ISL-CSLTR) with strict unseen-signer evaluation protocols.
-          </div>
-        </div>
-
-        <div class="v-card" style="border-color: #059669; background: #ecfdf5;">
-          <div class="v-card-head" style="background: #047857;">2. Regional Kannada Linguistic Importance</div>
-          <div class="v-card-body" style="font-size: 12.2px;">
-            Documents a formal rule-based morphological stemmer for stripping agglutinative Kannada suffixes and reordering Subject–Object–Verb (SOV) clauses into ISL temporal-first syntax.
-          </div>
-        </div>
-
-        <div class="v-card" style="border-color: #7c3aed; background: #f5f3ff;">
-          <div class="v-card-head" style="background: #5b21b6;">3. Edge-AI &amp; Kinematic Importance</div>
-          <div class="v-card-body" style="font-size: 12.2px;">
-            Provides a closed-form 2-bone Analytic Inverse Kinematics formulation with parabolic co-articulation and sub-5ms browser WebAssembly inference for ordinary CPU laptops.
-          </div>
-        </div>
-
-        <div class="v-card" style="border-color: #d97706; background: #fffbeb;">
-          <div class="v-card-head" style="background: #b45309;">4. Healthcare Privacy &amp; Societal Importance</div>
-          <div class="v-card-body" style="font-size: 12.2px;">
-            Enables 100% local camera privacy for hospital triage and public service counters aligned with UN SDGs 3, 4, 8, 9 &amp; 10, reducing counter interpretation cost by 94% (Rs. 16/day).
-          </div>
-        </div>
+  <!-- SLIDE 12: DELIVERABLES, CONCLUSION & CLOSING -->
+  ${slideChrome(
+    12,
+    "RESEARCH IMPACT &amp; CONCLUSION",
+    "Academic Deliverables, Key Contributions &amp; Conclusion",
+    "Verified 6-Page NCDTE Conference Manuscript, 79-Page BMSCE CSBS Report &amp; Deployed Bidirectional System",
+    `
+    <div>
+      <div class="sec-title">Verified Academic &amp; Software Deliverables</div>
+      <table class="clean compact">
+        <thead><tr><th style="width:26%">Deliverable</th><th>Verified Specification &amp; Audit Status</th></tr></thead>
+        <tbody>
+          <tr><td class="hl-navy">NCDTE Conference Paper (6 Pages)</td><td>Single-column 12pt Times New Roman, 2.5/2.0 cm margins, 5 tables, 4 figures, 15 numbered references. Addressed all 3 reviewer revisions: (1) 144-sign promotion + 5-axis scaling, (2) Avatar audit + live <code>#study</code> protocol with zero fabricated scores, (3) Condensed from ~6,000 words to strict 6-page conference limit.</td></tr>
+          <tr><td class="hl-navy">B.E. Final Project Report (79 Pages)</td><td>77-page BMSCE CSBS thesis (27,910 words, 100% Times New Roman, 21 embedded figures/screens) + 2-page iThenticate certificate (6% AI index, submission <code>trn:oid:::3618:158338407</code>).</td></tr>
+          <tr><td class="hl-navy">Shipped Bidirectional Web Platform</td><td>16 modules live in React + Three.js + ONNX / FastAPI: 144-sign promoted BiGRU, 101-sentence BiGRU-CTC, Kannada SOV + kn-IN speech, 161-clip 3D avatar, few-shot custom signs, and live <code>#study</code> harness.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two-col">
+      <div class="col">
+        <div class="sec-title">Core Takeaways</div>
+        <ul class="bullet-list">
+          <li><strong>Practical Real-Time Accessibility:</strong> Commodity laptops execute bidirectional ISL ↔ Kannada translation with 3D avatar feedback at sub-40 ms CPU latency and zero video upload.</li>
+          <li><strong>Rigorous Empirical Governance:</strong> Unseen-signer evaluation, MD5 deduplication, McNemar validation (p = 0.003), and evidence-gated model promotion (64 → 144 signs).</li>
+          <li><strong>Ready for Field Expansion:</strong> Extensible to Telugu, Tamil, Malayalam, offline rural clinic PWA tablets, and formal N = 8–12 Deaf community evaluation.</li>
+        </ul>
       </div>
-
-      <div class="summary-banner">
-        THANK YOU! &nbsp;·&nbsp; Team: H S Thanush (1BM23CB066), Kiran M K (1BM23CB068), Manoj G U (1BM24CB401) &nbsp;·&nbsp; Guide: Prof. Tejaswini K (Dept. of CSBS, BMSCE)
+      <div class="col">
+        <div class="sec-title teal">Transparent Scope &amp; Next Milestones</div>
+        <ul class="bullet-list">
+          <li><strong>Continuous Decoding Scope:</strong> Current BiGRU-CTC fusion operates over a 101-sentence closed set; next step is open-vocabulary prefix-beam search with a Kannada LM.</li>
+          <li><strong>Human Evaluation Execution:</strong> Live <code>#study</code> module is engineered and unit-tested; next milestone is completing IRB-consented sessions with Bengaluru Deaf ISL signers.</li>
+          <li><strong>Regional Dialect Coverage:</strong> Future collection targets multi-lighting webcam cohorts across Karnataka.</li>
+        </ul>
       </div>
     </div>
-    <div class="slide-footer">
-      <span>Department of CSBS · B.M.S. College of Engineering</span>
-      <span>Appendix B: Research Paper Publication &amp; Its Importance</span>
-      <span>Slide 14 of 14</span>
-    </div>
-  </section>
+    <div class="closing-banner">
+      <h3>Thank You &nbsp;—&nbsp; Questions &amp; Live System Demonstration</h3>
+      <p>H S Thanush (1BM23CB066) &nbsp;·&nbsp; Kiran M K (1BM23CB068) &nbsp;·&nbsp; Manoj G U (1BM24CB401) &nbsp;&nbsp;|&nbsp;&nbsp; Guide: Prof. Tejaswini K &nbsp;&nbsp;|&nbsp;&nbsp; Dept. of CSBS, BMSCE</p>
+    </div>`
+  )}
 
-  <script>
-    (function preloadDownloadBlobs() {
-      const links = document.querySelectorAll("a[data-preload-url]");
-      links.forEach((link) => {
-        const url = link.getAttribute("data-preload-url");
-        if (!url) return;
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.responseType = "blob";
-        xhr.onload = function () {
-          if (xhr.status >= 200 && xhr.status < 300 && xhr.response instanceof Blob && xhr.response.size > 0) {
-            link.href = URL.createObjectURL(xhr.response);
-          }
-        };
-        xhr.send();
-      });
-    })();
-  </script>
 </body>
 </html>`;
 
-  fs.mkdirSync(REPORT_DIR, { recursive: true });
   const outHtml = path.join(REPORT_DIR, "SILENT_BRIDGE_Presentation_10Slides.html");
   fs.writeFileSync(outHtml, html, "utf-8");
-  console.log(`[generate-ppt] Wrote ${TOTAL_SLIDES}-slide HTML presentation -> ${outHtml}`);
+  fs.mkdirSync(DOCS_PAPER_DIR, { recursive: true });
+  fs.copyFileSync(outHtml, path.join(DOCS_PAPER_DIR, "SILENT_BRIDGE_Presentation_10Slides.html"));
+  console.log(`[generate-ppt] Wrote bold 12-slide HTML -> ${outHtml}`);
 }
 
-async function main() {
-  await generatePptxFile();
-  generateHtmlSlides();
-}
-
-main().catch((err) => {
-  console.error("[generate-ppt] Error:", err);
-  process.exit(1);
-});
+await generatePptxFile();
+generateHtmlDeck();

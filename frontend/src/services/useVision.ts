@@ -157,10 +157,10 @@ export function useVision({ face, overlay, onResult }: Options) {
               const prevBox = lastFace.box;
               const smoothedBox: FaceBox = prevBox
                 ? {
-                    cx: r4(0.35 * rawBox.cx + 0.65 * prevBox.cx),
-                    cy: r4(0.35 * rawBox.cy + 0.65 * prevBox.cy),
-                    w: r4(0.35 * rawBox.w + 0.65 * prevBox.w),
-                    h: r4(0.35 * rawBox.h + 0.65 * prevBox.h),
+                    cx: r4(0.55 * rawBox.cx + 0.45 * prevBox.cx),
+                    cy: r4(0.55 * rawBox.cy + 0.45 * prevBox.cy),
+                    w: r4(0.55 * rawBox.w + 0.45 * prevBox.w),
+                    h: r4(0.55 * rawBox.h + 0.45 * prevBox.h),
                   }
                 : rawBox;
               lastFace = {
@@ -170,9 +170,9 @@ export function useVision({ face, overlay, onResult }: Options) {
               };
             } else {
               faceMissingCount += 1;
-              // Retain last known face box across brief hand-over-face occlusions (up to ~1.5s)
+              // Retain last known face box across sustained hand-over-face occlusions (~4s)
               lastFace = {
-                box: faceMissingCount <= 22 ? lastFace.box : null,
+                box: faceMissingCount <= 60 ? lastFace.box : null,
                 blend: null,
                 detected: false,
               };

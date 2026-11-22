@@ -244,7 +244,7 @@ export function LiveRecognition() {
     if (socketStatus !== "open") return;
     // the threshold is only sent once the user moves the slider; until then the server uses the
     // model's threshold calibrated on validation data
-    const settings: Record<string, unknown> = { mode, still_ms: stillMs, dip_split: dipSplit, split_long: splitLong };
+    const settings: Record<string, unknown> = { mode, still_ms: stillMs, dip_split: dipSplit, split_long: splitLong, use_tta: useTTA };
     if (thresholdTouched) settings.confidence_threshold = threshold;
     socketRef.current?.send({ type: "config", settings });
   }, [threshold, thresholdTouched, mode, stillMs, dipSplit, splitLong, useTTA, socketStatus]);
@@ -311,6 +311,15 @@ export function LiveRecognition() {
               confidence: Math.round(c.confidence * 10000) / 10000,
             };
           });
+          if (!pred.accepted) {
+            setHero({ kind: "uncertain", best: enrichedTop[0] ?? null, at: Date.now() });
+            if (enrichedTop.length) {
+              setUncertain((us) => [{ id: `u${pendingCounter++}`, top: enrichedTop, at: Date.now() }, ...us].slice(0, 4));
+            }
+            setEventMsg(`In-Browser ONNX uncertain (${Math.round(pred.confidence * 100)}%, ${pred.latency_ms} ms). Pick a candidate or sign again.`);
+            sessionStats.uncertainSegments++;
+            return;
+          }
           const token: TranscriptToken = {
             label: pred.label,
             kannada: entry?.kannada || pred.top[0]?.kannada || pred.label,
@@ -328,7 +337,7 @@ export function LiveRecognition() {
             ]);
           }
           setHero({ kind: "sign", token, top: enrichedTop, simulated: false, at: Date.now() });
-          setEventMsg(`100% In-Browser ONNX (${useTTA ? "3-view TTA" : "single-view"}): ${pred.latency_ms} ms.`);
+          setEventMsg(`100% In-Browser ONNX (${useTTA ? `${pred.views_used ?? 5}-view TTA` : "single-view"}): ${pred.latency_ms} ms.`);
           sessionStats.signsRecognized++;
         });
       } else {
@@ -578,7 +587,7 @@ export function LiveRecognition() {
                     )}
                     <label className="switch">
                       <input type="checkbox" checked={useTTA} onChange={(e) => setUseTTA(e.target.checked)} />
-                      Accuracy Boost: 3-View Test-Time Augmentation (TTA) + 3-Tap Landmark Denoising + Face-Occlusion Lock
+                      Accuracy Boost: 5-View TTA + Median Despike + Consensus Gate + Extended Face-Occlusion Lock
                     </label>
                     <label className="switch">
                       <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />

@@ -7,8 +7,9 @@ import { KannadaToSign } from "./pages/KannadaToSign";
 import { LiveRecognition } from "./pages/LiveRecognition";
 import { ProjectReport } from "./pages/ProjectReport";
 import { SignReference } from "./pages/SignReference";
+import { UserStudy } from "./pages/UserStudy";
 
-type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "about" | "report";
+type PageId = "live" | "custom" | "k2s" | "reference" | "dataset" | "study" | "about" | "report";
 
 interface NavItem {
   id: PageId;
@@ -24,8 +25,9 @@ const PAGES: NavItem[] = [
   { id: "custom", label: "Custom Signs", hint: "Few-Shot Studio", icon: "record", group: "Studios" },
   { id: "reference", label: "Sign Reference", hint: "144 Dataset Clips", icon: "eye", group: "Corpus & Evaluation" },
   { id: "dataset", label: "Dataset & Model", hint: "Train & Calibrate", icon: "database", group: "Corpus & Evaluation" },
+  { id: "study", label: "Deaf ISL Study", hint: "3-Task Protocol · SUS", icon: "face", group: "Corpus & Evaluation" },
   { id: "about", label: "About & Testing", hint: "Metrics & Protocol", icon: "flask", group: "Corpus & Evaluation" },
-  { id: "report", label: "Report, Paper & PPT", hint: "79p Final PDF · IEEE · PPT", icon: "download", group: "Academic Deliverables" },
+  { id: "report", label: "Report, Paper & PPT", hint: "79p Final PDF · NCDTE · PPT", icon: "download", group: "Academic Deliverables" },
 ];
 
 const NAV_GROUPS: NavItem["group"][] = [
@@ -196,6 +198,7 @@ export default function App() {
           {page === "k2s" && <KannadaToSign />}
           {page === "reference" && <SignReference />}
           {page === "dataset" && <DatasetModel />}
+          {page === "study" && <UserStudy />}
           {page === "about" && <AboutTesting />}
           {page === "report" && <ProjectReport />}
         </main>

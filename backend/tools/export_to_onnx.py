@@ -37,7 +37,9 @@ class FusedEnsemble(nn.Module):
         self.sds = nn.ParameterList(
             [nn.Parameter(torch.tensor(m.sd_, dtype=torch.float32), requires_grad=False) for m in ensemble.members]
         )
-        self.w = ensemble.weights if ensemble.weights is not None else [1.0 / len(self.nets)] * len(self.nets)
+        raw_w = list(ensemble.weights) if ensemble.weights is not None else [1.0] * len(self.nets)
+        w_sum = float(sum(raw_w)) or 1.0
+        self.w = [float(wi) / w_sum for wi in raw_w]
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         T, F = 24, 147
